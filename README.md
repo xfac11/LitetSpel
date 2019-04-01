@@ -1,2 +1,2 @@
 # LitetSpel
-LitetSpel Animal Gun Game
+Animal Gun Game
