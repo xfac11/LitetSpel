@@ -10,8 +10,9 @@ Shadow Mapping?
 Front to back?
 back face culling
 Particles with billboarding
+Extra:
 MousePick
 Water effect
 Glow effect
 
-ö
+
