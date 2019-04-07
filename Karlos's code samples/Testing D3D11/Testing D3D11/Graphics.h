@@ -8,9 +8,11 @@
 #include "LightShader.h"
 #include "FullscreenQuad.h"
 #include "Model.h"
-#include "Triangle.h"
+//#include "Triangle.h"
 #include "Terrain.h" 
-#include "particlesystem.h"
+//#include "particlesystem.h"
+#include "BetterParticles.h"
+#include "ParticleShader.h"
 #include "SkyBox.h"
 //#include "bth_image.h"
 #include "imgui/imgui.h"
@@ -29,9 +31,12 @@ private:
 	//ColorShader* theColorShader[2];//forward
 
 	Terrain* theTerrain;
-	ParticleSystem* particles;
+	BetterParticles* theParticles;
+	//ParticleSystem* particles;
 	SkyBox* theSky;
 
+
+	ParticleShader* psShader;
 	//defered render
 	DeferedShader* dShader;
 	LightShader* lShader;
@@ -70,7 +75,7 @@ private:
 	bool sphereRayIntersection(DirectX::XMFLOAT3 rayOrigin, DirectX::XMFLOAT3 rayDirection, DirectX::XMFLOAT3 pos, float radius);
 	bool boxRayIntersection(DirectX::XMFLOAT3 rayOrigin, DirectX::XMFLOAT3 rayDirection, DirectX::XMFLOAT3 center, DirectX::XMFLOAT4 u_hu, DirectX::XMFLOAT4 v_hv, DirectX::XMFLOAT4 w_hw);
 	//bool triangleIntersection();
-	int selectionSort();
+	//int selectionSort();
 public:
 	Graphics();
 	~Graphics();

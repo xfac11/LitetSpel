@@ -167,10 +167,10 @@ bool Graphics::render()
 	//this->Direct3D->setIncrement(this->gIncrement);
 	this->theCamera->Render();
 
-	this->particles->setWorld();
+	this->theParticles->setWorld();
 	this->theTerrain->setWorld();
-	this->theModel[5]->setWorld();
-	this->theModel[4]->setWorld();
+	//this->theModel[5]->setWorld();
+	//this->theModel[4]->setWorld();
 	this->theModel[3]->setWorld();
 	this->theModel[2]->setWorld();
 	this->theModel[1]->setWorld();
@@ -206,8 +206,9 @@ Graphics::Graphics()
 	//this->theColorShader[0] = nullptr; 
 	//this->theColorShader[1] = nullptr;
 	this->theTerrain = nullptr;
-	this->particles = nullptr;
+	this->theParticles = nullptr;
 
+	this->psShader = nullptr;
 	this->dShader = nullptr;
 	this->lShader = nullptr;
 	this->gBuffer = nullptr;
@@ -315,13 +316,22 @@ bool Graphics::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 		MessageBox(hwnd, "Could not initialize the fullQuad object.", "Error", MB_OK);
 		return false;
 	}
+
+	this->psShader = new ParticleShader;
+	if (!this->psShader)
+		return false;
+	result = this->psShader->Initialize(this->Direct3D->GetDevice(), hwnd);
+	if (result == false)
+	{
+		MessageBox(hwnd, "Could not initialize the particle shader object.", "Error", MB_OK);
+	}
 	this->dShader = new DeferedShader;
 	if (!this->dShader)
 		return false;
 	result = this->dShader->Initialize(this->Direct3D->GetDevice(), hwnd);
 	if (result == false)
 	{
-		MessageBox(hwnd, "Could not initialize the deferd shader object.", "Error", MB_OK);
+		MessageBox(hwnd, "Could not initialize the deferred shader object.", "Error", MB_OK);
 	}
 	this->lShader = new LightShader;
 	if (!this->lShader)
@@ -373,34 +383,34 @@ bool Graphics::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 	this->theModel[3]->createTheVertexBuffer(this->Direct3D->GetDevice());
 
 	//billboarded
-	this->theModel[4]->addCube(DirectX::XMFLOAT3(-2.25 / 4,0, 0),2.25/2,3.50/2, 0.00f);
-	this->theModel[4]->insertCubesInVec();
-	this->theModel[4]->setTheTexture(this->Direct3D->GetDevice(), this->Direct3D->GetDeviceContext(), "chika_takami.tga", "normal_test_32.tga");
-	this->theModel[4]->createTheVertexBuffer(this->Direct3D->GetDevice());
+	//this->theModel[4]->addCube(DirectX::XMFLOAT3(-2.25 / 4,0, 0),2.25/2,3.50/2, 0.00f);
+	//this->theModel[4]->insertCubesInVec();
+	//this->theModel[4]->setTheTexture(this->Direct3D->GetDevice(), this->Direct3D->GetDeviceContext(), "chika_takami.tga", "normal_test_32.tga");
+	//this->theModel[4]->createTheVertexBuffer(this->Direct3D->GetDevice());
 
-	this->theModel[5]->addCube({ 0,0,0 }, 2, 2, 2);
-	this->theModel[5]->insertCubesInVec();
-	this->theModel[5]->setTheTexture(this->Direct3D->GetDevice(), this->Direct3D->GetDeviceContext(), "lovelive.tga", "pebbles_normal_1024_32.tga");
-	this->theModel[5]->createTheVertexBuffer(this->Direct3D->GetDevice());
+	//this->theModel[5]->addCube({ 0,0,0 }, 2, 2, 2);
+	//this->theModel[5]->insertCubesInVec();
+	//this->theModel[5]->setTheTexture(this->Direct3D->GetDevice(), this->Direct3D->GetDeviceContext(), "lovelive.tga", "pebbles_normal_1024_32.tga");
+	//this->theModel[5]->createTheVertexBuffer(this->Direct3D->GetDevice());
 
 	this->theModel[0]->setSampler(this->Direct3D->GetDevice());
 	this->theModel[1]->setSampler(this->Direct3D->GetDevice());
 	this->theModel[2]->setSampler(this->Direct3D->GetDevice());
 	this->theModel[3]->setSampler(this->Direct3D->GetDevice());
-	this->theModel[4]->setSampler(this->Direct3D->GetDevice());
-	this->theModel[5]->setSampler(this->Direct3D->GetDevice());
+	//this->theModel[4]->setSampler(this->Direct3D->GetDevice());
+	//this->theModel[5]->setSampler(this->Direct3D->GetDevice());
 	
 	this->theModel[2]->setPosition(0.0f, 3.0f, 9.0f);
 	this->theModel[3]->setPosition(0.0f, 10.0f, 20.0f);
-	this->theModel[4]->setPosition(20.0f, 10.0f, 10.0f);
+	//this->theModel[4]->setPosition(20.0f, 10.0f, 10.0f);
 	this->theModel[1]->setPosition(24.0f, 0.0f, 64.0f);
 	this->theModel[0]->setPosition(7.0f, 0.0f, 7.0f);
-	this->theModel[5]->setPosition(20.0f, 10.0f, 0.0f);
+	//this->theModel[5]->setPosition(20.0f, 10.0f, 0.0f);
 	
-	this->particles = new ParticleSystem;
-	this->particles->Initialize(this->Direct3D->GetDevice(), this->Direct3D->GetDeviceContext(), "chika_takami.tga","smooth_32.tga");
-	this->particles->setSampler(this->Direct3D->GetDevice());
-	this->particles->setPosition(50.0f, 10.0f, 50.0f);
+	this->theParticles = new BetterParticles;
+	this->theParticles->initialize(this->Direct3D->GetDevice(), this->Direct3D->GetDeviceContext(), "chika_takami.tga");
+	this->theParticles->setSampler(this->Direct3D->GetDevice());
+	this->theParticles->setPosition(0.0f, 10.0f, 0.0f);
 	return result;
 }
 
@@ -431,11 +441,10 @@ void Graphics::Shutdown()
 		theTerrain->Shutdown();
 		delete theTerrain;
 	}
-	if (this->particles)
+	if (this->theParticles)
 	{
-		this->particles->Shutdown();
-		delete particles;
-		this->particles = nullptr;
+		this->theParticles->shutdown();
+		delete theParticles;
 	}
 
 	if (this->fullQuad)
@@ -448,6 +457,11 @@ void Graphics::Shutdown()
 	{
 		gBuffer->shutDown();
 		delete gBuffer;
+	}
+	if (this->psShader)
+	{
+		this->psShader->shutdown();
+		delete this->psShader;
 	}
 	if (this->lShader)
 	{
@@ -482,7 +496,7 @@ bool Graphics::Frame(bool move1 , bool move2)
 		//this->Direct3D->setIncrement(3.14);// = this->theModel[2].getId();
 	}
 
-	this->particles->Frame(ImGui::GetIO().DeltaTime, Direct3D->GetDeviceContext());
+	this->theParticles->updateBuffers(Direct3D->GetDevice(),Direct3D->GetDeviceContext(),ImGui::GetIO().DeltaTime );
 
 
 	return render();
@@ -546,7 +560,7 @@ void Graphics::renderToTexture()
 	//this->dShader->SetShaderParameters(this->Direct3D->GetDeviceContext(), DirectX::XMLoadFloat4x4(&this->theModel[5]->getId()), this->theCamera->GetViewMatrix(), this->Direct3D->GetProjectionMatrix(), spec, 1.0f);
 	//this->theModel[5]->draw(*this->dShader, Direct3D->GetDeviceContext());
 	// Render the model using the deferred shader.
-	this->theModel[4]->billboard(this->camPos);
+	//this->theModel[4]->billboard(this->camPos);
 
 	for (int i = 0; i < cap; i++)
 	{
@@ -578,9 +592,9 @@ void Graphics::renderToTexture()
 	
 
 	//this->Direct3D->EnableAlphaBlending();
-	this->particles->billboard(this->camPos);
-	this->dShader->SetShaderParameters(this->Direct3D->GetDeviceContext(), DirectX::XMLoadFloat4x4(&this->particles->getWorld()), this->theCamera->GetViewMatrix(), this->Direct3D->GetProjectionMatrix(),spec,1.0f);
-	this->particles->draw(*this->dShader, Direct3D->GetDeviceContext());
+	//this->particles->billboard(this->camPos);
+	this->psShader->SetShaderParameters(this->Direct3D->GetDeviceContext(), DirectX::XMLoadFloat4x4(&this->theParticles->getWorld()), this->theCamera->GetViewMatrix(), this->Direct3D->GetProjectionMatrix());
+	this->theParticles->draw(*this->psShader, Direct3D->GetDeviceContext());
 	//this->Direct3D->DisableAlphaBlending();
 
 	this->dShader->SetShaderParameters(this->Direct3D->GetDeviceContext(), DirectX::XMLoadFloat4x4(&this->theTerrain->getWorld()), this->theCamera->GetViewMatrix(), this->Direct3D->GetProjectionMatrix(), spec, 0.1f);

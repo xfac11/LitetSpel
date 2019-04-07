@@ -36,12 +36,12 @@ bool Model::addQuads(DirectX::XMFLOAT3 pos, float width, float height, float dep
 	
 }
 
-bool Model::addCube(DirectX::XMFLOAT3 pos, float width, float height, float depth)
-{
-	this->cubes.addCube(pos, width, height, depth);
-	this->position = pos;
-	return true;
-}
+//bool Model::addCube(DirectX::XMFLOAT3 pos, float width, float height, float depth)
+//{
+//	this->cubes.addCube(pos, width, height, depth);
+//	this->position = pos;
+//	return true;
+//}
 
 bool Model::addTri(DirectX::XMFLOAT3 p1, DirectX::XMFLOAT3 p2, DirectX::XMFLOAT3 p3)
 {
@@ -62,10 +62,10 @@ void Model::shutdown()
 	this->normal.cleanUp();
 }
 
-bool Model::insertCubesInVec()
-{
-	return this->cubes.insertVector(body, this->vertexCount);
-}
+//bool Model::insertCubesInVec()
+//{
+//	return this->cubes.insertVector(body, this->vertexCount);
+//}
 
 void Model::moveCube(int id)
 {

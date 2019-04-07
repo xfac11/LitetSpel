@@ -3,7 +3,7 @@
 #include <d3d11.h>
 #include <directxmath.h>
 #include <vector>
-#include "CubeHandler.h"
+//#include "CubeHandler.h"
 #include "QuadHandler.h"
 #include "Texture.h"
 #include "Loader.h"
@@ -19,10 +19,10 @@ public:
 	//This before setVertexBuffer
 	
 	bool addQuads(DirectX::XMFLOAT3 pos, float width, float height, float depth, int face);
-	bool addCube(DirectX::XMFLOAT3 pos, float width, float height, float depth);
+	//bool addCube(DirectX::XMFLOAT3 pos, float width, float height, float depth);
 	bool addTri(DirectX::XMFLOAT3 p1, DirectX::XMFLOAT3 p2, DirectX::XMFLOAT3 p3);
 	void shutdown();
-	bool insertCubesInVec();
+	//bool insertCubesInVec();
 	void moveCube(int id);
 	bool createTheVertexBuffer(ID3D11Device *& gDevice);
 	void setVertexBandTexture(ID3D11DeviceContext *& gDeviceContext);
@@ -69,7 +69,7 @@ private:
 	int vertexCount;
 	//int indexCount;
 	QuadHandler quads;
-	CubeHandler cubes;
+	//CubeHandler cubes;
 
 
 	float distanceToCam;
