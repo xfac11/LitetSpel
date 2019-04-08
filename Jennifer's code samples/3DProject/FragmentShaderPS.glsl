@@ -3,9 +3,9 @@
 uniform sampler2D particleTex;
 
 in vec2 texCoords;
-in vec3 colorFinal;
+in vec4 colorFinal;
 out vec4 finalColor;
 
 void main(){
-	finalColor = texture(particleTex, texCoords) * vec4(colorFinal, 1.0);
+	finalColor = texture(particleTex, texCoords) * colorFinal;
 }

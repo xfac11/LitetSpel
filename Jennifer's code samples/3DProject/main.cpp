@@ -942,6 +942,7 @@ void Render(Scene& scene, float rotationVal) {
 	glUseProgram(gShaderProgramCompute);
 	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 0, scene.particleSystem.vboID);
 	glUniform1f(glGetUniformLocation(gShaderProgramCompute, "dt"), timer.GetDeltaTime()); //Send delta time
+	glUniform1f(glGetUniformLocation(gShaderProgramCompute, "max_lifetime"), MAX_LIFETIME); //Send the max lifetime of particles
 	glDispatchCompute(scene.particleSystem.getCount(), 1, 1);
 	//cout << sizeof(scene.particleSystem.particles) << endl; // Debug
 	glMemoryBarrier(GL_SHADER_STORAGE_BARRIER_BIT);
@@ -1272,8 +1273,6 @@ void initWindow(unsigned int w, unsigned int h) {
 	fprintf(stderr, "Renderer: %s\n", renderer);
 	fprintf(stderr, "OpenGL version %s\n", version);
 
-	// start up time
-	// timerStart = glfwGetTime();
 	glClearColor(0.9f, 0.2f, 0.2f, 0.0f);
 	glClearDepth(1.0f);
 	glViewport(0, 0, w, h);

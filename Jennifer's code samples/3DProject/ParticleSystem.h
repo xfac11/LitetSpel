@@ -7,13 +7,14 @@ const int MAX_PARTICLES = 100;
 class ParticleSystem {
 public:
 #define BUFFER_OFFSET(i) ((char *)nullptr + (i))
+#define MAX_LIFETIME 2.0f
 	struct Particle {
 		glm::vec4 pos = glm::vec4(0.0, 0.0, 0.0, 1.0);
+		glm::vec4 color = glm::vec4(1.0, 1.0, 1.0, 0.0);
+		glm::vec4 startPos = glm::vec4(0.0, 0.0, 0.0, 1.0);
 		glm::vec4 direction = glm::vec4(0.0, 1.0, 0.0, 1.0);
-		//glm::vec4 color = glm::vec4(1.0, 1.0, 1.0, 1.0);
-		//float lifetime = 3.0f;
-		int isDead = 0;
-		int speed = 3;
+		float lifetime = MAX_LIFETIME;
+		float speed = 3;
 		int padding[2]; //Padding is needed to make the total add up to a multiple of 16
 	};
 
