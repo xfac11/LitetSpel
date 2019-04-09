@@ -115,6 +115,22 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="GraphicsDevice.cpp" />
+    <ClCompile Include="Main.cpp" />
+    <ClCompile Include="System.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="GraphicsDevice.h" />
+    <ClInclude Include="DeferredShader.h" />
+    <ClInclude Include="FullScreenQuad.h" />
+    <ClInclude Include="GBuffer.h" />
+    <ClInclude Include="Keyboard.h" />
+    <ClInclude Include="Mouse.h" />
+    <ClInclude Include="SkyBox.h" />
+    <ClInclude Include="States.h" />
+    <ClInclude Include="System.h" />
+    <ClInclude Include="TextureLoad.h" />
+    <ClInclude Include="Transform.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
