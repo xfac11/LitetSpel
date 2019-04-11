@@ -1,7 +1,8 @@
 #include"System.h"
 //Keyboard* System::theKeyboard = 0;//for static
 GraphicsDevice* System::theGraphicDevice = 0;
-
+Mouse* System::theMouse = 0;
+Keyboard* System::theKeyboard = 0;
 HWND System::InitWindow(HINSTANCE hInstance, float height, float width)
 {
 	WNDCLASSEX wcex = { 0 };
@@ -54,160 +55,160 @@ LRESULT CALLBACK System::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM 
 
 	if (message == WM_DESTROY)
 		PostQuitMessage(0);
-	//else if (message == WM_CHAR)
-	//{
-	//	if (sys != nullptr)
-	//	{
-	//		unsigned char theChar = static_cast<unsigned char>(wParam);
-	//		std::string msg;
-	//		msg.push_back(theChar);
-	//		if (sys->theKeyboard->IsCharsAutoRepeat())
-	//		{
-	//			sys->theKeyboard->OnChar(theChar);
-	//		}
-	//		else
-	//		{
-	//			const bool wasPressed = lParam & 0x40000000;
-	//			if (!wasPressed)
-	//			{
-	//				sys->theKeyboard->OnChar(theChar);
+	else if (message == WM_CHAR)
+	{
+		if (sys != nullptr)
+		{
+			unsigned char theChar = static_cast<unsigned char>(wParam);
+			std::string msg;
+			msg.push_back(theChar);
+			if (theKeyboard->IsCharsAutoRepeat())
+			{
+				theKeyboard->OnChar(theChar);
+			}
+			else
+			{
+				const bool wasPressed = lParam & 0x40000000;
+				if (!wasPressed)
+				{
+					theKeyboard->OnChar(theChar);
 
-	//			}
-	//		}
-	//		//OutputDebugStringA(msg.c_str());
-	//		//MessageBox(hWnd, msg.c_str(), "Keyboard Input", MB_OK); //L"", L"", ;
-	//	}
-	//}
-	//else if (message == WM_KEYDOWN)
-	//{
-	//	unsigned char theKey = static_cast<unsigned char>(wParam);
-	//	if (sys->theKeyboard->IsKeysAutoRepeat())
-	//	{
-	//		sys->theKeyboard->OnKeyPressed(theKey);
-	//	}
-	//	else
-	//	{
-	//		const bool wasPressed = lParam & 0x40000000;
-	//		if (!wasPressed)
-	//		{
-	//			sys->theKeyboard->OnKeyPressed(theKey);
-	//		}
-	//	}
-	//}
-	//else if (message == WM_KEYUP)
-	//{
-	//	unsigned char theKey = static_cast<unsigned char>(wParam);
-	//	sys->theKeyboard->OnKeyReleased(theKey);
-	//}
-	//else if (message == WM_MOUSEMOVE)
-	//{
-	//	int x = LOWORD(lParam);
-	//	int y = HIWORD(lParam);
-	//	sys->theMouse->OnMouseMove(x, y);
-	//}
-	//else if (message == WM_INPUT)
-	//{
-	//	UINT dataSize;
-	//	GetRawInputData(reinterpret_cast<HRAWINPUT>(lParam), RID_INPUT, NULL, &dataSize, sizeof(RAWINPUTHEADER));
-	//	if (dataSize > 0)
-	//	{
-	//		//std::unique_ptr<BYTE[]> rawdata = std::make_unique<BYTE[]>(dataSize); 
-	//		BYTE* rawdata = new BYTE[dataSize];
-	//		if (GetRawInputData(reinterpret_cast<HRAWINPUT>(lParam), RID_INPUT, rawdata, &dataSize, sizeof(RAWINPUTHEADER)) == dataSize)
-	//		{
-	//			RAWINPUT* raw = reinterpret_cast<RAWINPUT*>(rawdata);
-	//			if (raw->header.dwType == RIM_TYPEMOUSE)
-	//			{
-	//				sys->theMouse->OnMouseRAW(raw->data.mouse.lLastX, raw->data.mouse.lLastY);
-	//			}
+				}
+			}
+			//OutputDebugStringA(msg.c_str());
+			//MessageBox(hWnd, msg.c_str(), "Keyboard Input", MB_OK); //L"", L"", ;
+		}
+	}
+	else if (message == WM_KEYDOWN)
+	{
+		unsigned char theKey = static_cast<unsigned char>(wParam);
+		if (theKeyboard->IsKeysAutoRepeat())
+		{
+			theKeyboard->OnKeyPressed(theKey);
+		}
+		else
+		{
+			const bool wasPressed = lParam & 0x40000000;
+			if (!wasPressed)
+			{
+				theKeyboard->OnKeyPressed(theKey);
+			}
+		}
+	}
+	else if (message == WM_KEYUP)
+	{
+		unsigned char theKey = static_cast<unsigned char>(wParam);
+		theKeyboard->OnKeyReleased(theKey);
+	}
+	else if (message == WM_MOUSEMOVE)
+	{
+		int x = LOWORD(lParam);
+		int y = HIWORD(lParam);
+		theMouse->OnMouseMove(x, y);
+	}
+	else if (message == WM_INPUT)
+	{
+		UINT dataSize;
+		GetRawInputData(reinterpret_cast<HRAWINPUT>(lParam), RID_INPUT, NULL, &dataSize, sizeof(RAWINPUTHEADER));
+		if (dataSize > 0)
+		{
+			//std::unique_ptr<BYTE[]> rawdata = std::make_unique<BYTE[]>(dataSize); 
+			BYTE* rawdata = new BYTE[dataSize];
+			if (GetRawInputData(reinterpret_cast<HRAWINPUT>(lParam), RID_INPUT, rawdata, &dataSize, sizeof(RAWINPUTHEADER)) == dataSize)
+			{
+				RAWINPUT* raw = reinterpret_cast<RAWINPUT*>(rawdata);
+				if (raw->header.dwType == RIM_TYPEMOUSE)
+				{
+					theMouse->OnMouseRAW(raw->data.mouse.lLastX, raw->data.mouse.lLastY);
+				}
 
-	//		}
-	//		delete[] rawdata;
-	//	}
-	//	return DefWindowProc(hWnd, message, wParam, lParam);
-	//}
-	//else if (message == WM_LBUTTONDOWN)
-	//{
-	//	int x = LOWORD(lParam);
-	//	int y = HIWORD(lParam);
-	//	sys->theMouse->OnLeftPressed(x, y);
-	//}
-	//else if (message == WM_LBUTTONDOWN)
-	//{
-	//	int x = LOWORD(lParam);
-	//	int y = HIWORD(lParam);
-	//	sys->theMouse->OnRightPressed(x, y);
-	//}
-	//else if (message == WM_MBUTTONDOWN)
-	//{
-	//	int x = LOWORD(lParam);
-	//	int y = HIWORD(lParam);
-	//	sys->theMouse->OnMiddlePressed(x, y);
-	//}
-	//else if (message == WM_LBUTTONUP)
-	//{
-	//	int x = LOWORD(lParam);
-	//	int y = HIWORD(lParam);
-	//	sys->theMouse->OnLeftReleased(x, y);
-	//}
-	//else if (message == WM_RBUTTONDOWN)
-	//{
-	//	int x = LOWORD(lParam);
-	//	int y = HIWORD(lParam);
-	//	sys->theMouse->OnRightPressed(x, y);
-	//}
-	//else if (message == WM_RBUTTONUP)
-	//{
-	//	int x = LOWORD(lParam);
-	//	int y = HIWORD(lParam);
-	//	sys->theMouse->OnRightReleased(x, y);
-	//}
-	//else if (message == WM_MBUTTONUP)
-	//{
-	//	int x = LOWORD(lParam);
-	//	int y = HIWORD(lParam);
-	//	sys->theMouse->OnMiddleReleased(x, y);
-	//}
-	//else if (message == WM_MOUSEWHEEL)
-	//{
-	//	int x = LOWORD(lParam);
-	//	int y = HIWORD(lParam);
-	//	if (GET_WHEEL_DELTA_WPARAM(wParam) > 0)
-	//	{
-	//		sys->theMouse->OnWheelUp(x, y);
-	//	}
-	//	else if (GET_WHEEL_DELTA_WPARAM(wParam) < 0)
-	//	{
-	//		sys->theMouse->OnWheelDown(x, y);
-	//	}
-	//}
-	//else if (message == WM_XBUTTONDOWN)
-	//{
-	//	int x = LOWORD(lParam);
-	//	int y = HIWORD(lParam);
+			}
+			delete[] rawdata;
+		}
+		return DefWindowProc(hWnd, message, wParam, lParam);
+	}
+	else if (message == WM_LBUTTONDOWN)
+	{
+		int x = LOWORD(lParam);
+		int y = HIWORD(lParam);
+		theMouse->OnLeftPressed(x, y);
+	}
+	else if (message == WM_LBUTTONDOWN)
+	{
+		int x = LOWORD(lParam);
+		int y = HIWORD(lParam);
+		theMouse->OnRightPressed(x, y);
+	}
+	else if (message == WM_MBUTTONDOWN)
+	{
+		int x = LOWORD(lParam);
+		int y = HIWORD(lParam);
+		theMouse->OnMiddlePressed(x, y);
+	}
+	else if (message == WM_LBUTTONUP)
+	{
+		int x = LOWORD(lParam);
+		int y = HIWORD(lParam);
+		theMouse->OnLeftReleased(x, y);
+	}
+	else if (message == WM_RBUTTONDOWN)
+	{
+		int x = LOWORD(lParam);
+		int y = HIWORD(lParam);
+		theMouse->OnRightPressed(x, y);
+	}
+	else if (message == WM_RBUTTONUP)
+	{
+		int x = LOWORD(lParam);
+		int y = HIWORD(lParam);
+		theMouse->OnRightReleased(x, y);
+	}
+	else if (message == WM_MBUTTONUP)
+	{
+		int x = LOWORD(lParam);
+		int y = HIWORD(lParam);
+		theMouse->OnMiddleReleased(x, y);
+	}
+	else if (message == WM_MOUSEWHEEL)
+	{
+		int x = LOWORD(lParam);
+		int y = HIWORD(lParam);
+		if (GET_WHEEL_DELTA_WPARAM(wParam) > 0)
+		{
+			theMouse->OnWheelUp(x, y);
+		}
+		else if (GET_WHEEL_DELTA_WPARAM(wParam) < 0)
+		{
+			theMouse->OnWheelDown(x, y);
+		}
+	}
+	else if (message == WM_XBUTTONDOWN)
+	{
+		int x = LOWORD(lParam);
+		int y = HIWORD(lParam);
 
-	//	if (GET_XBUTTON_WPARAM(wParam) == 2)
-	//	{
-	//		sys->theMouse->OnForwardPressed(x, y);
-	//	}
-	//	if (GET_XBUTTON_WPARAM(wParam) == 1)
-	//	{
-	//		sys->theMouse->OnBackPressed(x, y);
-	//	}
-	//}
-	//else if (message == WM_XBUTTONUP)
-	//{
-	//	int x = LOWORD(lParam);
-	//	int y = HIWORD(lParam);
-	//	if (GET_XBUTTON_WPARAM(wParam) == 2)
-	//	{
-	//		sys->theMouse->OnForwardReleased(x, y);
-	//	}
-	//	if (GET_XBUTTON_WPARAM(wParam) == 1)
-	//	{
-	//		sys->theMouse->OnBackPressed(x, y);
-	//	}
-	//}
+		if (GET_XBUTTON_WPARAM(wParam) == 2)
+		{
+			theMouse->OnForwardPressed(x, y);
+		}
+		if (GET_XBUTTON_WPARAM(wParam) == 1)
+		{
+			theMouse->OnBackPressed(x, y);
+		}
+	}
+	else if (message == WM_XBUTTONUP)
+	{
+		int x = LOWORD(lParam);
+		int y = HIWORD(lParam);
+		if (GET_XBUTTON_WPARAM(wParam) == 2)
+		{
+			theMouse->OnForwardReleased(x, y);
+		}
+		if (GET_XBUTTON_WPARAM(wParam) == 1)
+		{
+			theMouse->OnBackPressed(x, y);
+		}
+	}
 	return DefWindowProc(hWnd, message, wParam, lParam);
 }
 
@@ -255,6 +256,8 @@ System::~System()
 	delete this->obj;
 	delete this->theCamera;
 	delete this->theForwardShader;
+	delete this->theMouse;
+	delete this->theKeyboard;
 	ImGui_ImplDX11_Shutdown();
 	ImGui_ImplWin32_Shutdown();
 	ImGui::DestroyContext();
@@ -266,6 +269,8 @@ bool System::initialize()
 {
 	this->theCamera = new Camera;
 	this->theForwardShader = new ForwardShader;
+	this->theKeyboard = new Keyboard;
+	this->theMouse = new Mouse;
 	this->theForwardShader->initialize();
 	this->obj = new GameObject(this->theForwardShader);
 	std::vector<Vertex3D> mesh;
@@ -284,13 +289,14 @@ bool System::initialize()
 		DirectX::XMFLOAT4(0,0,-1,0)
 	};
 	DWORD indices[] = {
-		0, 1, 2, 0, 2, 3
+		0, 1, 2, 1, 2, 3
 	};
 	for (int i = 0; i < 4; i++)
 	{
 		mesh.push_back(temp[i]);
 	}
 	this->obj->setMesh(mesh, indices, 6);
+	this->obj->setScale(0.5, 0.5, 0.5);
 	return true;
 }
 
@@ -307,6 +313,33 @@ void System::initImgui()
 void System::update(float deltaTime)
 {
 
+	if (theKeyboard->KeyIsPressed('W'))
+	{
+		theCamera->move(0, 0, -1*deltaTime);
+	}
+	else if (theKeyboard->KeyIsPressed('S'))
+	{
+		theCamera->move(0, 0, 1*deltaTime);
+	}
+	if (theKeyboard->KeyIsPressed('D'))
+	{
+		this->obj->move(1 * deltaTime, 0, 0);
+	}
+	else if (theKeyboard->KeyIsPressed('A'))
+	{
+		this->obj->move(-1 * deltaTime, 0, 0);
+	}
+	if (theKeyboard->KeyIsPressed('X'))
+	{
+	}
+	if (theMouse->IsLeftDown())
+	{
+		std::string str = std::to_string(this->theMouse->GetPosX()) + "\n";
+		OutputDebugStringA(str.c_str());
+	}
+
+		theCamera->SetRotation(theMouse->GetPos().y*deltaTime, 0, 0);
+
 
 }
 
@@ -322,8 +355,8 @@ void System::render()
 	//ImGui::NewFrame();
 	//render imgui in states render
 	this->theCamera->Render();
+	
 	this->theForwardShader->setViewProj(this->theCamera->GetViewMatrix(), this->theGraphicDevice->getProj(), DirectX::XMFLOAT4(this->theCamera->GetPosition().x, this->theCamera->GetPosition().y, this->theCamera->GetPosition().z, 1.0f));
-	this->obj->setPosition(0.5, 0, 0);
 	this->obj->draw();
 	//state.render();
 //	ImGui::Render();

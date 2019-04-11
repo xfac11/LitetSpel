@@ -32,6 +32,23 @@ void Camera::SetRotation(DirectX::XMFLOAT3 rotation)
 	this->rotation = rotation;
 }
 
+void Camera::move(float x, float y, float z)
+{
+	this->position = DirectX::XMFLOAT3(this->position.x + x, this->position.y + y, this->position.z + z);
+}
+
+void Camera::rotate(float x, float y, float z)
+{
+	if (this->rotation.x + x >= 90)
+	{
+		DirectX::XMFLOAT3(90, this->rotation.y + y, this->rotation.z + z);
+	}
+	else
+	{
+		this->rotation = DirectX::XMFLOAT3(this->rotation.x + x, this->rotation.y + y, this->rotation.z + z);
+	}
+}
+
 DirectX::XMFLOAT3 Camera::GetPosition()
 {
 	return this->position;

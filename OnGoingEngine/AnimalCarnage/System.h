@@ -7,6 +7,8 @@
 #include"ForwardShader.h"
 #include"GameObject.h"
 #include"Camera.h"
+#include"Keyboard.h"
+#include"Mouse.h"
 #include <string>
 #include "imgui/imgui.h"
 #include "imgui/imgui_impl_win32.h"
@@ -29,8 +31,8 @@ private:
 	
 	//Statemachine* statemachine
 	//Graphics* graphics;
-	//static Keyboard* theKeyboard;
-	//static Mouse* theMouse;
+	static Keyboard* theKeyboard;
+	static Mouse* theMouse;
 	static GraphicsDevice* theGraphicDevice;
 	GameObject* obj;
 	ForwardShader* theForwardShader;

@@ -26,7 +26,7 @@ float4 PS_main(VS_OUT input) : SV_Target
 {
 	//float3 color = Tex.Sample(SampSt, input.Tex).xyz;
 	//float4 colorT = Tex.Sample(SampSt, input.Tex).rgba;
-	float4 colorT = float4(0.0f,0.5f,0.0f,1.0f);
+	float4 colorT = float4(0.0f,0.5f,0.0f,0.5f);
 	//float3 final_colour = float3(0.2f, 0.2f, 0.2f);
 	//// diffuse, no attenuation.
 
@@ -36,7 +36,7 @@ float4 PS_main(VS_OUT input) : SV_Target
 	//////light_pos=mul((float3x3)world, light_pos);//sending the worldmat to the fragment shader 
 	////float3 light_colour = { 1.f,1.f,1.f };
 	////// IMPLEMENT HERE DIFFUSE SHADING
-	//float3 normal = normalize(input.Normal);
+	//float3 normal = normalize(input.Normal);	
 	////for (int i = 0; i < 0; i++)
 	////{
 	////	light_pos = mul(float4(0.0f, 0.0f, 0.0f, 1.0f), lights[i].worldLight).xyz;

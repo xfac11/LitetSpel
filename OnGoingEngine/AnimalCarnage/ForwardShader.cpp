@@ -14,7 +14,6 @@ ForwardShader::~ForwardShader()
 
 bool ForwardShader::initialize()
 {
-
 	D3D11_INPUT_ELEMENT_DESC inputDesc[] = {
 		{
 			"SV_POSITION",		// "semantic" name in shader
@@ -102,17 +101,10 @@ void ForwardShader::setViewProj(DirectX::XMMATRIX view, DirectX::XMMATRIX proj,D
 	
 	view = XMMatrixTranspose(view);
 	proj = XMMatrixTranspose(proj);
-	/*DirectX::XMMATRIX WorldView = DirectX::XMMatrixMultiply(viewMatrix, worldMatrix);
-	DirectX::XMMATRIX WorldViewProj = DirectX::XMMatrixMultiply(projectionMatrix, WorldView);*/
-	//WorldViewProj = DirectX::XMMatrixTranspose(WorldViewProj);
-	//data->world = worldMatrix;
-	//data->view = XMMatrixTranspose(WorldView);
-	//data->projection = WorldViewProj;
 	this->perFrameCB.data.view = view;
 	this->perFrameCB.data.proj = proj;
 	this->perFrameCB.data.camPos = camPos;
 	this->perFrameCB.applyChanges(System::getDevice(),System::getDeviceContext());
-	//System::getDeviceContext()->GSSetConstantBuffers(0, 1, this->perFrameCB.getAddressOfBuffer());
 	this->setConstanbuffer(GEOMETRY, 0, this->perFrameCB.getBuffer());
 	this->setConstanbuffer(VERTEX, 0, this->perFrameCB.getBuffer());
 	this->setConstanbuffer(PIXEL, 0, this->perFrameCB.getBuffer());
