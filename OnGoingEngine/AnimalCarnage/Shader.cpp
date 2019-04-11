@@ -219,7 +219,7 @@ bool Shader::loadCS(LPCWSTR cs)
 		&this->comShader
 	);
 	pCS->Release();
-	
+	return true;
 }
 
 bool Shader::setConstanbuffer(ShaderType type, int index, ID3D11Buffer * buffer)

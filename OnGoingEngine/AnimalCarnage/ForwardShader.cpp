@@ -83,7 +83,7 @@ bool ForwardShader::initialize()
 	{
 		return false;
 	}
-
+	return true;
 	//Rasteriser state, blend state, depthstencil state is in GraphicsDevice. 
 	//Like a default. The rasteriser state is set in the initialize of GraphicsDevice
 }
