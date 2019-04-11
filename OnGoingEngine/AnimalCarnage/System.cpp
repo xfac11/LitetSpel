@@ -252,12 +252,46 @@ System::System(HINSTANCE hInstance, LPCSTR name, int nCmdShow)
 
 System::~System()
 {
-
+	delete this->obj;
+	delete this->theCamera;
+	delete this->theForwardShader;
+	ImGui_ImplDX11_Shutdown();
+	ImGui_ImplWin32_Shutdown();
+	ImGui::DestroyContext();
+	this->theGraphicDevice->shutDown();
+	delete this->theGraphicDevice;
 }
 
 bool System::initialize()
 {
-	return false;
+	this->theCamera = new Camera;
+	this->theForwardShader = new ForwardShader;
+	this->theForwardShader->initialize();
+	this->obj = new GameObject(this->theForwardShader);
+	std::vector<Vertex3D> mesh;
+	Vertex3D temp[] = {
+		DirectX::XMFLOAT4(-0.500000,-0.500000, 0.500000,1.0f),
+		DirectX::XMFLOAT2(1,0),
+		DirectX::XMFLOAT4(0,0,-1,0),
+		DirectX::XMFLOAT4(.500000, -0.500000, 0.500000,1.0f),
+		DirectX::XMFLOAT2(1,0),
+		DirectX::XMFLOAT4(0,0,-1,0),
+		DirectX::XMFLOAT4(-.500000, 0.500000, 0.500000,1.0f),
+		DirectX::XMFLOAT2(1,0),
+		DirectX::XMFLOAT4(0,0,-1,0),
+		DirectX::XMFLOAT4(.500000, 0.500000, 0.500000,1.0f),
+		DirectX::XMFLOAT2(1,0),
+		DirectX::XMFLOAT4(0,0,-1,0)
+	};
+	DWORD indices[] = {
+		0, 1, 2, 0, 2, 3
+	};
+	for (int i = 0; i < 4; i++)
+	{
+		mesh.push_back(temp[i]);
+	}
+	this->obj->setMesh(mesh, indices, 6);
+	return true;
 }
 
 void System::initImgui()
@@ -287,8 +321,12 @@ void System::render()
 	theGraphicDevice->beginScene(color);//clear the back and depth buffer set depthStencilState
 	//ImGui::NewFrame();
 	//render imgui in states render
+	this->theCamera->Render();
+	this->theForwardShader->setViewProj(this->theCamera->GetViewMatrix(), this->theGraphicDevice->getProj(), DirectX::XMFLOAT4(this->theCamera->GetPosition().x, this->theCamera->GetPosition().y, this->theCamera->GetPosition().z, 1.0f));
+	this->obj->setPosition(0.5, 0, 0);
+	this->obj->draw();
 	//state.render();
-	//ImGui::Render();
+//	ImGui::Render();
 	//ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
 	theGraphicDevice->presentScene();//EndScene() Present swapchain. Present the backbuffer to the screen
 }
@@ -300,8 +338,8 @@ void System::run()
 
 	if (this->hwnd)
 	{
-
 		theGraphicDevice->initialize(768, 768,true , hwnd, false, 0.1f, 500.0f);
+		this->initialize();
 		initImgui();
 		ShowWindow(this->hwnd, this->nCMDShow);
 		//graphics->initImgui(this->hwnd);
@@ -321,7 +359,6 @@ void System::run()
 
 				int xMouse = 0;
 				int yMouse = 0;
-				unsigned char charKey;
 				//
 				//while (!this->theMouse->EventBufferIsEmpty())
 				//{
@@ -497,11 +534,7 @@ void System::run()
 
 void System::shutDown()
 {
-	this->theGraphicDevice->shutDown();
-	delete this->theGraphicDevice;
-	ImGui_ImplDX11_Shutdown();
-	ImGui_ImplWin32_Shutdown();
-	ImGui::DestroyContext();
+	
 }
 
 WPARAM System::getMsgWParam()

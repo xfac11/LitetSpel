@@ -22,6 +22,12 @@
     <Filter Include="Source Files\Shaders">
       <UniqueIdentifier>{c6e6ed2b-a449-45c8-9f8f-57271a5a79c8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Shaders\Deferred">
+      <UniqueIdentifier>{1fb40f0b-66af-4f4e-bcc2-205dd97fe9c7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Shaders\Forward">
+      <UniqueIdentifier>{d3c94555-c22d-4ef7-b7f3-f05903d2b7fa}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -67,6 +73,15 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Transform.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ForwardShader.cpp">
+      <Filter>Source Files\Shaders\Forward</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObject.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -134,6 +149,15 @@
     <ClInclude Include="Transform.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="ForwardShader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="resource1.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="imgui\.gitkeep">
@@ -145,14 +169,14 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="..\..\Direct3D_Project\Prog3DProjekt_V2\Prog3DProjekt_V2\Fragment.hlsl">
-      <Filter>Source Files\Shaders</Filter>
+    <FxCompile Include="GeometryShader.hlsl">
+      <Filter>Source Files\Shaders\Forward</Filter>
     </FxCompile>
-    <FxCompile Include="..\..\Direct3D_Project\Prog3DProjekt_V2\Prog3DProjekt_V2\GeometryShader.hlsl">
-      <Filter>Source Files\Shaders</Filter>
+    <FxCompile Include="PixelShader.hlsl">
+      <Filter>Source Files\Shaders\Forward</Filter>
     </FxCompile>
-    <FxCompile Include="..\..\Direct3D_Project\Prog3DProjekt_V2\Prog3DProjekt_V2\Vertex.hlsl">
-      <Filter>Source Files\Shaders</Filter>
+    <FxCompile Include="VertexShader.hlsl">
+      <Filter>Source Files\Shaders\Forward</Filter>
     </FxCompile>
   </ItemGroup>
 </Project>

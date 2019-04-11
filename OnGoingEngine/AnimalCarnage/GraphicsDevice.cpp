@@ -23,7 +23,7 @@ void GraphicsDevice::beginScene(float color[4])
 {
 	deviceContext->ClearRenderTargetView(renderTargetView, color);
 	// Clear the depth buffer.
-	deviceContext->ClearDepthStencilView(depthStencilView, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 1);
+	deviceContext->ClearDepthStencilView(depthStencilView, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0xFF);
 	deviceContext->OMSetDepthStencilState(this->depthStencilState, 0); //1
 }
 
@@ -151,11 +151,11 @@ bool GraphicsDevice::initialize(int screenWidth, int screenHeight, bool vsync, H
 
 // Depth test parameters
 		depthStencilDescL.DepthEnable = true;
-		depthStencilDescL.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ZERO;
+		depthStencilDescL.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
 		depthStencilDescL.DepthFunc = D3D11_COMPARISON_GREATER;
 
 		// Stencil test parameters
-		depthStencilDescL.StencilEnable = true;
+		depthStencilDescL.StencilEnable = false;
 		depthStencilDescL.StencilReadMask = 0xFF;
 		depthStencilDescL.StencilWriteMask = 0xFF;
 
@@ -267,16 +267,20 @@ void GraphicsDevice::shutDown()
 		this->renderTargetView->Release();
 	if (this->swapChain)
 		this->swapChain->Release();
-
 	if (this->deviceContext)
-		//this->deviceContext->Release();
+		this->deviceContext->Release();
 	debug->ReportLiveDeviceObjects(D3D11_RLDO_SUMMARY | D3D11_RLDO_DETAIL);
 	if (this->device)
-		//this->device->Release();
+		this->device->Release();
 	if (this->debug)
 		this->debug->Release();
 
 	
+}
+
+DirectX::XMMATRIX GraphicsDevice::getProj()
+{
+	return this->projectionMatrix;
 }
 
 ID3D11Device *& GraphicsDevice::getDevice()

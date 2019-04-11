@@ -4,10 +4,14 @@
 #include <d3d11.h>
 #include <DirectXMath.h>
 #include"GraphicsDevice.h"
+#include"ForwardShader.h"
+#include"GameObject.h"
+#include"Camera.h"
 #include <string>
 #include "imgui/imgui.h"
 #include "imgui/imgui_impl_win32.h"
 #include "imgui/imgui_impl_dx11.h"
+
 using namespace DirectX;
 //using namespace DirectX::SimpleMath;
 
@@ -28,8 +32,9 @@ private:
 	//static Keyboard* theKeyboard;
 	//static Mouse* theMouse;
 	static GraphicsDevice* theGraphicDevice;
-	
-
+	GameObject* obj;
+	ForwardShader* theForwardShader;
+	Camera* theCamera;
 	bool mouseSwitch;
 	bool flySwitch;
 	bool moveScreen;

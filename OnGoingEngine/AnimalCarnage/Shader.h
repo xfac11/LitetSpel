@@ -15,8 +15,9 @@ class Shader
 {
 public:
 	Shader();
-	~Shader();
-	bool load(LPCWSTR  vs, LPCWSTR  gs, LPCWSTR  ps, LPCWSTR  cs, D3D11_INPUT_ELEMENT_DESC  inputDesc[]);
+	virtual~Shader();
+	bool load(LPCWSTR  vs, D3D11_INPUT_ELEMENT_DESC  *inputDesc, UINT nrOfinput, LPCWSTR ps =L"", LPCWSTR  gs =L"");
+	bool loadCS(LPCWSTR  cs);
 	bool setConstanbuffer(ShaderType type, int index, ID3D11Buffer* buffer);
 	virtual void renderShader(int vertexCount,int indexCount);
 private:
@@ -26,5 +27,7 @@ private:
 	ID3D11ComputeShader* comShader;
 	ID3D11InputLayout* vertexLayout;
 	ID3D11SamplerState* sampler;
+
+	void shutdown();
 };
 #endif // !SHADER_H

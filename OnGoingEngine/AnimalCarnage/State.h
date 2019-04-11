@@ -1,6 +1,6 @@
 #ifndef STATE_H
 #define STATE_H
-
+#include"GameObject.h"
 class State
 {
 public:

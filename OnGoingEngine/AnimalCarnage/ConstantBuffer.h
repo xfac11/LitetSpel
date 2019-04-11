@@ -4,7 +4,6 @@
 #include<wrl/client.h>
 #include<memory>
 #include<vector>
-#include"System.h"
 template<typename T>
 class ConstantBuffer
 {
@@ -26,7 +25,7 @@ public:
 		return buffer.GetAddressOf();
 	}
 
-	HRESULT initialize()
+	HRESULT initialize(ID3D11Device* device)
 	{
 		D3D11_BUFFER_DESC desc;
 
@@ -37,14 +36,14 @@ public:
 		desc.ByteWidth = static_cast<UINT>(sizeof(T) + (16 - (sizeof(T) % 16)));
 		desc.StructureByteStride = 0;
 
-		HRESULT hr = System::getDevice()->CreateBuffer(&desc, 0, buffer.GetAddressOf());
+		HRESULT hr = device->CreateBuffer(&desc, 0, buffer.GetAddressOf());
 		return hr;
 	}
 
-	bool applyChanges()
+	bool applyChanges(ID3D11Device* device,ID3D11DeviceContext* deviceContext)
 	{
 		D3D11_MAPPED_SUBRESOURCE mappedResource;
-		HRESULT hr = System::getDeviceContext()->Map(buffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
+		HRESULT hr = deviceContext->Map(buffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
 
 		if (FAILED(hr))
 		{
@@ -52,7 +51,7 @@ public:
 		}
 
 		CopyMemory(mappedResource.pData, &data, sizeof(T));
-		System::getDeviceContext()->Unmap(buffer.Get(), 0);
+		deviceContext->Unmap(buffer.Get(), 0);
 
 		return true;
 	}

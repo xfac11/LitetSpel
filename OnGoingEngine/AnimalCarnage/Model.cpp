@@ -1,32 +1,54 @@
 #include "Model.h"
+#include"System.h"
 Model::Model()
 {
 	this->indexBuffer = IndexBuffer();
 	this->SamplerState = nullptr;
-	this->shader = nullptr;
+	this->theShader = nullptr;
+	this->texture = new Texture;
+	this->normalMap = new Texture;
 
 }
 
 Model::~Model()
 {
+	if (this->SamplerState != nullptr)
+		this->SamplerState->Release();
+	if (this->texture != nullptr)
+	{
+		this->texture->cleanUp();
+		delete this->texture;
+	}
+	if (this->normalMap != nullptr)
+	{
+		this->normalMap->cleanUp();
+		delete this->normalMap;
+	}
+	//if(this->texture)
+	//	this->texture.cleanUp();
 }
 
-void Model::setShader(Shader *& theShader)
+void Model::setShader(Shader *theShader)
 {
-	this->shader = theShader;
+	this->theShader = theShader;
+}
+
+Shader * Model::getShader()
+{
+	return this->theShader;
 }
 
 void Model::setTexture(std::string file)
 {
-	texture.setTexture(file);
+	texture->setTexture(file);
 }
 
 void Model::setMesh(std::vector<Vertex3D> aMesh,DWORD* indices, int numberOfIndices)
 {
 	this->mesh = aMesh;
-	this->vertexCount = aMesh.size();
-	this->vertexBuffer.initialize(aMesh.data(), aMesh.size());
-	this->indexBuffer.initialize(indices, numberOfIndices);
+	this->vertexCount = int(aMesh.size());
+	this->vertexBuffer.initialize(aMesh.data(), UINT(aMesh.size()),System::getDevice());
+	this->indexBuffer.initialize(indices, numberOfIndices,System::getDevice());
 }
 
 void Model::setSampler()
@@ -70,14 +92,20 @@ void Model::setSampler(D3D11_TEXTURE_ADDRESS_MODE type, D3D11_FILTER filter,D3D1
 
 void Model::draw()
 {
-
 	UINT32 offset = 0;
-	System::getDeviceContext()->PSSetShaderResources(0, 1, &this->texture.getTexture());
-	System::getDeviceContext()->PSSetShaderResources(1, 1, &this->normal.getTexture());
+	System::getDeviceContext()->PSSetShaderResources(0, 1, &this->texture->getTexture());
+	if (this->normalMap != nullptr)
+	{
+		System::getDeviceContext()->PSSetShaderResources(1, 1, &this->normalMap->getTexture());
+	}
 	System::getDeviceContext()->IASetVertexBuffers(0, 1, &*this->vertexBuffer.GetAddressOf(), &*vertexBuffer.getStridePtr(), &offset);
+	UINT stride = sizeof(VERTEX);
+//	UINT offset = 0;
+	//devcon->IASetVertexBuffers(0, 1, &pVBuffer, &stride, &offset);
+	System::getDeviceContext()->IASetIndexBuffer(indexBuffer.getBuffer(), DXGI_FORMAT_R32_UINT, offset);
 	System::getDeviceContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 	System::getDeviceContext()->PSSetSamplers(0, 1, &this->SamplerState);
 
-	this->shader->renderShader(this->vertexCount,indexBuffer.getBufferSize());
+	this->theShader->renderShader(this->vertexCount,indexBuffer.getBufferSize());
 
 }

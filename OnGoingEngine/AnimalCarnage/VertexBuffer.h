@@ -3,7 +3,6 @@
 #include<d3d11.h>
 #include<wrl/client.h>
 #include<memory>
-#include"System.h"
 template<class T>
 class VertexBuffer
 {
@@ -38,7 +37,7 @@ public:
 		return stride.get();
 	}
 
-	HRESULT initialize(T* data, UINT numberOfVertices)
+	HRESULT initialize(T* data, UINT numberOfVertices,ID3D11Device* device)
 	{
 		bufferSize = numberOfVertices;
 		stride = std::make_unique<UINT>(sizeof(T));
@@ -56,7 +55,7 @@ public:
 		ZeroMemory(&subData, sizeof(subData));
 		subData.pSysMem = data;
 
-		HRESULT hr = System::getDevice()->CreateBuffer(&vBufferDesc, &subData, buffer.GetAddressOf());
+		HRESULT hr = device->CreateBuffer(&vBufferDesc, &subData, buffer.GetAddressOf());
 
 		return hr;
 	}

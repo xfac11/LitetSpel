@@ -5,201 +5,154 @@ Shader::Shader()
 	this->geometryShader = nullptr;
 	this->pixelShader = nullptr;
 	this->vertexLayout = nullptr;
-	this->vertexShader = nullptr;
+	this->vertexShader = NULL;
 	this->comShader = nullptr;
 }
 
 Shader::~Shader()
 {
+	this->shutdown();
 }
 
-bool Shader::load(LPCWSTR  vs, LPCWSTR  gs, LPCWSTR  ps, LPCWSTR  cs, D3D11_INPUT_ELEMENT_DESC  inputDesc[])
+bool Shader::load(LPCWSTR  vs, D3D11_INPUT_ELEMENT_DESC  *inputDesc,UINT nrOfinput, LPCWSTR  ps, LPCWSTR  gs)
 {
-
-	ID3DBlob* pVS = nullptr;
 	ID3DBlob* errorBlob = nullptr;
-
-	HRESULT result = D3DCompileFromFile(
-		vs, // filename vsFilename
-		nullptr,		// optional macros
-		nullptr,		// optional include files
-		"VS_main",		// entry point
-		"vs_5_0",		// shader model (target)
-		D3DCOMPILE_DEBUG,	// shader compile options (DEBUGGING)
-		0,				// IGNORE...DEPRECATED.
-		&pVS,			// double pointer to ID3DBlob		
-		&errorBlob		// pointer for Error Blob messages.
-	);
-
-	// compilation failed?
-	if (FAILED(result))
+	HRESULT result;
+	if (vs != L"")
 	{
-		if (errorBlob)
+		ID3DBlob* pVS = nullptr;
+
+		result = D3DCompileFromFile(
+			vs, // filename vsFilename
+			nullptr,		// optional macros
+			nullptr,		// optional include files
+			"VS_main",		// entry point
+			"vs_5_0",		// shader model (target)
+			D3DCOMPILE_DEBUG,	// shader compile options (DEBUGGING)
+			0,				// IGNORE...DEPRECATED.
+			&pVS,			// double pointer to ID3DBlob		
+			&errorBlob		// pointer for Error Blob messages.
+		);
+
+		// compilation failed?
+		if (FAILED(result))
 		{
-			OutputDebugStringA((char*)errorBlob->GetBufferPointer());
-			//OutputShaderErrorMessage(errorBlob, hwnd, vsFilename); //able when parameter active
-			// release "reference" to errorBlob interface object
-			errorBlob->Release();
+			if (errorBlob)
+			{
+				OutputDebugStringA((char*)errorBlob->GetBufferPointer());
+				//OutputShaderErrorMessage(errorBlob, hwnd, vsFilename); //able when parameter active
+				// release "reference" to errorBlob interface object
+				errorBlob->Release();
+			}
+			else
+			{
+				//MessageBox(hwnd, vsFilename, L"Missing Shader File", MB_OK); //able when parameter active
+			}
+			if (pVS)
+				pVS->Release();
+			return false;
 		}
-		else
+
+		System::getDevice()->CreateVertexShader(
+			pVS->GetBufferPointer(),
+			pVS->GetBufferSize(),
+			nullptr,
+			&vertexShader
+		);
+
+		//int lSize = sizeof(inputDesc) / sizeof(inputDesc[0]);
+		result = System::getDevice()->CreateInputLayout(inputDesc,nrOfinput, pVS->GetBufferPointer(), pVS->GetBufferSize(), &vertexLayout);
+
+		if (FAILED(result))
 		{
-			//MessageBox(hwnd, vsFilename, L"Missing Shader File", MB_OK); //able when parameter active
+			return false;
 		}
-		if (pVS)
-			pVS->Release();
-		return false;
+		// we do not need anymore this COM object, so we release it.
+		pVS->Release();
+	}
+	if (ps != L"")
+	{
+
+
+		//create pixel shader
+		ID3DBlob* pPS = nullptr;
+		if (errorBlob) errorBlob->Release();
+		errorBlob = nullptr;
+
+		result = D3DCompileFromFile(
+			ps, // filename
+			nullptr,		// optional macros
+			nullptr,		// optional include files
+			"PS_main",		// entry point
+			"ps_5_0",		// shader model (target)
+			D3DCOMPILE_DEBUG,	// shader compile options
+			0,				// effect compile options
+			&pPS,			// double pointer to ID3DBlob		
+			&errorBlob			// pointer for Error Blob messages.
+		);
+
+
+		// compilation failed?
+		if (FAILED(result))
+		{
+			if (errorBlob)
+			{
+				OutputDebugStringA((char*)errorBlob->GetBufferPointer());
+				// release "reference" to errorBlob interface object
+				errorBlob->Release();
+			}
+			if (pPS)
+				pPS->Release();
+			return false;
+		}
+
+		System::getDevice()->CreatePixelShader(pPS->GetBufferPointer(), pPS->GetBufferSize(), nullptr, &pixelShader);
+		// we do not need anymore this COM object, so we release it.
+		pPS->Release();
+	}
+	if (gs != L"")
+	{
+		ID3DBlob* pGS = nullptr;
+		if (errorBlob) errorBlob->Release();
+		errorBlob = nullptr;
+		result = D3DCompileFromFile(
+			gs, // filename
+			nullptr,		// optional macros
+			nullptr,		// optional include files
+			"GS_main",		// entry point
+			"gs_5_0",		// shader model (target)
+			D3DCOMPILE_DEBUG,	// shader compile options (DEBUGGING)
+			0,				// IGNORE...DEPRECATED.
+			&pGS,			// double pointer to ID3DBlob		
+			&errorBlob		// pointer for Error Blob messages.
+		);
+
+		// compilation failed?
+		if (FAILED(result))
+		{
+			if (errorBlob)
+			{
+				OutputDebugStringA((char*)errorBlob->GetBufferPointer());
+				// release "reference" to errorBlob interface object
+				errorBlob->Release();
+			}
+			if (pGS)
+				pGS->Release();
+			return false;
+		}
+
+		System::getDevice()->CreateGeometryShader(
+			pGS->GetBufferPointer(),
+			pGS->GetBufferSize(),
+			nullptr,
+			&geometryShader
+		);
+		pGS->Release();
 	}
 
-	System::getDevice()->CreateVertexShader(
-		pVS->GetBufferPointer(),
-		pVS->GetBufferSize(),
-		nullptr,
-		&vertexShader
-	);
-	// create input layout (verified using vertex shader)
-	// Press F1 in Visual Studio with the cursor over the datatype to jump
-	// to the documentation online!
-	// please read:
-	// https://msdn.microsoft.com/en-us/library/windows/desktop/bb205117(v=vs.85).aspx
-	//D3D11_INPUT_ELEMENT_DESC inputDesc[] = {
-	//	{
-	//		"SV_POSITION",		// "semantic" name in shader
-	//		0,				// "semantic" index (not used)
-	//		DXGI_FORMAT_R32G32B32_FLOAT, // size of ONE element (3 floats)
-	//		0,							 // input slot
-	//		D3D11_APPEND_ALIGNED_ELEMENT, // offset of first element
-	//		D3D11_INPUT_PER_VERTEX_DATA, // specify data PER vertex
-	//		0							 // used for INSTANCING (ignore)
-	//	},
-	//	{
-	//		"TEXCOORD",
-	//		0,
-	//		DXGI_FORMAT_R32G32_FLOAT, //2 values
-	//		0,
-	//		D3D11_APPEND_ALIGNED_ELEMENT,
-	//		D3D11_INPUT_PER_VERTEX_DATA,
-	//		0
-	//	},
-
-	//	{
-	//		"NORMALPOS",
-	//		0,				// same slot as previous (same vertexBuffer)
-	//		DXGI_FORMAT_R32G32B32_FLOAT,
-	//		0,
-	//		D3D11_APPEND_ALIGNED_ELEMENT,							// offset of FIRST element (after POSITION)
-	//		D3D11_INPUT_PER_VERTEX_DATA,
-	//		0
-	//	},
-	//	{
-	//		"THEPOINT",
-	//		0,				// same slot as previous (same vertexBuffer)
-	//		DXGI_FORMAT_R32G32B32_FLOAT,
-	//		0,
-	//		D3D11_APPEND_ALIGNED_ELEMENT,							// offset of FIRST element (after POSITION)
-	//		D3D11_INPUT_PER_VERTEX_DATA,
-	//		0
-	//	},
-	//	{
-	//		"TANGENT", //normal maps
-	//		0,
-	//		DXGI_FORMAT_R32G32B32A32_FLOAT,
-	//		0,
-	//		D3D11_APPEND_ALIGNED_ELEMENT,
-	//		D3D11_INPUT_PER_VERTEX_DATA,
-	//		0
-	//	},
-	//	{
-	//		"BINORMAL", //normal maps
-	//		0,
-	//		DXGI_FORMAT_R32G32B32A32_FLOAT,
-	//		0,
-	//		D3D11_APPEND_ALIGNED_ELEMENT,
-	//		D3D11_INPUT_PER_VERTEX_DATA,
-	//		0
-	//	}
-
-	//};
-	result = System::getDevice()->CreateInputLayout(inputDesc, _ARRAYSIZE(inputDesc), pVS->GetBufferPointer(), pVS->GetBufferSize(), &vertexLayout);
-
-	if (FAILED(result))
-	{
-		return false;
-	}
-	// we do not need anymore this COM object, so we release it.
-	pVS->Release();
-
-	//create pixel shader
-	ID3DBlob* pPS = nullptr;
-	if (errorBlob) errorBlob->Release();
-	errorBlob = nullptr;
-
-	result = D3DCompileFromFile(
-		ps, // filename
-		nullptr,		// optional macros
-		nullptr,		// optional include files
-		"PS_main",		// entry point
-		"ps_5_0",		// shader model (target)
-		D3DCOMPILE_DEBUG,	// shader compile options
-		0,				// effect compile options
-		&pPS,			// double pointer to ID3DBlob		
-		&errorBlob			// pointer for Error Blob messages.
-	);
+	
 
 
-	// compilation failed?
-	if (FAILED(result))
-	{
-		if (errorBlob)
-		{
-			OutputDebugStringA((char*)errorBlob->GetBufferPointer());
-			// release "reference" to errorBlob interface object
-			errorBlob->Release();
-		}
-		if (pPS)
-			pPS->Release();
-		return false;
-	}
-
-	System::getDevice()->CreatePixelShader(pPS->GetBufferPointer(), pPS->GetBufferSize(), nullptr, &pixelShader);
-	// we do not need anymore this COM object, so we release it.
-	pPS->Release();
-
-	ID3DBlob* pGS = nullptr;
-	if (errorBlob) errorBlob->Release();
-	errorBlob = nullptr;
-	result = D3DCompileFromFile(
-		gs, // filename
-		nullptr,		// optional macros
-		nullptr,		// optional include files
-		"GS_main",		// entry point
-		"gs_5_0",		// shader model (target)
-		D3DCOMPILE_DEBUG,	// shader compile options (DEBUGGING)
-		0,				// IGNORE...DEPRECATED.
-		&pGS,			// double pointer to ID3DBlob		
-		&errorBlob		// pointer for Error Blob messages.
-	);
-
-	// compilation failed?
-	if (FAILED(result))
-	{
-		if (errorBlob)
-		{
-			OutputDebugStringA((char*)errorBlob->GetBufferPointer());
-			// release "reference" to errorBlob interface object
-			errorBlob->Release();
-		}
-		if (pGS)
-			pGS->Release();
-		return false;
-	}
-
-	System::getDevice()->CreateGeometryShader(
-		pGS->GetBufferPointer(),
-		pGS->GetBufferSize(),
-		nullptr,
-		&geometryShader
-	);
-	pGS->Release();
 
 	D3D11_SAMPLER_DESC samplerDesc;
 	samplerDesc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
@@ -226,6 +179,49 @@ bool Shader::load(LPCWSTR  vs, LPCWSTR  gs, LPCWSTR  ps, LPCWSTR  cs, D3D11_INPU
 
 }
 
+bool Shader::loadCS(LPCWSTR cs)
+{
+	ID3DBlob* errorBlob = nullptr;
+	ID3DBlob* pCS = nullptr;
+	HRESULT result;
+	if (errorBlob) errorBlob->Release();
+	errorBlob = nullptr;
+	result = D3DCompileFromFile(
+		cs, // filename
+		nullptr,		// optional macros
+		nullptr,		// optional include files
+		"CS_main",		// entry point
+		"cs_5_0",		// shader model (target)
+		D3DCOMPILE_DEBUG,	// shader compile options (DEBUGGING)
+		0,				// IGNORE...DEPRECATED.
+		&pCS,			// double pointer to ID3DBlob		
+		&errorBlob		// pointer for Error Blob messages.
+	);
+
+	// compilation failed?
+	if (FAILED(result))
+	{
+		if (errorBlob)
+		{
+			OutputDebugStringA((char*)errorBlob->GetBufferPointer());
+			// release "reference" to errorBlob interface object
+			errorBlob->Release();
+		}
+		if (pCS)
+			pCS->Release();
+		return false;
+	}
+
+	System::getDevice()->CreateComputeShader(
+		pCS->GetBufferPointer(),
+		pCS->GetBufferSize(),
+		nullptr,
+		&this->comShader
+	);
+	pCS->Release();
+	
+}
+
 bool Shader::setConstanbuffer(ShaderType type, int index, ID3D11Buffer * buffer)
 {
 	switch (type)
@@ -244,6 +240,27 @@ bool Shader::setConstanbuffer(ShaderType type, int index, ID3D11Buffer * buffer)
 		break;
 	}
 	return true;
+}
+
+void Shader::shutdown()
+{
+	if(this->comShader!=nullptr)
+		this->comShader->Release();
+
+	if (this->vertexShader != nullptr)
+		this->vertexShader->Release();
+
+	if (this->pixelShader != nullptr)
+		this->pixelShader->Release();
+
+	if (this->geometryShader != nullptr)
+		this->geometryShader->Release();
+
+	if (this->sampler != nullptr)
+		this->sampler->Release();
+
+	if (this->vertexLayout != nullptr)
+		this->vertexLayout->Release();
 }
 
 void Shader::renderShader(int vertexCount, int indexCount)

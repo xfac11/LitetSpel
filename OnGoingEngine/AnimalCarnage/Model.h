@@ -2,7 +2,7 @@
 #define MODEL_H
 #include"VertexBuffer.h"
 #include"IndexBuffer.h"
-#include"Shader.h"
+#include"ForwardShader.h"
 #include"Texture.h"
 #include"Structs.h"
 class Model
@@ -10,7 +10,8 @@ class Model
 public:
 	Model();
 	~Model();
-	void setShader(Shader*& theShader);
+	void setShader(Shader* theShader);
+	Shader* getShader();
 	void setTexture(std::string file);
 	void setMesh(std::vector<Vertex3D> aMesh,DWORD *indices, int numberOfIndices);
 	void setSampler();
@@ -21,10 +22,10 @@ private:
 	VertexBuffer<Vertex3D> vertexBuffer;
 	IndexBuffer indexBuffer;
 	ID3D11SamplerState* SamplerState;
-	Texture texture;
-	Texture normal;
+	Texture* texture;
+	Texture* normalMap;
 	int vertexCount;
 
-	Shader* shader;
+	Shader * theShader;//pointer to the shader it uses. Comes from system or state. Do not delete
 };
 #endif // !MODEL_H

@@ -4,7 +4,6 @@
 #include<wrl/client.h>
 #include<memory>
 #include<vector>
-#include"System.h"
 class IndexBuffer
 {
 public:
@@ -28,7 +27,7 @@ public:
 		return bufferSize;
 	}
 
-	HRESULT initialize(DWORD * data, UINT numIndices)
+	HRESULT initialize(DWORD * data, UINT numIndices,ID3D11Device* device)
 	{
 		bufferSize = numIndices;
 
@@ -45,7 +44,7 @@ public:
 		ZeroMemory(&subData, sizeof(subData));
 		subData.pSysMem = data;
 
-		HRESULT hr = System::getDevice()->CreateBuffer(&iBufferDesc, &subData, buffer.GetAddressOf());
+		HRESULT hr = device->CreateBuffer(&iBufferDesc, &subData, buffer.GetAddressOf());
 
 		return hr;
 	}
