@@ -2,6 +2,7 @@
 #define SHADER_H
 #include <d3d11.h>
 #include <d3dcompiler.h>
+#include <directxmath.h>
 #include"ConstantBuffer.h"
 #include<Windows.h>
 enum ShaderType
@@ -20,6 +21,7 @@ public:
 	bool loadCS(LPCWSTR  cs);
 	bool setConstanbuffer(ShaderType type, int index, ID3D11Buffer* buffer);
 	virtual void renderShader(int vertexCount,int indexCount);
+	virtual void setWorld(DirectX::XMMATRIX world)=0;
 private:
 	ID3D11VertexShader* vertexShader;
 	ID3D11PixelShader* pixelShader;

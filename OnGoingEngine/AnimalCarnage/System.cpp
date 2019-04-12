@@ -466,110 +466,94 @@ void System::run()
 				//						OutputDebugStringA("Released BackMouse\n");
 				//					}*/
 
-				//}
-				//while (!theKeyboard->CharBufferIsEmpty()) //decide if or while
-				//{
-				//	unsigned char theChar = theKeyboard->ReadChar();
-				//	std::string theMsg = "Character: ";
-				//	theMsg += theChar;
-				//	theMsg += "\n";
-				//	//OutputDebugStringA(theMsg.c_str());
-				//	//for typing
-				//	//char inputs
-				//}
-				//while (!theKeyboard->KeyBufferIsEmpty())
-				//{
-				//	KeyboardEvent keyEvent = theKeyboard->ReadKey();
-				//	unsigned char theKey = keyEvent.GetKeyCode();
-				//	charKey = theKey;
-				//	std::string theMsg = "Key ";
-				//	if (keyEvent.IsPress())
-				//	{
-				//		theMsg += "Pressed: ";
-				//		theMsg += theKey;
+				/*
+				while (!theKeyboard->CharBufferIsEmpty()) //decide if or while
+				{
+					unsigned char theChar = theKeyboard->ReadChar();
+					std::string theMsg = "Character: ";
+					theMsg += theChar;
+					theMsg += "\n";
+					//OutputDebugStringA(theMsg.c_str());
+					//for typing
+					//char inputs
+				}
+				while (!theKeyboard->KeyBufferIsEmpty())
+				{
+					KeyboardEvent keyEvent = theKeyboard->ReadKey();
+					unsigned char theKey = keyEvent.GetKeyCode();
+					char theKey = theKey;
+					std::string theMsg = "Key ";
+					if (keyEvent.IsPress())
+					{
+						theMsg += "Pressed: ";
+						theMsg += theKey;
 
-				//		if (theKey == 'W')
-				//			forward = Positive;
-				//		else if (theKey == 'S')
-				//			forward = Negative;
-				//		if (theKey == 'D')
-				//			left_right = Positive;
-				//		else if (theKey == 'A')
-				//			left_right = Negative;
-				//		if (theKey == 32) //32 == space
-				//			up_down = Positive;
-				//		else if (theKey == 16) //shift
-				//			up_down = Negative;
+						if (theKeyboard->KeyIsPressed('W'))
+							forward = Positive;
+						else if (theKey == 'S')
+							forward = Negative;
+						if (theKey == 'D')
+							left_right = Positive;
+						else if (theKey == 'A')
+							left_right = Negative;
+						if (theKey == 32) //32 == space
+							up_down = Positive;
+						else if (theKey == 16) //shift
+							up_down = Negative;
 
-				//		if (theKey == 'B')
-				//		{
-				//			this->change(this->flySwitch);
-				//		}
-				//		if (theKey == 'M')
-				//		{
-				//			this->change(this->mouseSwitch);
-				//			ShowCursor(this->mouseSwitch);
-				//		}
-				//		if (theKey == 9) //tab
-				//		{
-				//			moveScreen = false;
-				//		}
-
-				//		if (theKey == 'J')
-				//		{
-				//			move1 = true;
-				//		}
-				//		if (theKey == 'K')
-				//		{
-				//			move2 = true;
-				//		}
-				//	}
-				//	if (keyEvent.IsRelease())
-				//	{
-				//		theMsg += "Released: ";
-				//		theMsg += theKey;
+						if (theKey == 'B')
+						{
+							this->change(this->flySwitch);
+						}
+						if (theKey == 'M')
+						{
+							this->change(this->mouseSwitch);
+							ShowCursor(this->mouseSwitch);
+						}
+						if (theKey == 9) //tab
+						{
+							moveScreen = false;
+						}
+					}
+					if (keyEvent.IsRelease())
+					{
+						theMsg += "Released: ";
+						theMsg += theKey;
 
 
-				//		if (theKey == 'W')
-				//			forward = Neutral;
-				//		else if (theKey == 'S')
-				//			forward = Neutral;
-				//		if (theKey == 'A')
-				//			left_right = Neutral;
-				//		else if (theKey == 'D')
-				//			left_right = Neutral;
-				//		if (theKey == 32) //32 == space
-				//			up_down = Neutral;
-				//		else if (theKey == 16) //shift
-				//			up_down = Neutral;
-				//		if (theKey == 9) //tab
-				//		{
-				//			moveScreen = true;
-				//		}
+						if (theKey == 'W')
+							forward = Neutral;
+						else if (theKey == 'S')
+							forward = Neutral;
+						if (theKey == 'A')
+							left_right = Neutral;
+						else if (theKey == 'D')
+							left_right = Neutral;
+						if (theKey == 32) //32 == space
+							up_down = Neutral;
+						else if (theKey == 16) //shift
+							up_down = Neutral;
+						if (theKey == 9) //tab
+						{
+							moveScreen = true;
+						}
 
-				//		if (theKey == 'J')//
-				//		{
-				//			move1 = false;
-				//		}
-				//		if (theKey == 'K')
-				//		{
-				//			move2 = false;
-				//		}
-				//	}
-				//	theMsg += "\n";
-				//	OutputDebugStringA(theMsg.c_str());
-				//}
+					}
+					theMsg += "\n";
+					OutputDebugStringA(theMsg.c_str());
+				}
 
-				//if (this->mouseSwitch == false)
-				//	SetCursorPos(400, 400);
+				if (this->mouseSwitch == false)
+					SetCursorPos(400, 400);
 
-				//if (moveScreen == false)
-				//{
-				//	xMouse = 0;
-				//	yMouse = 0;
-				//}
-				//graphics->move(forward, left_right, this->up_down, this->flySwitch, xMouse, yMouse);
-				//graphics->Frame(move1, move2);
+				if (moveScreen == false)
+				{
+					xMouse = 0;
+					yMouse = 0;
+				}
+				graphics->move(forward, left_right, this->up_down, this->flySwitch, xMouse, yMouse);
+				graphics->Frame(move1, move2);
+				*/
 				
 			}
 		}

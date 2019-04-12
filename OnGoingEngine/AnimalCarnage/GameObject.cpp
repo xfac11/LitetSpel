@@ -51,11 +51,14 @@ void GameObject::setTexture(std::string file)
 
 void GameObject::draw()
 {
-	ForwardShader* ptr = nullptr;
+	/*ForwardShader* ptr = nullptr;
 	ptr = dynamic_cast<ForwardShader*>(this->theModel->getShader());
 	if (ptr != nullptr)
 	{
 		ptr->setWorld(this->theTransforms.getWorld());
 		this->theModel->draw();
-	}
+	}*/
+
+	this->theModel->getShader()->setWorld(this->theTransforms.getWorld());
+	this->theModel->draw();
 }

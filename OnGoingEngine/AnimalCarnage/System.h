@@ -29,12 +29,20 @@ enum GameState {
 class System
 {
 private:
+
+
+	enum Direction  // for the camera
+	{
+		Neutral = 0,
+		Positive = 1,
+		Negative = -1
+	};
+
 	LPCSTR applicationName;
 	HINSTANCE hinstance;
 	HWND hwnd;
 	MSG msg;
 	int nCMDShow;
-	
 	//Statemachine* statemachine
 	//Graphics* graphics;
 	static Keyboard* theKeyboard;
@@ -46,6 +54,12 @@ private:
 	GameObject* obj;
 	ForwardShader* theForwardShader;
 	Camera* theCamera;
+	Direction forward; //have these in a own class?
+	Direction left_right;
+	Direction up_down;
+	void move(Direction forward, Direction left_right, Direction up_down, bool flyMode, int mouseX, int mouseY);
+	
+
 	bool mouseSwitch;
 	bool flySwitch;
 	bool moveScreen;
