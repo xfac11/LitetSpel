@@ -2,8 +2,8 @@
 #define MODELLOADER_H
 #include <fstream>
 #include "Model.h"
-//#include "Luna/Luna.h"
-//#include "Luna/Reader.h"
+#include "Luna.h"
+#include "Reader.h"
 class ModelLoader
 {
 public:
