@@ -1,8 +1,13 @@
 #include"System.h"
+#include "MainMenu.h"
+
 //Keyboard* System::theKeyboard = 0;//for static
 GraphicsDevice* System::theGraphicDevice = 0;
 Mouse* System::theMouse = 0;
 Keyboard* System::theKeyboard = 0;
+std::vector<State*> System::states = std::vector<State*>();
+GameState System::currentState = GameState::MAINMENU;
+
 HWND System::InitWindow(HINSTANCE hInstance, float height, float width)
 {
 	WNDCLASSEX wcex = { 0 };
@@ -263,6 +268,8 @@ System::~System()
 	ImGui::DestroyContext();
 	this->theGraphicDevice->shutDown();
 	delete this->theGraphicDevice;
+
+	delete System::states[0];
 }
 
 bool System::initialize()
@@ -297,6 +304,10 @@ bool System::initialize()
 	}
 	this->obj->setMesh(mesh, indices, 6);
 	this->obj->setScale(0.5, 0.5, 0.5);
+
+	System::states.push_back(new MainMenu());
+	System::states[MAINMENU]->initailize();
+
 	return true;
 }
 
@@ -340,7 +351,7 @@ void System::update(float deltaTime)
 
 		theCamera->SetRotation(theMouse->GetPos().y*deltaTime, 0, 0);
 
-
+	System::states[System::currentState]->update(deltaTime);
 }
 
 
@@ -358,7 +369,9 @@ void System::render()
 	
 	this->theForwardShader->setViewProj(this->theCamera->GetViewMatrix(), this->theGraphicDevice->getProj(), DirectX::XMFLOAT4(this->theCamera->GetPosition().x, this->theCamera->GetPosition().y, this->theCamera->GetPosition().z, 1.0f));
 	this->obj->draw();
-	//state.render();
+	
+	System::states[System::currentState]->render();
+
 //	ImGui::Render();
 	//ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
 	theGraphicDevice->presentScene();//EndScene() Present swapchain. Present the backbuffer to the screen

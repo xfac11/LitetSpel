@@ -1,6 +1,8 @@
 #ifndef STATE_H
 #define STATE_H
+
 #include"GameObject.h"
+
 class State
 {
 public:
@@ -8,7 +10,7 @@ public:
 	virtual ~State();
 	virtual bool initailize() = 0;
 	virtual bool render() = 0;
-	virtual bool update() = 0;
+	virtual bool update(float deltaTime) = 0;
 	virtual void shutDown() = 0;
 protected:
 	//UI * ui;

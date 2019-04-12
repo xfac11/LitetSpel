@@ -13,6 +13,7 @@
 #include "imgui/imgui.h"
 #include "imgui/imgui_impl_win32.h"
 #include "imgui/imgui_impl_dx11.h"
+#include "State.h"
 
 using namespace DirectX;
 //using namespace DirectX::SimpleMath;
@@ -20,6 +21,11 @@ using namespace DirectX;
 #define HEIGHT 768.0f
 #define WIDTH 768.0f
 //using Microsoft::WRL::ComPtr;
+
+enum GameState {
+	MAINMENU
+};
+
 class System
 {
 private:
@@ -34,6 +40,9 @@ private:
 	static Keyboard* theKeyboard;
 	static Mouse* theMouse;
 	static GraphicsDevice* theGraphicDevice;
+	static std::vector<State*> states;
+	static GameState currentState;
+
 	GameObject* obj;
 	ForwardShader* theForwardShader;
 	Camera* theCamera;
