@@ -26,7 +26,7 @@ float4 PS_main(VS_OUT input) : SV_Target
 {
 	//float3 color = Tex.Sample(SampSt, input.Tex).xyz;
 	//float4 colorT = Tex.Sample(SampSt, input.Tex).rgba;
-	float4 colorT = float4(0.0f,0.5f,0.0f,0.5f);
+	float4 colorT = float4(0.0f,1.0f,0.0f,1.0f);
 	//float3 final_colour = float3(0.2f, 0.2f, 0.2f);
 	//// diffuse, no attenuation.
 

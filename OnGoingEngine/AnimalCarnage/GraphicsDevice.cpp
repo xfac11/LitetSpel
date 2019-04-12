@@ -255,7 +255,7 @@ bool GraphicsDevice::initialize(int screenWidth, int screenHeight, bool vsync, H
 	{
 		return false;
 	}
-	float blendFactor[4] = { 1.f, 1.f, 1.f, 1.f };
+	float blendFactor[4] = { 0.f, 0.f, 0.f, 0.f };
 
 	// Turn on the alpha blending.
 	deviceContext->OMSetBlendState(alphaEnableBlendingState, blendFactor, 0xffffffff);
