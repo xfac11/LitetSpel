@@ -9,6 +9,8 @@ Sprite::Sprite(std::string textureFile)
 
 Sprite::~Sprite()
 {
+	this->texture->cleanUp();
+	delete this->texture;
 }
 
 Texture * Sprite::getTexture()
