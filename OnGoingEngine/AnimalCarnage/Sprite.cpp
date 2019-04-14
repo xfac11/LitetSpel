@@ -16,8 +16,6 @@ Sprite::~Sprite()
 		delete this->texture;
 	}
 
-	this->texture->cleanUp();
-	delete this->texture;
 
 }
 
