@@ -9,7 +9,7 @@ Texture::Texture()
 
 Texture::~Texture()
 {
-
+	cleanUp();
 }
 
 void Texture::setTexture(std::string fileName)

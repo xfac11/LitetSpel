@@ -3,19 +3,40 @@
 
 Sprite::Sprite(std::string textureFile)
 {
-	this->texture = new Texture();
-	this->texture->setTexture(textureFile);
+	//TODO
+	spriteStates = std::make_unique<CommonStates>(System::getDevice());
+
+	m_spriteBatch = std::make_unique<SpriteBatch>(System::getDeviceContext());
+
+	sprite.setTexture(textureFile);
+	this->m_screenPos = DirectX::SimpleMath::Vector2(0, 0);
+	this->origin = DirectX::SimpleMath::Vector2(this->sprite.getWidth() / 2, this->sprite.getHeight() / 2);
 }
 
 Sprite::~Sprite()
 {
-	this->texture->cleanUp();
-	delete this->texture;
+
 }
 
-Texture * Sprite::getTexture()
+bool Sprite::Render()
 {
-	return this->texture;
+	
+
+	m_spriteBatch->Begin(SpriteSortMode::SpriteSortMode_Deferred, spriteStates->NonPremultiplied());
+	m_spriteBatch->Draw(this->sprite.getTexture(), m_screenPos);
+	m_spriteBatch->End();
+
+	auto samplerState = spriteStates->LinearWrap();
+	System::getDeviceContext()->PSSetSamplers(0, 1, &samplerState);
+	System::getDeviceContext()->OMSetBlendState(spriteStates->Opaque(), Colors::OrangeRed, 0xFFFFFFFF);
+	System::getDeviceContext()->OMSetDepthStencilState(spriteStates->DepthDefault(), 0);
+	System::getDeviceContext()->RSSetState(spriteStates->CullNone());
+
+	return false;
+}
+ID3D11ShaderResourceView* Sprite::getTexture()
+{
+	return sprite.getTexture();
 }
 
 DirectX::SimpleMath::Vector2 Sprite::getPosition()
@@ -25,5 +46,5 @@ DirectX::SimpleMath::Vector2 Sprite::getPosition()
 
 DirectX::SimpleMath::Vector2 Sprite::getOrigin()
 {
-	return this->m_origin;
+	return this->origin;
 }

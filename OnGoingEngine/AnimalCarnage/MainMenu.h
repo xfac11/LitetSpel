@@ -2,14 +2,12 @@
 #define MAIN_MENU_H
 
 #include "State.h"
-#include "SpriteBatch.h"
 #include "Sprite.h"
 
 class MainMenu : public State
 {
 private:
-	DirectX::SpriteBatch* spritebatch;
-	Sprite* sprite;
+	Sprite* sprites;
 public:
 	MainMenu();
 	~MainMenu();

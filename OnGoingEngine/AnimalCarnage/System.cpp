@@ -308,6 +308,7 @@ bool System::initialize()
 	System::states.push_back(new MainMenu());
 	System::states[MAINMENU]->initailize();
 
+
 	return true;
 }
 
@@ -348,8 +349,20 @@ void System::update(float deltaTime)
 		std::string str = std::to_string(this->theMouse->GetPosX()) + "\n";
 		OutputDebugStringA(str.c_str());
 	}
+	if (theKeyboard->KeyIsPressed('N')) {
+		/*if (TESTMAP != currentState) {
+			this->currentState = TESTMAP;
+		}*/
+	}
+	if (theKeyboard->KeyIsPressed('B')) {
+		if (MAINMENU != currentState) {
+			this->currentState = MAINMENU;
+		}
+	}
 
-		theCamera->SetRotation(theMouse->GetPos().y*deltaTime, 0, 0);
+
+
+	theCamera->SetRotation(theMouse->GetPos().y*deltaTime, 0, 0);
 
 	System::states[System::currentState]->update(deltaTime);
 }
@@ -375,6 +388,7 @@ void System::render()
 //	ImGui::Render();
 	//ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
 	theGraphicDevice->presentScene();//EndScene() Present swapchain. Present the backbuffer to the screen
+
 }
 
 
