@@ -227,18 +227,6 @@ bool GraphicsDevice::initialize(int screenWidth, int screenHeight, bool vsync, H
 	blendStateDescription.RenderTarget[0].RenderTargetWriteMask = 0x0f;
 
 
-	D3D10_BLEND_DESC blendDesc = { 0 };
-
-	blendDesc.AlphaToCoverageEnable = false;
-	blendDesc.BlendEnable[0] = true;
-	blendDesc.SrcBlend = D3D10_BLEND_SRC_COLOR;
-	blendDesc.DestBlend = D3D10_BLEND_BLEND_FACTOR;
-	blendDesc.BlendOp = D3D10_BLEND_OP_ADD;
-	blendDesc.SrcBlendAlpha = D3D10_BLEND_ONE;
-	blendDesc.DestBlendAlpha = D3D10_BLEND_ZERO;
-	blendDesc.BlendOpAlpha = D3D10_BLEND_OP_ADD;
-	blendDesc.RenderTargetWriteMask[0] = D3D10_COLOR_WRITE_ENABLE_ALL;
-
 	// Create the blend state using the description.
 	result = device->CreateBlendState(&blendStateDescription, &alphaEnableBlendingState);
 	if (FAILED(result))
