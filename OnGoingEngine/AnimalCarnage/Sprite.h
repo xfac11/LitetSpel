@@ -5,7 +5,7 @@
 class Sprite
 {
 private:
-	Texture texture;
+	Texture* texture;
 	DirectX::SimpleMath::Vector2 m_screenPos;
 	DirectX::SimpleMath::Vector2 m_origin;
 public:

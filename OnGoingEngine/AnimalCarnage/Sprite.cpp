@@ -3,7 +3,8 @@
 
 Sprite::Sprite(std::string textureFile)
 {
-	//TODO
+	this->texture = new Texture();
+	this->texture->setTexture(textureFile);
 }
 
 Sprite::~Sprite()
@@ -12,7 +13,7 @@ Sprite::~Sprite()
 
 Texture * Sprite::getTexture()
 {
-	return &this->texture;
+	return this->texture;
 }
 
 DirectX::SimpleMath::Vector2 Sprite::getPosition()
