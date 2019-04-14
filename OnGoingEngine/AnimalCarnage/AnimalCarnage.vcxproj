@@ -161,6 +161,7 @@
     <ClInclude Include="ConstantBuffer.h" />
     <ClInclude Include="ForwardShader.h" />
     <ClInclude Include="GameObject.h" />
+    <ClInclude Include="GameObjectHandler.h" />
     <ClInclude Include="GraphicsDevice.h" />
     <ClInclude Include="imgui\imconfig.h" />
     <ClInclude Include="imgui\imgui.h" />
@@ -180,6 +181,7 @@
     <ClInclude Include="MouseEvent.h" />
     <ClInclude Include="resource1.h" />
     <ClInclude Include="Shader.h" />
+    <ClInclude Include="ShaderManager.h" />
     <ClInclude Include="Sprite.h" />
     <ClInclude Include="State.h" />
     <ClInclude Include="Structs.h" />

@@ -1,6 +1,5 @@
 #include"System.h"
 #include "MainMenu.h"
-
 //Keyboard* System::theKeyboard = 0;//for static
 GraphicsDevice* System::theGraphicDevice = 0;
 Mouse* System::theMouse = 0;
@@ -296,7 +295,7 @@ bool System::initialize()
 		DirectX::XMFLOAT4(0,0,-1,0)
 	};
 	DWORD indices[] = {
-		0, 1, 2, 1, 2, 3
+		1, 0, 2, 1, 2, 3
 	};
 	for (int i = 0; i < 4; i++)
 	{
@@ -381,6 +380,7 @@ void System::render()
 	this->theCamera->Render();
 	
 	this->theForwardShader->setViewProj(this->theCamera->GetViewMatrix(), this->theGraphicDevice->getProj(), DirectX::XMFLOAT4(this->theCamera->GetPosition().x, this->theCamera->GetPosition().y, this->theCamera->GetPosition().z, 1.0f));
+	this->theForwardShader->setShaders();//tänker att man kör denna sen renderar allla som använder denna shader sen tar setshader på nästa osv.
 	this->obj->draw();
 	
 	System::states[System::currentState]->render();

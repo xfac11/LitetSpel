@@ -265,14 +265,17 @@ void Shader::shutdown()
 
 void Shader::renderShader(int vertexCount, int indexCount)
 {
+	//deviceContext->DrawIndexed(count, 0, 0);
+	System::getDeviceContext()->DrawIndexed(indexCount, 0,0);
+	System::getDeviceContext()->GSSetShader(nullptr, nullptr, 0);
+}
+
+void Shader::setShaders()
+{
 	System::getDeviceContext()->VSSetShader(this->vertexShader, nullptr, 0);
 	System::getDeviceContext()->HSSetShader(nullptr, nullptr, 0);
 	System::getDeviceContext()->DSSetShader(nullptr, nullptr, 0);
 	System::getDeviceContext()->GSSetShader(this->geometryShader, nullptr, 0);
 	System::getDeviceContext()->PSSetShader(this->pixelShader, nullptr, 0);
 	System::getDeviceContext()->IASetInputLayout(this->vertexLayout);
-
-	//deviceContext->DrawIndexed(count, 0, 0);
-	System::getDeviceContext()->DrawIndexed(indexCount, 0,0);
-	System::getDeviceContext()->GSSetShader(nullptr, nullptr, 0);
 }

@@ -16,6 +16,12 @@ Sprite::Sprite(std::string textureFile)
 Sprite::~Sprite()
 {
 
+	//if (this->sprite != nullptr)
+	//{
+	//	this->sprite->cleanUp();
+	//	delete this->sprite;
+	//}
+
 }
 
 bool Sprite::Render()
