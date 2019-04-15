@@ -10,6 +10,6 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 	//sys.initialize();
 	sys.run();//loop
 	//sys.MessageHandler(hwnd);
-	//sys.shutDown();
+	sys.shutDown();
 	return (int)sys.getMsgWParam();
 }

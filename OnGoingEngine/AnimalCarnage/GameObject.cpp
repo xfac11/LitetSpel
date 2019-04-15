@@ -39,6 +39,11 @@ void GameObject::move(float x, float y, float z)
 	this->theTransforms.move(x, y, z);
 }
 
+DirectX::XMFLOAT3 GameObject::getPosition()
+{
+	return this->theTransforms.getPosition();
+}
+
 void GameObject::setMesh(std::vector<Vertex3D> mesh, DWORD * indices, int numberOfIndices)
 {
 	this->theModel->setMesh(mesh, indices, numberOfIndices);

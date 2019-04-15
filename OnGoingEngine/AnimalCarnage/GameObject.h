@@ -14,6 +14,10 @@ public:
 	void setScale(float x, float y, float z);
 	void move(float x, float y, float z);
 
+
+	DirectX::XMFLOAT3 getPosition();
+
+
 	void setMesh(std::vector<Vertex3D> mesh, DWORD *indices, int numberOfIndices);
 	void setTexture(std::string file);
 	void draw();

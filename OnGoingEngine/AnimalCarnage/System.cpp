@@ -41,6 +41,10 @@ HWND System::InitWindow(HINSTANCE hInstance, float height, float width)
 }
 void System::change(bool & theSwitch)
 {
+	if (theSwitch == true)
+		theSwitch = false;
+	else
+		theSwitch = true;
 }
 extern LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wparam, LPARAM lParam);
 LRESULT CALLBACK System::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
@@ -221,7 +225,7 @@ System::System(HINSTANCE hInstance, LPCSTR name, int nCmdShow)
 {
 	this->hinstance = hInstance;
 	this->applicationName = name;
-	this->hwnd = InitWindow(this->hinstance, HEIGHT, WIDTH); //really?
+	this->hwnd = InitWindow(this->hinstance, HEIGHT, WIDTH); 
 	this->nCMDShow = nCmdShow;
 	this->msg = { 0 };
 	this->theGraphicDevice = new GraphicsDevice();
@@ -232,9 +236,12 @@ System::System(HINSTANCE hInstance, LPCSTR name, int nCmdShow)
 	theMouse = nullptr;
 	theMouse = new Mouse;*/
 	//theKeyboard->EnableAutoRepeatChars();
+	this->playerInputs = new InputHandler;
+	this->mouseShow = true;
 	this->mouseSwitch = true;
 	this->flySwitch = true;
 	this->moveScreen = true;
+	this->isPressed = false;
 	//this->forward = Neutral;
 	//this->left_right = Neutral;
 	//this->up_down = Neutral;
@@ -259,6 +266,8 @@ System::System(HINSTANCE hInstance, LPCSTR name, int nCmdShow)
 System::~System()
 {
 	delete this->obj;
+	delete this->playerOne;
+	delete this->playerTwo;
 	delete this->theCamera;
 	delete this->theForwardShader;
 	delete this->theMouse;
@@ -275,11 +284,14 @@ System::~System()
 bool System::initialize()
 {
 	this->theCamera = new Camera;
+	this->camPos = { 0,0,-2.f };
 	this->theForwardShader = new ForwardShader;
 	this->theKeyboard = new Keyboard;
 	this->theMouse = new Mouse;
 	this->theForwardShader->initialize();
 	this->obj = new GameObject(this->theForwardShader);
+	this->playerOne = new GameObject(this->theForwardShader);
+	this->playerTwo = new GameObject(this->theForwardShader);
 	std::vector<Vertex3D> mesh;
 	Vertex3D temp[] = {
 		DirectX::XMFLOAT4(-0.500000,-0.500000, 0.500000,1.0f),
@@ -303,7 +315,11 @@ bool System::initialize()
 		mesh.push_back(temp[i]);
 	}
 	this->obj->setMesh(mesh, indices, 6);
-	this->obj->setScale(0.5, 0.5, 0.5);
+	this->obj->setScale(0.3f, 0.3f, 0.3f);
+	this->playerOne->setMesh(mesh, indices, 6);
+	this->playerOne->setScale(0.8f, 0.8f, 0.8f);
+	this->playerTwo->setMesh(mesh, indices, 6);
+	this->playerTwo->setScale(0.8f, 0.8f, 0.8f);
 
 	System::states.push_back(new MainMenu());
 	System::states[MAINMENU]->initailize();
@@ -321,35 +337,158 @@ void System::initImgui()
 	ImGui::StyleColorsDark();
 }
 
+void System::renderImgui()
+{
+	ImGui_ImplDX11_NewFrame();
+	ImGui_ImplWin32_NewFrame();
+	ImGui::NewFrame();
+	std::string textUse;
+	ImGui::Begin("Hello, world!");                          // Create a window called "Hello, world!" and append into it.
+	
+	ImGui::Checkbox("Set camera positon with: Keyboard or Gui: ", &guiCam);
+	if (guiCam == false)
+	{
+		ImGui::SliderFloat("Camera X-Position", &camPos.x, -10.0f, 10.0f);
+		ImGui::SliderFloat("Camera Y-Position", &camPos.y, -10.0f, 10.0f);
+		ImGui::SliderFloat("Camera Z-Position", &camPos.z, -10.0f, 10.0f);
+		theCamera->SetPosition(camPos);
+	}
+	ImGui::SliderFloat("Camera X-Rotation", &camRot.x, -90.0f, 90.0f);
+	ImGui::SliderFloat("Camera Y-Rotation", &camRot.y, -180.0f, 180.0f);
+	//ImGui::ColorEdit3("bg-color", (float*)&this->color);
+
+	//ImGui::SliderInt("Deferred Render", &this->texToShow, 0, 4);
+	//ImGui::Checkbox("Freeze culling ", &freezeCheck);
+	//textUse = "Mouse pick: " + this->mouseObject + ". ";
+	//ImGui::Text(textUse.c_str());
+	//textUse = "Height from 'Ground': " + std::to_string(this->height) + "m";
+	//ImGui::Text(textUse.c_str());
+
+	ImGui::SliderInt("Player: ", &this->currentInput, 0, 2);
+	ImGui::TextColored(ImVec4(1, 1, 0, 1), "Controllers");
+	ImGui::BeginChild("Scrolling");
+	for (int n = 0; n < 4; n++)
+	{
+		if (playerInputs->controllerIsConnected(n))
+			ImGui::Text("%02d: Connected",n);
+		else 
+			ImGui::Text("%02d: Disconnected",n);
+	}
+	ImGui::EndChild();
+	ImGui::CaptureKeyboardFromApp(true);
+
+	ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+	ImGui::End();
+
+
+}
+
 void System::update(float deltaTime)
 {
+	int mouseX = 0;
+	int mouseY = 0;
+	int sensitivity = 20;
+	//while (!this->theMouse->EventBufferIsEmpty())
+	//{
+	//	MouseEvent mEvent = theMouse->ReadEvent();
+	//	if (mEvent.GetType() == MouseEventType::RAW_MOVE)
+	//	{
+	//		mouseX = mEvent.GetPosX();
+	//		mouseY = mEvent.GetPosY();
+	//	}
+	//}
+	//if (moveScreen == false) //
+	//{
+	//	mouseY = 0;
+	//	mouseX = 0;
+	//}
+	//if (abs(camRot.x) > 87.f)
+	//{
+	//	mouseY = int(abs(mouseY) * camRot.x / -abs(camRot.x));
+	//}
+	//this->camRot.x += mouseY * sensitivity* deltaTime;
+	//this->camRot.y += mouseX * sensitivity* deltaTime;
+
+	//if (abs(this->camRot.y) >= 360)
+	//	this->camRot.y = 0;
+	//if (this->camRot.y > 180)
+	//	this->camRot.y = -180;
+	//if (this->camRot.y < -180)
+	//	this->camRot.y = 180;
+	//theCamera->SetRotation(camRot);
+
+
+
+	bool grounded = true; //platform check
+	if (currentInput == 0)
+	{
+		if (obj->getPosition().y >= 0.f)
+		{
+			grounded = false;
+		}
+		playerInputs->inGameMode(deltaTime, grounded);
+		this->obj->move(playerInputs->getDirection(0).x, playerInputs->getDirection(0).y, playerInputs->getDirection(0).z);
+	}
+	else if (currentInput == 1)
+	{
+		if (playerOne->getPosition().y >= 0.f)
+		{
+			grounded = false;
+		}
+		playerInputs->inGameMode(deltaTime, grounded);
+		this->playerOne->move(playerInputs->getDirection(0).x, playerInputs->getDirection(0).y, playerInputs->getDirection(0).z);
+	}
+	else if (currentInput == 2)
+	{
+		if (playerTwo->getPosition().y >= 0.f)
+		{
+			grounded = false;
+		}
+		playerInputs->inGameMode(deltaTime, grounded);
+		this->playerTwo->move(playerInputs->getDirection(0).x, playerInputs->getDirection(0).y, playerInputs->getDirection(0).z);
+	}
+
+	this->theCamera->SetPosition(0, 0, this->playerInputs->calcCamera(playerOne->getPosition(), playerTwo->getPosition()));
 
 	if (theKeyboard->KeyIsPressed('W'))
 	{
-		theCamera->move(0, 0, -1*deltaTime);
+		theCamera->move(0, 0, 1 * deltaTime);
 	}
 	else if (theKeyboard->KeyIsPressed('S'))
 	{
-		theCamera->move(0, 0, 1*deltaTime);
+		theCamera->move(0, 0, -1 * deltaTime);
 	}
 	if (theKeyboard->KeyIsPressed('D'))
 	{
-		this->obj->move(1 * deltaTime, 0, 0);
+		theCamera->move(1 * deltaTime, 0, 0);
 	}
 	else if (theKeyboard->KeyIsPressed('A'))
 	{
-		this->obj->move(-1 * deltaTime, 0, 0);
+		theCamera->move(-1 * deltaTime, 0, 0);
 	}
+
+	if (theKeyboard->KeyIsPressed('V'))
+	{
+		this->change(this->moveScreen);
+	}
+	if (theKeyboard->KeyIsPressed('N'))
+	{
+		this->change(this->mouseShow);
+		ShowCursor(this->mouseShow);
+	}
+
+
 	if (theKeyboard->KeyIsPressed('X'))
 	{
 	}
+
 	if (theMouse->IsLeftDown())
 	{
 		std::string str = std::to_string(this->theMouse->GetPosX()) + "\n";
 		OutputDebugStringA(str.c_str());
 	}
 
-		theCamera->SetRotation(theMouse->GetPos().y*deltaTime, 0, 0);
+
 
 	System::states[System::currentState]->update(deltaTime);
 }
@@ -358,10 +497,12 @@ void System::update(float deltaTime)
 
 void System::render()
 {
+	
 	float color[] =
 	{
 		1.0f,0.1f,0.5f,1.0f
 	};
+	renderImgui();
 	theGraphicDevice->beginScene(color);//clear the back and depth buffer set depthStencilState
 	//ImGui::NewFrame();
 	//render imgui in states render
@@ -369,11 +510,13 @@ void System::render()
 	
 	this->theForwardShader->setViewProj(this->theCamera->GetViewMatrix(), this->theGraphicDevice->getProj(), DirectX::XMFLOAT4(this->theCamera->GetPosition().x, this->theCamera->GetPosition().y, this->theCamera->GetPosition().z, 1.0f));
 	this->obj->draw();
+	this->playerOne->draw();
+	this->playerTwo->draw();
 	
 	System::states[System::currentState]->render();
 
-//	ImGui::Render();
-	//ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
+	ImGui::Render();
+	ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
 	theGraphicDevice->presentScene();//EndScene() Present swapchain. Present the backbuffer to the screen
 }
 
@@ -384,7 +527,7 @@ void System::run()
 
 	if (this->hwnd)
 	{
-		theGraphicDevice->initialize(768, 768,true , hwnd, false, 0.1f, 500.0f);
+		theGraphicDevice->initialize(HEIGHT, WIDTH ,true , hwnd, false, 0.1f, 500.0f);
 		this->initialize();
 		initImgui();
 		ShowWindow(this->hwnd, this->nCMDShow);
@@ -402,6 +545,8 @@ void System::run()
 				//make keyboard stuff into private function´?
 				update(ImGui::GetIO().DeltaTime);
 				render();
+				
+
 
 				int xMouse = 0;
 				int yMouse = 0;
@@ -546,11 +691,7 @@ void System::run()
 				if (this->mouseSwitch == false)
 					SetCursorPos(400, 400);
 
-				if (moveScreen == false)
-				{
-					xMouse = 0;
-					yMouse = 0;
-				}
+
 				graphics->move(forward, left_right, this->up_down, this->flySwitch, xMouse, yMouse);
 				graphics->Frame(move1, move2);
 				*/
@@ -564,7 +705,7 @@ void System::run()
 
 void System::shutDown()
 {
-	
+	delete playerInputs;
 }
 
 WPARAM System::getMsgWParam()
