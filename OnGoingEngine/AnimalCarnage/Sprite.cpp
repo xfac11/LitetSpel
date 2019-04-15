@@ -1,16 +1,17 @@
 #include "Sprite.h"
 #include "System.h"
 
-Sprite::Sprite(std::string textureFile)
+Sprite::Sprite(std::string textureFile, float scale, Vector2 pos)
 {
 	//TODO
 	spriteStates = std::make_unique<CommonStates>(System::getDevice());
-
-	m_spriteBatch = std::make_unique<SpriteBatch>(System::getDeviceContext());
+	spriteBatch = std::make_unique<SpriteBatch>(System::getDeviceContext());
 
 	sprite.setTexture(textureFile);
-	this->m_screenPos = DirectX::SimpleMath::Vector2(0, 0);
+	this->position = pos;
+	this->scale = scale;
 	this->origin = DirectX::SimpleMath::Vector2(this->sprite.getWidth() / 2, this->sprite.getHeight() / 2);
+
 }
 
 Sprite::~Sprite()
@@ -22,15 +23,15 @@ Sprite::~Sprite()
 	//	delete this->sprite;
 	//}
 
+
 }
 
 bool Sprite::Render()
 {
-	
 
-	m_spriteBatch->Begin(SpriteSortMode::SpriteSortMode_Deferred, spriteStates->NonPremultiplied());
-	m_spriteBatch->Draw(this->sprite.getTexture(), m_screenPos);
-	m_spriteBatch->End();
+	spriteBatch->Begin(SpriteSortMode::SpriteSortMode_Deferred, spriteStates->NonPremultiplied());
+	spriteBatch->Draw(this->sprite.getTexture(), position,nullptr,Colors::White,0.0f,origin, scale);
+	spriteBatch->End();
 
 	auto samplerState = spriteStates->LinearWrap();
 	System::getDeviceContext()->PSSetSamplers(0, 1, &samplerState);
@@ -38,7 +39,7 @@ bool Sprite::Render()
 	System::getDeviceContext()->OMSetDepthStencilState(spriteStates->DepthDefault(), 0);
 	System::getDeviceContext()->RSSetState(spriteStates->CullNone());
 
-	return false;
+	return true;
 }
 ID3D11ShaderResourceView* Sprite::getTexture()
 {
@@ -47,7 +48,7 @@ ID3D11ShaderResourceView* Sprite::getTexture()
 
 DirectX::SimpleMath::Vector2 Sprite::getPosition()
 {
-	return this->m_screenPos;
+	return this->position;
 }
 
 DirectX::SimpleMath::Vector2 Sprite::getOrigin()

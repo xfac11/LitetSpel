@@ -4,18 +4,22 @@
 #include "SimpleMath.h"
 #include "SpriteBatch.h"
 #include <CommonStates.h>
-
+using namespace  DirectX;
+using namespace SimpleMath;
 class Sprite
 {
 private:
 	Texture sprite;
-	DirectX::SimpleMath::Vector2 m_screenPos;
-	DirectX::SimpleMath::Vector2 origin;
+	Vector2 position;
+	Vector2 origin;
+	float scale;
 
-	std::unique_ptr<DirectX::SpriteBatch> m_spriteBatch;
+	std::unique_ptr<DirectX::SpriteBatch> spriteBatch;
 	std::unique_ptr<DirectX::CommonStates> spriteStates;
+
+
 public:
-	Sprite(std::string textureFile);
+	Sprite(std::string textureFile, float scale = 1.0f,Vector2 pos  =Vector2(0,0));
 	~Sprite();
 
 	bool Render();

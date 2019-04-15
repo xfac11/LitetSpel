@@ -2,7 +2,7 @@
 
 MainMenu::MainMenu()
 {
-	this->sprites = new Sprite("cat.tga");
+	this->sprites = new Sprite("cat.tga",0.1f);
 }
 
 MainMenu::~MainMenu()
