@@ -301,7 +301,7 @@ bool System::initialize()
 	{
 		mesh.push_back(temp[i]);
 	}
-	this->obj->setMesh(mesh, indices, 6);
+	this->obj->setMesh(mesh, indices, 6,0);
 	this->obj->setScale(0.5, 0.5, 0.5);
 
 	System::states.push_back(new MainMenu());

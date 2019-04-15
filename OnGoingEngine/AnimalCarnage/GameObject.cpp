@@ -20,7 +20,7 @@ GameObject::GameObject(Shader * shader)
 
 GameObject::~GameObject()
 {
-	delete this->theModel;
+	delete[] this->theModel;
 }
 
 void GameObject::setPosition(float x, float y, float z)
