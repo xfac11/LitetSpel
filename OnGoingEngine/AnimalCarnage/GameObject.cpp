@@ -78,6 +78,6 @@ void GameObject::draw()
 		this->theModel->draw();
 	}*/
 
-	this->theModel->getShader()->setWorld(this->theTransforms.getWorld());
-	this->theModel->draw();
+	this->theModel[0].getShader()->setWorld(this->theTransforms.getWorld());
+	this->theModel[0].draw();
 }
