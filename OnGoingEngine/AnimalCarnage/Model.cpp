@@ -28,10 +28,17 @@ Model::~Model()
 	//	this->texture.cleanUp();
 }
 
-void Model::setShader(Shader *theShader)
+void Model::setShader(Shader *theShader, Opacity theType)
 {
 	this->theShader = theShader;
+	this->type = theType;
 }
+
+int Model::getOpacity()
+{
+	return this->type;
+}
+
 
 Shader * Model::getShader()
 {

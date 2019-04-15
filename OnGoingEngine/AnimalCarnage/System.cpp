@@ -326,11 +326,11 @@ void System::update(float deltaTime)
 
 	if (theKeyboard->KeyIsPressed('W'))
 	{
-		theCamera->move(0, 0, -1*deltaTime);
+		theCamera->move(0, 0, -1);
 	}
 	else if (theKeyboard->KeyIsPressed('S'))
 	{
-		theCamera->move(0, 0, 1*deltaTime);
+		theCamera->move(0, 0, 1);
 	}
 	if (theKeyboard->KeyIsPressed('D'))
 	{
@@ -342,6 +342,7 @@ void System::update(float deltaTime)
 	}
 	if (theKeyboard->KeyIsPressed('X'))
 	{
+
 	}
 	if (theMouse->IsLeftDown())
 	{
@@ -361,7 +362,7 @@ void System::update(float deltaTime)
 
 
 
-	theCamera->SetRotation(theMouse->GetPos().y*deltaTime, 0, 0);
+	theCamera->SetRotation(theMouse->GetPos().y, 0, 0);
 
 	System::states[System::currentState]->update(deltaTime);
 }
@@ -374,8 +375,17 @@ void System::render()
 	{
 		1.0f,0.1f,0.5f,1.0f
 	};
+	ImGui_ImplDX11_NewFrame(); 
+	ImGui_ImplWin32_NewFrame();
+	ImGui::NewFrame(); 
+	std::string textUse;  
+	ImGui::Begin("Hello, world!");
+	ImGui::CaptureKeyboardFromApp(true);
+
+	ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+	ImGui::End();
 	theGraphicDevice->beginScene(color);//clear the back and depth buffer set depthStencilState
-	//ImGui::NewFrame();
+	
 	//render imgui in states render
 	this->theCamera->Render();
 	
@@ -383,10 +393,10 @@ void System::render()
 	this->theForwardShader->setShaders();//tänker att man kör denna sen renderar allla som använder denna shader sen tar setshader på nästa osv.
 	this->obj->draw();
 	
-	System::states[System::currentState]->render();
-
-//	ImGui::Render();
-	//ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
+	//System::states[System::currentState]->render();
+	System::getDeviceContext()->GSSetShader(nullptr, nullptr, 0);
+    ImGui::Render();
+	ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
 	theGraphicDevice->presentScene();//EndScene() Present swapchain. Present the backbuffer to the screen
 
 }

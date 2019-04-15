@@ -17,11 +17,11 @@ Sprite::Sprite(std::string textureFile, float scale, Vector2 pos)
 Sprite::~Sprite()
 {
 
-	//if (this->sprite != nullptr)
-	//{
-	//	this->sprite->cleanUp();
-	//	delete this->sprite;
-	//}
+	/*if (this->sprite != nullptr)
+	{
+		this->sprite.cleanUp();
+		delete this->sprite;
+	}*/
 
 
 }

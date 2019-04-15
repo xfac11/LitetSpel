@@ -54,8 +54,8 @@ bool GraphicsDevice::initialize(int screenWidth, int screenHeight, bool vsync, H
 
 	DXGI_SWAP_CHAIN_DESC swapchainDesc;
 	ZeroMemory(&swapchainDesc, sizeof(DXGI_SWAP_CHAIN_DESC));
-	//swapchainDesc.BufferDesc.Width = 0;
-	//swapchainDesc.BufferDesc.Height = 0; //defualt to window size
+	swapchainDesc.BufferDesc.Width = screenWidth;
+	swapchainDesc.BufferDesc.Height = screenHeight; //defualt to window size
 	swapchainDesc.BufferCount = 1;
 	swapchainDesc.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
 	swapchainDesc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;

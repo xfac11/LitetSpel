@@ -5,12 +5,19 @@
 #include"ForwardShader.h"
 #include"Texture.h"
 #include"Structs.h"
+enum Opacity
+{
+	Opaque,
+	Transparent
+};
 class Model
 {
 public:
+	
 	Model();
 	~Model();
-	void setShader(Shader* theShader);
+	void setShader(Shader* theShader, Opacity theType);
+	int getOpacity();
 	Shader* getShader();
 	void setTexture(std::string file);
 	void setMesh(std::vector<Vertex3D> aMesh,DWORD *indices, int numberOfIndices);
@@ -25,7 +32,8 @@ private:
 	Texture* texture;
 	Texture* normalMap;
 	int vertexCount;
-
+	
+	Opacity type;
 	Shader * theShader;//pointer to the shader it uses. Comes from system or state. Do not delete
 };
 #endif // !MODEL_H
