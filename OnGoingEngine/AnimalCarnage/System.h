@@ -18,8 +18,8 @@
 using namespace DirectX;
 //using namespace DirectX::SimpleMath;
 
-#define HEIGHT 768.0f
-#define WIDTH 768.0f
+#define HEIGHT 1080.0f
+#define WIDTH 1920.0f
 //using Microsoft::WRL::ComPtr;
 
 enum GameState {

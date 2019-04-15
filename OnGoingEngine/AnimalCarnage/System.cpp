@@ -398,7 +398,7 @@ void System::run()
 
 	if (this->hwnd)
 	{
-		theGraphicDevice->initialize(768, 768,true , hwnd, false, 0.1f, 500.0f);
+		theGraphicDevice->initialize(WIDTH, HEIGHT,true , hwnd, false, 0.1f, 500.0f);
 		this->initialize();
 		initImgui();
 		ShowWindow(this->hwnd, this->nCMDShow);
