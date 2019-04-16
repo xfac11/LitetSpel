@@ -10,14 +10,16 @@ private:
 	struct PlayerInput
 	{
 		int id;
+		bool rumble;
 		bool Active;
 	};
 	DirectX::GamePad theGamePad;
 	DirectX::GamePad::ButtonStateTracker tracker;
 	DirectX::XMFLOAT3 direction[4];
-	DirectX::XMFLOAT3 cameraPosition;
-	DirectX::XMFLOAT3 cameraRotation;
 	PlayerInput player[4];
+
+
+	DirectX::XMFLOAT3 cameraRotation;
 
 	//rumble
 	float rumbleClock;
@@ -26,7 +28,9 @@ private:
 
 	//Jump physics
 	bool isJumping;
-	float jumpTimer;
+	bool inAir;
+	float airTimer;
+	float jumpDir; //
 
 	//int nrOfPlayers;
 
@@ -43,14 +47,17 @@ public:
 	InputHandler();
 	~InputHandler();
 
-
-	DirectX::XMFLOAT3 getCameraPos();
-	DirectX::XMFLOAT3 getCameraRot();
 	DirectX::XMFLOAT3 getDirection(int player);
 	bool controllerIsConnected(int controllerPort);
 
 	void inGameMode(float deltaTime, bool grounded);
 
-	float calcCamera(DirectX::XMFLOAT3 posLeft, DirectX::XMFLOAT3 posRight);
+	//box and box
+	bool collision(DirectX::XMFLOAT2 posOne, DirectX::XMFLOAT2 scaleOne, DirectX::XMFLOAT2 posTwo, DirectX::XMFLOAT2 scaleTwo);
+	//circle and circle
+	bool collision(DirectX::XMFLOAT2 posOne, float radiusOne, DirectX::XMFLOAT2 posTwo, float radiusTwo);
+	//box and circle
+	bool collision(DirectX::XMFLOAT2 posBox, DirectX::XMFLOAT2 scaleBox, DirectX::XMFLOAT2 posCircle, float radiusCircle);
+
 };
 #endif // INPUTHANDLER_H

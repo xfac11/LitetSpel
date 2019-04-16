@@ -33,6 +33,7 @@ bool Sprite::Render()
 	spriteBatch->Draw(this->sprite.getTexture(), position,nullptr,Colors::White,0.0f,origin, scale);
 	spriteBatch->End();
 
+
 	auto samplerState = spriteStates->LinearWrap();
 	System::getDeviceContext()->PSSetSamplers(0, 1, &samplerState);
 	System::getDeviceContext()->OMSetBlendState(spriteStates->Opaque(), Colors::OrangeRed, 0xFFFFFFFF);

@@ -16,6 +16,7 @@ public:
 
 
 	DirectX::XMFLOAT3 getPosition();
+	DirectX::XMFLOAT3 getScale();
 
 
 	void setMesh(std::vector<Vertex3D> mesh, DWORD *indices, int numberOfIndices);

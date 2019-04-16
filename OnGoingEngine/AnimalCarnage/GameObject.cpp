@@ -44,6 +44,11 @@ DirectX::XMFLOAT3 GameObject::getPosition()
 	return this->theTransforms.getPosition();
 }
 
+DirectX::XMFLOAT3 GameObject::getScale()
+{
+	return this->theTransforms.getScale();
+}
+
 void GameObject::setMesh(std::vector<Vertex3D> mesh, DWORD * indices, int numberOfIndices)
 {
 	this->theModel->setMesh(mesh, indices, numberOfIndices);
