@@ -3,7 +3,6 @@
 #include <math.h>
 #include <d3d11.h>
 #include <DirectXMath.h>
-<<<<<<< HEAD
 #include"GraphicsDevice.h"
 #include"ForwardShader.h"
 #include"GameObject.h"
@@ -11,7 +10,6 @@
 #include"Keyboard.h"
 #include"Mouse.h"
 #include"GameObjectHandler.h"
-=======
 #include "GraphicsDevice.h"
 #include "ForwardShader.h"
 #include "GameObject.h"
@@ -19,7 +17,6 @@
 #include "Keyboard.h"
 #include "Mouse.h"
 #include "InputHandler.h"
->>>>>>> 4f4187d40af5d09d2b4fe4bc9aea9eecf8446723
 #include <string>
 #include "imgui/imgui.h"
 #include "imgui/imgui_impl_win32.h"
@@ -65,14 +62,10 @@ private:
 
 	
 	GameObject* obj;
-<<<<<<< HEAD
 	GameObject* obj2;
-=======
 	GameObject* playerOne;
 	GameObject* playerTwo;
 	int currentInput; //imgui, controlls input
-
->>>>>>> 4f4187d40af5d09d2b4fe4bc9aea9eecf8446723
 	ForwardShader* theForwardShader;
 	Camera* theCamera;
 	Direction forward; //have these in a own class?
