@@ -25,6 +25,8 @@ private:
 	//TO STORE WIDTH & HEIGHT
 	int width;
 	int height;
+
+	bool transparent;
 public:
 	TextureLoad();
 	TextureLoad(const TextureLoad&);
@@ -34,6 +36,8 @@ public:
 	void Shutdown();
 
 	ID3D11ShaderResourceView* GetTexture();
+
+	bool isTransparent();
 
 	unsigned char* getTextureCharArray();
 	unsigned short getWidth();

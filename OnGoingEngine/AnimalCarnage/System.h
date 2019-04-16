@@ -21,6 +21,7 @@ using namespace DirectX;
 
 #define HEIGHT 1080
 #define WIDTH 1920
+
 //using Microsoft::WRL::ComPtr;
 
 enum GameState {
@@ -83,6 +84,7 @@ private:
 	void renderImgui();
 	void update(float deltaTime);
 	void render();
+	void resetShaders();
 
 	void reset();
 	static LRESULT CALLBACK  WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);

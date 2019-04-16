@@ -1,32 +1,37 @@
 #include "MainMenu.h"
+#include "MainGui.h"
 
 MainMenu::MainMenu()
 {
-	this->sprites = new Sprite("cat.tga",0.1f);
+	this->gui = nullptr;
 }
 
 MainMenu::~MainMenu()
 {
-	delete this->sprites;
+	delete this->gui;
 }
 
 bool MainMenu::initailize()
 {
+	this->gui = new MainGui();
+	this->gui->initialize();
+
 	return true;
 }
 
 bool MainMenu::render()
 {
-	sprites->Render();
+	this->gui->render();
 	return true;
 }
 
 bool MainMenu::update(float deltaTime)
 {
-
+	this->gui->update(deltaTime);
 	return true;
 }
 
 void MainMenu::shutDown()
 {
+	delete this->gui;
 }

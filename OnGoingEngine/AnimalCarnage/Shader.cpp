@@ -267,6 +267,7 @@ void Shader::renderShader(int vertexCount, int indexCount)
 {
 	//deviceContext->DrawIndexed(count, 0, 0);
 	System::getDeviceContext()->DrawIndexed(indexCount, 0,0);
+
 }
 
 void Shader::setShaders()

@@ -324,11 +324,12 @@ bool System::initialize()
 	{
 		mesh.push_back(temp[i]);
 	}
-	this->obj->setMesh(mesh, indices, 6);
+
+	this->obj->setMesh(mesh, indices, 6,0);
 	this->obj->setScale(0.5f, 0.3f, 0.3f);
-	this->playerOne->setMesh(mesh, indices, 6);
+	this->playerOne->setMesh(mesh, indices, 6,0);
 	this->playerOne->setScale(0.3f, 0.4f, 0.1f);
-	this->playerTwo->setMesh(mesh, indices, 6);
+	this->playerTwo->setMesh(mesh, indices, 6,0);
 	this->playerTwo->setScale(0.6f, 0.8f, 0.1f);
 
 	System::states.push_back(new MainMenu());
@@ -495,6 +496,12 @@ void System::update(float deltaTime)
 	else if (theKeyboard->KeyIsPressed('S'))
 	{
 		theCamera->move(0, 0, -1 * deltaTime);
+
+		
+	}
+	else if (theKeyboard->KeyIsPressed('S'))
+	{
+		theCamera->move(0, 0, 1);
 	}
 	if (theKeyboard->KeyIsPressed('D'))
 	{
@@ -518,6 +525,7 @@ void System::update(float deltaTime)
 
 	if (theKeyboard->KeyIsPressed('X'))
 	{
+
 	}
 
 	if (theMouse->IsLeftDown())
@@ -538,10 +546,9 @@ void System::update(float deltaTime)
 
 
 
-//<<<<<<< HEAD
-//=======
-	//theCamera->SetRotation(theMouse->GetPos().y*deltaTime, 0, 0);
-//>>>>>>> a1e19119cd44d39de94c9857e53a386a26ad31c2
+
+	//theCamera->SetRotation(theMouse->GetPos().y, 0, 0);
+
 
 	System::states[System::currentState]->update(deltaTime);
 }
@@ -555,15 +562,20 @@ void System::render()
 	{
 		1.0f,0.1f,0.5f,1.0f
 	};
+//<<<<<<< HEAD
 	renderImgui();
+//=======
+
+//>>>>>>> 9efe83f105abe68f72e975def5959c62e8e4ceda
 	theGraphicDevice->beginScene(color);//clear the back and depth buffer set depthStencilState
-	//ImGui::NewFrame();
+	
 	//render imgui in states render
 	this->theCamera->Render();
 	
 	this->theForwardShader->setViewProj(this->theCamera->GetViewMatrix(), this->theGraphicDevice->getProj(), DirectX::XMFLOAT4(this->theCamera->GetPosition().x, this->theCamera->GetPosition().y, this->theCamera->GetPosition().z, 1.0f));
 	this->theForwardShader->setShaders();//tänker att man kör denna sen renderar allla som använder denna shader sen tar setshader på nästa osv.
 	
+//<<<<<<< HEAD
 	this->obj->draw();
 	this->playerOne->draw();
 	this->playerTwo->draw();
@@ -574,19 +586,37 @@ void System::render()
 	
 	System::getDeviceContext()->GSSetShader(nullptr, nullptr, 0);//only for imgui
 	ImGui::Render();
+//=======
+	this->resetShaders();
+	System::states[System::currentState]->render();
+
+	System::getDeviceContext()->GSSetShader(nullptr, nullptr, 0);
+    ImGui::Render();
+//>>>>>>> 9efe83f105abe68f72e975def5959c62e8e4ceda
 	ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
 	theGraphicDevice->presentScene();//EndScene() Present swapchain. Present the backbuffer to the screen
 
 }
 
-
+void System::resetShaders()
+{
+	System::getDeviceContext()->VSSetShader(nullptr, nullptr, 0);
+	System::getDeviceContext()->HSSetShader(nullptr, nullptr, 0);
+	System::getDeviceContext()->DSSetShader(nullptr, nullptr, 0);
+	System::getDeviceContext()->GSSetShader(nullptr, nullptr, 0);
+	System::getDeviceContext()->PSSetShader(nullptr, nullptr, 0);
+	System::getDeviceContext()->IASetInputLayout(nullptr);
+}
 
 void System::run()
 {
 
 	if (this->hwnd)
 	{
+//<<<<<<< HEAD
 		theGraphicDevice->initialize(WIDTH, HEIGHT ,true , hwnd, false, 0.1f, 500.0f);
+//=======
+//>>>>>>> 9efe83f105abe68f72e975def5959c62e8e4ceda
 		this->initialize();
 		initImgui();
 		ShowWindow(this->hwnd, this->nCMDShow);

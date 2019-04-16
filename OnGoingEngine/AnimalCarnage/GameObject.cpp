@@ -2,21 +2,25 @@
 
 GameObject::GameObject()
 {
-	this->theModel = new Model();
+	this->cap=5;
+	this->nrOfModels = 0;
+	this->theModel = new Model[this->cap];
 	this->theTransforms = Transform();
 }
 
 GameObject::GameObject(Shader * shader)
 {
-	this->theModel = new Model();
+	this->cap = 5;
+	this->nrOfModels = 0;
+	this->theModel = new Model[this->cap];
 	this->theTransforms = Transform();
-	this->theModel->setShader(shader);
+	this->theModel[0].setShader(shader, Opaque);
 	//this->worldConstBuffer.initialize();
 }
 
 GameObject::~GameObject()
 {
-	delete this->theModel;
+	delete[] this->theModel;
 }
 
 void GameObject::setPosition(float x, float y, float z)
@@ -44,19 +48,31 @@ DirectX::XMFLOAT3 GameObject::getPosition()
 	return this->theTransforms.getPosition();
 }
 
+
 DirectX::XMFLOAT3 GameObject::getScale()
 {
 	return this->theTransforms.getScale();
 }
 
-void GameObject::setMesh(std::vector<Vertex3D> mesh, DWORD * indices, int numberOfIndices)
+
+int GameObject::getNrOfModels()
 {
-	this->theModel->setMesh(mesh, indices, numberOfIndices);
+	return this->nrOfModels;
 }
 
-void GameObject::setTexture(std::string file)
+Model & GameObject::getModel(int id)
 {
-	this->theModel->setTexture(file);
+	return this->theModel[id];
+}
+
+void GameObject::setMesh(std::vector<Vertex3D> mesh, DWORD * indices, int numberOfIndices, int id)
+{
+	this->theModel[id].setMesh(mesh, indices, numberOfIndices);
+}
+
+void GameObject::setTexture(std::string file, int id)
+{									
+	this->theModel[id].setTexture(file);
 }
 
 void GameObject::draw()
@@ -69,6 +85,6 @@ void GameObject::draw()
 		this->theModel->draw();
 	}*/
 
-	this->theModel->getShader()->setWorld(this->theTransforms.getWorld());
-	this->theModel->draw();
+	this->theModel[0].getShader()->setWorld(this->theTransforms.getWorld());
+	this->theModel[0].draw();
 }

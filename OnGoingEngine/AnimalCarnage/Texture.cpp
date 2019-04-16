@@ -69,6 +69,11 @@ int Texture::getHeight()
 	return 0;
 }
 
+bool Texture::isTransparent()
+{
+	return this->testTexture.isTransparent();
+}
+
 void Texture::cleanUp()
 {
 	if (this->textureView)
