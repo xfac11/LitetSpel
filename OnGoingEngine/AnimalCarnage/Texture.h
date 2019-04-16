@@ -18,6 +18,7 @@ public:
 	unsigned char* getTextureCharArray();
 	int getWidth();
 	int getHeight();
+	bool isTransparent();
 	void cleanUp();
 private:
 	//ID3D11Texture2D* texture;

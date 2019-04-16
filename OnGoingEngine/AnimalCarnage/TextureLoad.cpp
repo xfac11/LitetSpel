@@ -115,6 +115,11 @@ ID3D11ShaderResourceView* TextureLoad::GetTexture()
 	return m_textureView;
 }
 
+bool TextureLoad::isTransparent()
+{
+	return this->transparent;
+}
+
 unsigned char * TextureLoad::getTextureCharArray()
 {
 	return m_targaData;
@@ -216,6 +221,10 @@ bool TextureLoad::LoadTarga(const char* filename, int& height, int& width)
 			m_targaData[index + 1] = targaImage[k + 1];  // Green.
 			m_targaData[index + 2] = targaImage[k + 0];  // Blue
 			m_targaData[index + 3] = targaImage[k + 3];  // Alpha
+			if (!transparent&&m_targaData[index + 3] != 1)
+			{
+				transparent = true;
+			}
 
 														 // Increment the indexes into the targa data.
 			k += 4;
