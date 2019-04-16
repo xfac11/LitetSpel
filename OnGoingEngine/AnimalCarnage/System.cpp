@@ -393,7 +393,9 @@ void System::render()
 	this->theForwardShader->setShaders();//tänker att man kör denna sen renderar allla som använder denna shader sen tar setshader på nästa osv.
 	this->obj->draw();
 	
-	//System::states[System::currentState]->render();
+	this->resetShaders();
+	System::states[System::currentState]->render();
+
 	System::getDeviceContext()->GSSetShader(nullptr, nullptr, 0);
     ImGui::Render();
 	ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
@@ -401,7 +403,15 @@ void System::render()
 
 }
 
-
+void System::resetShaders()
+{
+	System::getDeviceContext()->VSSetShader(nullptr, nullptr, 0);
+	System::getDeviceContext()->HSSetShader(nullptr, nullptr, 0);
+	System::getDeviceContext()->DSSetShader(nullptr, nullptr, 0);
+	System::getDeviceContext()->GSSetShader(nullptr, nullptr, 0);
+	System::getDeviceContext()->PSSetShader(nullptr, nullptr, 0);
+	System::getDeviceContext()->IASetInputLayout(nullptr);
+}
 
 void System::run()
 {

@@ -67,6 +67,7 @@ private:
 	void initImgui();
 	void update(float deltaTime);
 	void render();
+	void resetShaders();
 
 	static LRESULT CALLBACK  WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
 	HWND InitWindow(HINSTANCE hInstance, float height, float width);
