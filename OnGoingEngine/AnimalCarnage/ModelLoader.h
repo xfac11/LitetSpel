@@ -10,7 +10,7 @@ public:
 	ModelLoader();
 	~ModelLoader();
 
-	void loadModel(Model &model, const char* filePath);
+	void loadModel(Model **&model, const char* filePath);
 
 private:
 

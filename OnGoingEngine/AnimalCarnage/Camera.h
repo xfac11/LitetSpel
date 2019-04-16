@@ -33,6 +33,6 @@ public:
 
 	void Render();
 	DirectX::XMMATRIX& GetViewMatrix();
-	float calcCamera(DirectX::XMFLOAT3 posLeft, DirectX::XMFLOAT3 posRight);
+	void calcCamera(DirectX::XMFLOAT3 posLeft, DirectX::XMFLOAT3 posRight);
 };
 #endif

@@ -3,12 +3,23 @@
 #include <math.h>
 #include <d3d11.h>
 #include <DirectXMath.h>
+<<<<<<< HEAD
 #include"GraphicsDevice.h"
 #include"ForwardShader.h"
 #include"GameObject.h"
 #include"Camera.h"
 #include"Keyboard.h"
 #include"Mouse.h"
+#include"GameObjectHandler.h"
+=======
+#include "GraphicsDevice.h"
+#include "ForwardShader.h"
+#include "GameObject.h"
+#include "Camera.h"
+#include "Keyboard.h"
+#include "Mouse.h"
+#include "InputHandler.h"
+>>>>>>> 4f4187d40af5d09d2b4fe4bc9aea9eecf8446723
 #include <string>
 #include "imgui/imgui.h"
 #include "imgui/imgui_impl_win32.h"
@@ -18,8 +29,9 @@
 using namespace DirectX;
 //using namespace DirectX::SimpleMath;
 
-#define HEIGHT 1080.0f
-#define WIDTH 1920.0f
+#define HEIGHT 1080
+#define WIDTH 1920
+
 //using Microsoft::WRL::ComPtr;
 
 enum GameState {
@@ -51,23 +63,46 @@ private:
 	static std::vector<State*> states;
 	static GameState currentState;
 
+	
 	GameObject* obj;
+<<<<<<< HEAD
+	GameObject* obj2;
+=======
+	GameObject* playerOne;
+	GameObject* playerTwo;
+	int currentInput; //imgui, controlls input
+
+>>>>>>> 4f4187d40af5d09d2b4fe4bc9aea9eecf8446723
 	ForwardShader* theForwardShader;
 	Camera* theCamera;
 	Direction forward; //have these in a own class?
 	Direction left_right;
 	Direction up_down;
+	GameObjectHandler handler;
 	void move(Direction forward, Direction left_right, Direction up_down, bool flyMode, int mouseX, int mouseY);
 	
+	
+	InputHandler* playerInputs;
 
+	//imgui variables
+	DirectX::XMFLOAT3 camPos;
+	DirectX::XMFLOAT3 camRot;
+	bool guiCam;
+	bool collide;
+
+	bool mouseShow;
 	bool mouseSwitch;
 	bool flySwitch;
 	bool moveScreen;
+	bool isPressed;
 
 	void initImgui();
+	void renderImgui();
 	void update(float deltaTime);
 	void render();
+	void resetShaders();
 
+	void reset();
 	static LRESULT CALLBACK  WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
 	HWND InitWindow(HINSTANCE hInstance, float height, float width);
 	void change(bool & theSwitch);

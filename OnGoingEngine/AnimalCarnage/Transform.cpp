@@ -64,4 +64,5 @@ void Transform::ApplyTransform() {
 }
 Transform::~Transform()
 {
+
 }

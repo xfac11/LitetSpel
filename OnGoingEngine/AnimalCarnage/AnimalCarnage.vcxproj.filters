@@ -40,12 +40,15 @@
     <Filter Include="Header Files\Objects">
       <UniqueIdentifier>{a689b4e5-6bd3-495a-9eb9-f759c4d09e70}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\GUI">
+      <UniqueIdentifier>{b701c292-0ec6-4985-bbd7-25dfd54490b3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GUI">
+      <UniqueIdentifier>{6e9cea4b-6c00-4d22-8fc2-5a4ac4efdde1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="System.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="GraphicsDevice.cpp">
@@ -90,9 +93,6 @@
     <ClCompile Include="MainMenu.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Sprite.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Keyboard.cpp">
       <Filter>Source Files\Inputs</Filter>
     </ClCompile>
@@ -119,6 +119,28 @@
     </ClCompile>
     <ClCompile Include="GameObject.cpp">
       <Filter>Source Files\Objects</Filter>
+    </ClCompile>
+<<<<<<< HEAD
+    <ClCompile Include="GameObjectHandler.cpp">
+      <Filter>Source Files\Objects</Filter>
+=======
+<<<<<<< HEAD
+    <ClCompile Include="System.cpp">
+      <Filter>Source Files</Filter>
+=======
+    <ClCompile Include="MainGui.cpp">
+      <Filter>Source Files\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="Sprite.cpp">
+      <Filter>Source Files\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="Button.cpp">
+      <Filter>Source Files\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="GuiBase.cpp">
+      <Filter>Source Files\GUI</Filter>
+>>>>>>> 9efe83f105abe68f72e975def5959c62e8e4ceda
+>>>>>>> 4f4187d40af5d09d2b4fe4bc9aea9eecf8446723
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -188,9 +210,6 @@
     <ClInclude Include="MainMenu.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Sprite.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Mouse.h">
       <Filter>Header Files\Inputs</Filter>
     </ClInclude>
@@ -223,6 +242,18 @@
     </ClInclude>
     <ClInclude Include="ShaderManager.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MainGui.h">
+      <Filter>Header Files\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Sprite.h">
+      <Filter>Header Files\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Button.h">
+      <Filter>Header Files\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="GuiBase.h">
+      <Filter>Header Files\GUI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

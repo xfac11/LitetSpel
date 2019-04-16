@@ -2,12 +2,12 @@
 #define MAIN_MENU_H
 
 #include "State.h"
-#include "Sprite.h"
+#include "GuiBase.h"
 
 class MainMenu : public State
 {
 private:
-	Sprite* sprites;
+	GuiBase* gui;
 public:
 	MainMenu();
 	~MainMenu();

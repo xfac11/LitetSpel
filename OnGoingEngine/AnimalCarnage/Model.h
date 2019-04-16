@@ -16,7 +16,7 @@ public:
 	
 	Model();
 	~Model();
-	void setShader(Shader* theShader, Opacity theType);
+	void setShader(Shader* theShader);
 	int getOpacity();
 	Shader* getShader();
 	void setTexture(std::string file);
@@ -29,7 +29,8 @@ private:
 	VertexBuffer<Vertex3D> vertexBuffer;
 	IndexBuffer indexBuffer;
 	ID3D11SamplerState* SamplerState;
-	Texture* texture;
+	Texture* texture;// 
+	//mask
 	Texture* normalMap;
 	int vertexCount;
 	

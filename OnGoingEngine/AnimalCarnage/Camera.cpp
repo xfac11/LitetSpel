@@ -86,3 +86,13 @@ DirectX::XMMATRIX& Camera::GetViewMatrix()
 {
 	return this->viewMatrix;
 }
+
+void Camera::calcCamera(DirectX::XMFLOAT3 posLeft, DirectX::XMFLOAT3 posRight)
+{
+	float length = posRight.x - posLeft.x;
+	if (length < 2.5f)
+	{
+		length = 2.5f;
+	}
+	this->position = DirectX::XMFLOAT3(0, 0, -length);
+}
