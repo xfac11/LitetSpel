@@ -137,6 +137,7 @@
     <ClCompile Include="GameObjectHandler.cpp" />
     <ClCompile Include="GraphicsDevice.cpp" />
     <ClCompile Include="GuiBase.cpp" />
+    <ClCompile Include="GuiElement.cpp" />
     <ClCompile Include="imgui\imgui.cpp" />
     <ClCompile Include="imgui\imgui_demo.cpp" />
     <ClCompile Include="imgui\imgui_draw.cpp" />
@@ -170,6 +171,7 @@
     <ClInclude Include="GameObjectHandler.h" />
     <ClInclude Include="GraphicsDevice.h" />
     <ClInclude Include="GuiBase.h" />
+    <ClInclude Include="GuiElement.h" />
     <ClInclude Include="imgui\imconfig.h" />
     <ClInclude Include="imgui\imgui.h" />
     <ClInclude Include="imgui\imgui_impl_dx11.h" />
