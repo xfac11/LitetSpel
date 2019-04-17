@@ -1,6 +1,6 @@
 #include "Button.h"
 
-Button::Button(std::string texture, std::string text, Vector2 position, Vector2 size) : text(text), position(position), size(size)
+Button::Button(std::string texture, std::string text, Vector2 position, Vector2 size) : GuiElement(position), text(text), size(size)
 {
 	this->texture.setTexture(texture);
 }
@@ -9,14 +9,21 @@ Button::~Button()
 {
 }
 
+bool Button::update(float deltaTime)
+{
+	//TODO
+	return true;
+}
+
+bool Button::render(DirectX::SpriteBatch* spriteBatch)
+{
+	//TODO
+	return true;
+}
+
 ID3D11ShaderResourceView * Button::getTexture()
 {
 	return this->texture.getTexture();
-}
-
-Vector2 Button::getPosition() const
-{
-	return this->position;
 }
 
 Vector2 Button::getSize() const

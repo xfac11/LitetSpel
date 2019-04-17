@@ -21,6 +21,7 @@ cbuffer CB_PER_FRAME : register(b0)
 }
 StructuredBuffer<AnyLight> lights : register(t1);
 Texture2D Tex:register(t0);
+
 SamplerState SampSt :register(s0);
 float4 PS_main(VS_OUT input) : SV_Target
 {

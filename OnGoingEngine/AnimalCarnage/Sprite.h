@@ -1,4 +1,4 @@
-#ifndef SPRITE_H
+/*#ifndef SPRITE_H
 #define SPRITE_H
 
 #include "Texture.h"
@@ -27,4 +27,4 @@ public:
 	DirectX::SimpleMath::Vector2 getOrigin();
 };
 
-#endif // !SPRITE_H
+#endif // !SPRITE_H*/

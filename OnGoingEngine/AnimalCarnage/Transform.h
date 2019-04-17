@@ -5,7 +5,7 @@ using namespace DirectX;
 class Transform
 {
 private:
-	XMMATRIX world = XMMatrixIdentity();
+	XMMATRIX world = XMMATRIX(XMMatrixIdentity());
 	void ApplyTransform();
 protected:
 	XMFLOAT3 Position = XMFLOAT3(0.0f, 0.0f, 0.0f);

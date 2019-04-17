@@ -275,13 +275,11 @@ System::System(HINSTANCE hInstance, LPCSTR name, int nCmdShow)
 
 System::~System()
 {
-	delete this->obj;
-	delete this->playerOne;
-	delete this->playerTwo;
 	delete this->theCamera;
 	delete this->theForwardShader;
 	delete this->theMouse;
 	delete this->theKeyboard;
+	
 	ImGui_ImplDX11_Shutdown();
 	ImGui_ImplWin32_Shutdown();
 	ImGui::DestroyContext();
@@ -300,6 +298,8 @@ bool System::initialize()
 	this->theMouse = new Mouse;
 	this->theForwardShader->initialize();
 	this->obj = new GameObject(this->theForwardShader);
+	this->obj2 = new GameObject(this->theForwardShader);
+	
 	this->playerOne = new GameObject(this->theForwardShader);
 	this->playerTwo = new GameObject(this->theForwardShader);
 	std::vector<Vertex3D> mesh;
@@ -326,12 +326,19 @@ bool System::initialize()
 	}
 
 	this->obj->setMesh(mesh, indices, 6,0);
+	this->obj->setScale(2, 0.5, 0.5);
+	this->obj2->setMesh(mesh, indices, 6, 0);
+	this->obj2->setScale(2, 1, 1);
+	
 	this->obj->setScale(0.5f, 0.3f, 0.3f);
 	this->playerOne->setMesh(mesh, indices, 6,0);
 	this->playerOne->setScale(0.3f, 0.4f, 0.1f);
 	this->playerTwo->setMesh(mesh, indices, 6,0);
 	this->playerTwo->setScale(0.6f, 0.8f, 0.1f);
-
+	this->handler.addObject(this->obj2);
+	this->handler.addObject(this->obj);
+	this->handler.addObject(this->playerOne);
+	this->handler.addObject(this->playerTwo);
 	System::states.push_back(new MainMenu());
 	System::states[MAINMENU]->initailize();
 
@@ -513,6 +520,7 @@ void System::update(float deltaTime)
 	}
 	else if (theKeyboard->KeyIsPressed('A'))
 	{
+		this->obj2->move(-1 * deltaTime, 0, 0);
 		theCamera->move(-1 * deltaTime, 0, 0);
 	}
 
@@ -566,11 +574,9 @@ void System::render()
 	{
 		1.0f,0.1f,0.5f,1.0f
 	};
-//<<<<<<< HEAD
-	renderImgui();
-//=======
 
-//>>>>>>> 9efe83f105abe68f72e975def5959c62e8e4ceda
+	renderImgui();
+
 	theGraphicDevice->beginScene(color);//clear the back and depth buffer set depthStencilState
 	
 	//render imgui in states render
@@ -579,24 +585,25 @@ void System::render()
 	this->theForwardShader->setViewProj(this->theCamera->GetViewMatrix(), this->theGraphicDevice->getProj(), DirectX::XMFLOAT4(this->theCamera->GetPosition().x, this->theCamera->GetPosition().y, this->theCamera->GetPosition().z, 1.0f));
 	this->theForwardShader->setShaders();//tänker att man kör denna sen renderar allla som använder denna shader sen tar setshader på nästa osv.
 	
-//<<<<<<< HEAD
-	this->obj->draw();
-	this->playerOne->draw();
-	this->playerTwo->draw();
+	this->handler.draw();
+	/*this->obj->draw();
+	this->obj2->draw();*/
+	
+	//reset for the sprite
+	
 
-	this->reset();
-	System::states[System::currentState]->render();
+	//this->obj->draw();
+	//this->playerOne->draw();
+	//this->playerTwo->draw();
 
 	
-	System::getDeviceContext()->GSSetShader(nullptr, nullptr, 0);//only for imgui
-	ImGui::Render();
-//=======
+
 	this->resetShaders();
 	System::states[System::currentState]->render();
 
 	System::getDeviceContext()->GSSetShader(nullptr, nullptr, 0);
     ImGui::Render();
-//>>>>>>> 9efe83f105abe68f72e975def5959c62e8e4ceda
+
 	ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
 	theGraphicDevice->presentScene();//EndScene() Present swapchain. Present the backbuffer to the screen
 
@@ -617,10 +624,9 @@ void System::run()
 
 	if (this->hwnd)
 	{
-//<<<<<<< HEAD
+
 		theGraphicDevice->initialize(WIDTH, HEIGHT ,true , hwnd, false, 0.1f, 500.0f);
-//=======
-//>>>>>>> 9efe83f105abe68f72e975def5959c62e8e4ceda
+
 		this->initialize();
 		initImgui();
 		ShowWindow(this->hwnd, this->nCMDShow);

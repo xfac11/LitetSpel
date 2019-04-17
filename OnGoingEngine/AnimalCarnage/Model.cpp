@@ -7,6 +7,7 @@ Model::Model()
 	this->theShader = nullptr;
 	this->texture = new Texture;
 	this->normalMap = new Texture;
+	this->type = Opaque;
 
 }
 
@@ -28,10 +29,9 @@ Model::~Model()
 	//	this->texture.cleanUp();
 }
 
-void Model::setShader(Shader *theShader, Opacity theType)
+void Model::setShader(Shader *theShader)
 {
 	this->theShader = theShader;
-	this->type = theType;
 }
 
 int Model::getOpacity()
@@ -48,6 +48,14 @@ Shader * Model::getShader()
 void Model::setTexture(std::string file)
 {
 	texture->setTexture(file);
+	if (texture->isTransparent())
+	{
+		this->type = Transparent;
+	}
+	else
+	{
+		this->type = Opaque;
+	}
 }
 
 void Model::setMesh(std::vector<Vertex3D> aMesh,DWORD* indices, int numberOfIndices)

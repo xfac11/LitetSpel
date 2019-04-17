@@ -3,6 +3,13 @@
 #include <math.h>
 #include <d3d11.h>
 #include <DirectXMath.h>
+#include"GraphicsDevice.h"
+#include"ForwardShader.h"
+#include"GameObject.h"
+#include"Camera.h"
+#include"Keyboard.h"
+#include"Mouse.h"
+#include"GameObjectHandler.h"
 #include "GraphicsDevice.h"
 #include "ForwardShader.h"
 #include "GameObject.h"
@@ -53,16 +60,18 @@ private:
 	static std::vector<State*> states;
 	static GameState currentState;
 
+	
 	GameObject* obj;
+	GameObject* obj2;
 	GameObject* playerOne;
 	GameObject* playerTwo;
 	int currentInput; //imgui, controlls input
-
 	ForwardShader* theForwardShader;
 	Camera* theCamera;
 	Direction forward; //have these in a own class?
 	Direction left_right;
 	Direction up_down;
+	GameObjectHandler handler;
 	void move(Direction forward, Direction left_right, Direction up_down, bool flyMode, int mouseX, int mouseY);
 	
 	

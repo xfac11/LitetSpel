@@ -14,17 +14,19 @@ public:
 	void setScale(float x, float y, float z);
 	void move(float x, float y, float z);
 
+	DirectX::XMMATRIX& getWorldMatrix();
 
 	DirectX::XMFLOAT3 getPosition();
 	DirectX::XMFLOAT3 getScale();
 
 	int getNrOfModels();
-	Model& getModel(int id);
+	Model*& getModel(int id);
+	Model**& getTheModelPtr();
 	void setMesh(std::vector<Vertex3D> mesh, DWORD *indices, int numberOfIndices, int id);
 	void setTexture(std::string file, int id);
 	void draw();
 private:
-	Model *theModel;
+	Model* *theModel;
 	int cap;
 	//ConstantBuffer<WorldMatrix> worldConstBuffer;
 	//Hitbox theHitbox; a model with just the index and vertices and a color. no textures etc
