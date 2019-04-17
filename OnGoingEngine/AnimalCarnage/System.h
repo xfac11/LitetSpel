@@ -54,8 +54,7 @@ private:
 	int nCMDShow;
 	//Statemachine* statemachine
 	//Graphics* graphics;
-	static Keyboard* theKeyboard;
-	static Mouse* theMouse;
+	
 	static GraphicsDevice* theGraphicDevice;
 	static std::vector<State*> states;
 	static GameState currentState;
@@ -110,6 +109,9 @@ public:
 	WPARAM getMsgWParam();
 	static ID3D11Device*& getDevice();
 	static ID3D11DeviceContext*& getDeviceContext();
+
+	static Keyboard* theKeyboard;
+	static Mouse* theMouse;
 
 };
 #endif

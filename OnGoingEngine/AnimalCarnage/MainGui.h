@@ -18,6 +18,10 @@ private:
 	Button* playButton;
 	Button* quitButton;
 
+	float timeSinceChanged;
+	bool changedLastFrame;
+	void changeSelected();
+
 public:
 	MainGui();
 	virtual ~MainGui();
