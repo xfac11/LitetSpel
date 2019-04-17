@@ -148,6 +148,8 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainGui.cpp" />
     <ClCompile Include="MainMenu.cpp" />
+    <ClCompile Include="MenuHandler.cpp" />
+    <ClCompile Include="menuItem.cpp" />
     <ClCompile Include="Model.cpp" />
     <ClCompile Include="ModelLoader.cpp" />
     <ClCompile Include="Mouse.cpp" />
@@ -183,6 +185,8 @@
     <ClInclude Include="KeyboardEvent.h" />
     <ClInclude Include="MainGui.h" />
     <ClInclude Include="MainMenu.h" />
+    <ClInclude Include="MenuHandler.h" />
+    <ClInclude Include="menuItem.h" />
     <ClInclude Include="Model.h" />
     <ClInclude Include="ModelLoader.h" />
     <ClInclude Include="Mouse.h" />

@@ -2,6 +2,7 @@
 #define INPUTHANDLER_H
 #include "Keyboard.h"
 #include "Mouse.h"
+#include "MenuHandler.h"
 #include "GamePad.h"
 #include <DirectXMath.h>
 class InputHandler
@@ -32,15 +33,20 @@ private:
 	float airTimer;
 	float jumpDir; //
 
+	//menu
+	MenuHandler menuLogic;
+	
+
+				   
 	//int nrOfPlayers;
 
-	bool checkReset(int player);
+	bool checkReset(DirectX::GamePad::State state);
 	void goToStartScreen();
 
 	void updateController(int controllerPort);
 	void inPauseMode(int id);
 	void inSelectionMode();
-	void inMenuMode();
+	
 	void inResultScreen();
 	void inRumbleMode();
 public:
@@ -51,6 +57,8 @@ public:
 	bool controllerIsConnected(int controllerPort);
 
 	void inGameMode(float deltaTime, bool grounded);
+	void inMenuMode();
+
 
 	//box and box
 	bool collision(DirectX::XMFLOAT2 posOne, DirectX::XMFLOAT2 scaleOne, DirectX::XMFLOAT2 posTwo, DirectX::XMFLOAT2 scaleTwo);
@@ -59,5 +67,8 @@ public:
 	//box and circle
 	bool collision(DirectX::XMFLOAT2 posBox, DirectX::XMFLOAT2 scaleBox, DirectX::XMFLOAT2 posCircle, float radiusCircle);
 
+
+	std::string getCurrentMenu();
+	int getCurrentOption();
 };
 #endif // INPUTHANDLER_H

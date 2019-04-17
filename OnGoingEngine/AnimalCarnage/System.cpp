@@ -383,8 +383,10 @@ void System::renderImgui()
 	{
 		ImGui::Text("collision no");
 	}
-
-
+	textUse = "In menu: " + this->playerInputs->getCurrentMenu();
+	ImGui::Text(textUse.c_str());
+	textUse = "Current Option: " + std::to_string(this->playerInputs->getCurrentOption());
+	ImGui::Text(textUse.c_str());
 	ImGui::SliderInt("Player: ", &this->currentInput, 0, 2);
 	ImGui::TextColored(ImVec4(1, 1, 0, 1), "Controllers");
 	ImGui::BeginChild("Scrolling");
@@ -480,7 +482,9 @@ void System::update(float deltaTime)
 	{
 		grounded = true;
 	}
+	playerInputs->inMenuMode();
 	playerInputs->inGameMode(deltaTime, grounded);
+	
 	temp->move(playerInputs->getDirection(0).x, playerInputs->getDirection(0).y, playerInputs->getDirection(0).z);
 
 

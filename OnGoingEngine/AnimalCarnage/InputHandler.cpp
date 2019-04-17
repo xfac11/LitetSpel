@@ -1,15 +1,19 @@
 #include "InputHandler.h"
 
-bool InputHandler::checkReset(int player)
+bool InputHandler::checkReset(DirectX::GamePad::State state)
 {
-	//if()
+	
 	bool result = false;
-	if (theGamePad.GetState(player).IsLeftTriggerPressed() &&
-		theGamePad.GetState(player).IsRightTriggerPressed() &&
-		theGamePad.GetState(player).buttons.a&&
-		theGamePad.GetState(player).buttons.back || theGamePad.GetState(player).buttons.menu)
+	if (state.IsConnected())
 	{
-		result = true;
+		//tracker.Update(state);
+		if (state.IsLeftTriggerPressed() &&
+			state.IsRightTriggerPressed() &&
+			state.buttons.a&&
+			(state.buttons.back || state.buttons.menu))
+		{
+			result = true;
+		}
 	}
 	return result;
 }
@@ -44,8 +48,8 @@ void InputHandler::inGameMode(float deltaTime,bool grounded)
 		else
 			this->direction[0].y = 0; //= { 0,0,0 };
 		//jump
-		if (tracker.x == DirectX::GamePad::ButtonStateTracker::PRESSED  && grounded == true ||
-			tracker.y == DirectX::GamePad::ButtonStateTracker::PRESSED && grounded == true)
+		if (state.buttons.x && grounded == true ||
+			state.buttons.y && grounded == true)//== DirectX::GamePad::ButtonStateTracker::PRESSED 
 		{
 			//
 			this->isJumping=true;
@@ -71,15 +75,13 @@ void InputHandler::inGameMode(float deltaTime,bool grounded)
 		}
 	
 
-
-
 		//Action
-		if (tracker.a == DirectX::GamePad::ButtonStateTracker::PRESSED) //and
-		{
-			rumble.x = 1.f;
-			rumble.y = 1.f;
-			rumbleTime = 0.5f;
-		}
+		//if (tracker.a == DirectX::GamePad::ButtonStateTracker::PRESSED) //and
+		//{
+		//	rumble.x = 1.f;
+		//	rumble.y = 1.f;
+		//	rumbleTime = 0.5f;
+		//}
 		if (state.buttons.b)
 		{
 			rumble.x = 1.f;
@@ -174,6 +176,19 @@ bool InputHandler::collision(DirectX::XMFLOAT2 posBox, DirectX::XMFLOAT2 scaleBo
 }
 
 
+std::string InputHandler::getCurrentMenu()
+{
+
+	return this->menuLogic.getCurrentMenu();
+	
+}
+
+int InputHandler::getCurrentOption()
+{
+	return this->menuLogic.getCurrentOption();
+}
+
+
 void InputHandler::inPauseMode(int id)
 {
 	//only one player pauses and controlls the screen at a time
@@ -214,10 +229,10 @@ void InputHandler::inPauseMode(int id)
 	}
 
 	//L+R+A+Start
-	if (this->checkReset(id))
-	{
-		theGamePad.SetVibration(0, 1.f, 1.f);
-	}
+	//if (this->checkReset(state))
+	//{
+	//	theGamePad.SetVibration(0, 1.f, 1.f);
+	//}
 }
 
 void InputHandler::inSelectionMode()
@@ -242,14 +257,50 @@ void InputHandler::inSelectionMode()
 	//this->checkReset(id);
 }
 
-void InputHandler::inMenuMode()
+void InputHandler::inMenuMode( )
 {
-	//select/comfirm
-	//move
-	//rotate menu?
-	//back
-	//vibration
-	//L+R+A+Start
+	DirectX::GamePad::State state;
+
+	//for()//connected player
+	state = this->theGamePad.GetState(0); //i
+	if (state.IsConnected())
+	{
+		tracker.Update(state);
+		
+		//L+R+A+Start
+		if (this->checkReset(state))
+		{
+			//quit = true;
+			this->menuLogic.reset();
+		}
+
+		
+		if (tracker.dpadDown == DirectX::GamePad::ButtonStateTracker::PRESSED ||
+			tracker.dpadUp == DirectX::GamePad::ButtonStateTracker::PRESSED)
+		{
+			this->menuLogic.optionSelection(state.IsDPadDownPressed() - state.IsDPadUpPressed());
+		}
+
+		//select/comfirm
+		if (tracker.a == DirectX::GamePad::ButtonStateTracker::PRESSED) //and
+		{
+			rumble.x = 1.f;
+			rumble.y = 1.f;
+			rumbleTime = 0.5f;
+	
+			//confirm = true;
+			this->menuLogic.confirm();
+		}
+
+		//back	
+		if (tracker.b == DirectX::GamePad::ButtonStateTracker::PRESSED) //and
+		{
+			//back = true;
+			this->menuLogic.back();
+		}
+
+	}
+	
 }
 
 InputHandler::InputHandler()
