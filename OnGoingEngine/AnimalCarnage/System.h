@@ -72,8 +72,6 @@ private:
 	Direction left_right;
 	Direction up_down;
 	GameObjectHandler handler;
-	void move(Direction forward, Direction left_right, Direction up_down, bool flyMode, int mouseX, int mouseY);
-	
 	
 	InputHandler* playerInputs;
 

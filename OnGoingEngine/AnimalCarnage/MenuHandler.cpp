@@ -42,7 +42,7 @@ MenuHandler::MenuHandler()
 	this->menus[6]->setNext(0, 7); //to result
 
 	//result screen, 7
-	this->menus[7] = new MenuItem("Character_Select", 7, 1); //name, id, nr of options
+	this->menus[7] = new MenuItem("Result_Screen", 7, 1); //name, id, nr of options
 	this->menus[7]->setPrev(-1); //prev is disabled
 	this->menus[7]->setNext(0, 5); //to character select
 }

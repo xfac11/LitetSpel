@@ -284,9 +284,9 @@ void InputHandler::inMenuMode( )
 		//select/comfirm
 		if (tracker.a == DirectX::GamePad::ButtonStateTracker::PRESSED) //and
 		{
-			rumble.x = 1.f;
-			rumble.y = 1.f;
-			rumbleTime = 0.5f;
+			rumble.x = 0.7f;
+			rumble.y = 0.7f;
+			rumbleTime = 0.3f;
 	
 			//confirm = true;
 			this->menuLogic.confirm();
