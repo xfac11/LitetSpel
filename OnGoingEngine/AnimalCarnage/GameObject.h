@@ -22,6 +22,8 @@ public:
 	int getNrOfModels();
 	Model*& getModel(int id);
 	Model**& getTheModelPtr();
+
+	void addModel(std::vector<Vertex3D> mesh, DWORD *indices, int numberOfIndices);
 	void setMesh(std::vector<Vertex3D> mesh, DWORD *indices, int numberOfIndices, int id);
 	void setTexture(std::string file, int id);
 	void draw();

@@ -22,9 +22,10 @@ GameObject::GameObject(Shader * shader)
 		this->theModel[i] = nullptr;
 	}
 	this->theTransforms = Transform();
-	this->nrOfModels++;
-	this->theModel[0] = new Model;
+	/*this->theModel[0] = new Model;
 	this->theModel[0]->setShader(shader);
+	this->nrOfModels++;*/
+
 	//this->worldConstBuffer.initialize();
 }
 
@@ -87,6 +88,13 @@ Model *& GameObject::getModel(int id)
 Model **& GameObject::getTheModelPtr()
 {
 	return this->theModel;
+}
+
+void GameObject::addModel(std::vector<Vertex3D> mesh, DWORD * indices, int numberOfIndices)
+{
+	this->theModel[nrOfModels] = new Model;
+	this->theModel[nrOfModels]->setMesh(mesh, indices, numberOfIndices);
+	nrOfModels++;
 }
 
 void GameObject::setMesh(std::vector<Vertex3D> mesh, DWORD * indices, int numberOfIndices, int id)

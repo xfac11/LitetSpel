@@ -1,5 +1,5 @@
 #include"GameObjectHandler.h"
-
+#include"System.h"
 GameObjectHandler::GameObjectHandler()
 {
 	this->nrOfObjects = 0;
@@ -46,7 +46,7 @@ void GameObjectHandler::addObject(GameObject *& gameObject)
 			//gameObject->getModel(i).setShader(Shader);
 			this->transModels[this->nrOfTrans].modelPtr = gameObject->getModel(i);
 			this->transModels[this->nrOfTrans].worldPtr = &gameObject->getWorldMatrix();
-
+			gameObject->getModel(i)->setShader(System::shaderManager->getForwardShader());
 			this->nrOfTrans++;
 			/*Model* *ptr = new Model*[4];
 			ptr[0] = new Model;
@@ -60,6 +60,7 @@ void GameObjectHandler::addObject(GameObject *& gameObject)
 				this->expandOpaqueModels();
 			this->opaqueModels[this->nrOfOpaque].modelPtr = gameObject->getModel(i);
 			this->opaqueModels[this->nrOfOpaque].worldPtr = &gameObject->getWorldMatrix();
+			gameObject->getModel(i)->setShader(System::shaderManager->getForwardShader());
 			this->nrOfOpaque++;
 		}
 	}

@@ -121,6 +121,9 @@
     </ClCompile>
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Geomety.cpp" />
+    <ClCompile Include="ShaderManager.cpp">
+      <Filter>Shaders</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Button.h">
