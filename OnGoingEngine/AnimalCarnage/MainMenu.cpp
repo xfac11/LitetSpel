@@ -1,5 +1,6 @@
 #include "MainMenu.h"
 #include "MainGui.h"
+#include "OptionsGui.h"
 
 MainMenu::MainMenu()
 {
@@ -15,8 +16,8 @@ MainMenu::~MainMenu()
 
 bool MainMenu::initailize()
 {
-	this->main = new MainGui();
-	this->options = new MainGui();
+	this->main = new MainGui(this);
+	this->options = new OptionsGui(this);
 	this->main->initialize();
 	this->options->initialize();
 

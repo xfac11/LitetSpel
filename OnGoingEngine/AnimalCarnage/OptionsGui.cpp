@@ -1,11 +1,8 @@
 #include "OptionsGui.h"
 
-
-
-OptionsGui::OptionsGui()
+OptionsGui::OptionsGui(State * myState) : GuiBase(myState)
 {
 }
-
 
 OptionsGui::~OptionsGui()
 {

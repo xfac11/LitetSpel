@@ -6,7 +6,7 @@
 class OptionsGui : public GuiBase
 {
 public:
-	OptionsGui();
+	OptionsGui(State* myState);
 	virtual ~OptionsGui();
 
 	bool initialize();

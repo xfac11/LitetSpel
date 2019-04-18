@@ -1,5 +1,7 @@
 #include"System.h"
 #include "MainMenu.h"
+#include "GunGameState.h"
+
 //Keyboard* System::theKeyboard = 0;//for static
 GraphicsDevice* System::theGraphicDevice = 0;
 Mouse* System::theMouse = 0;
@@ -293,6 +295,7 @@ System::~System()
 	delete this->theGraphicDevice;
 
 	delete System::states[0];
+	delete System::states[1];
 	delete System::commonStates;
 	delete System::spriteBatch;
 	delete System::fontComicSans;
@@ -355,6 +358,8 @@ bool System::initialize()
 
 	System::states.push_back(new MainMenu());
 	System::states[MAINMENU]->initailize();
+	System::states.push_back(new GunGameState());
+	System::states[GUNGAME]->initailize();
 
 	return true;
 }
@@ -853,4 +858,9 @@ SpriteFont * System::getFontComicSans()
 void System::closeWindow()
 {
 	SendMessage(System::fusk->hwnd, WM_CLOSE, 0, 0);
+}
+
+void System::setState(GameState state)
+{
+	System::fusk->currentState = state;
 }

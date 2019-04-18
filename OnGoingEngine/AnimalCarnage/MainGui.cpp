@@ -1,5 +1,6 @@
 #include "MainGui.h"
 #include "System.h"
+#include "MainMenu.h"
 
 void MainGui::changeSelected()
 {
@@ -33,7 +34,7 @@ void MainGui::changeSelected()
 	}
 }
 
-MainGui::MainGui()
+MainGui::MainGui(State * myState) : GuiBase(myState)
 {
 	this->selectedElement = nullptr;
 
@@ -91,6 +92,12 @@ bool MainGui::update(float deltaTime)
 		if (this->selectedElement == this->quitButton)
 		{
 			System::closeWindow();
+		}
+		else if (this->selectedElement == this->playButton)
+		{
+			//MainMenu* state = dynamic_cast<MainMenu*>(this->myState);
+			//state->setCurrentMenu(OPTIONS);
+			System::setState(GUNGAME);
 		}
 	}
 

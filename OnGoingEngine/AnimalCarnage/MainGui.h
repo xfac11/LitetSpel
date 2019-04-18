@@ -16,7 +16,7 @@ private:
 	void changeSelected();
 
 public:
-	MainGui();
+	MainGui(State* myState);
 	virtual ~MainGui();
 
 	bool initialize();

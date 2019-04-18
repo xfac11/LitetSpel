@@ -35,7 +35,8 @@ using namespace DirectX;
 //using Microsoft::WRL::ComPtr;
 
 enum GameState {
-	MAINMENU
+	MAINMENU,
+	GUNGAME
 };
 
 class System
@@ -122,5 +123,6 @@ public:
 	static CommonStates* getCommonStates();
 	static SpriteFont* getFontComicSans();
 	static void closeWindow();
+	static void setState(GameState state);
 };
 #endif
