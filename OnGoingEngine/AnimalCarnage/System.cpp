@@ -653,7 +653,7 @@ void System::run()
 		ShowWindow(this->hwnd, this->nCMDShow);
 		//graphics->initImgui(this->hwnd);
 		Model** model;
-		theModelLoader->loadModel(model, "D:\TestModels\anim_test3.lu"); //Library test
+		theModelLoader->loadModel(model, "D:\\TestModels\\anim_test3.lu"); //Library test
 		while (WM_QUIT != msg.message)
 		{
 			if (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE))
