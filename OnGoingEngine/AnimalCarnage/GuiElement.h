@@ -19,8 +19,8 @@ public:
 	GuiElement(DirectX::SimpleMath::Vector2 position);
 	virtual ~GuiElement();
 
-	virtual bool update(float deltaTime);
-	virtual bool render(DirectX::SpriteBatch* spriteBatch);
+	//virtual bool update(float deltaTime);
+	//virtual bool render(DirectX::SpriteBatch* spriteBatch);
 
 	void setConnectedElements(GuiElement* left, GuiElement* right, GuiElement* up, GuiElement* down);
 

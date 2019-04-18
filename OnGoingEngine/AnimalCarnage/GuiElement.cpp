@@ -8,7 +8,7 @@ GuiElement::~GuiElement()
 {
 }
 
-bool GuiElement::update(float deltaTime)
+/*bool GuiElement::update(float deltaTime)
 {
 	return true;
 }
@@ -16,7 +16,7 @@ bool GuiElement::update(float deltaTime)
 bool GuiElement::render(DirectX::SpriteBatch * spriteBatch)
 {
 	return true;
-}
+}*/
 
 void GuiElement::setConnectedElements(GuiElement * left, GuiElement * right, GuiElement * up, GuiElement * down)
 {
