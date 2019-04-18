@@ -111,6 +111,12 @@
     <ClCompile Include="Shader.cpp">
       <Filter>Shaders</Filter>
     </ClCompile>
+    <ClCompile Include="GunGameState.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="OptionsGui.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Button.h">
@@ -232,6 +238,12 @@
     </ClInclude>
     <ClInclude Include="ShaderManager.h">
       <Filter>Shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="OptionsGui.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="GunGameState.h">
+      <Filter>Header</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
