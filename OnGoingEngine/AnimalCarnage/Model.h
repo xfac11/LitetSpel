@@ -16,13 +16,16 @@ public:
 	
 	Model();
 	~Model();
-	void setShader(Shader* theShader);
 	int getOpacity();
+
 	Shader* getShader();
+	void setShader(Shader* theShader);
+
 	void setTexture(std::string file);
 	void setMesh(std::vector<Vertex3D> aMesh,DWORD *indices, int numberOfIndices);
 	void setSampler();
 	void setSampler(D3D11_TEXTURE_ADDRESS_MODE type, D3D11_FILTER filter, D3D11_COMPARISON_FUNC comFunc);
+
 	void draw();
 private:
 	std::vector<Vertex3D> mesh;

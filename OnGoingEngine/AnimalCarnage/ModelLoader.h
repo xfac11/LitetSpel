@@ -14,7 +14,7 @@ public:
 	std::string getPath() const;
 
 private:
-	std::string path = "Resources\Models";
+	std::string path = "Resources\\Models\\";
 };
 
 #endif // !MODELLOADER_H
