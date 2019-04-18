@@ -10,16 +10,16 @@ namespace Luna {
 		Reader();
 		~Reader();
 
-		void readFile(const char* filePath);
+		void readFile(const char* filePath); //Entry point
 
 		unsigned int getMeshCount() const;
 		unsigned int getMaterialCount() const;
 		unsigned int getSkeletonCount() const;
 
 		void getMeshes(std::vector<Mesh>& meshes);
-		void getMesh(int id);
-		void getVertices(int meshID);
-		void getIndices(int meshID);
+		Mesh getMesh(int id) const;
+		void getVertices(int meshID, std::vector<Vertex>& vertices);
+		void getIndices(int meshID, std::vector<Index>& indices);
 
 	private:
 		void read(std::ifstream& infile, Scene& scene);
@@ -35,9 +35,14 @@ namespace Luna {
 		void read(std::ifstream& infile, Keyframe& frame);
 		void read(std::ifstream& infile, BoundingBox& boundingBox);
 
+		void clean();
+
 		Scene scene;
 		std::vector<Mesh> meshes;
-		std::vector<MeshData> meshdata;
+		std::vector<Vertex*> meshVertices;
+		std::vector<Index*> meshIndices;
+
+		//std::vector<MeshData> meshdata;
 
 		unsigned int meshCount;
 		unsigned int materialCount;

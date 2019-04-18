@@ -11,6 +11,7 @@ namespace Luna {
 		void setID(unsigned int id);
 		unsigned int getID() const;
 		std::vector<Vertex> vertices;
+		std::vector<Index> indices;
 
 	private:
 		unsigned int id;

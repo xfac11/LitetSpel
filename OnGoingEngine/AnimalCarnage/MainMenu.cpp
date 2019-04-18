@@ -1,20 +1,27 @@
 #include "MainMenu.h"
 #include "MainGui.h"
+#include "OptionsGui.h"
 
 MainMenu::MainMenu()
 {
-	this->gui = nullptr;
+	this->main = nullptr;
+	this->options = nullptr;
 }
 
 MainMenu::~MainMenu()
 {
-	delete this->gui;
+	delete this->main;
+	delete this->options;
 }
 
 bool MainMenu::initailize()
 {
-	this->gui = new MainGui();
-	this->gui->initialize();
+	this->main = new MainGui(this);
+	this->options = new OptionsGui(this);
+	this->main->initialize();
+	this->options->initialize();
+
+	this->gui = main;
 
 	return true;
 }
@@ -33,5 +40,19 @@ bool MainMenu::update(float deltaTime)
 
 void MainMenu::shutDown()
 {
-	delete this->gui;
+	delete this->main;
+	delete this->options;
+}
+
+void MainMenu::setCurrentMenu(MainMenuGui menu)
+{
+	switch (menu)
+	{
+	case MAIN:
+		this->gui = main;
+		break;
+	case OPTIONS:
+		this->gui = options;
+		break;
+	}
 }

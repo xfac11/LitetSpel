@@ -1,6 +1,6 @@
 #include "GuiBase.h"
 
-GuiBase::GuiBase()
+GuiBase::GuiBase(State * myState) : myState(myState)
 {
 }
 

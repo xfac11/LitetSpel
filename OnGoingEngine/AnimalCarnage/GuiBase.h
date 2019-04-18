@@ -1,10 +1,15 @@
 #ifndef GUI_BASE_H
 #define GUI_BASE_H
 
+class State;
+
 class GuiBase
 {
+protected:
+	State* myState;
+
 public:
-	GuiBase();
+	GuiBase(State* myState);
 	virtual ~GuiBase();
 
 	virtual bool initialize() = 0;

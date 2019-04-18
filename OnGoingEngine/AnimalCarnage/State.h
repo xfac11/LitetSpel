@@ -2,6 +2,7 @@
 #define STATE_H
 
 #include"GameObject.h"
+#include "GuiBase.h"
 
 class State
 {
@@ -13,7 +14,7 @@ public:
 	virtual bool update(float deltaTime) = 0;
 	virtual void shutDown() = 0;
 protected:
-	//UI * ui;
+	GuiBase* gui;
 	//vector<Gameobject> objects;
 	//vector<Gameobject> transObjects;
 
