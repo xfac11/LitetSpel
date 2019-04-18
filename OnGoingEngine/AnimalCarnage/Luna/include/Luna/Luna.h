@@ -10,80 +10,80 @@ namespace Luna {
 	//};
 
 	struct Scene {
-		unsigned int meshCount;
-		unsigned int skeletonCount;
-		unsigned int materialCount;
+		unsigned int meshCount = 0;
+		unsigned int skeletonCount = 0;
+		unsigned int materialCount = 0;
 	};
 
 	struct Mesh {
-		char name[NAME_SIZE];
-		unsigned int id;
-		float pos[3];
-		unsigned int vertexCount;
-		unsigned int indexCount;
-		unsigned int materialID;
+		char name[NAME_SIZE] = "\0";
+		unsigned int id = 0;
+		float pos[3] = { 0.0f };
+		unsigned int vertexCount = 0;
+		unsigned int indexCount = 0;
+		unsigned int materialID = 0;
 		bool hasSkeleton = false;
 		bool hasBoundingBox = false;
 	};
 
 	struct Vertex {
-		float position[3];
-		float uv[2];
-		float normal[3];
-		float tangent[3];
-		float bitangent[3];
+		float position[3] = { 0.0f };
+		float uv[2] = { 0.0f };
+		float normal[3] = { 0.0f };
+		float tangent[3] = { 0.0f };
+		float bitangent[3] = { 0.0f };
 	};
 
 	struct Index {
-		unsigned int vertIndex;
+		unsigned int vertIndex = 0;
 	};
 
 	struct Material {
-		unsigned int index;
-		float diffuseVal[3];
-		float ambientVal[3];
-		float specularVal[3];
-		char diffuseTexPath[PATH_SIZE];
+		unsigned int index = 0;
+		float diffuseVal[3] = { 0.0f };
+		float ambientVal[3] = { 0.0f };
+		float specularVal[3] = { 0.0f };
+		char diffuseTexPath[PATH_SIZE] = "";
 		bool hasNormalMap = false;
 	};
 
 	struct NormalMap {
-		char normalTexPath[PATH_SIZE];
+		char normalTexPath[PATH_SIZE] = "";
 	};
 
 	struct Weights {
-		unsigned int jointIDs[4];
-		float weights[4];
+		unsigned int jointIDs[4] = { 0 };
+		float weights[4] = { 0.0f };
 	};
 
 	struct Skeleton {
-		unsigned int skeletonID;
-		unsigned int jointCount;
-		unsigned int animationCount;
+		unsigned int skeletonID = 0;
+		unsigned int jointCount = 0;
+		unsigned int animationCount = 0;
 	};
 
 	struct Joint {
-		char jointName[NAME_SIZE];
-		unsigned int jointID;;
-		unsigned int parentID;
+		char jointName[NAME_SIZE] = "";
+		unsigned int jointID = 0;
+		unsigned int parentID = 0;
 		float bindposeMatrix[4][4];
 	};
 
 	struct Animation {
-		float fps;
-		float duration;
-		char animationName[NAME_SIZE];
-		unsigned int animationID;
-		unsigned int keyframeCount;
+		float fps = 0.0f;
+		float duration = 0.0f;
+		char animationName[NAME_SIZE] = "";
+		unsigned int animationID = 0;
+		unsigned int keyframeCount = 0;
 	};
 
 	struct Keyframe {
-		float timePosition;
+		float timePosition = 0.0f;
 		float keyframeMatrix[4][4];
 	};
 
 	struct BoundingBox {
-		float pos[3];
-		float halfSize[3];
+		float pos[3] = { 0.0f };
+		float halfSize[3] = { 0.0f };
 	};
 }
