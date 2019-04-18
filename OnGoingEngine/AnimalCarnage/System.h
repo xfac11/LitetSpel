@@ -27,6 +27,7 @@
 #include "SpriteFont.h"
 #include "SpriteBatch.h"
 #include "ModelLoader.h"
+#include"ShaderManager.h"
 
 using namespace DirectX;
 //using namespace DirectX::SimpleMath;
@@ -73,7 +74,7 @@ private:
 	GameObject* playerOne;
 	GameObject* playerTwo;
 	int currentInput; //imgui, controlls input
-	ForwardShader* theForwardShader;
+	//ForwardShader* theForwardShader;
 	Camera* theCamera;
 	//Direction forward; 
 	//Direction left_right;
@@ -117,6 +118,7 @@ public:
 	static ID3D11Device*& getDevice();
 	static ID3D11DeviceContext*& getDeviceContext();
 
+	static ShaderManager* shaderManager;
 	static System* fusk;
 	static Keyboard* theKeyboard;
 	static Mouse* theMouse;

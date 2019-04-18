@@ -1,11 +1,14 @@
 #ifndef GUN_GAME_STATE_H
 #define GUN_GAME_STATE_H
-
 #include "State.h"
+#include "Player.h"
 //#include "GamePad.h"
 class GunGameState : public State
 {
 private:
+	int nrOfPlayers;
+	Player** player;
+
 	//rumble
 	struct RumbleTemp
 	{
@@ -25,9 +28,10 @@ private:
 		bool grounded;
 		DirectX::XMFLOAT3 direction;
 	};
-	PlayerTemp player[4];
+	PlayerTemp tplayer[4];
 
 	void updateRumble(float deltaTime, int id);
+
 public:
 	GunGameState();
 	~GunGameState();

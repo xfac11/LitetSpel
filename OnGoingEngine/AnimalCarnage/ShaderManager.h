@@ -6,9 +6,17 @@ class ShaderManager
 public:
 	ShaderManager();
 	~ShaderManager();
+	void initialize();
+	//void addShader(ForwardShader *& shader);
+	ForwardShader*& getForwardShader();
 private:
-	ForwardShader *fShader;
+	ForwardShader* fShader;
 
+	//Shader* *shaders;
+	//int cap;
+	//int nrOfShaders;
+
+	//ForwardShader* fShader;
 	//first
 	//DeferredShader *dShader;
 	//second

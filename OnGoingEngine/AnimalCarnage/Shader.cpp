@@ -5,7 +5,7 @@ Shader::Shader()
 	this->geometryShader = nullptr;
 	this->pixelShader = nullptr;
 	this->vertexLayout = nullptr;
-	this->vertexShader = NULL;
+	this->vertexShader = nullptr;
 	this->comShader = nullptr;
 }
 

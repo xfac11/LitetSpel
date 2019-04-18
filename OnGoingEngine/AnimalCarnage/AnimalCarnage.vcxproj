@@ -168,7 +168,10 @@
     <ClCompile Include="MouseEvent.cpp" />
     <ClCompile Include="OptionsGui.cpp" />
     <ClCompile Include="Shader.cpp" />
-    <ClCompile Include="Sprite.cpp" />
+    <ClCompile Include="Sprite.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="State.cpp" />
     <ClCompile Include="System.cpp" />
     <ClCompile Include="Texture.cpp" />
@@ -219,7 +222,10 @@
     <ClInclude Include="resource1.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="ShaderManager.h" />
-    <ClInclude Include="Sprite.h" />
+    <ClInclude Include="Sprite.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="State.h" />
     <ClInclude Include="Structs.h" />
     <ClInclude Include="System.h" />

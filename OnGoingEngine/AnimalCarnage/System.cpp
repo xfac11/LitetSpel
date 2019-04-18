@@ -15,7 +15,7 @@ System* System::fusk = nullptr;
 CommonStates* System::commonStates = nullptr;
 SpriteBatch* System::spriteBatch = nullptr;
 SpriteFont* System::fontComicSans = nullptr;
-
+ShaderManager* System::shaderManager = nullptr;
 HWND System::InitWindow(HINSTANCE hInstance, float height, float width)
 {
 	WNDCLASSEX wcex = { 0 };
@@ -287,13 +287,13 @@ System::System(HINSTANCE hInstance, LPCSTR name, int nCmdShow)
 System::~System()
 {
 	delete this->theCamera;
-	delete this->theForwardShader;
+	//delete this->theForwardShader;
 	delete this->theMouse;
 	delete this->theKeyboard;
 	delete this->theGamePad;
 	delete this->theTracker;
 	delete this->theModelLoader;
-	
+	delete this->shaderManager;
 	ImGui_ImplDX11_Shutdown();
 	ImGui_ImplWin32_Shutdown();
 	ImGui::DestroyContext();
@@ -311,18 +311,20 @@ bool System::initialize()
 {
 	this->theCamera = new Camera;
 	this->camPos = { 0,0,-2.f };
-	this->theForwardShader = new ForwardShader;
+	//this->theForwardShader = new ForwardShader;
 	this->theKeyboard = new Keyboard;
 	this->theMouse = new Mouse;
 	this->theGamePad = new GamePad;
 	this->theTracker = new GamePad::ButtonStateTracker;
 	this->theModelLoader = new ModelLoader;
-	this->theForwardShader->initialize();
-	this->obj = new GameObject(this->theForwardShader);
-	this->obj2 = new GameObject(this->theForwardShader);
+	this->shaderManager = new ShaderManager;
+	this->shaderManager->initialize();
+	//this->theForwardShader->initialize();
+	this->obj = new GameObject(shaderManager->getForwardShader());
+	this->obj2 = new GameObject(shaderManager->getForwardShader());
 	
-	this->playerOne = new GameObject(this->theForwardShader);
-	this->playerTwo = new GameObject(this->theForwardShader);
+	this->playerOne = new GameObject(shaderManager->getForwardShader());
+	this->playerTwo = new GameObject(shaderManager->getForwardShader());
 	std::vector<Vertex3D> mesh;
 	Vertex3D temp[] = {
 		DirectX::XMFLOAT4(-0.500000,-0.500000, 0.500000,1.0f),
@@ -346,15 +348,36 @@ bool System::initialize()
 		mesh.push_back(temp[i]);
 	}
 
-	this->obj->setMesh(mesh, indices, 6,0);
+	std::vector<Vertex3D> mesh2;
+	Vertex3D temp2[] = {
+		DirectX::XMFLOAT4(-0.500000,0.500000, 0.500000,1.0f),
+		DirectX::XMFLOAT2(1,0),
+		DirectX::XMFLOAT4(0,0,-1,0),
+		DirectX::XMFLOAT4(00000, 1.000000, 0.500000,1.0f),
+		DirectX::XMFLOAT2(1,0),
+		DirectX::XMFLOAT4(0,0,-1,0),
+		DirectX::XMFLOAT4(0.500000, 0.500000, 0.500000,1.0f),
+		DirectX::XMFLOAT2(1,0),
+		DirectX::XMFLOAT4(0,0,-1,0)
+	};
+	DWORD indices2[] = {
+		0,1,2
+	};
+	for (int i = 0; i < 3; i++)
+	{
+		mesh2.push_back(temp2[i]);
+	}
+
+	this->obj->addModel(mesh, indices, 6);
 	this->obj->setScale(2, 0.5, 0.5);
-	this->obj2->setMesh(mesh, indices, 6, 0);
+	this->obj2->addModel(mesh, indices, 6);
 	this->obj2->setScale(2, 1, 1);
-	
+
 	this->obj->setScale(0.5f, 0.3f, 0.3f);
-	this->playerOne->setMesh(mesh, indices, 6,0);
-	this->playerOne->setScale(0.3f, 0.4f, 0.1f);
-	this->playerTwo->setMesh(mesh, indices, 6,0);
+	this->playerOne->addModel(mesh, indices, 6);
+	this->playerOne->addModel(mesh2, indices2, 3);
+	this->playerOne->setScale(0.5f, 0.4f, 0.1f);
+	this->playerTwo->addModel(mesh, indices, 6);
 	this->playerTwo->setScale(0.6f, 0.8f, 0.1f);
 	this->handler.addObject(this->obj2);
 	this->handler.addObject(this->obj);
@@ -609,8 +632,8 @@ void System::render()
 	//render imgui in states render
 	this->theCamera->Render();
 	
-	this->theForwardShader->setViewProj(this->theCamera->GetViewMatrix(), this->theGraphicDevice->getProj(), DirectX::XMFLOAT4(this->theCamera->GetPosition().x, this->theCamera->GetPosition().y, this->theCamera->GetPosition().z, 1.0f));
-	this->theForwardShader->setShaders();//tänker att man kör denna sen renderar allla som använder denna shader sen tar setshader på nästa osv.
+	shaderManager->getForwardShader()->setViewProj(this->theCamera->GetViewMatrix(), this->theGraphicDevice->getProj(), DirectX::XMFLOAT4(this->theCamera->GetPosition().x, this->theCamera->GetPosition().y, this->theCamera->GetPosition().z, 1.0f));
+	shaderManager->getForwardShader()->setShaders();//tänker att man kör denna sen renderar allla som använder denna shader sen tar setshader på nästa osv.
 	
 	this->handler.draw();
 	/*this->obj->draw();
@@ -659,7 +682,7 @@ void System::run()
 		ShowWindow(this->hwnd, this->nCMDShow);
 		//graphics->initImgui(this->hwnd);
 		Model** model;
-		//theModelLoader->loadModel(model, "D:\\TestModels\\anim_test3.lu"); //Library test
+		theModelLoader->loadModel(model, "Resources\\Models\\anim_test3.lu"); //Library test
 		while (WM_QUIT != msg.message)
 		{
 			if (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE))

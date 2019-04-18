@@ -16,7 +16,9 @@ void ModelLoader::loadModel(Model**&model, const char* filePath)
 
 	unsigned int meshCount = reader.getMeshCount();
 	std::vector<Luna::Vertex> vertices;
+	std::vector<Luna::Index> indices;
 	reader.getVertices(0, vertices);
+	reader.getIndices(0, indices);
 	/*model = new Model*[meshCount];
 	for (int i = 0; i < meshCount; i++)
 	{
@@ -24,8 +26,6 @@ void ModelLoader::loadModel(Model**&model, const char* filePath)
 		model[i]->setMesh()
 		//model[i]->setTexture();
 	}*/
-	
-	//std::vector<Luna::Vertex> vertices;
 
 	//model.setMesh(vertices, indices, mesh.indexCount);
 	

@@ -23,17 +23,21 @@ GunGameState::GunGameState()
 		theRumble[i].rumbleClock = 0.f;
 		theRumble[i].rumbleTime = 0.f;
 		theRumble[i].rumble = { 0.f,0.f };
-		player[i].isJumping = false;
-		player[i].airTimer = 0.f;
+		tplayer[i].isJumping = false;
+		tplayer[i].airTimer = 0.f;
 	}
+	this->player = nullptr;
+	this->nrOfPlayers = 0;
 }
 
 GunGameState::~GunGameState()
 {
+	shutDown();
 }
 
 bool GunGameState::initailize()
 {
+	player = new Player * [nrOfPlayers];
 	return true;
 }
 
@@ -61,41 +65,57 @@ bool GunGameState::update(float deltaTime)
 			{
 				float dir = 5 * state.thumbSticks.leftX;// / stickAbsL;
 
-				this->player[i].direction = DirectX::XMFLOAT3(dir * deltaTime, 0, 0);
+				this->tplayer[i].direction = DirectX::XMFLOAT3(dir * deltaTime, 0, 0);
 
 			}
 			else if (state.dpad.right || state.dpad.left)
 			{
-				this->player[i].direction = DirectX::XMFLOAT3((state.dpad.right - state.dpad.left) * deltaTime, 0, 0);
+				this->tplayer[i].direction = DirectX::XMFLOAT3((state.dpad.right - state.dpad.left) * deltaTime, 0, 0);
 
 			}
-			else if (this->player[i].isJumping == false)
-				this->player[i].direction = { 0,0,0 };
+			else if (this->tplayer[i].isJumping == false)
+				this->tplayer[i].direction = { 0,0,0 };
 			else
-				this->player[i].direction.y = 0; //= { 0,0,0 };
+				this->tplayer[i].direction.y = 0; //= { 0,0,0 };
 
 
 			//jump
-			if (state.buttons.x && player[i].grounded == true ||
-				state.buttons.y && player[i].grounded == true)//== DirectX::GamePad::ButtonStateTracker::PRESSED 
+			if (state.buttons.x && tplayer[i].grounded == true ||
+				state.buttons.y && tplayer[i].grounded == true)//== DirectX::GamePad::ButtonStateTracker::PRESSED 
 			{
 				//
-				this->player[i].isJumping = true;
-				this->player[i].grounded = false;
+				this->tplayer[i].isJumping = true;
+				this->tplayer[i].grounded = false;
 			}
 
 			//falling/jump function
-			if (this->player[i].grounded == false)
+			if (this->tplayer[i].grounded == false)
 			{
-				this->player[i].airTimer += deltaTime;
+				this->tplayer[i].airTimer += deltaTime;
 				//continue here
 			}
-			this->player[i].direction.y += (-9.82f * this->player[i].airTimer + (5.f*this->player[i].isJumping)) * deltaTime;
+			this->tplayer[i].direction.y += (-9.82f * this->tplayer[i].airTimer + (5.f*this->tplayer[i].isJumping)) * deltaTime;
 
-			if (this->player[i].grounded == true)
+	//for (int i = 0; i < nrOfPlayers; i++)
+	//{
+	//	player[i]->update();
+	//	//swap characters
+	//	//player[i]->SelectCharacter();
+	//	for (int j = 0; j < nrOfPlayers; j++)
+	//	{
+	//		//collision detection
+	//		if (Intersects(player[i]->GetBody(), player[j]->GetBody()))
+	//		{
+	//			//logic
+	//		}
+	//	}
+
+	//}
+
+			if (this->tplayer[i].grounded == true)
 			{
-				this->player[i].airTimer = 0.f;
-				this->player[i].isJumping = false;
+				this->tplayer[i].airTimer = 0.f;
+				this->tplayer[i].isJumping = false;
 
 			}
 
@@ -145,11 +165,16 @@ bool GunGameState::update(float deltaTime)
 
 void GunGameState::shutDown()
 {
+	for (int i = 0; i < nrOfPlayers; i++)
+	{
+		delete player[i];
+	}
+	delete[] player;
 }
 
 DirectX::XMFLOAT3 GunGameState::getDirection(int id)
 {
-	return player[id].direction;
+	return tplayer[id].direction;
 }
 
 bool GunGameState::controllerIsConnected(int controllerPort)
