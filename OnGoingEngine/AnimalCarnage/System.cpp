@@ -6,6 +6,7 @@
 GraphicsDevice* System::theGraphicDevice = 0;
 Mouse* System::theMouse = 0;
 Keyboard* System::theKeyboard = 0;
+ModelLoader* System::theModelLoader = 0;
 std::vector<State*> System::states = std::vector<State*>();
 GameState System::currentState = GameState::MAINMENU;
 System* System::fusk = nullptr;
@@ -287,6 +288,7 @@ System::~System()
 	delete this->theForwardShader;
 	delete this->theMouse;
 	delete this->theKeyboard;
+	delete this->theModelLoader;
 	
 	ImGui_ImplDX11_Shutdown();
 	ImGui_ImplWin32_Shutdown();
@@ -308,6 +310,7 @@ bool System::initialize()
 	this->theForwardShader = new ForwardShader;
 	this->theKeyboard = new Keyboard;
 	this->theMouse = new Mouse;
+	this->theModelLoader = new ModelLoader;
 	this->theForwardShader->initialize();
 	this->obj = new GameObject(this->theForwardShader);
 	this->obj2 = new GameObject(this->theForwardShader);
@@ -649,6 +652,8 @@ void System::run()
 		initImgui();
 		ShowWindow(this->hwnd, this->nCMDShow);
 		//graphics->initImgui(this->hwnd);
+		Model** model;
+		theModelLoader->loadModel(model, "D:\TestModels\anim_test3.lu"); //Library test
 		while (WM_QUIT != msg.message)
 		{
 			if (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE))

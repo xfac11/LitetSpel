@@ -11,9 +11,10 @@ public:
 	~ModelLoader();
 
 	void loadModel(Model **&model, const char* filePath);
+	std::string getPath() const;
 
 private:
-
+	std::string path = "Resources\Models";
 };
 
 #endif // !MODELLOADER_H

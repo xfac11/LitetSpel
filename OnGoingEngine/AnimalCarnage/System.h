@@ -25,6 +25,7 @@
 #include "CommonStates.h"
 #include "SpriteFont.h"
 #include "SpriteBatch.h"
+#include "ModelLoader.h"
 
 using namespace DirectX;
 //using namespace DirectX::SimpleMath;
@@ -117,6 +118,7 @@ public:
 	static System* fusk;
 	static Keyboard* theKeyboard;
 	static Mouse* theMouse;
+	static ModelLoader* theModelLoader;
 	static SpriteBatch* getSpriteBatch();
 	static CommonStates* getCommonStates();
 	static SpriteFont* getFontComicSans();
