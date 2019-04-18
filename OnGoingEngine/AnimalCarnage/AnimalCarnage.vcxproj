@@ -138,6 +138,7 @@
     <ClCompile Include="GraphicsDevice.cpp" />
     <ClCompile Include="GuiBase.cpp" />
     <ClCompile Include="GuiElement.cpp" />
+    <ClCompile Include="GunGameState.cpp" />
     <ClCompile Include="imgui\imgui.cpp" />
     <ClCompile Include="imgui\imgui_demo.cpp" />
     <ClCompile Include="imgui\imgui_draw.cpp" />
@@ -156,6 +157,7 @@
     <ClCompile Include="ModelLoader.cpp" />
     <ClCompile Include="Mouse.cpp" />
     <ClCompile Include="MouseEvent.cpp" />
+    <ClCompile Include="OptionsGui.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="State.cpp" />
@@ -174,6 +176,7 @@
     <ClInclude Include="GraphicsDevice.h" />
     <ClInclude Include="GuiBase.h" />
     <ClInclude Include="GuiElement.h" />
+    <ClInclude Include="GunGameState.h" />
     <ClInclude Include="imgui\imconfig.h" />
     <ClInclude Include="imgui\imgui.h" />
     <ClInclude Include="imgui\imgui_impl_dx11.h" />
@@ -194,6 +197,7 @@
     <ClInclude Include="ModelLoader.h" />
     <ClInclude Include="Mouse.h" />
     <ClInclude Include="MouseEvent.h" />
+    <ClInclude Include="OptionsGui.h" />
     <ClInclude Include="resource1.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="ShaderManager.h" />

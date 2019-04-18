@@ -6,6 +6,10 @@ Mouse* System::theMouse = 0;
 Keyboard* System::theKeyboard = 0;
 std::vector<State*> System::states = std::vector<State*>();
 GameState System::currentState = GameState::MAINMENU;
+System* System::fusk = nullptr;
+CommonStates* System::commonStates = nullptr;
+SpriteBatch* System::spriteBatch = nullptr;
+SpriteFont* System::fontComicSans = nullptr;
 
 HWND System::InitWindow(HINSTANCE hInstance, float height, float width)
 {
@@ -233,6 +237,8 @@ LRESULT CALLBACK System::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM 
 
 System::System(HINSTANCE hInstance, LPCSTR name, int nCmdShow)
 {
+	System::fusk = this;
+
 	this->hinstance = hInstance;
 	this->applicationName = name;
 	this->hwnd = InitWindow(this->hinstance, HEIGHT, WIDTH); 
@@ -287,6 +293,9 @@ System::~System()
 	delete this->theGraphicDevice;
 
 	delete System::states[0];
+	delete System::commonStates;
+	delete System::spriteBatch;
+	delete System::fontComicSans;
 }
 
 bool System::initialize()
@@ -339,9 +348,13 @@ bool System::initialize()
 	this->handler.addObject(this->obj);
 	this->handler.addObject(this->playerOne);
 	this->handler.addObject(this->playerTwo);
+
+	System::commonStates = new CommonStates(System::getDevice());
+	System::spriteBatch = new SpriteBatch(System::getDeviceContext());
+	System::fontComicSans = new SpriteFont(System::getDevice(), L"./Fonts/comic_sans.spritefont");
+
 	System::states.push_back(new MainMenu());
 	System::states[MAINMENU]->initailize();
-
 
 	return true;
 }
@@ -820,4 +833,24 @@ ID3D11Device *& System::getDevice()
 ID3D11DeviceContext *& System::getDeviceContext()
 {
 	return theGraphicDevice->getDeviceContext();
+}
+
+SpriteBatch * System::getSpriteBatch()
+{
+	return System::spriteBatch;
+}
+
+CommonStates * System::getCommonStates()
+{
+	return System::commonStates;
+}
+
+SpriteFont * System::getFontComicSans()
+{
+	return System::fontComicSans;
+}
+
+void System::closeWindow()
+{
+	SendMessage(System::fusk->hwnd, WM_CLOSE, 0, 0);
 }

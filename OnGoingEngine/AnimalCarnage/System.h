@@ -22,6 +22,9 @@
 #include "imgui/imgui_impl_win32.h"
 #include "imgui/imgui_impl_dx11.h"
 #include "State.h"
+#include "CommonStates.h"
+#include "SpriteFont.h"
+#include "SpriteBatch.h"
 
 using namespace DirectX;
 //using namespace DirectX::SimpleMath;
@@ -58,7 +61,9 @@ private:
 	static GraphicsDevice* theGraphicDevice;
 	static std::vector<State*> states;
 	static GameState currentState;
-
+	static CommonStates* commonStates;
+	static SpriteBatch* spriteBatch;
+	static SpriteFont* fontComicSans;
 	
 	GameObject* obj;
 	GameObject* obj2;
@@ -110,8 +115,12 @@ public:
 	static ID3D11Device*& getDevice();
 	static ID3D11DeviceContext*& getDeviceContext();
 
+	static System* fusk;
 	static Keyboard* theKeyboard;
 	static Mouse* theMouse;
-
+	static SpriteBatch* getSpriteBatch();
+	static CommonStates* getCommonStates();
+	static SpriteFont* getFontComicSans();
+	static void closeWindow();
 };
 #endif

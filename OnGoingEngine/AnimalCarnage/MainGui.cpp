@@ -35,9 +35,6 @@ void MainGui::changeSelected()
 
 MainGui::MainGui()
 {
-	this->commonStates = nullptr;
-	this->spriteBatch = nullptr;
-	this->spriteFont = nullptr;
 	this->selectedElement = nullptr;
 
 	this->playButton = nullptr;
@@ -49,20 +46,12 @@ MainGui::MainGui()
 
 MainGui::~MainGui()
 {
-	delete this->commonStates;
-	delete this->spriteBatch;
-	delete this->spriteFont;
-
 	delete this->playButton;
 	delete this->quitButton;
 }
 
 bool MainGui::initialize()
 {
-	this->commonStates = new CommonStates(System::getDevice());
-	this->spriteBatch = new SpriteBatch(System::getDeviceContext());
-	this->spriteFont = new SpriteFont(System::getDevice(), L"./Fonts/comic_sans.spritefont");
-
 	this->playButton = new Button("cat.tga", "Start", Vector2(100, 0), Vector2(1000, 100));
 	this->quitButton = new Button("cat2.tga", "Quit", Vector2(100, 200), Vector2(1000, 100));
 
@@ -75,10 +64,6 @@ bool MainGui::initialize()
 
 void MainGui::shutDown()
 {
-	delete this->commonStates;
-	delete this->spriteBatch;
-	delete this->spriteFont;
-
 	delete this->playButton;
 	delete this->quitButton;
 }
@@ -101,17 +86,25 @@ bool MainGui::update(float deltaTime)
 		this->changeSelected();
 	}
 
+	if (System::theKeyboard->KeyIsPressed('B'))
+	{
+		if (this->selectedElement == this->quitButton)
+		{
+			System::closeWindow();
+		}
+	}
+
 	return true;
 }
 
 bool MainGui::render()
 {
-	spriteBatch->Begin();
-	spriteBatch->Draw(this->playButton->getTexture(), this->playButton->getRect(), this->playButton == this->selectedElement ? DirectX::Colors::Red : DirectX::Colors::White);
-	spriteFont->DrawString(this->spriteBatch, this->playButton->getText().c_str(), this->playButton->getPosition(), DirectX::Colors::Black, 0.0f, Vector2::Zero, Vector2::One * 3);
-	spriteBatch->Draw(this->quitButton->getTexture(), this->quitButton->getRect(), this->quitButton == this->selectedElement ? DirectX::Colors::Red : DirectX::Colors::White);
-	spriteFont->DrawString(this->spriteBatch, this->quitButton->getText().c_str(), this->quitButton->getPosition(), DirectX::Colors::Black, 0.0f, Vector2::Zero, Vector2::One * 3);
-	spriteBatch->End();
+	System::getSpriteBatch()->Begin();
+	System::getSpriteBatch()->Draw(this->playButton->getTexture(), this->playButton->getRect(), this->playButton == this->selectedElement ? DirectX::Colors::Red : DirectX::Colors::White);
+	System::getFontComicSans()->DrawString(System::getSpriteBatch(), this->playButton->getText().c_str(), this->playButton->getPosition(), DirectX::Colors::Black, 0.0f, Vector2::Zero, Vector2::One * 3);
+	System::getSpriteBatch()->Draw(this->quitButton->getTexture(), this->quitButton->getRect(), this->quitButton == this->selectedElement ? DirectX::Colors::Red : DirectX::Colors::White);
+	System::getFontComicSans()->DrawString(System::getSpriteBatch(), this->quitButton->getText().c_str(), this->quitButton->getPosition(), DirectX::Colors::Black, 0.0f, Vector2::Zero, Vector2::One * 3);
+	System::getSpriteBatch()->End();
 
 	return true;
 }

@@ -2,11 +2,9 @@
 
 State::State()
 {
-	//ui = nullptr;
-
+	gui = nullptr;
 }
 
 State::~State()
 {
-	//delete ui;
 }
