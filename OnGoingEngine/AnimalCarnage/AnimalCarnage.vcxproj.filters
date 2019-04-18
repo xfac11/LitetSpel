@@ -113,14 +113,6 @@
     </ClCompile>
     <ClCompile Include="GunGameState.cpp" />
     <ClCompile Include="OptionsGui.cpp" />
-    <ClCompile Include="Animal.cpp">
-      <Filter>Source\Player</Filter>
-    </ClCompile>
-    <ClCompile Include="Bear.cpp">
-      <Filter>Source\Player</Filter>
-    </ClCompile>
-    <ClCompile Include="Player.cpp" />
-    <ClCompile Include="Geomety.cpp" />
     <ClCompile Include="ShaderManager.cpp">
       <Filter>Shaders</Filter>
     </ClCompile>
@@ -248,14 +240,6 @@
     </ClInclude>
     <ClInclude Include="GunGameState.h" />
     <ClInclude Include="OptionsGui.h" />
-    <ClInclude Include="Animal.h">
-      <Filter>Header\Player</Filter>
-    </ClInclude>
-    <ClInclude Include="Bear.h">
-      <Filter>Header\Player</Filter>
-    </ClInclude>
-    <ClInclude Include="Player.h" />
-    <ClInclude Include="Geomety.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="imgui\.gitkeep" />
