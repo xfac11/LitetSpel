@@ -111,6 +111,16 @@
     <ClCompile Include="Shader.cpp">
       <Filter>Shaders</Filter>
     </ClCompile>
+    <ClCompile Include="GunGameState.cpp" />
+    <ClCompile Include="OptionsGui.cpp" />
+    <ClCompile Include="Animal.cpp">
+      <Filter>Source\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="Bear.cpp">
+      <Filter>Source\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp" />
+    <ClCompile Include="Geomety.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Button.h">
@@ -233,6 +243,16 @@
     <ClInclude Include="ShaderManager.h">
       <Filter>Shaders</Filter>
     </ClInclude>
+    <ClInclude Include="GunGameState.h" />
+    <ClInclude Include="OptionsGui.h" />
+    <ClInclude Include="Animal.h">
+      <Filter>Header\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Bear.h">
+      <Filter>Header\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h" />
+    <ClInclude Include="Geomety.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="imgui\.gitkeep" />
@@ -253,6 +273,12 @@
     </Filter>
     <Filter Include="Imgui">
       <UniqueIdentifier>{3edf8ddc-9057-4b21-91a5-7435ad1a55ff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header\Player">
+      <UniqueIdentifier>{f7e7ee8c-858b-485a-bff7-03b1bc00223a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Player">
+      <UniqueIdentifier>{963984fc-c6a1-4232-94fd-f58e27e4d098}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

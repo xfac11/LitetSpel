@@ -67,6 +67,7 @@ void GameObjectHandler::addObject(GameObject *& gameObject)
 
 void GameObjectHandler::addObject(char* file)
 {
+	
 	//Modelloader
 	//readfile(file);
 }

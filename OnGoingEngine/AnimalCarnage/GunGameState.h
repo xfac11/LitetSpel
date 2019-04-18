@@ -2,9 +2,12 @@
 #define GUN_GAME_STATE_H
 
 #include "State.h"
-
+#include "Player.h"
 class GunGameState : public State
 {
+private:
+	int nrOfPlayers;
+	Player** player;
 public:
 	GunGameState();
 	~GunGameState();

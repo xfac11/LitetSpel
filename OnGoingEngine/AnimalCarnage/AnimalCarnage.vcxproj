@@ -22,7 +22,7 @@
     <VCProjectVersion>15.0</VCProjectVersion>
     <ProjectGuid>{499EBB3E-78A0-40E8-9463-62F4A8E86308}</ProjectGuid>
     <RootNamespace>AnimalCarnage</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -41,7 +41,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
@@ -130,11 +130,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Animal.cpp" />
+    <ClCompile Include="Bear.cpp" />
     <ClCompile Include="Button.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="ForwardShader.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GameObjectHandler.cpp" />
+    <ClCompile Include="Geomety.cpp" />
     <ClCompile Include="GraphicsDevice.cpp" />
     <ClCompile Include="GuiBase.cpp" />
     <ClCompile Include="GuiElement.cpp" />
@@ -158,6 +161,7 @@
     <ClCompile Include="Mouse.cpp" />
     <ClCompile Include="MouseEvent.cpp" />
     <ClCompile Include="OptionsGui.cpp" />
+    <ClCompile Include="Player.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="State.cpp" />
@@ -167,12 +171,15 @@
     <ClCompile Include="Transform.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Animal.h" />
+    <ClInclude Include="Bear.h" />
     <ClInclude Include="Button.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="ConstantBuffer.h" />
     <ClInclude Include="ForwardShader.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="GameObjectHandler.h" />
+    <ClInclude Include="Geomety.h" />
     <ClInclude Include="GraphicsDevice.h" />
     <ClInclude Include="GuiBase.h" />
     <ClInclude Include="GuiElement.h" />
@@ -198,6 +205,7 @@
     <ClInclude Include="Mouse.h" />
     <ClInclude Include="MouseEvent.h" />
     <ClInclude Include="OptionsGui.h" />
+    <ClInclude Include="Player.h" />
     <ClInclude Include="resource1.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="ShaderManager.h" />
