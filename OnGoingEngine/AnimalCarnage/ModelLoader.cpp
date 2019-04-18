@@ -16,7 +16,7 @@ void ModelLoader::loadModel(Model**&model, const char* filePath)
 
 	unsigned int meshCount = reader.getMeshCount();
 	std::vector<Luna::Vertex> vertices;
-	//reader.getVertices(0, vertices);
+	reader.getVertices(0, vertices);
 	/*model = new Model*[meshCount];
 	for (int i = 0; i < meshCount; i++)
 	{
