@@ -55,8 +55,6 @@ void InputHandler::inGameMode(float deltaTime,bool grounded)
 			this->isJumping=true;
 			grounded = false;
 		}
-		/*else if(grounded == false)
-			direction[0].y = -5.f * deltaTime;*/
 	
 		//jump function
 
@@ -284,9 +282,9 @@ void InputHandler::inMenuMode( )
 		//select/comfirm
 		if (tracker.a == DirectX::GamePad::ButtonStateTracker::PRESSED) //and
 		{
-			rumble.x = 0.7f;
-			rumble.y = 0.7f;
-			rumbleTime = 0.3f;
+			this->rumble.x = 0.2f;
+			this->rumble.y = 0.2f;
+			this->rumbleTime = 0.2f;
 	
 			//confirm = true;
 			this->menuLogic.confirm();
@@ -310,11 +308,11 @@ InputHandler::InputHandler()
 	this->rumble = { 0.f,0.f };
 	this->isJumping = false;
 	this->airTimer = 0.f;
-	for (int i = 0; i < 4; i++)
-	{
-		player[i].id = i;
-		player[i].Active = false;
-	}
+	//for (int i = 0; i < 4; i++)
+	//{
+	//	player[i].id = i;
+	//	player[i].Active = false;
+	//}
 	
 }
 

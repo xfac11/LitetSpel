@@ -6,6 +6,8 @@
 GraphicsDevice* System::theGraphicDevice = 0;
 Mouse* System::theMouse = 0;
 Keyboard* System::theKeyboard = 0;
+GamePad* System::theGamePad = 0;
+GamePad::ButtonStateTracker* System::theTracker = 0;
 ModelLoader* System::theModelLoader = 0;
 std::vector<State*> System::states = std::vector<State*>();
 GameState System::currentState = GameState::MAINMENU;
@@ -255,7 +257,7 @@ System::System(HINSTANCE hInstance, LPCSTR name, int nCmdShow)
 	theMouse = nullptr;
 	theMouse = new Mouse;*/
 	//theKeyboard->EnableAutoRepeatChars();
-	this->playerInputs = new InputHandler;
+	//this->playerInputs = new InputHandler;
 	this->mouseShow = true;
 	this->mouseSwitch = true;
 	this->flySwitch = true;
@@ -265,11 +267,11 @@ System::System(HINSTANCE hInstance, LPCSTR name, int nCmdShow)
 	//this->left_right = Neutral;
 	//this->up_down = Neutral;
 
-	static bool raw_input_initialized = false; //can this be local variable?
+	static bool raw_input_initialized = false; 
 	if (raw_input_initialized == false)
 	{
 		RAWINPUTDEVICE rawInputDevice;
-		rawInputDevice.usUsagePage = 0x01; //Mouse?
+		rawInputDevice.usUsagePage = 0x01; 
 		rawInputDevice.usUsage = 0x02;
 		rawInputDevice.dwFlags = 0;
 		rawInputDevice.hwndTarget = nullptr;
@@ -288,6 +290,8 @@ System::~System()
 	delete this->theForwardShader;
 	delete this->theMouse;
 	delete this->theKeyboard;
+	delete this->theGamePad;
+	delete this->theTracker;
 	delete this->theModelLoader;
 	
 	ImGui_ImplDX11_Shutdown();
@@ -310,6 +314,8 @@ bool System::initialize()
 	this->theForwardShader = new ForwardShader;
 	this->theKeyboard = new Keyboard;
 	this->theMouse = new Mouse;
+	this->theGamePad = new GamePad;
+	this->theTracker = new GamePad::ButtonStateTracker;
 	this->theModelLoader = new ModelLoader;
 	this->theForwardShader->initialize();
 	this->obj = new GameObject(this->theForwardShader);
@@ -411,20 +417,20 @@ void System::renderImgui()
 	{
 		ImGui::Text("collision no");
 	}
-	textUse = "In menu: " + this->playerInputs->getCurrentMenu();
-	ImGui::Text(textUse.c_str());
-	textUse = "Current Option: " + std::to_string(this->playerInputs->getCurrentOption());
-	ImGui::Text(textUse.c_str());
+	//textUse = "In menu: " + this->playerInputs->getCurrentMenu();
+	//ImGui::Text(textUse.c_str());
+	//textUse = "Current Option: " + std::to_string(this->playerInputs->getCurrentOption());
+	//ImGui::Text(textUse.c_str());
 	ImGui::SliderInt("Player: ", &this->currentInput, 0, 2);
 	ImGui::TextColored(ImVec4(1, 1, 0, 1), "Controllers");
 	ImGui::BeginChild("Scrolling");
-	for (int n = 0; n < 4; n++)
-	{
-		if (playerInputs->controllerIsConnected(n))
-			ImGui::Text("%02d: Connected",n);
-		else 
-			ImGui::Text("%02d: Disconnected",n);
-	}
+	//for (int n = 0; n < 4; n++)
+	//{
+	//	if (playerInputs->controllerIsConnected(n))
+	//		ImGui::Text("%02d: Connected",n);
+	//	else 
+	//		ImGui::Text("%02d: Disconnected",n);
+	//}
 	ImGui::EndChild();
 	ImGui::CaptureKeyboardFromApp(true);
 
@@ -469,51 +475,51 @@ void System::update(float deltaTime)
 	//theCamera->SetRotation(camRot);
 
 
-	bool grounded = true; //platform check
-
-	DirectX::XMFLOAT2 objF = { obj->getPosition().x,obj->getPosition().y };
-	DirectX::XMFLOAT2 scaleObj = { 0.5f, 0.3f };
-
-	DirectX::XMFLOAT2 one = { playerOne->getPosition().x,playerOne->getPosition().y };
-	DirectX::XMFLOAT2 scaleOne = { 0.3f,0.4f };
-	DirectX::XMFLOAT2 two = { playerTwo->getPosition().x,playerTwo->getPosition().y };
-	DirectX::XMFLOAT2 scaleTwo = { 0.6f,0.8f };
-	if (this->playerInputs->collision(one, scaleOne, two, scaleTwo))
-		this->collide = true;
-	else
-		this->collide = false;
 
 
-	GameObject* temp= nullptr;
-	temp = obj;
-	if (currentInput == 0)
-	{
-		temp = obj;
-	}
-	else if (currentInput == 1)
-	{
-		temp = playerOne;
-	}
-	else if (currentInput == 2)
-	{
-		temp = playerTwo;
-	}
+	//old input logic 
+	//bool grounded = true; //platform check
 
+	//DirectX::XMFLOAT2 objF = { obj->getPosition().x,obj->getPosition().y };
+	//DirectX::XMFLOAT2 scaleObj = { 0.5f, 0.3f };
 
-	DirectX::XMFLOAT2 player = {temp->getPosition().x, temp->getPosition().y};
-	DirectX::XMFLOAT2 scalePlayer = { temp->getScale().x, temp->getScale().y };
-	if (temp->getPosition().y - 0.5f*temp->getScale().y > 0.f)
-	{
-		grounded = false;
-	}
-	if (this->playerInputs->collision(player, scalePlayer, objF, scaleObj)&&currentInput!=0 )
-	{
-		grounded = true;
-	}
-	playerInputs->inMenuMode();
-	playerInputs->inGameMode(deltaTime, grounded);
-	
-	temp->move(playerInputs->getDirection(0).x, playerInputs->getDirection(0).y, playerInputs->getDirection(0).z);
+	//DirectX::XMFLOAT2 one = { playerOne->getPosition().x,playerOne->getPosition().y };
+	//DirectX::XMFLOAT2 scaleOne = { 0.3f,0.4f };
+	//DirectX::XMFLOAT2 two = { playerTwo->getPosition().x,playerTwo->getPosition().y };
+	//DirectX::XMFLOAT2 scaleTwo = { 0.6f,0.8f };
+	//if (this->playerInputs->collision(one, scaleOne, two, scaleTwo))
+	//	this->collide = true;
+	//else
+	//	this->collide = false;
+
+	//GameObject* temp= nullptr;
+	//temp = obj;
+	//if (currentInput == 0)
+	//{
+	//	temp = obj;
+	//}
+	//else if (currentInput == 1)
+	//{
+	//	temp = playerOne;
+	//}
+	//else if (currentInput == 2)
+	//{
+	//	temp = playerTwo;
+	//}
+
+	//DirectX::XMFLOAT2 player = {temp->getPosition().x, temp->getPosition().y};
+	//DirectX::XMFLOAT2 scalePlayer = { temp->getScale().x, temp->getScale().y };
+	//if (temp->getPosition().y - 0.5f*temp->getScale().y > 0.f)
+	//{
+	//	grounded = false;
+	//}
+	//if (this->playerInputs->collision(player, scalePlayer, objF, scaleObj)&&currentInput!=0 )
+	//{
+	//	grounded = true;
+	//}
+	//playerInputs->inMenuMode();
+	//playerInputs->inGameMode(deltaTime, grounded);
+	//temp->move(playerInputs->getDirection(0).x, playerInputs->getDirection(0).y, playerInputs->getDirection(0).z);
 
 
 
@@ -827,7 +833,7 @@ void System::run()
 
 void System::shutDown()
 {
-	delete playerInputs;
+	//delete playerInputs;
 }
 
 WPARAM System::getMsgWParam()

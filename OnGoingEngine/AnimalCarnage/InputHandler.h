@@ -8,16 +8,16 @@
 class InputHandler
 {
 private:
-	struct PlayerInput
+	/*struct PlayerInput
 	{
 		int id;
 		bool rumble;
 		bool Active;
-	};
+	};*/
 	DirectX::GamePad theGamePad;
 	DirectX::GamePad::ButtonStateTracker tracker;
 	DirectX::XMFLOAT3 direction[4];
-	PlayerInput player[4];
+	//PlayerInput player[4];
 
 
 	DirectX::XMFLOAT3 cameraRotation;

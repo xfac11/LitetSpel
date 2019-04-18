@@ -2,27 +2,44 @@
 #include "System.h"
 #include "MainMenu.h"
 
-void MainGui::changeSelected()
+void MainGui::changeSelected(int i)
 {
+	DirectX::GamePad::State state;
 	GuiElement* newSelected = nullptr;
 
-	if (System::theKeyboard->KeyIsPressed('W'))
+	state = System::theGamePad->GetState(i);
+	if (state.IsConnected())
 	{
-		newSelected = this->selectedElement->getUp();
-	}
-	if (System::theKeyboard->KeyIsPressed('S'))
-	{
-		newSelected = this->selectedElement->getDown();
-	}
-	if (System::theKeyboard->KeyIsPressed('A'))
-	{
-		newSelected = this->selectedElement->getLeft();
-	}
-	if (System::theKeyboard->KeyIsPressed('D'))
-	{
-		newSelected = this->selectedElement->getRight();
-	}
+		System::theTracker->Update(state);
+		//L+R+A+Start
+		if (this->reset(state))
+		{
 
+			this->theRumble[i].rumble.x = 0.2f;
+			this->theRumble[i].rumble.y = 0.2f;
+			this->theRumble[i].rumbleTime = 0.2f;
+			//goes back to start screen
+		}
+
+		//move
+		if (System::theTracker->dpadUp == DirectX::GamePad::ButtonStateTracker::PRESSED)
+		{
+			newSelected = this->selectedElement->getUp();
+		}
+		if (System::theTracker->dpadDown == DirectX::GamePad::ButtonStateTracker::PRESSED)
+		{
+			newSelected = this->selectedElement->getDown();
+		}
+		if (System::theTracker->dpadLeft == DirectX::GamePad::ButtonStateTracker::PRESSED)
+		{
+			newSelected = this->selectedElement->getLeft();
+		}
+		if (System::theTracker->dpadRight == DirectX::GamePad::ButtonStateTracker::PRESSED)
+		{
+			newSelected = this->selectedElement->getRight();
+		}
+	}
+	
 	if (newSelected != nullptr)
 	{
 		this->changedLastFrame = true;
@@ -34,6 +51,21 @@ void MainGui::changeSelected()
 	}
 }
 
+void MainGui::updateRumble(float deltaTime, int id)
+{
+	if (theRumble[id].rumbleTime > theRumble[id].rumbleClock)
+	{
+		theRumble[id].rumbleClock += deltaTime;
+		System::theGamePad->SetVibration(0, theRumble[id].rumble.x, theRumble[id].rumble.y);
+	}
+	else
+	{
+		theRumble[id].rumbleClock = 0.f;
+		theRumble[id].rumbleTime = 0.f;
+		System::theGamePad->SetVibration(0, 0, 0);
+	}
+}
+
 MainGui::MainGui(State * myState) : GuiBase(myState)
 {
 	this->selectedElement = nullptr;
@@ -41,7 +73,7 @@ MainGui::MainGui(State * myState) : GuiBase(myState)
 	this->playButton = nullptr;
 	this->quitButton = nullptr;
 
-	this->timeSinceChanged = 0.0F;
+	/*this->timeSinceChanged = 0.0F;*/
 	this->changedLastFrame = false;
 }
 
@@ -71,36 +103,49 @@ void MainGui::shutDown()
 
 bool MainGui::update(float deltaTime)
 {
-	if (this->changedLastFrame)
-	{
-		if (this->timeSinceChanged > 0.2F)
-		{
-			this->timeSinceChanged -= 0.2F;
-			this->changeSelected();
-		}
+	//if (this->changedLastFrame)
+	//{
+	//	if (this->timeSinceChanged > 0.2F)
+	//	{
+	//		this->timeSinceChanged -= 0.2F;
+	//		this->changeSelected();
+	//	}
 
-		this->timeSinceChanged += deltaTime;
-	}
-	else
+	//	this->timeSinceChanged += deltaTime;
+	//}
+	//else
+	//{
+	//	this->timeSinceChanged = 0.0F;
+	//	
+	//}
+	for (int i = 0; i < 4; i++)
 	{
-		this->timeSinceChanged = 0.0F;
-		this->changeSelected();
-	}
-
-	if (System::theKeyboard->KeyIsPressed('B'))
-	{
-		if (this->selectedElement == this->quitButton)
+		this->changeSelected(i);
+		//select/comfirm
+		if (System::theTracker->a == DirectX::GamePad::ButtonStateTracker::PRESSED)
 		{
-			System::closeWindow();
+			if (this->selectedElement == this->quitButton)
+			{
+				System::closeWindow();
+			}
+			else if (this->selectedElement == this->playButton)
+			{
+				//MainMenu* state = dynamic_cast<MainMenu*>(this->myState);
+				//state->setCurrentMenu(OPTIONS);
+				this->theRumble[i].rumble.x = 0.4f;
+				this->theRumble[i].rumble.y = 0.4f;
+				this->theRumble[i].rumbleTime = 0.2f;
+				System::setState(GUNGAME);
+			}
 		}
-		else if (this->selectedElement == this->playButton)
+		//back	
+		if (System::theTracker->b == DirectX::GamePad::ButtonStateTracker::PRESSED) //and
 		{
-			//MainMenu* state = dynamic_cast<MainMenu*>(this->myState);
-			//state->setCurrentMenu(OPTIONS);
-			System::setState(GUNGAME);
-		}
-	}
 
+			//System::setState(START);
+		}
+		this->updateRumble(deltaTime, i);
+	}
 	return true;
 }
 
@@ -114,4 +159,21 @@ bool MainGui::render()
 	System::getSpriteBatch()->End();
 
 	return true;
+}
+
+bool MainGui::reset(DirectX::GamePad::State state)
+{
+	bool result = false;
+	if (state.IsConnected())
+	{
+		//tracker.Update(state);
+		if (state.IsLeftTriggerPressed() &&
+			state.IsRightTriggerPressed() &&
+			state.buttons.a &&
+			(state.buttons.back || state.buttons.menu))
+		{
+			result = true;
+		}
+	}
+	return result;
 }

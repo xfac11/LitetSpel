@@ -16,7 +16,8 @@
 #include "Camera.h"
 #include "Keyboard.h"
 #include "Mouse.h"
-#include "InputHandler.h"
+#include "GamePad.h"
+//#include "InputHandler.h"
 #include <string>
 #include "imgui/imgui.h"
 #include "imgui/imgui_impl_win32.h"
@@ -74,12 +75,13 @@ private:
 	int currentInput; //imgui, controlls input
 	ForwardShader* theForwardShader;
 	Camera* theCamera;
-	Direction forward; //have these in a own class?
-	Direction left_right;
-	Direction up_down;
+	//Direction forward; 
+	//Direction left_right;
+	//Direction up_down;
 	GameObjectHandler handler;
 	
-	InputHandler* playerInputs;
+	//InputHandler* playerInputs;
+	//DirectX::GamePad 	
 
 	//imgui variables
 	DirectX::XMFLOAT3 camPos;
@@ -118,6 +120,8 @@ public:
 	static System* fusk;
 	static Keyboard* theKeyboard;
 	static Mouse* theMouse;
+	static GamePad* theGamePad;
+	static GamePad::ButtonStateTracker* theTracker;
 	static ModelLoader* theModelLoader;
 	static SpriteBatch* getSpriteBatch();
 	static CommonStates* getCommonStates();
