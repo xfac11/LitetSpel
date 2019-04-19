@@ -58,6 +58,11 @@ void GameObject::move(float x, float y, float z)
 	this->theTransforms.move(x, y, z);
 }
 
+void GameObject::move(DirectX::XMFLOAT3 xyz)
+{
+	this->theTransforms.move(xyz.x,xyz.y,xyz.z);
+}
+
 DirectX::XMMATRIX& GameObject::getWorldMatrix()
 {
 	return this->theTransforms.getWorld();

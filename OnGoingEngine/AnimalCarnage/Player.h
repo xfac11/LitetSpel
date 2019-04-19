@@ -10,11 +10,25 @@ private:
 	Animal animal[4];
 	//GamePad* gamePad;
 	int current;
+
+
+	//player physics
+	bool isJumping;
+	bool inAir;
+	float airTimer;
+	float jumpDir;
+	bool grounded;
+	DirectX::XMFLOAT3 direction;
+
+
 public:
 	Player();
 	~Player();
 	void SelectCharacter(CHARACTER b = BEAR);
 	void update();
 	AABB GetBody();
+
+
+
 };
 

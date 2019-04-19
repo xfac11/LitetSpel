@@ -13,6 +13,7 @@ public:
 	void setRotation();
 	void setScale(float x, float y, float z);
 	void move(float x, float y, float z);
+	void move(DirectX::XMFLOAT3 xyz);
 
 	DirectX::XMMATRIX& getWorldMatrix();
 

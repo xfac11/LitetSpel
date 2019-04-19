@@ -323,8 +323,9 @@ bool System::initialize()
 	this->obj = new GameObject(shaderManager->getForwardShader());
 	this->obj2 = new GameObject(shaderManager->getForwardShader());
 	
-	this->playerOne = new GameObject(shaderManager->getForwardShader());
-	this->playerTwo = new GameObject(shaderManager->getForwardShader());
+	for (int i = 0; i < 4; i++)
+		this->players[i] = new GameObject(shaderManager->getForwardShader());
+	
 	std::vector<Vertex3D> mesh;
 	Vertex3D temp[] = {
 		DirectX::XMFLOAT4(-0.500000,-0.500000, 0.500000,1.0f),
@@ -368,21 +369,25 @@ bool System::initialize()
 		mesh2.push_back(temp2[i]);
 	}
 
-	this->obj->addModel(mesh, indices, 6);
+	this->obj->addModel(mesh2, indices2, 3);
 	this->obj->setScale(2, 0.5, 0.5);
-	this->obj2->addModel(mesh, indices, 6);
+	this->obj2->addModel(mesh2, indices2, 3);
 	this->obj2->setScale(2, 1, 1);
 
-	this->obj->setScale(0.5f, 0.3f, 0.3f);
-	this->playerOne->addModel(mesh, indices, 6);
-	this->playerOne->addModel(mesh2, indices2, 3);
-	this->playerOne->setScale(0.5f, 0.4f, 0.1f);
-	this->playerTwo->addModel(mesh, indices, 6);
-	this->playerTwo->setScale(0.6f, 0.8f, 0.1f);
+	
+	this->players[0]->addModel(mesh, indices, 6);
+	this->players[0]->setScale(0.5f, 0.4f, 0.1f);
+	this->players[1]->addModel(mesh, indices, 6);
+	this->players[1]->setScale(0.6f, 0.8f, 0.1f);
+	this->players[2]->addModel(mesh, indices, 6);
+	this->players[2]->setScale(0.6f, 0.8f, 0.1f);
+	this->players[3]->addModel(mesh, indices, 6);
+	this->players[3]->setScale(0.6f, 0.8f, 0.1f);
 	this->handler.addObject(this->obj2);
 	this->handler.addObject(this->obj);
-	this->handler.addObject(this->playerOne);
-	this->handler.addObject(this->playerTwo);
+	for (int i = 0; i < 4; i++)
+		this->handler.addObject(this->players[i]);
+	
 
 	System::commonStates = new CommonStates(System::getDevice());
 	System::spriteBatch = new SpriteBatch(System::getDeviceContext());
@@ -444,16 +449,16 @@ void System::renderImgui()
 	//ImGui::Text(textUse.c_str());
 	//textUse = "Current Option: " + std::to_string(this->playerInputs->getCurrentOption());
 	//ImGui::Text(textUse.c_str());
-	ImGui::SliderInt("Player: ", &this->currentInput, 0, 2);
+	ImGui::SliderInt("Player: ", &this->currentInput, 0, 5);
 	ImGui::TextColored(ImVec4(1, 1, 0, 1), "Controllers");
 	ImGui::BeginChild("Scrolling");
-	//for (int n = 0; n < 4; n++)
-	//{
-	//	if (playerInputs->controllerIsConnected(n))
-	//		ImGui::Text("%02d: Connected",n);
-	//	else 
-	//		ImGui::Text("%02d: Disconnected",n);
-	//}
+	for (int n = 0; n < 4; n++)
+	{
+		if (theGamePad->GetState(n).connected==true)
+			ImGui::Text("%02d: Connected",n);
+		else 
+			ImGui::Text("%02d: Disconnected",n);
+	}
 	ImGui::EndChild();
 	ImGui::CaptureKeyboardFromApp(true);
 
@@ -515,40 +520,84 @@ void System::update(float deltaTime)
 	//else
 	//	this->collide = false;
 
-	//GameObject* temp= nullptr;
-	//temp = obj;
-	//if (currentInput == 0)
-	//{
-	//	temp = obj;
-	//}
-	//else if (currentInput == 1)
-	//{
-	//	temp = playerOne;
-	//}
-	//else if (currentInput == 2)
-	//{
-	//	temp = playerTwo;
-	//}
 
-	//DirectX::XMFLOAT2 player = {temp->getPosition().x, temp->getPosition().y};
-	//DirectX::XMFLOAT2 scalePlayer = { temp->getScale().x, temp->getScale().y };
-	//if (temp->getPosition().y - 0.5f*temp->getScale().y > 0.f)
-	//{
-	//	grounded = false;
-	//}
+	if (GUNGAME == currentState)
+	{	
+		GameObject* temp= nullptr;
+		temp = obj;
+		if (currentInput == 0)
+		{
+			temp = players[0];
+		}
+		else if (currentInput == 1)
+		{
+			temp = players[1];
+		}
+		else if (currentInput == 2)
+		{
+			temp = players[2];
+		
+		}
+		else if (currentInput == 3)
+		{
+			temp = players[3];
+
+		}
+		else if (currentInput == 4)
+		{
+			temp = obj;
+
+		}
+		else if (currentInput == 5)
+		{
+			temp = obj2;
+
+		}
+		DirectX::XMFLOAT2 player1Pos = {temp->getPosition().x, temp->getPosition().y};
+		DirectX::XMFLOAT2 player1Scale = { temp->getScale().x,temp->getScale().y };
+		DirectX::XMFLOAT2 player2Pos = { players[1]->getPosition().x, players[1]->getPosition().y };
+		DirectX::XMFLOAT2 player2Scale = { players[1]->getScale().x,players[1]->getScale().y };
+
+
+		GunGameState* gamePtr=nullptr;
+		for (int i = 0; i < 4; i++)
+		{
+			gamePtr = dynamic_cast<GunGameState*>(states[1]);
+			if (gamePtr != nullptr)
+			{
+
+				if (players[i]->getPosition().y - 0.5f*temp->getScale().y > 0.f)
+				{
+					gamePtr->setGrounded(i, false);
+				}
+				else 
+					gamePtr->setGrounded(i, true);
+				
+				if (i == 0)
+					temp->move(gamePtr->getDirection(i));
+				else
+					players[i]->move(gamePtr->getDirection(i));
+				//players[i]->move(playerInputs->getDirection(0));
+			}
+		}
+	}
+
+
+
+
 	//if (this->playerInputs->collision(player, scalePlayer, objF, scaleObj)&&currentInput!=0 )
 	//{
 	//	grounded = true;
 	//}
 	//playerInputs->inMenuMode();
 	//playerInputs->inGameMode(deltaTime, grounded);
-	//temp->move(playerInputs->getDirection(0).x, playerInputs->getDirection(0).y, playerInputs->getDirection(0).z);
+	
 
 
 
 
 
-	this->theCamera->calcCamera(playerOne->getPosition(), playerTwo->getPosition());
+	this->theCamera->calcCamera(players[0]->getPosition(), players[1]->getPosition());
 
 	if (theKeyboard->KeyIsPressed('W'))
 	{
@@ -562,7 +611,7 @@ void System::update(float deltaTime)
 	}
 	else if (theKeyboard->KeyIsPressed('S'))
 	{
-		theCamera->move(0, 0, 1);
+		theCamera->move(0, 0, 1 * deltaTime);
 	}
 	if (theKeyboard->KeyIsPressed('D'))
 	{
@@ -570,7 +619,7 @@ void System::update(float deltaTime)
 	}
 	else if (theKeyboard->KeyIsPressed('A'))
 	{
-		this->obj2->move(-1 * deltaTime, 0, 0);
+		//this->obj2->move(-1 * deltaTime, 0, 0);
 		theCamera->move(-1 * deltaTime, 0, 0);
 	}
 

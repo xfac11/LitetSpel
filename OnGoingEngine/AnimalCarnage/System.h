@@ -71,8 +71,9 @@ private:
 	
 	GameObject* obj;
 	GameObject* obj2;
-	GameObject* playerOne;
-	GameObject* playerTwo;
+	//GameObject* playerOne;
+	//GameObject* playerTwo;
+	GameObject* players[4];
 	int currentInput; //imgui, controlls input
 	//ForwardShader* theForwardShader;
 	Camera* theCamera;

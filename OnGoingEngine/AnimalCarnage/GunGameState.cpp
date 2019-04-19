@@ -18,7 +18,7 @@ void GunGameState::updateRumble(float deltaTime, int id)
 
 GunGameState::GunGameState() 
 {
-	for (int i = 0; i < 4; i++)
+	for (int i = 0; i < 4; i++) //temp
 	{
 		theRumble[i].rumbleClock = 0.f;
 		theRumble[i].rumbleTime = 0.f;
@@ -43,7 +43,7 @@ bool GunGameState::initailize()
 
 bool GunGameState::render()
 {
-
+	//this->gui->render();
 	return true;
 }
 
@@ -51,12 +51,26 @@ bool GunGameState::update(float deltaTime)
 {
 	DirectX::GamePad::State state;
 
-
-	for (int i = 0; i < 4; i++)
+	for (int i = 0; i < 4; i++) //nrOfPlayers
 	{
 		state = System::theGamePad->GetState(i);
 		if (state.IsConnected())
 		{
+
+			//player[i]->update();
+			////swap characters
+			////player[i]->SelectCharacter();
+			//for (int j = 0; j < nrOfPlayers; j++) 
+			//{
+			//	//collision detection
+			//	if (Intersects(player[i]->GetBody(), player[j]->GetBody()))
+			//	{
+			//		//logic
+			//	}
+			//}
+
+
+
 			System::theTracker->Update(state);
 
 			//movement
@@ -96,21 +110,6 @@ bool GunGameState::update(float deltaTime)
 			}
 			this->tplayer[i].direction.y += (-9.82f * this->tplayer[i].airTimer + (5.f*this->tplayer[i].isJumping)) * deltaTime;
 
-	//for (int i = 0; i < nrOfPlayers; i++)
-	//{
-	//	player[i]->update();
-	//	//swap characters
-	//	//player[i]->SelectCharacter();
-	//	for (int j = 0; j < nrOfPlayers; j++)
-	//	{
-	//		//collision detection
-	//		if (Intersects(player[i]->GetBody(), player[j]->GetBody()))
-	//		{
-	//			//logic
-	//		}
-	//	}
-
-	//}
 
 			if (this->tplayer[i].grounded == true)
 			{
@@ -157,7 +156,7 @@ bool GunGameState::update(float deltaTime)
 				theRumble[i].rumbleTime = 0.1f;
 			}
 
-			this->updateRumble(deltaTime,i);
+			this->updateRumble(deltaTime, i);
 		}
 	}
 	return true;
@@ -170,6 +169,16 @@ void GunGameState::shutDown()
 		delete player[i];
 	}
 	delete[] player;
+}
+
+bool GunGameState::isGrounded(int id)
+{
+	return tplayer[id].grounded;
+}
+
+void GunGameState::setGrounded(int id, bool condition)
+{
+	tplayer[id].grounded = condition;
 }
 
 DirectX::XMFLOAT3 GunGameState::getDirection(int id)

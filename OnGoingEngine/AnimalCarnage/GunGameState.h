@@ -41,6 +41,8 @@ public:
 	bool update(float deltaTime);
 	void shutDown();
 
+	bool isGrounded(int id);
+	void setGrounded(int id, bool condition);
 	DirectX::XMFLOAT3 getDirection(int id);
 	bool controllerIsConnected(int controllerPort);
 };
