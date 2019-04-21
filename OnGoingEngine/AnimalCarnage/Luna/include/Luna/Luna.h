@@ -32,6 +32,28 @@ namespace Luna {
 		float normal[3] = { 0.0f };
 		float tangent[3] = { 0.0f };
 		float bitangent[3] = { 0.0f };
+
+		bool operator==(const Vertex& right) const {
+			if (position[0] == right.position[0] &&
+				position[1] == right.position[1] &&
+				position[2] == right.position[2] &&
+				normal[0] == right.normal[0] &&
+				normal[1] == right.normal[1] &&
+				normal[2] == right.normal[2] &&
+				uv[0] == right.uv[0] &&
+				uv[1] == right.uv[1] &&
+				tangent[0] == right.tangent[0] &&
+				tangent[1] == right.tangent[1] &&
+				tangent[2] == right.tangent[2] &&
+				bitangent[0] == right.bitangent[0] &&
+				bitangent[1] == right.bitangent[1] &&
+				bitangent[2] == right.bitangent[2]) {
+				return true;
+			}
+			else {
+				return false;
+			}
+		}
 	};
 
 	struct Index {

@@ -20,6 +20,7 @@ namespace Luna {
 		Mesh getMesh(int id) const;
 		void getVertices(int meshID, std::vector<Vertex>& vertices);
 		void getIndices(int meshID, std::vector<Index>& indices);
+		void getWeights(int meshID, std::vector<Weights>& weights); //The number of weights is equal to the number of vertices
 
 	private:
 		void read(std::ifstream& infile, Scene& scene);
