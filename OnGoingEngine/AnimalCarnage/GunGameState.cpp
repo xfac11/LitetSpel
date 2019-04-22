@@ -24,7 +24,9 @@ GunGameState::GunGameState()
 		theRumble[i].rumbleTime = 0.f;
 		theRumble[i].rumble = { 0.f,0.f };
 		tplayer[i].isJumping = false;
+		tplayer[i].canJump = true;
 		tplayer[i].airTimer = 0.f;
+		tplayer[i].airSpeed = 0.f;
 	}
 	this->player = nullptr;
 	this->nrOfPlayers = 0;
@@ -74,33 +76,73 @@ bool GunGameState::update(float deltaTime)
 
 			//movement
 			float stickAbsL = abs(state.thumbSticks.leftX);
-			if (stickAbsL > 0.f)
+			if (stickAbsL > 0.f && tplayer[i].grounded)
 			{
 				float dir = 5 * state.thumbSticks.leftX;// / stickAbsL;
 
 				this->tplayer[i].direction = DirectX::XMFLOAT3(dir * deltaTime, 0, 0);
-
+				tplayer[i].airSpeed = dir;
 			}
-			else if (state.dpad.right || state.dpad.left)
+			else if (state.dpad.right || state.dpad.left && tplayer[i].grounded)
 			{
-				this->tplayer[i].direction = DirectX::XMFLOAT3((state.dpad.right - state.dpad.left) * deltaTime, 0, 0);
-
+				this->tplayer[i].direction = DirectX::XMFLOAT3(5 * (state.dpad.right - state.dpad.left) * deltaTime, 0, 0);
+				tplayer[i].airSpeed = 5 * (state.dpad.right - state.dpad.left);
 			}
 			else if (this->tplayer[i].isJumping == false)
 				this->tplayer[i].direction = { 0,0,0 };
 			else
 				this->tplayer[i].direction.y = 0; //= { 0,0,0 };
 
-
-			//jump
-			if (state.buttons.x && tplayer[i].grounded == true ||
-				state.buttons.y && tplayer[i].grounded == true)//== DirectX::GamePad::ButtonStateTracker::PRESSED 
+			//IN AIR MOVEMENT
+			if (stickAbsL > 0.f && tplayer[i].grounded==false)
 			{
-				//
-				this->tplayer[i].isJumping = true;
-				this->tplayer[i].grounded = false;
+				tplayer[i].airSpeed += 0.5f * state.thumbSticks.leftX;
+				float dir = tplayer[i].airSpeed;// / stickAbsL;
+
+				this->tplayer[i].direction = DirectX::XMFLOAT3(dir * deltaTime, 0, 0);
+
+				if (tplayer[i].airSpeed > 5) {
+					tplayer[i].airSpeed = 5;
+				}
+				else if (tplayer[i].airSpeed < -5) {
+					tplayer[i].airSpeed = -5;
+				}
+			}
+			else if (state.dpad.right || state.dpad.left && tplayer[i].grounded == false)
+			{
+				tplayer[i].airSpeed += 0.5f * (state.dpad.right - state.dpad.left);
+				if (!tplayer[i].grounded) {
+					this->tplayer[i].direction = DirectX::XMFLOAT3(tplayer[i].airSpeed * deltaTime, 0, 0);
+				}
+				if (tplayer[i].airSpeed > 5) {
+					tplayer[i].airSpeed = 5;
+				}
+				else if (tplayer[i].airSpeed < -5) {
+					tplayer[i].airSpeed = -5;
+				}
 			}
 
+
+			//jump
+			if ((state.buttons.x || state.buttons.y) && tplayer[i].canJump)//== DirectX::GamePad::ButtonStateTracker::PRESSED 
+			{
+
+				this->tplayer[i].isJumping = true;
+				this->tplayer[i].grounded = false;
+				//this->tplayer[i].grounded = false;
+				
+			}
+
+			//canJump
+			if (state.buttons.x || state.buttons.y) {
+				tplayer[i].canJump = false;
+			}
+			if (tplayer[i].grounded /*&& System::theTracker->x == DirectX::GamePad::ButtonStateTracker::RELEASED || System::theTracker->y == DirectX::GamePad::ButtonStateTracker::RELEASED*/) {
+				tplayer[i].canJump = true;
+			}
+
+
+			
 
 
 			//falling/jump function
@@ -115,6 +157,7 @@ bool GunGameState::update(float deltaTime)
 				this->tplayer[i].airTimer = 0.f;
 				this->tplayer[i].isJumping = false;
 				this->tplayer[i].direction.y = 0.f;
+				this->tplayer[i].airSpeed = 0.0f;
 			}
 			
 

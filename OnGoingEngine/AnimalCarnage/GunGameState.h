@@ -30,6 +30,8 @@ private:
 		float airTimer;
 		float jumpDir; 
 		bool grounded;
+		bool canJump;
+		float airSpeed;
 		DirectX::XMFLOAT3 direction;
 	};
 	PlayerTemp tplayer[4];
