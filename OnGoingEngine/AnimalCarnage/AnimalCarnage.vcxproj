@@ -137,6 +137,7 @@
     <ClCompile Include="ForwardShader.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GameObjectHandler.cpp" />
+    <ClCompile Include="Geometry.cpp" />
     <ClCompile Include="GraphicsDevice.cpp" />
     <ClCompile Include="GuiBase.cpp" />
     <ClCompile Include="GuiElement.cpp" />
@@ -191,7 +192,7 @@
     <ClInclude Include="ForwardShader.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="GameObjectHandler.h" />
-    <ClInclude Include="Geomety.h" />
+    <ClInclude Include="Geometry.h" />
     <ClInclude Include="GraphicsDevice.h" />
     <ClInclude Include="GuiBase.h" />
     <ClInclude Include="GuiElement.h" />

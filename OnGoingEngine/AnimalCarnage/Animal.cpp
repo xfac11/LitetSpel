@@ -2,7 +2,8 @@
 
 
 
-Animal::Animal()
+Animal::Animal():
+	GameObject()
 {
 
 }

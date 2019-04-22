@@ -125,6 +125,9 @@
     <ClCompile Include="MouseEvent.cpp">
       <Filter>Source\Input</Filter>
     </ClCompile>
+    <ClCompile Include="Geometry.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Button.h">
@@ -258,7 +261,7 @@
     <ClInclude Include="Keyboard.h">
       <Filter>Header\Input</Filter>
     </ClInclude>
-    <ClInclude Include="Geomety.h">
+    <ClInclude Include="Geometry.h">
       <Filter>Header</Filter>
     </ClInclude>
   </ItemGroup>

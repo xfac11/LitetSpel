@@ -1,4 +1,4 @@
-#include "Geomety.h"
+#include "Geometry.h"
 
 
 bool Intersects(const Sphere s1, const Sphere s2)
