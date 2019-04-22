@@ -13,8 +13,13 @@ bool Intersects(const Sphere s1, const Sphere s2)
 
 bool Intersects(const AABB a, const AABB b)
 {
-	// overlap
-	return true;
+	//Check if AABB1's max is greater than AABB2's min and AABB1's min is less than AABB2's max
+	return(a.Max.x > b.Min.x &&
+		a.Min.x < b.Max.x &&
+		a.Max.y >b.Min.y &&
+		a.Min.y < b.Max.y &&
+		a.Max.z > b.Min.z &&
+		a.Min.z < b.Max.z);
 }
 
 ostream& operator<<(ostream & stream, const Sphere & shape) {
@@ -23,7 +28,7 @@ ostream& operator<<(ostream & stream, const Sphere & shape) {
 	return stream;
 }
 ostream& operator<<(ostream & stream, const AABB & shape) {
-	stream << "\nPosition:(" << shape.position.x << ", " << shape.position.y << ", " << shape.position.z << "), " <<
-		"Size:(" << shape.size.x << ", " << shape.size.y << ", " << shape.size.z << "), ";
+	//stream << "\nPosition:(" << shape.position.x << ", " << shape.position.y << ", " << shape.position.z << "), " <<
+	//	"Size:(" << shape.size.x << ", " << shape.size.y << ", " << shape.size.z << "), ";
 	return stream;
 }

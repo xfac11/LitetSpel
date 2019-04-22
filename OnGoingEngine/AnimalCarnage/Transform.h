@@ -13,17 +13,28 @@ protected:
 	XMFLOAT3 Rotation = XMFLOAT3(0.0f, 0.0f, 0.0f);
 	float Angle = 0.0f;
 
+	//test
+	XMFLOAT3 LeftVec = XMFLOAT3(-1.0f, 0.0f, 0.0f);
+	XMFLOAT3 RightVec = XMFLOAT3(1.0f, 0.0f, 0.0f);
+	XMFLOAT3 UpVec = XMFLOAT3(0.0f, 1.0f, 0.0f);
+	XMFLOAT3 DownVec = XMFLOAT3(0.0f, -1.0f, 0.0f);
 public:
-	const XMFLOAT3 &getPosition()const;
-	const XMFLOAT3 &getScale()const;
-	const XMFLOAT3 &getRotation()const;
+	const XMFLOAT3& getPosition()const;
+	const XMFLOAT3& getScale()const;
+	const XMFLOAT3& getRotation()const;
 
-	XMMATRIX &getWorld() { return world; }
+	XMMATRIX& getWorld() { return world; }
 
+	void move(XMFLOAT3 Position);
 	void move(float x, float y, float z);
 	void setPosition(float x, float y, float z);
 	void setScale(float x, float y, float z);
 	void setRotation(float x, float y, float z, float angle);
 
 	~Transform();
+
+
+	//Operators
+
+
 };
