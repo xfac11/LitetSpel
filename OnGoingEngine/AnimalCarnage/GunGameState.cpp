@@ -57,20 +57,7 @@ bool GunGameState::update(float deltaTime)
 		if (state.IsConnected())
 		{
 			System::theTracker->Update(state);
-			//player[i]->update();
-			////swap characters
-			////player[i]->SelectCharacter();
-			//for (int j = 0; j < nrOfPlayers; j++) 
-			//{
-			//	//collision detection
-			//	if (Intersects(player[i]->GetBody(), player[j]->GetBody()))
-			//	{
-			//		//logic
-			//	}
-			//}
-
-
-			
+					
 
 			//movement
 			float stickAbsL = abs(state.thumbSticks.leftX);

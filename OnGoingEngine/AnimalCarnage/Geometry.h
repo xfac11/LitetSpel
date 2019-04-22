@@ -16,12 +16,14 @@ struct Sphere
 }
 typedef Sphere;
 struct AABB {
-	XMFLOAT3 position;
-	XMFLOAT3 size; // HALF SIZE!
+	//XMFLOAT3 position;
+	//XMFLOAT3 size; // HALF SIZE!
+	XMFLOAT3 Max;
+	XMFLOAT3 Min;
 
-	AABB() : size(1, 1, 1), position(1, 1, 1) { }
+	AABB() : Max(1, 1, 1), Min(1, 1, 1) { }
 	AABB(const XMFLOAT3& p, const XMFLOAT3& s) :
-		position(p), size(s) { }
+		Max(p), Min(s) { }
 	friend bool Intersects(const AABB b1, const AABB b2);
 }
 typedef AABB;

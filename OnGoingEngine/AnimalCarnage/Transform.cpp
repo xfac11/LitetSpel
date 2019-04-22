@@ -1,14 +1,24 @@
+
+
 #include "Transform.h"
-const XMFLOAT3 & Transform::getPosition() const {
+const XMFLOAT3& Transform::getPosition() const {
 	return this->Position;
 }
 
-const XMFLOAT3 & Transform::getScale() const {
+const XMFLOAT3& Transform::getScale() const {
 	return this->Scale;
 }
 
-const XMFLOAT3 & Transform::getRotation() const {
+const XMFLOAT3& Transform::getRotation() const {
 	return this->Rotation;
+}
+
+void Transform::move(XMFLOAT3 p)
+{
+	Position.x += p.x;
+	Position.y += p.y;
+	Position.z += p.z;
+	ApplyTransform();
 }
 
 void Transform::move(float x, float y, float z)
@@ -48,8 +58,8 @@ void Transform::ApplyTransform() {
 
 		//if you want to rotate around a certain point
 		this->world = DirectX::XMMatrixTranspose(
-			XMMatrixScaling(Scale.x, Scale.y, Scale.z)*
-			DirectX::XMMatrixRotationAxis(Axis, Angle)*
+			XMMatrixScaling(Scale.x, Scale.y, Scale.z) *
+			DirectX::XMMatrixRotationAxis(Axis, Angle) *
 			XMMatrixTranslation(Position.x, Position.y, Position.z)
 		);
 		//	world = DirectX::XMMatrixTranspose(DirectX::XMMatrixRotationAxis(Axis, Angle));
@@ -57,7 +67,7 @@ void Transform::ApplyTransform() {
 	}
 	else {
 		this->world = DirectX::XMMatrixTranspose(
-			XMMatrixScaling(Scale.x, Scale.y, Scale.z)*
+			XMMatrixScaling(Scale.x, Scale.y, Scale.z) *
 			XMMatrixTranslation(Position.x, Position.y, Position.z));
 	}
 	world = DirectX::XMMatrixTranspose(world);
@@ -66,3 +76,4 @@ Transform::~Transform()
 {
 
 }
+
