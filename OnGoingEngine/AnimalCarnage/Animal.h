@@ -1,6 +1,6 @@
 #pragma once
-#include "Geomety.h"
-class Animal
+#include "Geometry.h"
+class Animal : public GameObject
 {
 protected:
 	float health;

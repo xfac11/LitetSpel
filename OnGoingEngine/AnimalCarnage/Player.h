@@ -3,7 +3,7 @@
 enum CHARACTER{
 	BEAR,FOX
 };
-class Player: public GameObject
+class Player
 {
 private:
 	//ska den hålla i en animal eller flera
