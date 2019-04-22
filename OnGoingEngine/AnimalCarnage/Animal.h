@@ -5,6 +5,7 @@ class Animal
 protected:
 	float health;
 	float weight;
+	float speed;
 	AABB body;
 public:
 	Animal();

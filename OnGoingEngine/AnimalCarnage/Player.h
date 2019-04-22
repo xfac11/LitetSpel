@@ -3,7 +3,7 @@
 enum CHARACTER{
 	BEAR,FOX
 };
-class Player:public GameObject
+class Player: public GameObject
 {
 private:
 	//ska den hålla i en animal eller flera
@@ -12,7 +12,7 @@ private:
 	int current;
 
 
-	//player physics
+	//player physics 
 	bool isJumping;
 	bool inAir;
 	float airTimer;
@@ -20,7 +20,7 @@ private:
 	bool grounded;
 	DirectX::XMFLOAT3 direction;
 
-
+	bool rumbleEnabled;
 public:
 	Player();
 	~Player();

@@ -46,6 +46,7 @@ void GameObject::setPosition(float x, float y, float z)
 void GameObject::setRotation()
 {
 	//this->theTransforms.setRotation();
+	
 }
 
 void GameObject::setScale(float x, float y, float z)

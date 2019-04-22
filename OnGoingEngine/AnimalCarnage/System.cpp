@@ -558,7 +558,7 @@ void System::update(float deltaTime)
 		DirectX::XMFLOAT2 player2Pos = { players[1]->getPosition().x, players[1]->getPosition().y };
 		DirectX::XMFLOAT2 player2Scale = { players[1]->getScale().x,players[1]->getScale().y };
 
-
+		
 		GunGameState* gamePtr=nullptr;
 		for (int i = 0; i < 4; i++)
 		{
@@ -566,17 +566,23 @@ void System::update(float deltaTime)
 			if (gamePtr != nullptr)
 			{
 
-				if (players[i]->getPosition().y - 0.5f*temp->getScale().y > 0.f)
+				if (players[i]->getPosition().y - 0.5f*players[i]->getScale().y > 0.f)
 				{
 					gamePtr->setGrounded(i, false);
+					
 				}
-				else 
+				else
+				{
 					gamePtr->setGrounded(i, true);
+					//0 is boundry for curent floor
+				}
 				
 				if (i == 0)
 					temp->move(gamePtr->getDirection(i));
 				else
 					players[i]->move(gamePtr->getDirection(i));
+
+
 				//players[i]->move(playerInputs->getDirection(0));
 			}
 		}

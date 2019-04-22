@@ -10,7 +10,7 @@ class ConstantBuffer
 public:
 	ConstantBuffer()
 	{
-
+		
 	}
 
 	T data;

@@ -166,7 +166,7 @@ bool InputHandler::collision(DirectX::XMFLOAT2 posBox, DirectX::XMFLOAT2 scaleBo
 	float size = 0.5f;
 	float widthBox = scaleBox.x*size * 2;
 	float heightBox = scaleBox.y*size * 2;
-
+	
 	float Dx = posCircle.x - std::max(posBox.x, std::min(posCircle.x, posBox.x + widthBox));
 	float Dy = posCircle.y - std::max(posBox.y, std::min(posCircle.y, posBox.y + heightBox));
 

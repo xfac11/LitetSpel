@@ -56,7 +56,7 @@ bool GunGameState::update(float deltaTime)
 		state = System::theGamePad->GetState(i);
 		if (state.IsConnected())
 		{
-
+			System::theTracker->Update(state);
 			//player[i]->update();
 			////swap characters
 			////player[i]->SelectCharacter();
@@ -70,8 +70,7 @@ bool GunGameState::update(float deltaTime)
 			//}
 
 
-
-			System::theTracker->Update(state);
+			
 
 			//movement
 			float stickAbsL = abs(state.thumbSticks.leftX);
@@ -102,21 +101,22 @@ bool GunGameState::update(float deltaTime)
 				this->tplayer[i].grounded = false;
 			}
 
+
+
 			//falling/jump function
 			if (this->tplayer[i].grounded == false)
 			{
 				this->tplayer[i].airTimer += deltaTime;
+				this->tplayer[i].direction.y += (-9.82f * this->tplayer[i].airTimer + (5.f*this->tplayer[i].isJumping)) * deltaTime;
 				//continue here
 			}
-			this->tplayer[i].direction.y += (-9.82f * this->tplayer[i].airTimer + (5.f*this->tplayer[i].isJumping)) * deltaTime;
-
-
-			if (this->tplayer[i].grounded == true)
+			else if (this->tplayer[i].grounded == true)
 			{
 				this->tplayer[i].airTimer = 0.f;
 				this->tplayer[i].isJumping = false;
-
+				this->tplayer[i].direction.y = 0.f;
 			}
+			
 
 			//Actions 
 			if (System::theTracker->a == DirectX::GamePad::ButtonStateTracker::PRESSED) //and
@@ -183,10 +183,69 @@ void GunGameState::setGrounded(int id, bool condition)
 
 DirectX::XMFLOAT3 GunGameState::getDirection(int id)
 {
+	
 	return tplayer[id].direction;
 }
 
 bool GunGameState::controllerIsConnected(int controllerPort)
 {
 	return System::theGamePad->GetState(controllerPort).IsConnected();
+}
+
+bool GunGameState::collision(DirectX::XMFLOAT2 posOne, DirectX::XMFLOAT2 scaleOne,int playerID, DirectX::XMFLOAT2 posTwo, DirectX::XMFLOAT2 scaleTwo, int itemID)
+{
+	bool result = false;
+
+	DirectX::GamePad::State state;
+
+	state = System::theGamePad->GetState(playerID);
+	if (state.IsConnected())
+	{
+		System::theTracker->Update(state);
+		if (System::theTracker->a == DirectX::GamePad::ButtonStateTracker::PRESSED)
+		{
+
+			float size = 0.5f;
+
+			DirectX::XMFLOAT2 topLeftOne = { posOne.x - scaleOne.x * size, posOne.y - size * scaleOne.y };
+			DirectX::XMFLOAT2 topLeftTwo = { posTwo.x - scaleTwo.x * size, posTwo.y - size * scaleTwo.y };
+
+			if (topLeftOne.x < topLeftTwo.x + (scaleTwo.x*size * 2) &&
+				topLeftOne.x + (scaleOne.x*size * 2) > topLeftTwo.x &&
+				topLeftOne.y < topLeftTwo.y + (scaleTwo.y *size * 2) &&
+				topLeftOne.y + (scaleOne.y*size * 2) > topLeftTwo.y)
+			{
+				result = true;
+				items[itemID].isFlying = true;
+			}
+		}
+	}
+	
+	return result;
+}
+
+bool GunGameState::collision(DirectX::XMFLOAT2 posOne, float radiusOne, DirectX::XMFLOAT2 posTwo, float radiusTwo)
+{
+	bool result = false;
+	float deltaX = posTwo.x - posOne.x;
+	float deltaY = posTwo.y - posOne.y;
+	float rad = radiusOne + radiusTwo;
+	if ((deltaX * deltaX) + (deltaY * deltaY) < rad * rad)
+	{
+		result = true;
+	}
+	return result;
+}
+
+bool GunGameState::collision(DirectX::XMFLOAT2 posBox, DirectX::XMFLOAT2 scaleBox, DirectX::XMFLOAT2 posCircle, float radiusCircle)
+{
+	float size = 0.5f;
+	float widthBox = scaleBox.x*size * 2;
+	float heightBox = scaleBox.y*size * 2;
+
+
+	float Dx = posCircle.x - std::fmaxf(posBox.x, std::fminf(posCircle.x, posBox.x + widthBox));
+	float Dy = posCircle.y - std::fmaxf(posBox.y, std::fminf(posCircle.y, posBox.y + heightBox));
+
+	return (Dx * Dx + Dy * Dy) < (radiusCircle * radiusCircle);
 }

@@ -258,6 +258,9 @@
     <ClInclude Include="Keyboard.h">
       <Filter>Header\Input</Filter>
     </ClInclude>
+    <ClInclude Include="Geomety.h">
+      <Filter>Header</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="imgui\.gitkeep" />

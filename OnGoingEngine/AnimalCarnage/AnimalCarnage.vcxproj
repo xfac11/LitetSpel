@@ -191,6 +191,7 @@
     <ClInclude Include="ForwardShader.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="GameObjectHandler.h" />
+    <ClInclude Include="Geomety.h" />
     <ClInclude Include="GraphicsDevice.h" />
     <ClInclude Include="GuiBase.h" />
     <ClInclude Include="GuiElement.h" />
