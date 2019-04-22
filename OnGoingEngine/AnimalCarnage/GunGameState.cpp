@@ -70,7 +70,7 @@ bool GunGameState::update(float deltaTime)
 				this->tplayer[i].direction = DirectX::XMFLOAT3(dir * deltaTime, 0, 0);
 				tplayer[i].airSpeed = dir;
 			}
-			else if (state.dpad.right || state.dpad.left && tplayer[i].grounded)
+			else if ((state.dpad.right || state.dpad.left) && tplayer[i].grounded)
 			{
 				this->tplayer[i].direction = DirectX::XMFLOAT3(5 * (state.dpad.right - state.dpad.left) * deltaTime, 0, 0);
 				tplayer[i].airSpeed = 5 * (state.dpad.right - state.dpad.left);
@@ -81,7 +81,7 @@ bool GunGameState::update(float deltaTime)
 				this->tplayer[i].direction.y = 0; //= { 0,0,0 };
 
 			//IN AIR MOVEMENT
-			if (stickAbsL > 0.f && tplayer[i].grounded==false)
+			if (stickAbsL > 0.f && !tplayer[i].grounded)
 			{
 				tplayer[i].airSpeed += 0.5f * state.thumbSticks.leftX;
 				float dir = tplayer[i].airSpeed;// / stickAbsL;
@@ -95,9 +95,10 @@ bool GunGameState::update(float deltaTime)
 					tplayer[i].airSpeed = -5;
 				}
 			}
-			else if (state.dpad.right || state.dpad.left && tplayer[i].grounded == false)
+			else if (state.dpad.right && !tplayer[i].grounded || state.dpad.left && !tplayer[i].grounded)
 			{
-				tplayer[i].airSpeed += 0.5f * (state.dpad.right - state.dpad.left);
+					tplayer[i].airSpeed += 0.5f * (state.dpad.right - state.dpad.left);
+
 				if (!tplayer[i].grounded) {
 					this->tplayer[i].direction = DirectX::XMFLOAT3(tplayer[i].airSpeed * deltaTime, 0, 0);
 				}
