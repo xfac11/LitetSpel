@@ -1,7 +1,8 @@
 #ifndef GEOMETRY_H
 #define GEOMETRY_H
 #include <iostream>
-#include "System.h"
+#include<DirectXMath.h>
+using namespace DirectX;
 using namespace std;
 struct Sphere
 {
