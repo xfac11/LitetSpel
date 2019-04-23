@@ -1,5 +1,4 @@
 #pragma once
-#include <DirectXMath.h>
 namespace Luna {
 
 #define NAME_SIZE 64
