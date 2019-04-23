@@ -8,24 +8,14 @@
 class MainGui : public GuiBase
 {
 private:
-	//rumble
-	struct RumbleTemp
-	{
-		float rumbleClock;
-		float rumbleTime;
-		DirectX::XMFLOAT2 rumble;
-	};
-	RumbleTemp theRumble[4];
-
 	GuiElement* selectedElement;
 	Button* playButton;
+	Button* optionsButton;
 	Button* quitButton;
 
 	//float timeSinceChanged;
-	bool changedLastFrame;
-	void changeSelected(int i);
-
-	void updateRumble(float deltaTime, int id);
+	//bool changedLastFrame;
+	void changeSelected();
 
 public:
 	MainGui(State* myStae);
@@ -35,8 +25,6 @@ public:
 	void shutDown();
 	bool update(float deltaTime);
 	bool render();
-
-	bool reset(DirectX::GamePad::State state);
 };
 
 #endif // !MAIN_GUI_H

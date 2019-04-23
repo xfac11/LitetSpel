@@ -134,6 +134,7 @@
     <ClCompile Include="Bear.cpp" />
     <ClCompile Include="Button.cpp" />
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="CheckBox.cpp" />
     <ClCompile Include="ForwardShader.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GameObjectHandler.cpp" />
@@ -188,6 +189,7 @@
     <ClInclude Include="Bear.h" />
     <ClInclude Include="Button.h" />
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="CheckBox.h" />
     <ClInclude Include="ConstantBuffer.h" />
     <ClInclude Include="ForwardShader.h" />
     <ClInclude Include="GameObject.h" />

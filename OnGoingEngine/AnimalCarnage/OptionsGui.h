@@ -2,9 +2,13 @@
 #define OPTIONS_GUI_H
 
 #include "GuiBase.h"
+#include "GuiElement.h"
 
 class OptionsGui : public GuiBase
 {
+private:
+	GuiElement* selectedElement;
+
 public:
 	OptionsGui(State* myState);
 	virtual ~OptionsGui();

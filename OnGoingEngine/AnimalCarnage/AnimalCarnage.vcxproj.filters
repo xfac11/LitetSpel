@@ -128,6 +128,9 @@
     <ClCompile Include="Geometry.cpp">
       <Filter>Source</Filter>
     </ClCompile>
+    <ClCompile Include="CheckBox.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Button.h">
@@ -262,6 +265,9 @@
       <Filter>Header\Input</Filter>
     </ClInclude>
     <ClInclude Include="Geometry.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="CheckBox.h">
       <Filter>Header</Filter>
     </ClInclude>
   </ItemGroup>

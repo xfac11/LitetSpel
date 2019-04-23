@@ -9,17 +9,17 @@ Button::~Button()
 {
 }
 
-bool Button::update(float deltaTime)
-{
-	//TODO
-	return true;
-}
-
-bool Button::render(DirectX::SpriteBatch* spriteBatch)
-{
-	//TODO
-	return true;
-}
+//bool Button::update(float deltaTime)
+//{
+//	//TODO
+//	return true;
+//}
+//
+//bool Button::render(DirectX::SpriteBatch* spriteBatch)
+//{
+//	//TODO
+//	return true;
+//}
 
 ID3D11ShaderResourceView * Button::getTexture()
 {
