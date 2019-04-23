@@ -8,6 +8,7 @@ Mouse* System::theMouse = 0;
 Keyboard* System::theKeyboard = 0;
 GamePad* System::theGamePad = 0;
 GamePad::ButtonStateTracker* System::theTracker = 0;
+RumbleTemp System::theRumble[4] = {};
 ModelLoader* System::theModelLoader = 0;
 std::vector<State*> System::states = std::vector<State*>();
 GameState System::currentState = GameState::MAINMENU;
@@ -746,7 +747,14 @@ void System::run()
 			{
 				//Game
 				//make keyboard stuff into private function´?
-				update(ImGui::GetIO().DeltaTime);
+				float delteTime = ImGui::GetIO().DeltaTime;
+				update(delteTime);
+
+				for (int i = 0; i < 4; i++)
+				{
+					updateRumble(delteTime, i);
+				}
+				
 				render();
 				
 
@@ -924,6 +932,21 @@ ID3D11Device *& System::getDevice()
 ID3D11DeviceContext *& System::getDeviceContext()
 {
 	return theGraphicDevice->getDeviceContext();
+}
+
+void System::updateRumble(float deltaTime, int id)
+{
+	if (theRumble[id].rumbleTime > theRumble[id].rumbleClock)
+	{
+		theRumble[id].rumbleClock += deltaTime;
+		System::theGamePad->SetVibration(id, theRumble[id].rumble.x, theRumble[id].rumble.y);
+	}
+	else
+	{
+		theRumble[id].rumbleClock = 0.f;
+		theRumble[id].rumbleTime = 0.f;
+		System::theGamePad->SetVibration(id, 0, 0);
+	}
 }
 
 SpriteBatch * System::getSpriteBatch()
