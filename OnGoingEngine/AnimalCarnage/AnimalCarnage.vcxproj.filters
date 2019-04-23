@@ -2,32 +2,38 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <FxCompile Include="GeometryShader.hlsl">
-      <Filter>Shaders</Filter>
+      <Filter>Shader</Filter>
     </FxCompile>
     <FxCompile Include="PixelShader.hlsl">
-      <Filter>Shaders</Filter>
+      <Filter>Shader</Filter>
     </FxCompile>
     <FxCompile Include="VertexShader.hlsl">
-      <Filter>Shaders</Filter>
+      <Filter>Shader</Filter>
     </FxCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="ForwardShader.cpp">
-      <Filter>Shaders</Filter>
-    </ClCompile>
-    <ClCompile Include="Camera.cpp">
+    <ClCompile Include="Animal.cpp">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="GameObjectHandler.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="GraphicsDevice.cpp">
+    <ClCompile Include="Bear.cpp">
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="GameObject.cpp">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="imgui\imgui_draw.cpp">
+    <ClCompile Include="Geometry.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="ForwardShader.cpp">
+      <Filter>Shader</Filter>
+    </ClCompile>
+    <ClCompile Include="GunGameState.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui\imgui.cpp">
+      <Filter>Imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui\imgui_demo.cpp">
       <Filter>Imgui</Filter>
     </ClCompile>
     <ClCompile Include="imgui\imgui_impl_win32.cpp">
@@ -36,87 +42,75 @@
     <ClCompile Include="imgui\imgui_impl_dx11.cpp">
       <Filter>Imgui</Filter>
     </ClCompile>
-    <ClCompile Include="imgui\imgui.cpp">
+    <ClCompile Include="imgui\imgui_draw.cpp">
       <Filter>Imgui</Filter>
     </ClCompile>
     <ClCompile Include="imgui\imgui_widgets.cpp">
       <Filter>Imgui</Filter>
     </ClCompile>
-    <ClCompile Include="imgui\imgui_demo.cpp">
-      <Filter>Imgui</Filter>
+    <ClCompile Include="ShaderManager.cpp">
+      <Filter>Shader</Filter>
     </ClCompile>
-    <ClCompile Include="main.cpp">
-      <Filter>Source</Filter>
+    <ClCompile Include="Shader.cpp">
+      <Filter>Shader</Filter>
     </ClCompile>
-<<<<<<< HEAD
-    <ClCompile Include="MainGui.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="MainMenu.cpp">
-=======
-    <ClCompile Include="menuItem.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="MenuHandler.cpp">
->>>>>>> a387e30b57bcc87122efa9fe90a51d5661c05f8d
+    <ClCompile Include="Model.cpp">
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="ModelLoader.cpp">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="Model.cpp">
+    <ClCompile Include="Player.cpp">
       <Filter>Source</Filter>
     </ClCompile>
-<<<<<<< HEAD
     <ClCompile Include="State.cpp">
-=======
-    <ClCompile Include="Sprite.cpp">
->>>>>>> a387e30b57bcc87122efa9fe90a51d5661c05f8d
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="System.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="TextureLoad.cpp">
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="Texture.cpp">
       <Filter>Source</Filter>
     </ClCompile>
+    <ClCompile Include="TextureLoad.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
     <ClCompile Include="Transform.cpp">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="Shader.cpp">
-      <Filter>Shaders</Filter>
-    </ClCompile>
-    <ClCompile Include="ShaderManager.cpp">
-      <Filter>Shaders</Filter>
-    </ClCompile>
-    <ClCompile Include="Player.cpp">
-      <Filter>Source\Player</Filter>
-    </ClCompile>
-    <ClCompile Include="Animal.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="Bear.cpp">
-      <Filter>Source</Filter>
+    <ClCompile Include="Keyboard.cpp">
+      <Filter>Input</Filter>
     </ClCompile>
     <ClCompile Include="KeyboardEvent.cpp">
-      <Filter>Source\Input</Filter>
-    </ClCompile>
-    <ClCompile Include="Keyboard.cpp">
-      <Filter>Source\Input</Filter>
+      <Filter>Input</Filter>
     </ClCompile>
     <ClCompile Include="Mouse.cpp">
-      <Filter>Source\Input</Filter>
+      <Filter>Input</Filter>
     </ClCompile>
     <ClCompile Include="MouseEvent.cpp">
-      <Filter>Source\Input</Filter>
+      <Filter>Input</Filter>
     </ClCompile>
-    <ClCompile Include="Geometry.cpp">
-      <Filter>Source</Filter>
+    <ClCompile Include="Button.cpp">
+      <Filter>Menu</Filter>
     </ClCompile>
-<<<<<<< HEAD
+    <ClCompile Include="CheckBox.cpp">
+      <Filter>Menu</Filter>
+    </ClCompile>
+    <ClCompile Include="GuiBase.cpp">
+      <Filter>Menu</Filter>
+    </ClCompile>
+    <ClCompile Include="GuiElement.cpp">
+      <Filter>Menu</Filter>
+    </ClCompile>
+    <ClCompile Include="MainGui.cpp">
+      <Filter>Menu</Filter>
+    </ClCompile>
+    <ClCompile Include="MainMenu.cpp">
+      <Filter>Menu</Filter>
+    </ClCompile>
+    <ClCompile Include="RulesGui.cpp">
+      <Filter>Menu</Filter>
+    </ClCompile>
+    <ClCompile Include="OptionsGui.cpp">
+      <Filter>Menu</Filter>
+    </ClCompile>
     <ClCompile Include="InputHandler.cpp">
       <Filter>Unused</Filter>
     </ClCompile>
@@ -129,54 +123,24 @@
     <ClCompile Include="Sprite.cpp">
       <Filter>Unused</Filter>
     </ClCompile>
-=======
-    <ClCompile Include="Button.cpp">
-      <Filter>Source\GUI</Filter>
+    <ClCompile Include="Camera.cpp">
+      <Filter>Engine</Filter>
     </ClCompile>
-    <ClCompile Include="CheckBox.cpp">
-      <Filter>Source\GUI</Filter>
+    <ClCompile Include="GameObjectHandler.cpp">
+      <Filter>Engine</Filter>
     </ClCompile>
-    <ClCompile Include="GuiElement.cpp">
-      <Filter>Source\GUI</Filter>
+    <ClCompile Include="GraphicsDevice.cpp">
+      <Filter>Engine</Filter>
     </ClCompile>
-    <ClCompile Include="GuiBase.cpp">
-      <Filter>Source\GUI</Filter>
+    <ClCompile Include="main.cpp">
+      <Filter>Engine</Filter>
     </ClCompile>
-    <ClCompile Include="MainGui.cpp">
-      <Filter>Source\GUI</Filter>
+    <ClCompile Include="System.cpp">
+      <Filter>Engine</Filter>
     </ClCompile>
-    <ClCompile Include="OptionsGui.cpp">
-      <Filter>Source\GUI</Filter>
-    </ClCompile>
-    <ClCompile Include="GunGameState.cpp">
-      <Filter>Source\States</Filter>
-    </ClCompile>
-    <ClCompile Include="State.cpp">
-      <Filter>Source\States</Filter>
-    </ClCompile>
-    <ClCompile Include="MainMenu.cpp">
-      <Filter>Source\States</Filter>
-    </ClCompile>
-    <ClCompile Include="RulesGui.cpp" />
->>>>>>> a387e30b57bcc87122efa9fe90a51d5661c05f8d
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Camera.h">
-      <Filter>Header</Filter>
-    </ClInclude>
-    <ClInclude Include="ConstantBuffer.h">
-      <Filter>Header</Filter>
-    </ClInclude>
-    <ClInclude Include="GameObjectHandler.h">
-      <Filter>Header</Filter>
-    </ClInclude>
-    <ClInclude Include="GraphicsDevice.h">
-      <Filter>Header</Filter>
-    </ClInclude>
-    <ClInclude Include="ForwardShader.h">
-      <Filter>Shaders</Filter>
-    </ClInclude>
-    <ClInclude Include="GameObject.h">
+    <ClInclude Include="Bear.h">
       <Filter>Header</Filter>
     </ClInclude>
     <ClInclude Include="imgui\imconfig.h">
@@ -185,8 +149,23 @@
     <ClInclude Include="imgui\imgui.h">
       <Filter>Imgui</Filter>
     </ClInclude>
+    <ClInclude Include="Animal.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="ForwardShader.h">
+      <Filter>Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObject.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Geometry.h">
+      <Filter>Header</Filter>
+    </ClInclude>
     <ClInclude Include="imgui\imgui_impl_dx11.h">
       <Filter>Imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="GunGameState.h">
+      <Filter>Header</Filter>
     </ClInclude>
     <ClInclude Include="imgui\imgui_impl_win32.h">
       <Filter>Imgui</Filter>
@@ -204,26 +183,7 @@
       <Filter>Imgui</Filter>
     </ClInclude>
     <ClInclude Include="IndexBuffer.h">
-      <Filter>Header</Filter>
-    </ClInclude>
-<<<<<<< HEAD
-    <ClInclude Include="MainGui.h">
-      <Filter>Header</Filter>
-    </ClInclude>
-    <ClInclude Include="MainMenu.h">
-=======
-    <ClInclude Include="InputHandler.h">
-      <Filter>Header</Filter>
-    </ClInclude>
-    <ClInclude Include="MenuHandler.h">
-      <Filter>Header</Filter>
-    </ClInclude>
-    <ClInclude Include="menuItem.h">
->>>>>>> a387e30b57bcc87122efa9fe90a51d5661c05f8d
-      <Filter>Header</Filter>
-    </ClInclude>
-    <ClInclude Include="resource1.h">
-      <Filter>Header</Filter>
+      <Filter>Help</Filter>
     </ClInclude>
     <ClInclude Include="Model.h">
       <Filter>Header</Filter>
@@ -231,8 +191,20 @@
     <ClInclude Include="ModelLoader.h">
       <Filter>Header</Filter>
     </ClInclude>
+    <ClInclude Include="ShaderManager.h">
+      <Filter>Shader</Filter>
+    </ClInclude>
     <ClInclude Include="Shader.h">
-      <Filter>Shaders</Filter>
+      <Filter>Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="VertexBuffer.h">
+      <Filter>Help</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="State.h">
+      <Filter>Header</Filter>
     </ClInclude>
     <ClInclude Include="Texture.h">
       <Filter>Header</Filter>
@@ -243,55 +215,47 @@
     <ClInclude Include="Transform.h">
       <Filter>Header</Filter>
     </ClInclude>
-    <ClInclude Include="VertexBuffer.h">
-      <Filter>Header</Filter>
-    </ClInclude>
-    <ClInclude Include="Structs.h">
-      <Filter>Header</Filter>
-    </ClInclude>
-<<<<<<< HEAD
-    <ClInclude Include="State.h">
-=======
-    <ClInclude Include="Sprite.h">
->>>>>>> a387e30b57bcc87122efa9fe90a51d5661c05f8d
-      <Filter>Header</Filter>
-    </ClInclude>
-    <ClInclude Include="System.h">
-      <Filter>Header</Filter>
-    </ClInclude>
-    <ClInclude Include="ShaderManager.h">
-      <Filter>Shaders</Filter>
-    </ClInclude>
-    <ClInclude Include="Player.h">
-      <Filter>Header\Player</Filter>
-    </ClInclude>
-    <ClInclude Include="Animal.h">
-      <Filter>Header</Filter>
-    </ClInclude>
-    <ClInclude Include="Bear.h">
-      <Filter>Header</Filter>
-    </ClInclude>
-    <ClInclude Include="MouseEvent.h">
-      <Filter>Header\Input</Filter>
-    </ClInclude>
-    <ClInclude Include="Mouse.h">
-      <Filter>Header\Input</Filter>
+    <ClInclude Include="Keyboard.h">
+      <Filter>Input</Filter>
     </ClInclude>
     <ClInclude Include="KeyboardEvent.h">
-      <Filter>Header\Input</Filter>
+      <Filter>Input</Filter>
     </ClInclude>
-    <ClInclude Include="Keyboard.h">
-      <Filter>Header\Input</Filter>
+    <ClInclude Include="Mouse.h">
+      <Filter>Input</Filter>
     </ClInclude>
-    <ClInclude Include="Geometry.h">
-      <Filter>Header</Filter>
+    <ClInclude Include="MouseEvent.h">
+      <Filter>Input</Filter>
     </ClInclude>
-<<<<<<< HEAD
-    <ClInclude Include="Sprite.h">
-      <Filter>Unused</Filter>
+    <ClInclude Include="Button.h">
+      <Filter>Menu</Filter>
     </ClInclude>
-    <ClInclude Include="menuItem.h">
-      <Filter>Unused</Filter>
+    <ClInclude Include="CheckBox.h">
+      <Filter>Menu</Filter>
+    </ClInclude>
+    <ClInclude Include="ConstantBuffer.h">
+      <Filter>Help</Filter>
+    </ClInclude>
+    <ClInclude Include="GuiBase.h">
+      <Filter>Menu</Filter>
+    </ClInclude>
+    <ClInclude Include="GuiElement.h">
+      <Filter>Menu</Filter>
+    </ClInclude>
+    <ClInclude Include="MainGui.h">
+      <Filter>Menu</Filter>
+    </ClInclude>
+    <ClInclude Include="MainMenu.h">
+      <Filter>Menu</Filter>
+    </ClInclude>
+    <ClInclude Include="RulesGui.h">
+      <Filter>Menu</Filter>
+    </ClInclude>
+    <ClInclude Include="Structs.h">
+      <Filter>Help</Filter>
+    </ClInclude>
+    <ClInclude Include="OptionsGui.h">
+      <Filter>Menu</Filter>
     </ClInclude>
     <ClInclude Include="InputHandler.h">
       <Filter>Unused</Filter>
@@ -299,36 +263,27 @@
     <ClInclude Include="MenuHandler.h">
       <Filter>Unused</Filter>
     </ClInclude>
-=======
-    <ClInclude Include="Button.h">
-      <Filter>Header\GUI</Filter>
+    <ClInclude Include="menuItem.h">
+      <Filter>Unused</Filter>
     </ClInclude>
-    <ClInclude Include="CheckBox.h">
-      <Filter>Header\GUI</Filter>
+    <ClInclude Include="Sprite.h">
+      <Filter>Unused</Filter>
     </ClInclude>
-    <ClInclude Include="GuiBase.h">
-      <Filter>Header\GUI</Filter>
+    <ClInclude Include="Camera.h">
+      <Filter>Engine</Filter>
     </ClInclude>
-    <ClInclude Include="GuiElement.h">
-      <Filter>Header\GUI</Filter>
+    <ClInclude Include="GameObjectHandler.h">
+      <Filter>Engine</Filter>
     </ClInclude>
-    <ClInclude Include="MainGui.h">
-      <Filter>Header\GUI</Filter>
+    <ClInclude Include="GraphicsDevice.h">
+      <Filter>Engine</Filter>
     </ClInclude>
-    <ClInclude Include="OptionsGui.h">
-      <Filter>Header\GUI</Filter>
+    <ClInclude Include="resource1.h">
+      <Filter>Engine</Filter>
     </ClInclude>
-    <ClInclude Include="MainMenu.h">
-      <Filter>Header\States</Filter>
+    <ClInclude Include="System.h">
+      <Filter>Engine</Filter>
     </ClInclude>
-    <ClInclude Include="State.h">
-      <Filter>Header\States</Filter>
-    </ClInclude>
-    <ClInclude Include="GunGameState.h">
-      <Filter>Header\States</Filter>
-    </ClInclude>
-    <ClInclude Include="RulesGui.h" />
->>>>>>> a387e30b57bcc87122efa9fe90a51d5661c05f8d
   </ItemGroup>
   <ItemGroup>
     <None Include="imgui\.gitkeep" />
@@ -338,46 +293,32 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Filter Include="Shaders">
-      <UniqueIdentifier>{a64cec5e-47d1-4a8b-908e-c417336cd147}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header">
-      <UniqueIdentifier>{57048dd2-7da7-441f-ba6c-2b72f55cd48c}</UniqueIdentifier>
+      <UniqueIdentifier>{167c7273-1a54-4c49-9ffd-5108c031b25a}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source">
-      <UniqueIdentifier>{3d7d75ff-0d19-4e21-8d08-d722a1f8f73e}</UniqueIdentifier>
+      <UniqueIdentifier>{d5c0a225-31a2-4535-bb23-9bc082eb78e0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shader">
+      <UniqueIdentifier>{33ac5d70-3a89-4189-b228-5d3c126dbf7b}</UniqueIdentifier>
     </Filter>
     <Filter Include="Imgui">
-      <UniqueIdentifier>{3edf8ddc-9057-4b21-91a5-7435ad1a55ff}</UniqueIdentifier>
+      <UniqueIdentifier>{c39f66c0-a9de-427e-850a-ae1d9f21039b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header\Player">
-      <UniqueIdentifier>{f7e7ee8c-858b-485a-bff7-03b1bc00223a}</UniqueIdentifier>
+    <Filter Include="Help">
+      <UniqueIdentifier>{4ad1b241-636a-4ece-8e02-f82244658b9e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Player">
-      <UniqueIdentifier>{963984fc-c6a1-4232-94fd-f58e27e4d098}</UniqueIdentifier>
+    <Filter Include="Input">
+      <UniqueIdentifier>{9ffe8b9e-a229-463a-a4fd-e01bb9af4ddd}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Input">
-      <UniqueIdentifier>{2b06ee41-1863-4ed5-9fa8-b2c8c6167b6d}</UniqueIdentifier>
+    <Filter Include="Menu">
+      <UniqueIdentifier>{e71878e1-1bd3-4578-8477-f8858316c8a3}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header\Input">
-      <UniqueIdentifier>{9a18b5c1-7fa0-4f52-bd18-c233c27539aa}</UniqueIdentifier>
-    </Filter>
-<<<<<<< HEAD
     <Filter Include="Unused">
-      <UniqueIdentifier>{a1a48d50-df02-4444-8d18-472b80e966eb}</UniqueIdentifier>
-=======
-    <Filter Include="Source\GUI">
-      <UniqueIdentifier>{bef463f7-ae4f-4c2b-a3f6-3546c1cc2232}</UniqueIdentifier>
+      <UniqueIdentifier>{4dad0f10-3281-4231-9889-a6ee86943357}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header\GUI">
-      <UniqueIdentifier>{de09b48a-854e-4465-9a88-21c33ed3cec9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header\States">
-      <UniqueIdentifier>{81188fe1-5a93-40cb-b16a-fa03821f29af}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\States">
-      <UniqueIdentifier>{a7a328c2-16c6-40a4-93aa-6c10af4b4d31}</UniqueIdentifier>
->>>>>>> a387e30b57bcc87122efa9fe90a51d5661c05f8d
+    <Filter Include="Engine">
+      <UniqueIdentifier>{8891e7a1-759e-495a-9f5a-9ca10cdf9e00}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

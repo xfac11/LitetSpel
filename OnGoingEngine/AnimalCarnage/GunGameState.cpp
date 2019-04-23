@@ -1,28 +1,28 @@
 #include "GunGameState.h"
 #include"System.h"
 
-void GunGameState::updateRumble(float deltaTime, int id)
-{
-	if (theRumble[id].rumbleTime > theRumble[id].rumbleClock)
-	{
-		theRumble[id].rumbleClock += deltaTime;
-		System::theGamePad->SetVibration(0, theRumble[id].rumble.x, theRumble[id].rumble.y);
-	}
-	else
-	{
-		theRumble[id].rumbleClock = 0.f;
-		theRumble[id].rumbleTime = 0.f;
-		System::theGamePad->SetVibration(0, 0, 0);
-	}
-}
+//void GunGameState::updateRumble(float deltaTime, int id)
+//{
+//	if (theRumble[id].rumbleTime > theRumble[id].rumbleClock)
+//	{
+//		theRumble[id].rumbleClock += deltaTime;
+//		System::theGamePad->SetVibration(id, theRumble[id].rumble.x, theRumble[id].rumble.y);
+//	}
+//	else
+//	{
+//		theRumble[id].rumbleClock = 0.f;
+//		theRumble[id].rumbleTime = 0.f;
+//		System::theGamePad->SetVibration(id, 0, 0);
+//	}
+//}
 
 GunGameState::GunGameState() 
 {
 	for (int i = 0; i < 4; i++) //temp players
 	{
-		theRumble[i].rumbleClock = 0.f;
+	/*	theRumble[i].rumbleClock = 0.f;
 		theRumble[i].rumbleTime = 0.f;
-		theRumble[i].rumble = { 0.f,0.f };
+		theRumble[i].rumble = { 0.f,0.f };*/
 		tplayer[i].isJumping = false;
 		tplayer[i].canJump = true;
 		tplayer[i].airTimer = 0.f;
@@ -59,15 +59,33 @@ bool GunGameState::render()
 
 bool GunGameState::update(float deltaTime)
 {
-	DirectX::GamePad::State state;
-
 	for (int i = 0; i < 4; i++) //nrOfPlayers
 	{
-		state = System::theGamePad->GetState(i);
+		DirectX::GamePad::State state = System::theGamePad->GetState(i);
 		if (state.IsConnected())
 		{
 			System::theTracker->Update(state);
-					
+			//Actions 
+
+			if (System::theTracker->a == DirectX::GamePad::ButtonStateTracker::PRESSED) //and
+			{
+				System::theRumble[i].rumble.x = 0.6f;
+				System::theRumble[i].rumble.y = 0.6f;
+				System::theRumble[i].rumbleTime = 0.3f;
+			}
+			if (System::theTracker->b == DirectX::GamePad::ButtonStateTracker::HELD) //and
+			{
+				System::theRumble[i].rumble.x = 0.2f;
+				System::theRumble[i].rumble.y = 0.2f;
+				System::theRumble[i].rumbleTime = 0.2f;
+			}
+			//if (System::theTracker->dpadUp == DirectX::GamePad::ButtonStateTracker::RELEASED) //and
+			//{
+			//	System::theRumble[i].rumble.x = 0.2f;
+			//	System::theRumble[i].rumble.y = 0.2f;
+			//	System::theRumble[i].rumbleTime = 0.2f;
+			//}
+
 
 			//movement
 			float stickAbsL = abs(state.thumbSticks.leftX);
@@ -81,7 +99,7 @@ bool GunGameState::update(float deltaTime)
 			else if ((state.dpad.right || state.dpad.left) && tplayer[i].grounded)
 			{
 				this->tplayer[i].direction = DirectX::XMFLOAT3(5 * (state.dpad.right - state.dpad.left) * deltaTime, 0, 0);
-				tplayer[i].airSpeed = 5 * (state.dpad.right - state.dpad.left);
+				tplayer[i].airSpeed = 5.f * (state.dpad.right - state.dpad.left);
 			}
 			else if (this->tplayer[i].isJumping == false)
 				this->tplayer[i].direction = { 0,0,0 };
@@ -152,71 +170,57 @@ bool GunGameState::update(float deltaTime)
 				this->tplayer[i].direction.y = 0.f;
 				this->tplayer[i].airSpeed = 0.0f;
 			}
-			
 
 			//ITEMS not working properly  (does not leave ground)
-			for (int i = 0; i < 2; i++)
-			{
-				if (state.dpad.right - state.dpad.left != 0)
-					items[i].lastDir = state.dpad.right - state.dpad.left;
-				else if (abs(state.thumbSticks.leftX) == 1)
-					items[i].lastDir = state.thumbSticks.leftX;
+			//for (int i = 0; i < 2; i++)
+			//{
+			//	if (state.dpad.right - state.dpad.left != 0)
+			//		items[i].lastDir = state.dpad.right - state.dpad.left;
+			//	else if (abs(state.thumbSticks.leftX) == 1)
+			//		items[i].lastDir = state.thumbSticks.leftX;
 
-				if (items[i].grounded==false)
-				{
-					this->items[i].airTimer += deltaTime;
+			//	if (items[i].grounded==false)
+			//	{
+			//		this->items[i].airTimer += deltaTime;
 
-					this->tplayer[i].direction.x += this->items[i].lastDir*deltaTime;
-					this->tplayer[i].direction.y += (-9.82f *items[i].airTimer + (2.f*this->items[i].isFlying))*deltaTime;
-				}
-				else if (items[i].grounded == true)
-				{
-					this->items[i].airTimer = 0.f;
-					this->items[i].isFlying = false;
-					this->items[i].direction.y = 0;
-					this->items[i].direction.x = 0;
-				}
-			}
+			//		this->tplayer[i].direction.x += this->items[i].lastDir*deltaTime;
+			//		this->tplayer[i].direction.y += (-9.82f *items[i].airTimer + (2.f*this->items[i].isFlying))*deltaTime;
+			//	}
+			//	else if (items[i].grounded == true)
+			//	{
+			//		this->items[i].airTimer = 0.f;
+			//		this->items[i].isFlying = false;
+			//		this->items[i].direction.y = 0;
+			//		this->items[i].direction.x = 0;
+			//	}
+			//}
 
-			//Actions 
-			if (System::theTracker->a == DirectX::GamePad::ButtonStateTracker::PRESSED) //and
-			{
-				theRumble[i].rumble.x = 1.f;
-				theRumble[i].rumble.y = 1.f;
-				theRumble[i].rumbleTime = 0.1f;
-			}
-			if (System::theTracker->b == DirectX::GamePad::ButtonStateTracker::PRESSED) //and
-			{
-				theRumble[i].rumble.x = 1.f;
-				theRumble[i].rumble.y = 1.f;
-				theRumble[i].rumbleTime = 0.1f;
-			}
 
 			if (state.buttons.leftShoulder ||
 				state.buttons.rightShoulder)
 			{
-				theRumble[i].rumble.x = 0.1f;
-				theRumble[i].rumble.y = 0.1f;
-				theRumble[i].rumbleTime = 0.1f;
+				System::theRumble[i].rumble.x = 0.4f;
+				System::theRumble[i].rumble.y = 0.4f;
+				System::theRumble[i].rumbleTime = 0.4f;
 			}
 
 			//pause
 			if (state.buttons.menu)
 			{
 				//pause
-				theRumble[i].rumble.x = 0.1f;
-				theRumble[i].rumbleTime = 0.1f;
+				System::theRumble[i].rumble.x = 0.3f;
+				System::theRumble[i].rumbleTime = 0.1f;
 			}
 
 			//exit(debug build)
 			if (state.buttons.back)
 			{
 				//exit game
-				theRumble[i].rumble.y = 0.1f;
-				theRumble[i].rumbleTime = 0.1f;
+				System::theRumble[i].rumble.y = 0.3f;
+				System::theRumble[i].rumbleTime = 0.1f;
 			}
 
-			this->updateRumble(deltaTime, i);
+			//this->updateRumble(deltaTime, i);
 		}
 	}
 	return true;
@@ -257,38 +261,38 @@ bool GunGameState::controllerIsConnected(int controllerPort)
 	return System::theGamePad->GetState(controllerPort).IsConnected();
 }
 
-bool GunGameState::collision(DirectX::XMFLOAT2 posOne, DirectX::XMFLOAT2 scaleOne,int playerID, DirectX::XMFLOAT2 posTwo, DirectX::XMFLOAT2 scaleTwo, int itemID)
-{
-	bool result = false;
-
-	DirectX::GamePad::State state;
-
-	state = System::theGamePad->GetState(playerID);
-	if (state.IsConnected())
-	{
-		System::theTracker->Update(state);
-		if (System::theTracker->a == DirectX::GamePad::ButtonStateTracker::PRESSED)
-		{
-
-			float size = 0.5f;
-
-			DirectX::XMFLOAT2 topLeftOne = { posOne.x - scaleOne.x * size, posOne.y - size * scaleOne.y };
-			DirectX::XMFLOAT2 topLeftTwo = { posTwo.x - scaleTwo.x * size, posTwo.y - size * scaleTwo.y };
-
-			if (topLeftOne.x < topLeftTwo.x + (scaleTwo.x*size * 2) &&
-				topLeftOne.x + (scaleOne.x*size * 2) > topLeftTwo.x &&
-				topLeftOne.y < topLeftTwo.y + (scaleTwo.y *size * 2) &&
-				topLeftOne.y + (scaleOne.y*size * 2) > topLeftTwo.y)
-			{
-				result = true;
-				items[itemID].isFlying = true;
-				items[itemID].grounded = false;
-			}
-		}
-	}
-	
-	return result;
-}
+//bool GunGameState::collision(DirectX::XMFLOAT2 posOne, DirectX::XMFLOAT2 scaleOne,int playerID, DirectX::XMFLOAT2 posTwo, DirectX::XMFLOAT2 scaleTwo, int itemID)
+//{
+//	bool result = false;
+//
+//	DirectX::GamePad::State state;
+//
+//	state = System::theGamePad->GetState(playerID);
+//	if (state.IsConnected())
+//	{
+//		System::theTracker->Update(state);
+//		if (System::theTracker->a == DirectX::GamePad::ButtonStateTracker::PRESSED)
+//		{
+//
+//			float size = 0.5f;
+//
+//			DirectX::XMFLOAT2 topLeftOne = { posOne.x - scaleOne.x * size, posOne.y - size * scaleOne.y };
+//			DirectX::XMFLOAT2 topLeftTwo = { posTwo.x - scaleTwo.x * size, posTwo.y - size * scaleTwo.y };
+//
+//			if (topLeftOne.x < topLeftTwo.x + (scaleTwo.x*size * 2) &&
+//				topLeftOne.x + (scaleOne.x*size * 2) > topLeftTwo.x &&
+//				topLeftOne.y < topLeftTwo.y + (scaleTwo.y *size * 2) &&
+//				topLeftOne.y + (scaleOne.y*size * 2) > topLeftTwo.y)
+//			{
+//				result = true;
+//				items[itemID].isFlying = true;
+//				items[itemID].grounded = false;
+//			}
+//		}
+//	}
+//	
+//	return result;
+//}
 
 bool GunGameState::collision(DirectX::XMFLOAT2 posOne, float radiusOne, DirectX::XMFLOAT2 posTwo, float radiusTwo)
 {

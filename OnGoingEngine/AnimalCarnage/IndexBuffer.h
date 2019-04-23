@@ -46,6 +46,7 @@ public:
 
 		HRESULT hr = device->CreateBuffer(&iBufferDesc, &subData, buffer.GetAddressOf());
 
+	
 		return hr;
 	}
 private:

@@ -14,13 +14,13 @@ private:
 	Player** player;
 
 	//rumble
-	struct RumbleTemp
-	{
-		float rumbleClock;
-		float rumbleTime;
-		DirectX::XMFLOAT2 rumble;
-	};
-	RumbleTemp theRumble[4];
+	//struct RumbleTemp
+	//{
+	//	float rumbleClock;
+	//	float rumbleTime;
+	//	DirectX::XMFLOAT2 rumble;
+	//};
+	//RumbleTemp theRumble[4];
 
 	//Temporary player stuct
 	struct PlayerTemp
@@ -48,7 +48,7 @@ private:
 	};
 	ItemTemp items[2];
 
-	void updateRumble(float deltaTime, int id);
+	//void updateRumble(float deltaTime, int id);
 	//void updatePlayers
 	//void updateObjects
 
@@ -69,7 +69,7 @@ public:
 
 	//Temporary
 	//box and box
-	bool collision(DirectX::XMFLOAT2 posOne, DirectX::XMFLOAT2 scaleOne,int playerID, DirectX::XMFLOAT2 posTwo, DirectX::XMFLOAT2 scaleTwo, int itemID);
+	//bool collision(DirectX::XMFLOAT2 posOne, DirectX::XMFLOAT2 scaleOne,int playerID, DirectX::XMFLOAT2 posTwo, DirectX::XMFLOAT2 scaleTwo, int itemID);
 	//circle and circle
 	bool collision(DirectX::XMFLOAT2 posOne, float radiusOne, DirectX::XMFLOAT2 posTwo, float radiusTwo);
 	//box and circle

@@ -452,6 +452,8 @@ void System::renderImgui()
 	//ImGui::Text(textUse.c_str());
 	//textUse = "Height from 'Ground': " + std::to_string(this->height) + "m";
 	//ImGui::Text(textUse.c_str());
+
+
 	if (collide == true)
 	{
 		ImGui::Text("collision yes");
@@ -460,10 +462,6 @@ void System::renderImgui()
 	{
 		ImGui::Text("collision no");
 	}
-	//textUse = "In menu: " + this->playerInputs->getCurrentMenu();
-	//ImGui::Text(textUse.c_str());
-	//textUse = "Current Option: " + std::to_string(this->playerInputs->getCurrentOption());
-	//ImGui::Text(textUse.c_str());
 	ImGui::SliderInt("Player: ", &this->currentInput, 0, 5);
 	ImGui::TextColored(ImVec4(1, 1, 0, 1), "Controllers");
 	ImGui::BeginChild("Scrolling");
@@ -479,7 +477,6 @@ void System::renderImgui()
 
 	ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
 	ImGui::End();
-
 
 }
 
@@ -603,7 +600,7 @@ void System::update(float deltaTime)
 			if (gamePtr != nullptr)
 			{
 
-				gamePtr->collision(playerPos, playerScale, 0, obj1Pos, obj1Scale, 0);
+				//gamePtr->collision(playerPos, playerScale, 0, obj1Pos, obj1Scale, 0);
 
 				if (obj[i]->getPosition().y - 0.5f*obj[i]->getScale().y > 0.f)
 					gamePtr->setObjGrounded(i, false);
@@ -985,5 +982,6 @@ void System::closeWindow()
 
 void System::setState(GameState state)
 {
+	
 	System::fusk->currentState = state;
 }

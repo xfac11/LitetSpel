@@ -77,6 +77,13 @@ bool RulesGui::update(float deltaTime)
 			System::theTracker->Update(gamepadState);
 			this->changeSelected();
 
+
+			DirectX::GamePad::ButtonStateTracker temp;
+			temp.a = System::theTracker->a;
+			temp.b = System::theTracker->b;
+			temp.x = System::theTracker->x;
+			temp.y = System::theTracker->y;
+
 			if (System::theTracker->a == DirectX::GamePad::ButtonStateTracker::PRESSED)
 			{
 				if (this->selectedElement == this->testCheckBox)
@@ -86,6 +93,7 @@ bool RulesGui::update(float deltaTime)
 				else
 				{
 					System::setState(GUNGAME);
+					//System::theTracker->Reset();
 				}
 
 				System::theRumble[i].rumble.x = 0.2f;
