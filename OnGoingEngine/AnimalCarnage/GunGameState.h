@@ -42,6 +42,8 @@ private:
 		bool isFlying;
 		float airTimer;
 		bool grounded;
+		int lastDir;
+		float weight;//
 		DirectX::XMFLOAT3 direction;
 	};
 	ItemTemp items[2];
@@ -60,7 +62,8 @@ public:
 	void shutDown();
 
 	bool isGrounded(int id);
-	void setGrounded(int id, bool condition);
+	void setGrounded(int id, bool condition); //temp sets player
+	void setObjGrounded(int id, bool condition); //temp sets item
 	DirectX::XMFLOAT3 getDirection(int id);
 	bool controllerIsConnected(int controllerPort);
 

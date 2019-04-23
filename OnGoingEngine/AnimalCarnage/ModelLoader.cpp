@@ -23,7 +23,7 @@ void ModelLoader::loadModel(Model**&model, const char* filePath)
 	for (int i = 0; i < meshCount; i++)
 	{
 		model[i] = new Model;
-		model[i]->setMesh()
+		model[i]->setMesh(vector.mesh, )
 		//model[i]->setTexture();
 	}*/
 

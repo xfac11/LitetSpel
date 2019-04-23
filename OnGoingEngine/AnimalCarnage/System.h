@@ -69,8 +69,7 @@ private:
 	static SpriteBatch* spriteBatch;
 	static SpriteFont* fontComicSans;
 	
-	GameObject* obj;
-	GameObject* obj2;
+	GameObject* obj[2];
 	//GameObject* playerOne;
 	//GameObject* playerTwo;
 	GameObject* players[4];

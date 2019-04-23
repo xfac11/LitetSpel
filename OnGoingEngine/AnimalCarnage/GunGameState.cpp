@@ -18,7 +18,7 @@ void GunGameState::updateRumble(float deltaTime, int id)
 
 GunGameState::GunGameState() 
 {
-	for (int i = 0; i < 4; i++) //temp
+	for (int i = 0; i < 4; i++) //temp players
 	{
 		theRumble[i].rumbleClock = 0.f;
 		theRumble[i].rumbleTime = 0.f;
@@ -27,6 +27,14 @@ GunGameState::GunGameState()
 		tplayer[i].canJump = true;
 		tplayer[i].airTimer = 0.f;
 		tplayer[i].airSpeed = 0.f;
+	}
+	for (int i = 0; i < 2; i++)
+	{
+		items[i].isFlying = false;
+		items[i].airTimer = 0.f;
+		items[i].grounded = true;
+		items[i].lastDir = 1;
+		items[i].weight = 2.f;
 	}
 	this->player = nullptr;
 	this->nrOfPlayers = 0;
@@ -109,16 +117,14 @@ bool GunGameState::update(float deltaTime)
 					tplayer[i].airSpeed = -5;
 				}
 			}
-
+			
+			
 
 			//jump
 			if ((state.buttons.x || state.buttons.y) && tplayer[i].canJump)//== DirectX::GamePad::ButtonStateTracker::PRESSED 
 			{
-
 				this->tplayer[i].isJumping = true;
 				this->tplayer[i].grounded = false;
-				//this->tplayer[i].grounded = false;
-				
 			}
 
 			//canJump
@@ -131,7 +137,6 @@ bool GunGameState::update(float deltaTime)
 
 
 			
-
 
 			//falling/jump function
 			if (this->tplayer[i].grounded == false)
@@ -148,6 +153,30 @@ bool GunGameState::update(float deltaTime)
 				this->tplayer[i].airSpeed = 0.0f;
 			}
 			
+
+			//ITEMS not working properly  (does not leave ground)
+			for (int i = 0; i < 2; i++)
+			{
+				if (state.dpad.right - state.dpad.left != 0)
+					items[i].lastDir = state.dpad.right - state.dpad.left;
+				else if (abs(state.thumbSticks.leftX) == 1)
+					items[i].lastDir = state.thumbSticks.leftX;
+
+				if (items[i].grounded==false)
+				{
+					this->items[i].airTimer += deltaTime;
+
+					this->tplayer[i].direction.x += this->items[i].lastDir*deltaTime;
+					this->tplayer[i].direction.y += (-9.82f *items[i].airTimer + (2.f*this->items[i].isFlying))*deltaTime;
+				}
+				else if (items[i].grounded == true)
+				{
+					this->items[i].airTimer = 0.f;
+					this->items[i].isFlying = false;
+					this->items[i].direction.y = 0;
+					this->items[i].direction.x = 0;
+				}
+			}
 
 			//Actions 
 			if (System::theTracker->a == DirectX::GamePad::ButtonStateTracker::PRESSED) //and
@@ -212,6 +241,11 @@ void GunGameState::setGrounded(int id, bool condition)
 	tplayer[id].grounded = condition;
 }
 
+void GunGameState::setObjGrounded(int id, bool condition)
+{
+	items[id].grounded = condition;
+}
+
 DirectX::XMFLOAT3 GunGameState::getDirection(int id)
 {
 	
@@ -248,6 +282,7 @@ bool GunGameState::collision(DirectX::XMFLOAT2 posOne, DirectX::XMFLOAT2 scaleOn
 			{
 				result = true;
 				items[itemID].isFlying = true;
+				items[itemID].grounded = false;
 			}
 		}
 	}

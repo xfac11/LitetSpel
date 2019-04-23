@@ -1,5 +1,5 @@
 #pragma once
-
+#include <DirectXMath.h>
 namespace Luna {
 
 #define NAME_SIZE 64
@@ -107,5 +107,17 @@ namespace Luna {
 	struct BoundingBox {
 		float pos[3] = { 0.0f };
 		float halfSize[3] = { 0.0f };
+	};
+
+	struct WorldMatrix  //every model
+	{
+		DirectX::XMMATRIX world;
+	};
+
+	struct PerFrameMatrices
+	{
+		DirectX::XMMATRIX view;
+		DirectX::XMMATRIX proj;
+		DirectX::XMFLOAT4 camPos;
 	};
 }

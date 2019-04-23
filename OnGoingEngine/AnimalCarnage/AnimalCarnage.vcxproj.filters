@@ -63,19 +63,10 @@
     <ClCompile Include="MainMenu.cpp">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="menuItem.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="MenuHandler.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
     <ClCompile Include="ModelLoader.cpp">
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="Model.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="Sprite.cpp">
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="State.cpp">
@@ -110,9 +101,6 @@
     <ClCompile Include="Bear.cpp">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="InputHandler.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
     <ClCompile Include="KeyboardEvent.cpp">
       <Filter>Source\Input</Filter>
     </ClCompile>
@@ -127,6 +115,18 @@
     </ClCompile>
     <ClCompile Include="Geometry.cpp">
       <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="InputHandler.cpp">
+      <Filter>Unused</Filter>
+    </ClCompile>
+    <ClCompile Include="MenuHandler.cpp">
+      <Filter>Unused</Filter>
+    </ClCompile>
+    <ClCompile Include="menuItem.cpp">
+      <Filter>Unused</Filter>
+    </ClCompile>
+    <ClCompile Include="Sprite.cpp">
+      <Filter>Unused</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -184,19 +184,10 @@
     <ClInclude Include="IndexBuffer.h">
       <Filter>Header</Filter>
     </ClInclude>
-    <ClInclude Include="InputHandler.h">
-      <Filter>Header</Filter>
-    </ClInclude>
     <ClInclude Include="MainGui.h">
       <Filter>Header</Filter>
     </ClInclude>
     <ClInclude Include="MainMenu.h">
-      <Filter>Header</Filter>
-    </ClInclude>
-    <ClInclude Include="MenuHandler.h">
-      <Filter>Header</Filter>
-    </ClInclude>
-    <ClInclude Include="menuItem.h">
       <Filter>Header</Filter>
     </ClInclude>
     <ClInclude Include="resource1.h">
@@ -224,9 +215,6 @@
       <Filter>Header</Filter>
     </ClInclude>
     <ClInclude Include="Structs.h">
-      <Filter>Header</Filter>
-    </ClInclude>
-    <ClInclude Include="Sprite.h">
       <Filter>Header</Filter>
     </ClInclude>
     <ClInclude Include="State.h">
@@ -264,6 +252,18 @@
     <ClInclude Include="Geometry.h">
       <Filter>Header</Filter>
     </ClInclude>
+    <ClInclude Include="Sprite.h">
+      <Filter>Unused</Filter>
+    </ClInclude>
+    <ClInclude Include="menuItem.h">
+      <Filter>Unused</Filter>
+    </ClInclude>
+    <ClInclude Include="InputHandler.h">
+      <Filter>Unused</Filter>
+    </ClInclude>
+    <ClInclude Include="MenuHandler.h">
+      <Filter>Unused</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="imgui\.gitkeep" />
@@ -296,6 +296,9 @@
     </Filter>
     <Filter Include="Header\Input">
       <UniqueIdentifier>{9a18b5c1-7fa0-4f52-bd18-c233c27539aa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Unused">
+      <UniqueIdentifier>{a1a48d50-df02-4444-8d18-472b80e966eb}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

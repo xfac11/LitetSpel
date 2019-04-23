@@ -3,7 +3,7 @@
 #include"Model.h"
 #include"Transform.h"
 #include"ConstantBuffer.h"
-class GameObject
+class GameObject//arv
 {
 public:
 	GameObject();

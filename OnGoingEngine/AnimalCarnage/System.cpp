@@ -320,8 +320,8 @@ bool System::initialize()
 	this->shaderManager = new ShaderManager;
 	this->shaderManager->initialize();
 	//this->theForwardShader->initialize();
-	this->obj = new GameObject(shaderManager->getForwardShader());
-	this->obj2 = new GameObject(shaderManager->getForwardShader());
+	this->obj[0] = new GameObject(shaderManager->getForwardShader());
+	this->obj[1] = new GameObject(shaderManager->getForwardShader());
 	
 	for (int i = 0; i < 4; i++)
 		this->players[i] = new GameObject(shaderManager->getForwardShader());
@@ -369,10 +369,10 @@ bool System::initialize()
 		mesh2.push_back(temp2[i]);
 	}
 
-	this->obj->addModel(mesh2, indices2, 3);
-	this->obj->setScale(2, 0.5, 0.5);
-	this->obj2->addModel(mesh2, indices2, 3);
-	this->obj2->setScale(2, 1, 1);
+	this->obj[0]->addModel(mesh2, indices2, 3);
+	this->obj[0]->setScale(2, 0.5, 0.5);
+	this->obj[1]->addModel(mesh2, indices2, 3);
+	this->obj[1]->setScale(2, 1, 1);
 
 	
 	this->players[0]->addModel(mesh, indices, 6);
@@ -383,8 +383,8 @@ bool System::initialize()
 	this->players[2]->setScale(0.6f, 0.8f, 0.1f);
 	this->players[3]->addModel(mesh, indices, 6);
 	this->players[3]->setScale(0.6f, 0.8f, 0.1f);
-	this->handler.addObject(this->obj2);
-	this->handler.addObject(this->obj);
+	this->handler.addObject(this->obj[1]);
+	this->handler.addObject(this->obj[0]);
 	for (int i = 0; i < 4; i++)
 		this->handler.addObject(this->players[i]);
 	
@@ -524,7 +524,7 @@ void System::update(float deltaTime)
 	if (GUNGAME == currentState)
 	{	
 		GameObject* temp= nullptr;
-		temp = obj;
+		temp = obj[0];
 		if (currentInput == 0)
 		{
 			temp = players[0];
@@ -545,20 +545,24 @@ void System::update(float deltaTime)
 		}
 		else if (currentInput == 4)
 		{
-			temp = obj;
+			temp = obj[0];
 
 		}
 		else if (currentInput == 5)
 		{
-			temp = obj2;
+			temp = obj[1];
 
 		}
-		DirectX::XMFLOAT2 player1Pos = {temp->getPosition().x, temp->getPosition().y};
-		DirectX::XMFLOAT2 player1Scale = { temp->getScale().x,temp->getScale().y };
+		DirectX::XMFLOAT2 playerPos = {temp->getPosition().x, temp->getPosition().y};
+		DirectX::XMFLOAT2 playerScale = { temp->getScale().x,temp->getScale().y };
 		DirectX::XMFLOAT2 player2Pos = { players[1]->getPosition().x, players[1]->getPosition().y };
 		DirectX::XMFLOAT2 player2Scale = { players[1]->getScale().x,players[1]->getScale().y };
-
 		
+		
+		DirectX::XMFLOAT2 obj1Pos = { obj[0]->getPosition().x, obj[0]->getPosition().y };
+		DirectX::XMFLOAT2 obj1Scale = { obj[0]->getScale().x,obj[0]->getScale().y };
+		
+
 		GunGameState* gamePtr=nullptr;
 		for (int i = 0; i < 4; i++)
 		{
@@ -566,40 +570,33 @@ void System::update(float deltaTime)
 			if (gamePtr != nullptr)
 			{
 
-				if (players[i]->getPosition().y - 0.5f*players[i]->getScale().y > 0.f)
-				{
+				if (players[i]->getPosition().y - 0.5f*players[i]->getScale().y > 0.f)//0 is boundry for curent floor
 					gamePtr->setGrounded(i, false);
-					
-				}
 				else
-				{
 					gamePtr->setGrounded(i, true);
-					//0 is boundry for curent floor
-				}
+				
 				
 				if (i == 0)
 					temp->move(gamePtr->getDirection(i));
 				else
 					players[i]->move(gamePtr->getDirection(i));
+			}
+		}
+		for (int i = 0; i < 2; i++)
+		{
+			gamePtr = dynamic_cast<GunGameState*>(states[1]);
+			if (gamePtr != nullptr)
+			{
 
+				gamePtr->collision(playerPos, playerScale, 0, obj1Pos, obj1Scale, 0);
 
-				//players[i]->move(playerInputs->getDirection(0));
+				if (obj[i]->getPosition().y - 0.5f*obj[i]->getScale().y > 0.f)
+					gamePtr->setObjGrounded(i, false);
+				else
+					gamePtr->setObjGrounded(i, true);
 			}
 		}
 	}
-
-
-
-
-	//if (this->playerInputs->collision(player, scalePlayer, objF, scaleObj)&&currentInput!=0 )
-	//{
-	//	grounded = true;
-	//}
-	//playerInputs->inMenuMode();
-	//playerInputs->inGameMode(deltaTime, grounded);
-	
-
-
 
 
 
@@ -737,7 +734,7 @@ void System::run()
 		ShowWindow(this->hwnd, this->nCMDShow);
 		//graphics->initImgui(this->hwnd);
 		Model** model;
-		theModelLoader->loadModel(model, "Resources\\Models\\anim_test3.lu"); //Library test
+		theModelLoader->loadModel(model, "Resources\\Models\\anim_test3.lu"); //Library test //load anim_test4
 		while (WM_QUIT != msg.message)
 		{
 			if (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE))

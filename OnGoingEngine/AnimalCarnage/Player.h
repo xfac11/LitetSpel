@@ -20,15 +20,22 @@ private:
 	bool grounded;
 	DirectX::XMFLOAT3 direction;
 
-	bool rumbleEnabled;
+
+	struct RumbleProperties
+	{
+		float rumbleClock;
+		float rumbleTime;
+		DirectX::XMFLOAT2 rumble;
+		bool rumbleEnabled;
+	};
+
+	
 public:
 	Player();
 	~Player();
 	void SelectCharacter(CHARACTER b = BEAR);
 	void update();
 	AABB GetBody();
-
-
 
 };
 
