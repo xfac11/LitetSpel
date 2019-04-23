@@ -15,9 +15,6 @@
     <ClCompile Include="ForwardShader.cpp">
       <Filter>Shaders</Filter>
     </ClCompile>
-    <ClCompile Include="Button.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
     <ClCompile Include="Camera.cpp">
       <Filter>Source</Filter>
     </ClCompile>
@@ -27,13 +24,7 @@
     <ClCompile Include="GraphicsDevice.cpp">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="GuiBase.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
     <ClCompile Include="GameObject.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="GuiElement.cpp">
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="imgui\imgui_draw.cpp">
@@ -57,12 +48,6 @@
     <ClCompile Include="main.cpp">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="MainGui.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="MainMenu.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
     <ClCompile Include="menuItem.cpp">
       <Filter>Source</Filter>
     </ClCompile>
@@ -76,9 +61,6 @@
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="Sprite.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="State.cpp">
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="System.cpp">
@@ -96,8 +78,6 @@
     <ClCompile Include="Shader.cpp">
       <Filter>Shaders</Filter>
     </ClCompile>
-    <ClCompile Include="GunGameState.cpp" />
-    <ClCompile Include="OptionsGui.cpp" />
     <ClCompile Include="ShaderManager.cpp">
       <Filter>Shaders</Filter>
     </ClCompile>
@@ -128,14 +108,35 @@
     <ClCompile Include="Geometry.cpp">
       <Filter>Source</Filter>
     </ClCompile>
+    <ClCompile Include="Button.cpp">
+      <Filter>Source\GUI</Filter>
+    </ClCompile>
     <ClCompile Include="CheckBox.cpp">
-      <Filter>Source</Filter>
+      <Filter>Source\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="GuiElement.cpp">
+      <Filter>Source\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="GuiBase.cpp">
+      <Filter>Source\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="MainGui.cpp">
+      <Filter>Source\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="OptionsGui.cpp">
+      <Filter>Source\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="GunGameState.cpp">
+      <Filter>Source\States</Filter>
+    </ClCompile>
+    <ClCompile Include="State.cpp">
+      <Filter>Source\States</Filter>
+    </ClCompile>
+    <ClCompile Include="MainMenu.cpp">
+      <Filter>Source\States</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Button.h">
-      <Filter>Header</Filter>
-    </ClInclude>
     <ClInclude Include="Camera.h">
       <Filter>Header</Filter>
     </ClInclude>
@@ -148,14 +149,8 @@
     <ClInclude Include="GraphicsDevice.h">
       <Filter>Header</Filter>
     </ClInclude>
-    <ClInclude Include="GuiBase.h">
-      <Filter>Header</Filter>
-    </ClInclude>
     <ClInclude Include="ForwardShader.h">
       <Filter>Shaders</Filter>
-    </ClInclude>
-    <ClInclude Include="GuiElement.h">
-      <Filter>Header</Filter>
     </ClInclude>
     <ClInclude Include="GameObject.h">
       <Filter>Header</Filter>
@@ -188,12 +183,6 @@
       <Filter>Header</Filter>
     </ClInclude>
     <ClInclude Include="InputHandler.h">
-      <Filter>Header</Filter>
-    </ClInclude>
-    <ClInclude Include="MainGui.h">
-      <Filter>Header</Filter>
-    </ClInclude>
-    <ClInclude Include="MainMenu.h">
       <Filter>Header</Filter>
     </ClInclude>
     <ClInclude Include="MenuHandler.h">
@@ -232,17 +221,12 @@
     <ClInclude Include="Sprite.h">
       <Filter>Header</Filter>
     </ClInclude>
-    <ClInclude Include="State.h">
-      <Filter>Header</Filter>
-    </ClInclude>
     <ClInclude Include="System.h">
       <Filter>Header</Filter>
     </ClInclude>
     <ClInclude Include="ShaderManager.h">
       <Filter>Shaders</Filter>
     </ClInclude>
-    <ClInclude Include="GunGameState.h" />
-    <ClInclude Include="OptionsGui.h" />
     <ClInclude Include="Player.h">
       <Filter>Header\Player</Filter>
     </ClInclude>
@@ -267,8 +251,32 @@
     <ClInclude Include="Geometry.h">
       <Filter>Header</Filter>
     </ClInclude>
+    <ClInclude Include="Button.h">
+      <Filter>Header\GUI</Filter>
+    </ClInclude>
     <ClInclude Include="CheckBox.h">
-      <Filter>Header</Filter>
+      <Filter>Header\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="GuiBase.h">
+      <Filter>Header\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="GuiElement.h">
+      <Filter>Header\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="MainGui.h">
+      <Filter>Header\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="OptionsGui.h">
+      <Filter>Header\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="MainMenu.h">
+      <Filter>Header\States</Filter>
+    </ClInclude>
+    <ClInclude Include="State.h">
+      <Filter>Header\States</Filter>
+    </ClInclude>
+    <ClInclude Include="GunGameState.h">
+      <Filter>Header\States</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -302,6 +310,18 @@
     </Filter>
     <Filter Include="Header\Input">
       <UniqueIdentifier>{9a18b5c1-7fa0-4f52-bd18-c233c27539aa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\GUI">
+      <UniqueIdentifier>{bef463f7-ae4f-4c2b-a3f6-3546c1cc2232}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header\GUI">
+      <UniqueIdentifier>{de09b48a-854e-4465-9a88-21c33ed3cec9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header\States">
+      <UniqueIdentifier>{81188fe1-5a93-40cb-b16a-fa03821f29af}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\States">
+      <UniqueIdentifier>{a7a328c2-16c6-40a4-93aa-6c10af4b4d31}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
