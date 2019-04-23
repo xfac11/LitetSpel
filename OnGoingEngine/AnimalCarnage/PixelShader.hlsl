@@ -4,6 +4,8 @@ struct VS_OUT
 	float2 Tex : TEXCOORD;
 	float4 wPosition : POSITION;
 	float4 NormalWS : NORMAL;
+	float4 TangentWS : TANGENT;
+	float4 BinormalWS : BINORMAL;
 };
 struct AnyLight
 {

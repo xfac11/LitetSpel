@@ -3,6 +3,8 @@ struct GSInput
 	float4 Pos : SV_POSITION;
 	float2 Tex : TEXCOORD;
 	float4 Normal : NORMAL;
+	float4 Tangent : TANGENT;
+	float4 Binormal : BINORMAL;
 };
 struct GSOutput
 {
@@ -10,6 +12,8 @@ struct GSOutput
 	float2 Tex : TEXCOORD;
 	float4 wPosition : POSITION;
 	float4 NormalWS : NORMAL;
+	float4 TangentWS : TANGENT;
+	float4 BinormalWS : BINORMAL;
 };
 
 cbuffer CB_PER_FRAME : register(b0)
@@ -34,6 +38,8 @@ void GS_main(triangle GSInput input[3], inout TriangleStream<GSOutput> theOutput
 	float3 v = pos2 - pos0;; //pos of 3 == 0
 	float3 normal = cross(u, v);
 	normal = normalize(normal);
+
+	//back face culling ??
 	for (int i = 0; i < 3; i++)
 	{
 		//output.Pos = mul(world, input[i].Pos);
@@ -46,6 +52,10 @@ void GS_main(triangle GSInput input[3], inout TriangleStream<GSOutput> theOutput
 		output.wPosition = mul(float4(input[i].Pos.xyz, 1.0f), world);
 		output.Tex = input[i].Tex;
 		output.NormalWS = float4(normal,1.0f);
+		output.TangentWS = input[i].Tangent;
+		output.BinormalWS = input[i].Binormal;
+
+
 		//output.NormalWS = mul(float4(normal,0.0f),world);
 		theOutput.Append(output);
 	}

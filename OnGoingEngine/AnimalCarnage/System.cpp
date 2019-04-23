@@ -329,18 +329,26 @@ bool System::initialize()
 	
 	std::vector<Vertex3D> mesh;
 	Vertex3D temp[] = {
-		DirectX::XMFLOAT4(-0.500000,-0.500000, 0.500000,1.0f),
-		DirectX::XMFLOAT2(1,0),
-		DirectX::XMFLOAT4(0,0,-1,0),
-		DirectX::XMFLOAT4(.500000, -0.500000, 0.500000,1.0f),
-		DirectX::XMFLOAT2(1,0),
-		DirectX::XMFLOAT4(0,0,-1,0),
-		DirectX::XMFLOAT4(-.500000, 0.500000, 0.500000,1.0f),
-		DirectX::XMFLOAT2(1,0),
-		DirectX::XMFLOAT4(0,0,-1,0),
-		DirectX::XMFLOAT4(.500000, 0.500000, 0.500000,1.0f),
-		DirectX::XMFLOAT2(1,0),
-		DirectX::XMFLOAT4(0,0,-1,0)
+		DirectX::XMFLOAT3(-0.500000,-0.500000, 0.500000),	//pos
+		DirectX::XMFLOAT2(1,0),								//uv
+		DirectX::XMFLOAT3(0,0,-1),							//normal
+		DirectX::XMFLOAT3(0,-1,0),							//tangent
+		DirectX::XMFLOAT3(-1,0,0),							//binormal
+		DirectX::XMFLOAT3(.500000, -0.500000, 0.500000),	//pos
+		DirectX::XMFLOAT2(1,0),								//uv
+		DirectX::XMFLOAT3(0,0,-1),							//normal
+		DirectX::XMFLOAT3(0,-1,0),							//tangent
+		DirectX::XMFLOAT3(-1,0,0),							//binormal
+		DirectX::XMFLOAT3(-.500000, 0.500000, 0.500000),	//pos
+		DirectX::XMFLOAT2(1,0),								//uv
+		DirectX::XMFLOAT3(0,0,-1),							//normal
+		DirectX::XMFLOAT3(0,-1,0),							//tangent
+		DirectX::XMFLOAT3(-1,0,0),							//binormal
+		DirectX::XMFLOAT3(.500000, 0.500000, 0.500000),		//pos
+		DirectX::XMFLOAT2(1,0),								//uv
+		DirectX::XMFLOAT3(0,0,-1),							//normal
+		DirectX::XMFLOAT3(0,-1,0),							//tangent
+		DirectX::XMFLOAT3(-1,0,0),							//binormal
 	};
 	DWORD indices[] = {
 		1, 0, 2, 1, 2, 3
@@ -352,15 +360,21 @@ bool System::initialize()
 
 	std::vector<Vertex3D> mesh2;
 	Vertex3D temp2[] = {
-		DirectX::XMFLOAT4(-0.500000,0.500000, 0.500000,1.0f),
+		DirectX::XMFLOAT3(-0.500000,0.500000, 0.500000),
 		DirectX::XMFLOAT2(1,0),
-		DirectX::XMFLOAT4(0,0,-1,0),
-		DirectX::XMFLOAT4(00000, 1.000000, 0.500000,1.0f),
+		DirectX::XMFLOAT3(0,0,-1),
+		DirectX::XMFLOAT3(0,-1,0),							//tangent
+		DirectX::XMFLOAT3(-1,0,0),							//binormal
+		DirectX::XMFLOAT3(00000, 1.000000, 0.500000),
 		DirectX::XMFLOAT2(1,0),
-		DirectX::XMFLOAT4(0,0,-1,0),
-		DirectX::XMFLOAT4(0.500000, 0.500000, 0.500000,1.0f),
+		DirectX::XMFLOAT3(0,0,-1),
+		DirectX::XMFLOAT3(0,-1,0),							//tangent
+		DirectX::XMFLOAT3(-1,0,0),							//binormal
+		DirectX::XMFLOAT3(0.500000, 0.500000, 0.500000),
 		DirectX::XMFLOAT2(1,0),
-		DirectX::XMFLOAT4(0,0,-1,0)
+		DirectX::XMFLOAT3(0,0,-1),
+		DirectX::XMFLOAT3(0,-1,0),							//tangent
+		DirectX::XMFLOAT3(-1,0,0),							//binormal
 	};
 	DWORD indices2[] = {
 		0,1,2
