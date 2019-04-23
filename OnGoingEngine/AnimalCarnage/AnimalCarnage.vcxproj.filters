@@ -135,6 +135,7 @@
     <ClCompile Include="MainMenu.cpp">
       <Filter>Source\States</Filter>
     </ClCompile>
+    <ClCompile Include="RulesGui.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera.h">
@@ -278,6 +279,7 @@
     <ClInclude Include="GunGameState.h">
       <Filter>Header\States</Filter>
     </ClInclude>
+    <ClInclude Include="RulesGui.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="imgui\.gitkeep" />

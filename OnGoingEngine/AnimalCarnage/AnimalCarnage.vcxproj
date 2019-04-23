@@ -172,6 +172,7 @@
     <ClCompile Include="MouseEvent.cpp" />
     <ClCompile Include="OptionsGui.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="RulesGui.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="ShaderManager.cpp" />
     <ClCompile Include="Sprite.cpp">
@@ -231,6 +232,7 @@
     <ClInclude Include="OptionsGui.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="resource1.h" />
+    <ClInclude Include="RulesGui.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="ShaderManager.h" />
     <ClInclude Include="Sprite.h">

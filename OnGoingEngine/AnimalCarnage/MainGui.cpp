@@ -109,7 +109,8 @@ bool MainGui::update(float deltaTime)
 				}
 				else if (this->selectedElement == this->playButton)
 				{
-					System::setState(GUNGAME);
+					MainMenu* state = dynamic_cast<MainMenu*>(this->myState);
+					state->setCurrentMenu(RULES);
 				}
 				else
 				{
