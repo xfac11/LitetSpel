@@ -3,22 +3,12 @@
 #include"Model.h"
 #include"Transform.h"
 #include"ConstantBuffer.h"
-class GameObject//arv
+class GameObject: public Transform//arv
 {
 public:
 	GameObject();
 	GameObject(Shader * shader);
 	~GameObject();
-	void setPosition(float x, float y, float z);
-	void setRotation();
-	void setScale(float x, float y, float z);
-	void move(float x, float y, float z);
-	void move(DirectX::XMFLOAT3 xyz);
-
-	DirectX::XMMATRIX& getWorldMatrix();
-
-	DirectX::XMFLOAT3 getPosition();
-	DirectX::XMFLOAT3 getScale();
 
 	int getNrOfModels();
 	Model*& getModel(int id);
