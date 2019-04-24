@@ -38,48 +38,6 @@ GameObject::~GameObject()
 	delete[] this->theModel;
 }
 
-void GameObject::setPosition(float x, float y, float z)
-{
-	this->theTransforms.setPosition(x, y, z);
-}
-
-void GameObject::setRotation()
-{
-	//this->theTransforms.setRotation();
-	
-}
-
-void GameObject::setScale(float x, float y, float z)
-{
-	this->theTransforms.setScale(x, y, z);
-}
-
-void GameObject::move(float x, float y, float z)
-{
-	this->theTransforms.move(x, y, z);
-}
-
-void GameObject::move(DirectX::XMFLOAT3 xyz)
-{
-	this->theTransforms.move(xyz.x,xyz.y,xyz.z);
-}
-
-DirectX::XMMATRIX& GameObject::getWorldMatrix()
-{
-	return this->theTransforms.getWorld();
-}
-
-DirectX::XMFLOAT3 GameObject::getPosition()
-{
-	return this->theTransforms.getPosition();
-}
-
-
-DirectX::XMFLOAT3 GameObject::getScale()
-{
-	return this->theTransforms.getScale();
-}
-
 
 int GameObject::getNrOfModels()
 {
@@ -129,6 +87,6 @@ void GameObject::draw()
 	}*/
 
 
-	this->theModel[0]->getShader()->setWorld(this->theTransforms.getWorld());
+	this->theModel[0]->getShader()->setWorld(this->getWorld());
 	this->theModel[0]->draw();
 }

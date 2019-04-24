@@ -45,7 +45,7 @@ void GameObjectHandler::addObject(GameObject *& gameObject)
 				this->expandTransModels();
 			//gameObject->getModel(i).setShader(Shader);
 			this->transModels[this->nrOfTrans].modelPtr = gameObject->getModel(i);
-			this->transModels[this->nrOfTrans].worldPtr = &gameObject->getWorldMatrix();
+			this->transModels[this->nrOfTrans].worldPtr = &gameObject->getWorld();
 			gameObject->getModel(i)->setShader(System::shaderManager->getForwardShader());
 			this->nrOfTrans++;
 			/*Model* *ptr = new Model*[4];
@@ -59,7 +59,7 @@ void GameObjectHandler::addObject(GameObject *& gameObject)
 			if (this->nrOfOpaque == this->capOpaque)
 				this->expandOpaqueModels();
 			this->opaqueModels[this->nrOfOpaque].modelPtr = gameObject->getModel(i);
-			this->opaqueModels[this->nrOfOpaque].worldPtr = &gameObject->getWorldMatrix();
+			this->opaqueModels[this->nrOfOpaque].worldPtr = &gameObject->getWorld();
 			gameObject->getModel(i)->setShader(System::shaderManager->getForwardShader());
 			this->nrOfOpaque++;
 		}
