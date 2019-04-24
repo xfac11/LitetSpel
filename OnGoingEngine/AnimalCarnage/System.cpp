@@ -330,17 +330,17 @@ bool System::initialize()
 	std::vector<Vertex3D> mesh;
 	Vertex3D temp[] = {
 		DirectX::XMFLOAT3(-0.500000,-0.500000, 0.500000),	//pos
-		DirectX::XMFLOAT2(1,0),								//uv
+		DirectX::XMFLOAT2(0,1),								//uv
 		DirectX::XMFLOAT3(0,0,-1),							//normal
 		DirectX::XMFLOAT3(0,-1,0),							//tangent
 		DirectX::XMFLOAT3(-1,0,0),							//binormal
 		DirectX::XMFLOAT3(.500000, -0.500000, 0.500000),	//pos
-		DirectX::XMFLOAT2(1,0),								//uv
+		DirectX::XMFLOAT2(1,1),								//uv
 		DirectX::XMFLOAT3(0,0,-1),							//normal
 		DirectX::XMFLOAT3(0,-1,0),							//tangent
 		DirectX::XMFLOAT3(-1,0,0),							//binormal
 		DirectX::XMFLOAT3(-.500000, 0.500000, 0.500000),	//pos
-		DirectX::XMFLOAT2(1,0),								//uv
+		DirectX::XMFLOAT2(0,0),								//uv
 		DirectX::XMFLOAT3(0,0,-1),							//normal
 		DirectX::XMFLOAT3(0,-1,0),							//tangent
 		DirectX::XMFLOAT3(-1,0,0),							//binormal
@@ -397,6 +397,7 @@ bool System::initialize()
 	this->players[2]->addModel(mesh, indices, 6);
 	this->players[2]->setScale(0.6f, 0.8f, 0.1f);
 	this->players[3]->addModel(mesh, indices, 6);
+	this->players[0]->getModel(0)->setTexture("cat.tga");
 	this->players[3]->setScale(0.6f, 0.8f, 0.1f);
 	this->handler.addObject(this->obj[1]);
 	this->handler.addObject(this->obj[0]);

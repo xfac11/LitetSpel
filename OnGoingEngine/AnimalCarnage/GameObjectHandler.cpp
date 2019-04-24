@@ -85,6 +85,11 @@ void GameObjectHandler::draw()
 		this->opaqueModels[i].modelPtr->getShader()->setWorld(*this->opaqueModels[i].worldPtr);
 		this->opaqueModels[i].modelPtr->draw();
 	}
+	for (int i = 0; i < this->nrOfTrans; i++)
+	{
+		this->transModels[i].modelPtr->getShader()->setWorld(*this->transModels[i].worldPtr);
+		this->transModels[i].modelPtr->draw();
+	}
 }
 
 void GameObjectHandler::expandGameobjects()

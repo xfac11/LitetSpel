@@ -19,7 +19,6 @@ public:
 	int getWidth();
 	int getHeight();
 	bool isTransparent();
-	void cleanUp();
 private:
 	//ID3D11Texture2D* texture;
 	ID3D11ShaderResourceView* textureView;
@@ -28,6 +27,7 @@ private:
 	//TextureData* targaData;
 	//unsigned char* DATA;
 	TextureLoad testTexture;
+	void cleanUp();
 
 
 };
