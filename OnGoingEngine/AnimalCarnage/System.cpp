@@ -430,8 +430,8 @@ bool System::initialize()
 	theModelLoader->loadGO(obj[0], "Resources/Models/cube2.lu", "lovelive.tga"); //Library test //load anim_test6
 	this->obj[0]->setScale(3, 1, 1);
 	this->obj[0]->setPosition(0, -0.5, 0);
-	theModelLoader->loadGO(obj[1], "Resources/Models/cube2.lu", "lovelive.tga"); //Library test //load anim_test6
 	this->obj[1]->setScale(0.5f, 0.5f, 0.5f);
+	theModelLoader->loadGO(obj[1], "Resources/Models/cube2.lu", "lovelive.tga"); //Library test //load anim_test6
 	
 	theModelLoader->loadGO(this->players[0], "Resources/Models/cube2.lu", "cat.tga");
 	this->players[0]->setScale(0.5f, 0.4f, 0.1f);
@@ -500,6 +500,16 @@ void System::renderImgui()
 	//ImGui::Text(textUse.c_str());
 	//textUse = "Height from 'Ground': " + std::to_string(this->height) + "m";
 	//ImGui::Text(textUse.c_str());
+
+	ImGui::Text(("Max player 0: "
+		+ std::to_string(obj[1]->getCollisionBox().Max.x) + " "
+		+ std::to_string(obj[1]->getCollisionBox().Max.y) + " "
+		+ std::to_string(obj[1]->getCollisionBox().Max.z)).c_str());
+
+	ImGui::Text(("Min player 0: "
+		+ std::to_string(obj[1]->getCollisionBox().Min.x) + " "
+		+ std::to_string(obj[1]->getCollisionBox().Min.y) + " "
+		+ std::to_string(obj[1]->getCollisionBox().Min.z)).c_str());
 
 	if (collide == true)
 	{

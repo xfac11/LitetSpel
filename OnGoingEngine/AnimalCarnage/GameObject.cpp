@@ -108,6 +108,7 @@ void GameObject::calcAABB(std::vector<Vertex3D> mesh)
 
 
 
+
 	//this->colBox.Min = min;
 }
 
@@ -153,5 +154,15 @@ void GameObject::draw()
 
 AABB GameObject::getCollisionBox()
 {
+
+	//updates the collision box
+	this->colBox.Max.x + Position.x;
+	this->colBox.Max.y + Position.y;
+	this->colBox.Max.z + Position.z;
+
+	this->colBox.Min.x + Position.x;
+	this->colBox.Min.y + Position.y;
+	this->colBox.Min.z + Position.z;
+
 	return this->colBox;
 }
