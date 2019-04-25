@@ -9,6 +9,23 @@ Model::Model()
 	this->normalMap = new Texture;
 	this->type = Opaque;
 
+	D3D11_SAMPLER_DESC desc;
+	ZeroMemory(&desc, sizeof(desc));
+	desc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
+	desc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
+	desc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
+	desc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
+	desc.ComparisonFunc = D3D11_COMPARISON_NEVER;
+	desc.MinLOD = 0;
+	desc.MaxLOD = D3D11_FLOAT32_MAX;
+	HRESULT hr = System::getDevice()->CreateSamplerState(&desc, &this->SamplerState);
+	if (FAILED(hr))
+	{
+		//MessageBox(hwnd, "Error compiling shader.  Check shader-error.txt for message.", "error", MB_OK);
+		//deal with error. Log it maybe
+
+	}
+
 }
 
 Model::~Model()
@@ -17,12 +34,10 @@ Model::~Model()
 		this->SamplerState->Release();
 	if (this->texture != nullptr)
 	{
-		//this->texture->cleanUp();
 		delete this->texture;
 	}
 	if (this->normalMap != nullptr)
 	{
-		this->normalMap->cleanUp();
 		delete this->normalMap;
 	}
 
@@ -113,7 +128,6 @@ void Model::draw()
 		System::getDeviceContext()->PSSetShaderResources(1, 1, &this->normalMap->getTexture());
 	}
 	System::getDeviceContext()->IASetVertexBuffers(0, 1, &*this->vertexBuffer.GetAddressOf(), &*vertexBuffer.getStridePtr(), &offset);
-	UINT stride = sizeof(VERTEX);
 //	UINT offset = 0;
 	//devcon->IASetVertexBuffers(0, 1, &pVBuffer, &stride, &offset);
 	System::getDeviceContext()->IASetIndexBuffer(indexBuffer.getBuffer(), DXGI_FORMAT_R32_UINT, offset);
