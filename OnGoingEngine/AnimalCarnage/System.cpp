@@ -592,71 +592,71 @@ void System::update(float deltaTime)
 	//	this->collide = false;
 
 
-	if (GUNGAME == currentState)
-	{	
-		GameObject* temp= nullptr;
-		temp = obj[0];
-		if (currentInput == 0)
-		{
-			temp = players[0];
-		}
-		else if (currentInput == 1)
-		{
-			temp = players[1];
-		}
-		else if (currentInput == 2)
-		{
-			temp = players[2];
-		
-		}
-		else if (currentInput == 3)
-		{
-			temp = players[3];
+	//if (GUNGAME == currentState)
+	//{	
+	//	GameObject* temp= nullptr;
+	//	temp = obj[0];
+	//	if (currentInput == 0)
+	//	{
+	//		temp = players[0];
+	//	}
+	//	else if (currentInput == 1)
+	//	{
+	//		temp = players[1];
+	//	}
+	//	else if (currentInput == 2)
+	//	{
+	//		temp = players[2];
+	//	
+	//	}
+	//	else if (currentInput == 3)
+	//	{
+	//		temp = players[3];
 
-		}
-		else if (currentInput == 4)
-		{
-			temp = obj[0];
+	//	}
+	//	else if (currentInput == 4)
+	//	{
+	//		temp = obj[0];
 
-		}
-		else if (currentInput == 5)
-		{
-			temp = obj[1];
+	//	}
+	//	else if (currentInput == 5)
+	//	{
+	//		temp = obj[1];
 
-		}
-		DirectX::XMFLOAT2 playerPos = {temp->getPosition().x, temp->getPosition().y};
-		DirectX::XMFLOAT2 playerScale = { temp->getScale().x,temp->getScale().y };
-		DirectX::XMFLOAT2 player2Pos = { players[1]->getPosition().x, players[1]->getPosition().y };
-		DirectX::XMFLOAT2 player2Scale = { players[1]->getScale().x,players[1]->getScale().y };
-		
-		
-		DirectX::XMFLOAT2 obj1Pos = { obj[0]->getPosition().x, obj[0]->getPosition().y };
-		DirectX::XMFLOAT2 obj1Scale = { obj[0]->getScale().x,obj[0]->getScale().y };
-		
+	//	}
+	//	DirectX::XMFLOAT2 playerPos = {temp->getPosition().x, temp->getPosition().y};
+	//	DirectX::XMFLOAT2 playerScale = { temp->getScale().x,temp->getScale().y };
+	//	DirectX::XMFLOAT2 player2Pos = { players[1]->getPosition().x, players[1]->getPosition().y };
+	//	DirectX::XMFLOAT2 player2Scale = { players[1]->getScale().x,players[1]->getScale().y };
+	//	
+	//	
+	//	DirectX::XMFLOAT2 obj1Pos = { obj[0]->getPosition().x, obj[0]->getPosition().y };
+	//	DirectX::XMFLOAT2 obj1Scale = { obj[0]->getScale().x,obj[0]->getScale().y };
+	//	
 
-		GunGameState* gamePtr=nullptr;
-		for (int i = 0; i < 4; i++)
-		{
-			gamePtr = dynamic_cast<GunGameState*>(states[1]);
-			if (gamePtr != nullptr)
-			{
+	//	//GunGameState* gamePtr=nullptr;
+	//	//for (int i = 0; i < 4; i++)
+	//	//{
+	//	//	gamePtr = dynamic_cast<GunGameState*>(states[1]);
+	//	//	if (gamePtr != nullptr)
+	//	//	{
 
-				if (players[i]->getPosition().y - 0.5f*players[i]->getScale().y > 0.f)//0 is boundry for curent floor
-					gamePtr->setGrounded(i, false);
-				else
-					gamePtr->setGrounded(i, true);
-				
-				
-				if (i == 0)
-					temp->move(gamePtr->getDirection(i));
-				else
-					players[i]->move(gamePtr->getDirection(i));
-			}
-		}
-	}
+	//	//		if (players[i]->getPosition().y - 0.5f*players[i]->getScale().y > 0.f)//0 is boundry for curent floor
+	//	//			gamePtr->setGrounded(i, false);
+	//	//		else
+	//	//			gamePtr->setGrounded(i, true);
+	//	//		
+	//	//		
+	//	//		if (i == 0)
+	//	//			temp->move(gamePtr->getDirection(i));
+	//	//		else
+	//	//			players[i]->move(gamePtr->getDirection(i));
+	//	//	}
+	//	//}
+	//}
 
 
-	this->theCamera->calcCamera(players[0]->getPosition(), players[1]->getPosition(), players[2]->getPosition(), players[3]->getPosition());
+	//this->theCamera->calcCamera(players[0]->getPosition(), players[1]->getPosition(), players[2]->getPosition(), players[3]->getPosition());
 
 	if (theKeyboard->KeyIsPressed('W'))
 	{

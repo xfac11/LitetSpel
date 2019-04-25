@@ -11,7 +11,7 @@ class GunGameState : public State
 {
 private:
 	int nrOfPlayers;
-	Player** player;
+	Player* player;
 
 	//rumble
 	//struct RumbleTemp
@@ -23,7 +23,7 @@ private:
 	//RumbleTemp theRumble[4];
 
 	//Temporary player stuct
-	struct PlayerTemp
+	/*struct PlayerTemp
 	{
 		bool isJumping;
 		bool inAir;
@@ -34,7 +34,7 @@ private:
 		float airSpeed;
 		DirectX::XMFLOAT3 direction;
 	};
-	PlayerTemp tplayer[4];
+	PlayerTemp tplayer[4];*/
 
 
 	struct ItemTemp

@@ -7,18 +7,17 @@ class Player
 {
 private:
 	//ska den hålla i en animal eller flera
-	Animal animal[4];
 	//GamePad* gamePad;
-	int current;
 
 
 	//player physics 
-	bool isJumping;
+		bool isJumping;
 	bool inAir;
 	float airTimer;
 	float jumpDir;
 	bool grounded;
-	DirectX::XMFLOAT3 direction;
+	bool canJump;
+	float airSpeed;
 
 
 	struct RumbleProperties
@@ -29,13 +28,12 @@ private:
 		bool rumbleEnabled;
 	};
 
-	
+	GameObject* playerObj;
 public:
 	Player();
 	~Player();
-	void SelectCharacter(CHARACTER b = BEAR);
-	void update();
-	AABB GetBody();
 
+	void initialize();
+	void update(float dt, int id);
 };
 
