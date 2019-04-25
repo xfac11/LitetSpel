@@ -393,7 +393,7 @@ bool System::initialize()
 	//this->obj[1]->addModel(mesh2, indices2, 3);
 	//this->obj[1]->setScale(2, 1, 1);
 	//D3D10_CULL_BACK; //Test
-	theModelLoader->loadGO(obj[1], "Resources/Models/cube1.lu"); //Library test //load anim_test6
+	theModelLoader->loadGO(obj[1], "Resources/Models/anim_test6.lu"); //Library test //load anim_test6
 	//this->obj[1]->setScale(0.5f, 0.5f, 0.5f);
 	
 	this->players[0]->addModel(mesh, indices, 6);
