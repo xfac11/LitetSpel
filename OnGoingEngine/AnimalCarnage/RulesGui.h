@@ -13,6 +13,11 @@ private:
 	CheckBox* testCheckBox;
 	Button* confirmButton;
 
+	bool changedLastFrame;
+	float timeSinceChanged;
+	bool pressedLastFrame;
+
+	void changeSelected_Keyboard();
 	void changeSelected();
 
 public:

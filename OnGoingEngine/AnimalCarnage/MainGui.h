@@ -13,8 +13,10 @@ private:
 	Button* optionsButton;
 	Button* quitButton;
 
-	//float timeSinceChanged;
-	//bool changedLastFrame;
+	float timeSinceChanged;
+	bool changedLastFrame;
+
+	void changeSelected_Keyboard();
 	void changeSelected();
 
 public:

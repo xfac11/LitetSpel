@@ -2,6 +2,38 @@
 #include "System.h"
 #include "MainMenu.h"
 
+void MainGui::changeSelected_Keyboard()
+{
+	GuiElement* newSelected = nullptr;
+
+	if (System::theKeyboard->KeyIsPressed('W'))
+	{
+		newSelected = this->selectedElement->getUp();
+	}
+	if (System::theKeyboard->KeyIsPressed('S'))
+	{
+		newSelected = this->selectedElement->getDown();
+	}
+	if (System::theKeyboard->KeyIsPressed('A'))
+	{
+		newSelected = this->selectedElement->getLeft();
+	}
+	if (System::theKeyboard->KeyIsPressed('D'))
+	{
+		newSelected = this->selectedElement->getRight();
+	}
+
+	if (newSelected != nullptr)
+	{
+		this->changedLastFrame = true;
+		this->selectedElement = newSelected;
+	}
+	else
+	{
+		this->changedLastFrame = false;
+	}
+}
+
 void MainGui::changeSelected()
 {
 	GuiElement* newSelected = nullptr;
@@ -42,8 +74,8 @@ MainGui::MainGui(State * myState) : GuiBase(myState)
 	this->optionsButton = nullptr;
 	this->quitButton = nullptr;
 
-	//this->timeSinceChanged = 0.0F;
-	//this->changedLastFrame = false;
+	this->timeSinceChanged = 0.0F;
+	this->changedLastFrame = false;
 }
 
 MainGui::~MainGui()
@@ -76,21 +108,39 @@ void MainGui::shutDown()
 
 bool MainGui::update(float deltaTime)
 {
-	//if (this->changedLastFrame)
-	//{
-	//	if (this->timeSinceChanged > 0.2F)
-	//	{
-	//		this->timeSinceChanged -= 0.2F;
-	//		this->changeSelected();
-	//	}
+	if (this->changedLastFrame)
+	{
+		if (this->timeSinceChanged > 0.2F)
+		{
+			this->timeSinceChanged -= 0.2F;
+			this->changeSelected_Keyboard();
+		}
 
-	//	this->timeSinceChanged += deltaTime;
-	//}
-	//else
-	//{
-	//	this->timeSinceChanged = 0.0F;
-	//	
-	//}
+		this->timeSinceChanged += deltaTime;
+	}
+	else
+	{
+		this->timeSinceChanged = 0.0F;
+		this->changeSelected_Keyboard();
+	}
+
+	if (System::theKeyboard->KeyIsPressed('E'))
+	{
+		if (this->selectedElement == this->quitButton)
+		{
+			System::closeWindow();
+		}
+		else if (this->selectedElement == this->playButton)
+		{
+			MainMenu* state = dynamic_cast<MainMenu*>(this->myState);
+			state->setCurrentMenu(RULES);
+		}
+		else
+		{
+			MainMenu* state = dynamic_cast<MainMenu*>(this->myState);
+			state->setCurrentMenu(OPTIONS);
+		}
+	}
 
 	for (int i = 0; i < 4; i++)
 	{

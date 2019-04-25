@@ -17,7 +17,7 @@ public:
 	virtual ~CheckBox();
 
 	void setChecked(bool isChecked);
-	bool isChecked();
+	bool isChecked() const;
 
 	ID3D11ShaderResourceView* getTexture();
 	ID3D11ShaderResourceView* getCheckTexture();

@@ -2,6 +2,38 @@
 #include "System.h"
 #include "MainMenu.h"
 
+void RulesGui::changeSelected_Keyboard()
+{
+	GuiElement* newSelected = nullptr;
+
+	if (System::theKeyboard->KeyIsPressed('W'))
+	{
+		newSelected = this->selectedElement->getUp();
+	}
+	if (System::theKeyboard->KeyIsPressed('S'))
+	{
+		newSelected = this->selectedElement->getDown();
+	}
+	if (System::theKeyboard->KeyIsPressed('A'))
+	{
+		newSelected = this->selectedElement->getLeft();
+	}
+	if (System::theKeyboard->KeyIsPressed('D'))
+	{
+		newSelected = this->selectedElement->getRight();
+	}
+
+	if (newSelected != nullptr)
+	{
+		this->changedLastFrame = true;
+		this->selectedElement = newSelected;
+	}
+	else
+	{
+		this->changedLastFrame = false;
+	}
+}
+
 void RulesGui::changeSelected()
 {
 	GuiElement* newSelected = nullptr;
@@ -25,13 +57,8 @@ void RulesGui::changeSelected()
 
 	if (newSelected != nullptr)
 	{
-		//this->changedLastFrame = true;
 		this->selectedElement = newSelected;
 	}
-	//else
-	//{
-		//this->changedLastFrame = false;
-	//}
 }
 
 RulesGui::RulesGui(State* myState) : GuiBase(myState)
@@ -40,6 +67,10 @@ RulesGui::RulesGui(State* myState) : GuiBase(myState)
 
 	this->testCheckBox = nullptr;
 	this->confirmButton = nullptr;
+
+	this->changedLastFrame = false;
+	this->timeSinceChanged = 0.0F;
+	this->pressedLastFrame = false;
 }
 
 RulesGui::~RulesGui()
@@ -68,6 +99,49 @@ void RulesGui::shutDown()
 
 bool RulesGui::update(float deltaTime)
 {
+	if (this->changedLastFrame)
+	{
+		if (this->timeSinceChanged > 0.2F)
+		{
+			this->timeSinceChanged -= 0.2F;
+			this->changeSelected_Keyboard();
+		}
+
+		this->timeSinceChanged += deltaTime;
+	}
+	else
+	{
+		this->timeSinceChanged = 0.0F;
+		this->changeSelected_Keyboard();
+	}
+
+	if (System::theKeyboard->KeyIsPressed('E'))
+	{
+		if (!this->pressedLastFrame)
+		{
+			if (this->selectedElement == this->testCheckBox)
+			{
+				this->testCheckBox->setChecked(!this->testCheckBox->isChecked());
+			}
+			else
+			{
+				System::setState(GUNGAME);
+			}
+		}
+
+		this->pressedLastFrame = true;
+	}
+	else
+	{
+		this->pressedLastFrame = false;
+
+		if (System::theKeyboard->KeyIsPressed('Q'))
+		{
+			MainMenu* state = dynamic_cast<MainMenu*>(this->myState);
+			state->setCurrentMenu(MAIN);
+		}
+	}
+
 	for (int i = 0; i < 4; i++)
 	{
 		DirectX::GamePad::State gamepadState = System::theGamePad->GetState(i);

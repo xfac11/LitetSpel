@@ -16,7 +16,7 @@ void CheckBox::setChecked(bool isChecked)
 	this->checked = isChecked;
 }
 
-bool CheckBox::isChecked()
+bool CheckBox::isChecked() const
 {
 	return this->checked;
 }

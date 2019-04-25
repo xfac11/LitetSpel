@@ -138,6 +138,9 @@
     <ClCompile Include="System.cpp">
       <Filter>Engine</Filter>
     </ClCompile>
+    <ClCompile Include="Slider.cpp">
+      <Filter>Menu</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Bear.h">
@@ -283,6 +286,9 @@
     </ClInclude>
     <ClInclude Include="System.h">
       <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Slider.h">
+      <Filter>Menu</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -3,11 +3,15 @@
 
 #include "GuiBase.h"
 #include "GuiElement.h"
+#include "Slider.h"
 
 class OptionsGui : public GuiBase
 {
 private:
 	GuiElement* selectedElement;
+	Slider* volume;
+
+	bool pressedLastFrame;
 
 public:
 	OptionsGui(State* myState);
