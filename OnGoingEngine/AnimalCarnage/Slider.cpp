@@ -1,8 +1,10 @@
 #include "Slider.h"
+#include "System.h"
 
 bool Slider::texturesLoaded = false;
 Texture Slider::sliderBG = Texture();
 Texture Slider::slider = Texture();
+Texture Slider::sliderButton = Texture();
 
 Slider::Slider(int startValue, int maxValue, int stepSize, DirectX::SimpleMath::Vector2 position)
 	: GuiElement(position), value(startValue), maxValue(maxValue), stepSize(stepSize)
@@ -10,6 +12,7 @@ Slider::Slider(int startValue, int maxValue, int stepSize, DirectX::SimpleMath::
 	if (!Slider::texturesLoaded)
 	{
 		Slider::slider.setTexture("slider.tga");
+		Slider::sliderButton.setTexture("sliderButton.tga");
 		Slider::sliderBG.setTexture("sliderBG.tga");
 		Slider::texturesLoaded = true;
 	}
@@ -17,6 +20,15 @@ Slider::Slider(int startValue, int maxValue, int stepSize, DirectX::SimpleMath::
 
 Slider::~Slider()
 {
+}
+
+bool Slider::render(bool selected)
+{
+	System::getSpriteBatch()->Draw(Slider::sliderBG.getTexture(), this->position, nullptr, DirectX::Colors::White);
+	System::getSpriteBatch()->Draw(Slider::slider.getTexture(), DirectX::SimpleMath::Rectangle(static_cast<long>(this->position.x + 5), static_cast<long>(this->position.y + 5), 60 * this->value, 25), DirectX::Colors::White);
+	System::getSpriteBatch()->Draw(Slider::sliderButton.getTexture(), this->position + DirectX::SimpleMath::Vector2(-20.0F + 60 * this->value, -5.0F), nullptr, DirectX::Colors::White);
+
+	return true;
 }
 
 void Slider::changeValueWithStep(bool remove)
@@ -55,14 +67,4 @@ int Slider::getValue() const
 int Slider::getMaxValue() const
 {
 	return this->maxValue;
-}
-
-ID3D11ShaderResourceView * Slider::getTexture()
-{
-	return Slider::slider.getTexture();
-}
-
-ID3D11ShaderResourceView * Slider::getTextureBG()
-{
-	return Slider::sliderBG.getTexture();
 }
