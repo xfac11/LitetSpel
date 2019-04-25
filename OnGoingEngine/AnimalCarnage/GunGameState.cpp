@@ -1,28 +1,10 @@
 #include "GunGameState.h"
 #include"System.h"
 
-//void GunGameState::updateRumble(float deltaTime, int id)
-//{
-//	if (theRumble[id].rumbleTime > theRumble[id].rumbleClock)
-//	{
-//		theRumble[id].rumbleClock += deltaTime;
-//		System::theGamePad->SetVibration(id, theRumble[id].rumble.x, theRumble[id].rumble.y);
-//	}
-//	else
-//	{
-//		theRumble[id].rumbleClock = 0.f;
-//		theRumble[id].rumbleTime = 0.f;
-//		System::theGamePad->SetVibration(id, 0, 0);
-//	}
-//}
-
 GunGameState::GunGameState() 
 {
 	for (int i = 0; i < 4; i++) //temp players
 	{
-	/*	theRumble[i].rumbleClock = 0.f;
-		theRumble[i].rumbleTime = 0.f;
-		theRumble[i].rumble = { 0.f,0.f };*/
 		tplayer[i].isJumping = false;
 		tplayer[i].canJump = true;
 		tplayer[i].airTimer = 0.f;
@@ -87,7 +69,7 @@ bool GunGameState::update(float deltaTime)
 			//}
 
 
-			//movement
+			//GROUND MOVEMENT
 			float stickAbsL = abs(state.thumbSticks.leftX);
 			if (stickAbsL > 0.f && tplayer[i].grounded)
 			{
@@ -107,19 +89,16 @@ bool GunGameState::update(float deltaTime)
 				this->tplayer[i].direction.y = 0; //= { 0,0,0 };
 
 			//IN AIR MOVEMENT
-			if (stickAbsL > 0.f && !tplayer[i].grounded)
+			float airspeedAbs = abs(tplayer[i].airSpeed);
+			if (stickAbsL > 0.f && !tplayer[i].grounded) 
 			{
 				tplayer[i].airSpeed += 0.5f * state.thumbSticks.leftX;
 				float dir = tplayer[i].airSpeed;// / stickAbsL;
 
 				this->tplayer[i].direction = DirectX::XMFLOAT3(dir * deltaTime, 0, 0);
 
-				if (tplayer[i].airSpeed > 5) {
-					tplayer[i].airSpeed = 5;
-				}
-				else if (tplayer[i].airSpeed < -5) {
-					tplayer[i].airSpeed = -5;
-				}
+				if (airspeedAbs > 5)
+					tplayer[i].airSpeed = airspeedAbs / tplayer[i].airSpeed*5;
 			}
 			else if (state.dpad.right && !tplayer[i].grounded || state.dpad.left && !tplayer[i].grounded)
 			{
@@ -128,18 +107,15 @@ bool GunGameState::update(float deltaTime)
 				if (!tplayer[i].grounded) {
 					this->tplayer[i].direction = DirectX::XMFLOAT3(tplayer[i].airSpeed * deltaTime, 0, 0);
 				}
-				if (tplayer[i].airSpeed > 5) {
-					tplayer[i].airSpeed = 5;
-				}
-				else if (tplayer[i].airSpeed < -5) {
-					tplayer[i].airSpeed = -5;
-				}
+	
+				if (airspeedAbs > 5)
+					tplayer[i].airSpeed = airspeedAbs / tplayer[i].airSpeed*5;
 			}
 			
 			
 
-			//jump
-			if ((state.buttons.x || state.buttons.y) && tplayer[i].canJump)//== DirectX::GamePad::ButtonStateTracker::PRESSED 
+			//JUMP INPUT
+			if ((state.buttons.x || state.buttons.y) && tplayer[i].canJump)
 			{
 				this->tplayer[i].isJumping = true;
 				this->tplayer[i].grounded = false;
@@ -154,7 +130,6 @@ bool GunGameState::update(float deltaTime)
 			}
 
 
-			
 
 			//falling/jump function
 			if (this->tplayer[i].grounded == false)
@@ -170,30 +145,6 @@ bool GunGameState::update(float deltaTime)
 				this->tplayer[i].direction.y = 0.f;
 				this->tplayer[i].airSpeed = 0.0f;
 			}
-
-			//ITEMS not working properly  (does not leave ground)
-			//for (int i = 0; i < 2; i++)
-			//{
-			//	if (state.dpad.right - state.dpad.left != 0)
-			//		items[i].lastDir = state.dpad.right - state.dpad.left;
-			//	else if (abs(state.thumbSticks.leftX) == 1)
-			//		items[i].lastDir = state.thumbSticks.leftX;
-
-			//	if (items[i].grounded==false)
-			//	{
-			//		this->items[i].airTimer += deltaTime;
-
-			//		this->tplayer[i].direction.x += this->items[i].lastDir*deltaTime;
-			//		this->tplayer[i].direction.y += (-9.82f *items[i].airTimer + (2.f*this->items[i].isFlying))*deltaTime;
-			//	}
-			//	else if (items[i].grounded == true)
-			//	{
-			//		this->items[i].airTimer = 0.f;
-			//		this->items[i].isFlying = false;
-			//		this->items[i].direction.y = 0;
-			//		this->items[i].direction.x = 0;
-			//	}
-			//}
 
 
 			if (state.buttons.leftShoulder ||
@@ -220,7 +171,29 @@ bool GunGameState::update(float deltaTime)
 				System::theRumble[i].rumbleTime = 0.1f;
 			}
 
-			//this->updateRumble(deltaTime, i);
+			//ITEMS not working properly  (does not leave ground)
+			//for (int i = 0; i < 2; i++)
+			//{
+			//	if (state.dpad.right - state.dpad.left != 0)
+			//		items[i].lastDir = state.dpad.right - state.dpad.left;
+			//	else if (abs(state.thumbSticks.leftX) == 1)
+			//		items[i].lastDir = state.thumbSticks.leftX;
+
+			//	if (items[i].grounded==false)
+			//	{
+			//		this->items[i].airTimer += deltaTime;
+
+			//		this->tplayer[i].direction.x += this->items[i].lastDir*deltaTime;
+			//		this->tplayer[i].direction.y += (-9.82f *items[i].airTimer + (2.f*this->items[i].isFlying))*deltaTime;
+			//	}
+			//	else if (items[i].grounded == true)
+			//	{
+			//		this->items[i].airTimer = 0.f;
+			//		this->items[i].isFlying = false;
+			//		this->items[i].direction.y = 0;
+			//		this->items[i].direction.x = 0;
+			//	}
+			//}
 		}
 	}
 	return true;

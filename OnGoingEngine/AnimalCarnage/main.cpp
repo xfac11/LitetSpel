@@ -7,6 +7,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 {
 	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 	System sys = System(hInstance, "Project Woodland Beatdown", nCmdShow);
+
 	//sys.initialize();
 	sys.run();//loop
 	//sys.MessageHandler(hwnd);
