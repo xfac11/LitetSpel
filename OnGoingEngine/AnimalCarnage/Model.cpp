@@ -61,6 +61,7 @@ Shader * Model::getShader()
 
 void Model::setTexture(std::string file)
 {
+	//texture
 	texture->setTexture(file);
 	if (texture->isTransparent())
 	{
@@ -77,7 +78,7 @@ void Model::setMesh(std::vector<Vertex3D> aMesh,DWORD* indices, int numberOfIndi
 	this->mesh = aMesh;
 	this->vertexCount = int(aMesh.size());
 	this->vertexBuffer.initialize(aMesh.data(), UINT(aMesh.size()),System::getDevice());
-	this->indexBuffer.initialize(indices, numberOfIndices,System::getDevice());
+	//this->indexBuffer.initialize(indices, numberOfIndices,System::getDevice());
 }
 
 void Model::setSampler()
@@ -135,6 +136,6 @@ void Model::draw()
 	System::getDeviceContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 	System::getDeviceContext()->PSSetSamplers(0, 1, &this->SamplerState);
 
-	this->theShader->renderShader(this->vertexCount,indexBuffer.getBufferSize());
+	this->theShader->renderShader(mesh.size(),indexBuffer.getBufferSize());
 	//this->theShader->renderShader(this->vertexCount,0);
 }
