@@ -428,7 +428,8 @@ bool System::initialize()
 
 	//D3D10_CULL_BACK; //Test
 	theModelLoader->loadGO(obj[0], "Resources/Models/cube2.lu", "lovelive.tga"); //Library test //load anim_test6
-	this->obj[0]->setScale(2, 0.5, 0.5);
+	this->obj[0]->setScale(3, 1, 1);
+	this->obj[0]->setPosition(0, -0.5, 0);
 	theModelLoader->loadGO(obj[1], "Resources/Models/cube2.lu", "lovelive.tga"); //Library test //load anim_test6
 	this->obj[1]->setScale(0.5f, 0.5f, 0.5f);
 	
@@ -643,7 +644,6 @@ void System::update(float deltaTime)
 			}
 		}
 	}
-
 
 
 	this->theCamera->calcCamera(players[0]->getPosition(), players[1]->getPosition(), players[2]->getPosition(), players[3]->getPosition());
