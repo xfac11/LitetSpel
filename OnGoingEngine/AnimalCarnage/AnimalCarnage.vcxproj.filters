@@ -136,6 +136,7 @@
       <Filter>Menu</Filter>
     </ClCompile>
     <ClCompile Include="SelectGui.cpp" />
+    <ClCompile Include="PlayerSelector.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Bear.h">
@@ -277,6 +278,7 @@
       <Filter>Menu</Filter>
     </ClInclude>
     <ClInclude Include="SelectGui.h" />
+    <ClInclude Include="PlayerSelector.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="imgui\.gitkeep" />

@@ -65,6 +65,7 @@ SelectGui::SelectGui(State * myState) : GuiBase(myState)
 {
 	this->selectedElement = nullptr;
 	this->buttonTest = nullptr;
+	this->playerSelector0 = nullptr;
 
 	this->changedLastFrame = false;
 	this->timeSinceChanged = 0.0F;
@@ -72,12 +73,20 @@ SelectGui::SelectGui(State * myState) : GuiBase(myState)
 
 SelectGui::~SelectGui()
 {
+	delete this->playerSelector0;
+	delete this->playerSelector1;
+	delete this->playerSelector2;
+	delete this->playerSelector3;
 	delete this->buttonTest;
 }
 
 bool SelectGui::initialize()
 {
-	this->buttonTest = new Button("Test");
+	this->buttonTest = new Button("Start Game", Vector2(WIDTH / 2 - 300, HEIGHT / 2 + 300));
+	this->playerSelector0 = new PlayerSelector(WOLF, Vector2(WIDTH / 2 - 775, HEIGHT / 2 - 300));
+	this->playerSelector1 = new PlayerSelector(WOLF, Vector2(WIDTH / 2 - 375, HEIGHT / 2 - 300));
+	this->playerSelector2 = new PlayerSelector(WOLF, Vector2(WIDTH / 2 + 25, HEIGHT / 2 - 300));
+	this->playerSelector3 = new PlayerSelector(WOLF, Vector2(WIDTH / 2 + 425, HEIGHT / 2 - 300));
 
 	this->selectedElement = buttonTest;
 	this->buttonTest->setConnectedElements(nullptr, nullptr, nullptr, nullptr);
@@ -86,6 +95,10 @@ bool SelectGui::initialize()
 
 void SelectGui::shutDown()
 {
+	delete this->playerSelector0;
+	delete this->playerSelector1;
+	delete this->playerSelector2;
+	delete this->playerSelector3;
 	delete this->buttonTest;
 }
 
@@ -167,6 +180,10 @@ bool SelectGui::render()
 	Vector2 textWidth = System::getFontArial()->MeasureString("Player Select");
 	System::getFontArial()->DrawString(System::getSpriteBatch(), "Player Select", Vector2(WIDTH / 2, HEIGHT / 2 - 400), DirectX::Colors::Black, 0.0f, textWidth / 2.f, Vector2::One);
 	this->buttonTest->render(this->selectedElement == buttonTest);
+	this->playerSelector0->render(false);
+	this->playerSelector1->render(false);
+	this->playerSelector2->render(false);
+	this->playerSelector3->render(false);
 
 	System::getSpriteBatch()->End();
 	return true;
