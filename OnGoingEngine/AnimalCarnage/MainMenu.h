@@ -3,7 +3,7 @@
 
 #include "State.h"
 
-enum MainMenuGui { MAIN, OPTIONS, RULES };
+enum MainMenuGui { MAIN, OPTIONS, RULES, SELECT };
 
 class MainMenu : public State
 {
@@ -11,6 +11,7 @@ private:
 	GuiBase* main;
 	GuiBase* options;
 	GuiBase* rules;
+	GuiBase* select;
 
 public:
 	MainMenu();

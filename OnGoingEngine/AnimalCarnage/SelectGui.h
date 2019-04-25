@@ -1,19 +1,15 @@
-#ifndef RULES_GUI_H
-#define RULES_GUI_H
+#ifndef SELECT_GUI_H
+#define SELECT_GUI_H
 
 #include "GuiBase.h"
 #include "GuiElement.h"
 #include "Button.h"
-#include "CheckBox.h"
 
-class RulesGui : public GuiBase
+class SelectGui : public GuiBase
 {
 private:
 	GuiElement* selectedElement;
-	Button* buttonGunGame;
-	Button* buttonVersus;
-	Button* buttonFalling;
-	Button* buttonTagTeam;
+	Button* buttonTest;
 
 	bool changedLastFrame;
 	float timeSinceChanged;
@@ -22,8 +18,8 @@ private:
 	void changeSelected();
 
 public:
-	RulesGui(State* myState);
-	virtual ~RulesGui();
+	SelectGui(State* myState);
+	virtual ~SelectGui();
 
 	bool initialize();
 	void shutDown();
@@ -31,4 +27,4 @@ public:
 	bool render();
 };
 
-#endif // !RULES_GUI_H
+#endif // !SELECT_GUI_H

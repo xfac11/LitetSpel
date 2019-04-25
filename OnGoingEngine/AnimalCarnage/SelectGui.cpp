@@ -1,8 +1,8 @@
-#include "RulesGui.h"
+#include "SelectGui.h"
 #include "System.h"
 #include "MainMenu.h"
 
-void RulesGui::changeSelected_Keyboard()
+void SelectGui::changeSelected_Keyboard()
 {
 	GuiElement* newSelected = nullptr;
 
@@ -34,7 +34,7 @@ void RulesGui::changeSelected_Keyboard()
 	}
 }
 
-void RulesGui::changeSelected()
+void SelectGui::changeSelected()
 {
 	GuiElement* newSelected = nullptr;
 
@@ -61,52 +61,35 @@ void RulesGui::changeSelected()
 	}
 }
 
-RulesGui::RulesGui(State* myState) : GuiBase(myState)
+SelectGui::SelectGui(State * myState) : GuiBase(myState)
 {
 	this->selectedElement = nullptr;
-
-	this->buttonGunGame = nullptr;
-	this->buttonVersus = nullptr;
-	this->buttonFalling = nullptr;
-	this->buttonTagTeam = nullptr;
+	this->buttonTest = nullptr;
 
 	this->changedLastFrame = false;
 	this->timeSinceChanged = 0.0F;
 }
 
-RulesGui::~RulesGui()
+SelectGui::~SelectGui()
 {
-	delete this->buttonGunGame;
-	delete this->buttonVersus;
-	delete this->buttonFalling;
-	delete this->buttonTagTeam;
+	delete this->buttonTest;
 }
 
-bool RulesGui::initialize()
+bool SelectGui::initialize()
 {
-	this->buttonGunGame = new Button("Gun Game", Vector2(WIDTH / 2 - 300, HEIGHT / 2 - 210));
-	this->buttonVersus = new Button("Versus", Vector2(WIDTH / 2 - 300, HEIGHT / 2 - 70));
-	this->buttonFalling = new Button("Falling", Vector2(WIDTH / 2 - 300, HEIGHT / 2 + 70));
-	this->buttonTagTeam = new Button("Tag Team", Vector2(WIDTH / 2 - 300, HEIGHT / 2 + 210));
+	this->buttonTest = new Button("Test");
 
-	this->selectedElement = buttonGunGame;
-	this->buttonGunGame->setConnectedElements(nullptr, nullptr, buttonTagTeam, buttonVersus);
-	this->buttonVersus->setConnectedElements(nullptr, nullptr, buttonGunGame, buttonFalling);
-	this->buttonFalling->setConnectedElements(nullptr, nullptr, buttonVersus, buttonTagTeam);
-	this->buttonTagTeam->setConnectedElements(nullptr, nullptr, buttonFalling, buttonGunGame);
-
+	this->selectedElement = buttonTest;
+	this->buttonTest->setConnectedElements(nullptr, nullptr, nullptr, nullptr);
 	return true;
 }
 
-void RulesGui::shutDown()
+void SelectGui::shutDown()
 {
-	delete this->buttonGunGame;
-	delete this->buttonVersus;
-	delete this->buttonFalling;
-	delete this->buttonTagTeam;
+	delete this->buttonTest;
 }
 
-bool RulesGui::update(float deltaTime)
+bool SelectGui::update(float deltaTime)
 {
 	if (this->keyboardDelay <= 0.0F)
 	{
@@ -128,28 +111,15 @@ bool RulesGui::update(float deltaTime)
 
 		if (System::theKeyboard->KeyIsPressed('E'))
 		{
-			if (this->selectedElement == buttonGunGame)
+			if (this->selectedElement == buttonTest)
 			{
-				MainMenu* state = dynamic_cast<MainMenu*>(this->myState);
-				state->setCurrentMenu(SELECT);
-			}
-			else if (this->selectedElement == buttonVersus)
-			{
-
-			}
-			else if (this->selectedElement == buttonFalling)
-			{
-
-			}
-			else
-			{
-
+				System::setState(GUNGAME);
 			}
 		}
 		else if (System::theKeyboard->KeyIsPressed('Q'))
 		{
 			MainMenu* state = dynamic_cast<MainMenu*>(this->myState);
-			state->setCurrentMenu(MAIN);
+			state->setCurrentMenu(RULES);
 		}
 	}
 	else
@@ -168,22 +138,9 @@ bool RulesGui::update(float deltaTime)
 
 			if (System::theTracker->a == DirectX::GamePad::ButtonStateTracker::PRESSED)
 			{
-				if (this->selectedElement == buttonGunGame)
+				if (this->selectedElement == buttonTest)
 				{
-					MainMenu* state = dynamic_cast<MainMenu*>(this->myState);
-					state->setCurrentMenu(SELECT);
-				}
-				else if (this->selectedElement == buttonVersus)
-				{
-
-				}
-				else if (this->selectedElement == buttonFalling)
-				{
-
-				}
-				else
-				{
-
+					System::setState(GUNGAME);
 				}
 
 				System::theRumble[i].rumble.x = 0.2f;
@@ -193,7 +150,7 @@ bool RulesGui::update(float deltaTime)
 			else if (System::theTracker->b == DirectX::GamePad::ButtonStateTracker::PRESSED)
 			{
 				MainMenu* state = dynamic_cast<MainMenu*>(this->myState);
-				state->setCurrentMenu(MAIN);
+				state->setCurrentMenu(RULES);
 			}
 
 			break;
@@ -203,16 +160,13 @@ bool RulesGui::update(float deltaTime)
 	return true;
 }
 
-bool RulesGui::render()
+bool SelectGui::render()
 {
 	System::getSpriteBatch()->Begin(DirectX::SpriteSortMode_Deferred, System::getCommonStates()->NonPremultiplied());
 
-	Vector2 textWidth = System::getFontArial()->MeasureString("Select Gamemode");
-	System::getFontArial()->DrawString(System::getSpriteBatch(), "Select Gamemode", Vector2(WIDTH / 2, HEIGHT / 2 - 400), DirectX::Colors::Black, 0.0f, textWidth / 2.f, Vector2::One);
-	this->buttonGunGame->render(this->selectedElement == buttonGunGame);
-	this->buttonVersus->render(this->selectedElement == buttonVersus);
-	this->buttonFalling->render(this->selectedElement == buttonFalling);
-	this->buttonTagTeam->render(this->selectedElement == buttonTagTeam);
+	Vector2 textWidth = System::getFontArial()->MeasureString("Player Select");
+	System::getFontArial()->DrawString(System::getSpriteBatch(), "Player Select", Vector2(WIDTH / 2, HEIGHT / 2 - 400), DirectX::Colors::Black, 0.0f, textWidth / 2.f, Vector2::One);
+	this->buttonTest->render(this->selectedElement == buttonTest);
 
 	System::getSpriteBatch()->End();
 	return true;

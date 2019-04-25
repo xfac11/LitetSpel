@@ -108,38 +108,45 @@ void MainGui::shutDown()
 
 bool MainGui::update(float deltaTime)
 {
-	if (this->changedLastFrame)
+	if (this->keyboardDelay <= 0.0F)
 	{
-		if (this->timeSinceChanged > 0.2F)
+		if (this->changedLastFrame)
 		{
-			this->timeSinceChanged -= 0.2F;
-			this->changeSelected_Keyboard();
-		}
+			if (this->timeSinceChanged > 0.2F)
+			{
+				this->timeSinceChanged -= 0.2F;
+				this->changeSelected_Keyboard();
+			}
 
-		this->timeSinceChanged += deltaTime;
-	}
-	else
-	{
-		this->timeSinceChanged = 0.0F;
-		this->changeSelected_Keyboard();
-	}
-
-	if (System::theKeyboard->KeyIsPressed('E'))
-	{
-		if (this->selectedElement == this->quitButton)
-		{
-			System::closeWindow();
-		}
-		else if (this->selectedElement == this->playButton)
-		{
-			MainMenu* state = dynamic_cast<MainMenu*>(this->myState);
-			state->setCurrentMenu(RULES);
+			this->timeSinceChanged += deltaTime;
 		}
 		else
 		{
-			MainMenu* state = dynamic_cast<MainMenu*>(this->myState);
-			state->setCurrentMenu(OPTIONS);
+			this->timeSinceChanged = 0.0F;
+			this->changeSelected_Keyboard();
 		}
+
+		if (System::theKeyboard->KeyIsPressed('E'))
+		{
+			if (this->selectedElement == this->quitButton)
+			{
+				System::closeWindow();
+			}
+			else if (this->selectedElement == this->playButton)
+			{
+				MainMenu* state = dynamic_cast<MainMenu*>(this->myState);
+				state->setCurrentMenu(RULES);
+			}
+			else
+			{
+				MainMenu* state = dynamic_cast<MainMenu*>(this->myState);
+				state->setCurrentMenu(OPTIONS);
+			}
+		}
+	}
+	else
+	{
+		this->keyboardDelay -= deltaTime;
 	}
 
 	for (int i = 0; i < 4; i++)
