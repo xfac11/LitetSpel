@@ -87,9 +87,9 @@ MainGui::~MainGui()
 
 bool MainGui::initialize()
 {
-	this->playButton = new Button("cat.tga", "Start", Vector2(100, 0), Vector2(1000, 100));
-	this->optionsButton = new Button("cat.tga", "Options", Vector2(100, 200), Vector2(1000, 100));
-	this->quitButton = new Button("cat2.tga", "Quit", Vector2(100, 400), Vector2(1000, 100));
+	this->playButton = new Button("Start", Vector2(100, 0));
+	this->optionsButton = new Button("Options", Vector2(100, 200));
+	this->quitButton = new Button("Quit", Vector2(100, 400));
 
 	this->selectedElement = playButton;
 	this->playButton->setConnectedElements(nullptr, nullptr, quitButton, optionsButton);
@@ -182,14 +182,12 @@ bool MainGui::update(float deltaTime)
 
 bool MainGui::render()
 {
-	System::getSpriteBatch()->Begin();
-	System::getSpriteBatch()->Draw(this->playButton->getTexture(), this->playButton->getRect(), this->playButton == this->selectedElement ? DirectX::Colors::Red : DirectX::Colors::White);
-	System::getFontComicSans()->DrawString(System::getSpriteBatch(), this->playButton->getText().c_str(), this->playButton->getPosition(), DirectX::Colors::Black, 0.0f, Vector2::Zero, Vector2::One * 3);
-	System::getSpriteBatch()->Draw(this->optionsButton->getTexture(), this->optionsButton->getRect(), this->optionsButton == this->selectedElement ? DirectX::Colors::Red : DirectX::Colors::White);
-	System::getFontComicSans()->DrawString(System::getSpriteBatch(), this->optionsButton->getText().c_str(), this->optionsButton->getPosition(), DirectX::Colors::Black, 0.0f, Vector2::Zero, Vector2::One * 3);
-	System::getSpriteBatch()->Draw(this->quitButton->getTexture(), this->quitButton->getRect(), this->quitButton == this->selectedElement ? DirectX::Colors::Red : DirectX::Colors::White);
-	System::getFontComicSans()->DrawString(System::getSpriteBatch(), this->quitButton->getText().c_str(), this->quitButton->getPosition(), DirectX::Colors::Black, 0.0f, Vector2::Zero, Vector2::One * 3);
-	System::getSpriteBatch()->End();
+	System::getSpriteBatch()->Begin(DirectX::SpriteSortMode_Deferred, System::getCommonStates()->NonPremultiplied());
 
+	this->playButton->render(this->playButton == this->selectedElement);
+	this->optionsButton->render(this->optionsButton == this->selectedElement);
+	this->quitButton->render(this->quitButton == this->selectedElement);
+
+	System::getSpriteBatch()->End();
 	return true;
 }

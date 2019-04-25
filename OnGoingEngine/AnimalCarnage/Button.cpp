@@ -1,42 +1,27 @@
 #include "Button.h"
+#include "System.h"
 
-Button::Button(std::string texture, std::string text, Vector2 position, Vector2 size) : GuiElement(position), text(text), size(size)
+bool Button::texturesLoaded = false;
+Texture Button::texture = Texture();
+Texture Button::textureSelected = Texture();
+
+Button::Button(std::string text, Vector2 position) : GuiElement(position), text(text)
 {
-	this->texture.setTexture(texture);
+	if (!Button::texturesLoaded)
+	{
+		Button::texture.setTexture("button.tga");
+		Button::textureSelected.setTexture("buttonSelected.tga");
+		Button::texturesLoaded = true;
+	}
 }
 
 Button::~Button()
 {
 }
 
-//bool Button::update(float deltaTime)
-//{
-//	//TODO
-//	return true;
-//}
-//
-//bool Button::render(DirectX::SpriteBatch* spriteBatch)
-//{
-//	//TODO
-//	return true;
-//}
-
-ID3D11ShaderResourceView * Button::getTexture()
+bool Button::render(bool selected)
 {
-	return this->texture.getTexture();
-}
-
-Vector2 Button::getSize() const
-{
-	return this->size;
-}
-
-std::string Button::getText() const
-{
-	return this->text;
-}
-
-DirectX::SimpleMath::Rectangle Button::getRect() const
-{
-	return DirectX::SimpleMath::Rectangle(static_cast<long>(position.x), static_cast<long>(position.y), static_cast<long>(size.x), static_cast<long>(size.y));
+	System::getSpriteBatch()->Draw(selected ? Button::textureSelected.getTexture() : Button::texture.getTexture(), this->position, nullptr);
+	System::getFontComicSans()->DrawString(System::getSpriteBatch(), this->text.c_str(), this->position, DirectX::Colors::Black, 0.0f, Vector2::Zero, Vector2::One * 3);
+	return true;
 }

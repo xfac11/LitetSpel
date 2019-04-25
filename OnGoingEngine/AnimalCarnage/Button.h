@@ -10,21 +10,17 @@ using namespace DirectX::SimpleMath;
 class Button : public GuiElement
 {
 private:
+	static bool texturesLoaded;
+	static Texture texture;
+	static Texture textureSelected;
+
 	std::string text;
-	Texture texture;
-	Vector2 size;
 
 public:
-	Button(std::string texture, std::string text, Vector2 position = Vector2::Zero, Vector2 size = Vector2(100, 100));
+	Button(std::string text, Vector2 position = Vector2::Zero);
 	~Button();
 
-	//bool update(float deltaTime);
-	//bool render(DirectX::SpriteBatch* spriteBatch);
-
-	ID3D11ShaderResourceView* getTexture();
-	Vector2 getSize() const;
-	std::string getText() const;
-	DirectX::SimpleMath::Rectangle getRect() const;
+	bool render(bool selected);
 };
 
 #endif // !BUTTON_H
