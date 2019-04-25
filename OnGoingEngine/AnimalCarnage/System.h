@@ -72,6 +72,7 @@ private:
 	static CommonStates* commonStates;
 	static SpriteBatch* spriteBatch;
 	static SpriteFont* fontComicSans;
+	static SpriteFont* fontArial;
 	
 	GameObject* obj[2];
 	GameObject* players[4];
@@ -132,6 +133,7 @@ public:
 	static SpriteBatch* getSpriteBatch();
 	static CommonStates* getCommonStates();
 	static SpriteFont* getFontComicSans();
+	static SpriteFont* getFontArial();
 
 	static void closeWindow();
 	static void setState(GameState state);

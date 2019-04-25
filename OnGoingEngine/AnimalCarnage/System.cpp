@@ -16,7 +16,9 @@ System* System::fusk = nullptr;
 CommonStates* System::commonStates = nullptr;
 SpriteBatch* System::spriteBatch = nullptr;
 SpriteFont* System::fontComicSans = nullptr;
+SpriteFont* System::fontArial = nullptr;
 ShaderManager* System::shaderManager = nullptr;
+
 HWND System::InitWindow(HINSTANCE hInstance, float height, float width)
 {
 	WNDCLASSEX wcex = { 0 };
@@ -303,6 +305,7 @@ System::~System()
 	delete System::commonStates;
 	delete System::spriteBatch;
 	delete System::fontComicSans;
+	delete System::fontArial;
 }
 
 bool System::initialize()
@@ -414,6 +417,7 @@ bool System::initialize()
 	System::commonStates = new CommonStates(System::getDevice());
 	System::spriteBatch = new SpriteBatch(System::getDeviceContext());
 	System::fontComicSans = new SpriteFont(System::getDevice(), L"./Fonts/comic_sans.spritefont");
+	System::fontArial = new SpriteFont(System::getDevice(), L"./Fonts/arial.spritefont");
 
 	System::states.push_back(new MainMenu());
 	System::states[MAINMENU]->initailize();
@@ -995,6 +999,11 @@ CommonStates * System::getCommonStates()
 SpriteFont * System::getFontComicSans()
 {
 	return System::fontComicSans;
+}
+
+SpriteFont * System::getFontArial()
+{
+	return System::fontArial;
 }
 
 void System::closeWindow()
