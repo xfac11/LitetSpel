@@ -8,7 +8,7 @@ ModelLoader::ModelLoader()
 ModelLoader::~ModelLoader()
 {
 }
-void ModelLoader::loadGO(GameObject*& object, const char* filePath)
+void ModelLoader::loadGO(GameObject*& object, const char* filePath,std::string texture)
 {
 	Luna::Reader reader;
 	reader.readFile(filePath);
@@ -36,7 +36,7 @@ void ModelLoader::loadGO(GameObject*& object, const char* filePath)
 	{
 		//object[i] = new GameObject;
 		object[i].addModel(vertices3D, dIndices, (int)indices.size());
-		object[i].setTexture("lovelive.tga",i);
+		object[i].setTexture(texture,i);
 	}
 
 	vertices3D.clear();
