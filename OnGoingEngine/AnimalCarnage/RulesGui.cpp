@@ -82,7 +82,7 @@ RulesGui::~RulesGui()
 bool RulesGui::initialize()
 {
 	this->testCheckBox = new CheckBox(false, Vector2(400, 200));
-	this->confirmButton = new Button("Confirm", Vector2(200, 400), Vector2(1000, 100));
+	this->confirmButton = new Button("Confirm", Vector2(200, 400));
 
 	this->selectedElement = testCheckBox;
 	this->testCheckBox->setConnectedElements(nullptr, nullptr, confirmButton, confirmButton);
@@ -181,16 +181,11 @@ bool RulesGui::update(float deltaTime)
 
 bool RulesGui::render()
 {
-	System::getSpriteBatch()->Begin();
-	System::getSpriteBatch()->Draw(this->testCheckBox->getTexture(), this->testCheckBox->getPosition(), nullptr, this->testCheckBox == this->selectedElement ? DirectX::Colors::Red : DirectX::Colors::White);
+	System::getSpriteBatch()->Begin(DirectX::SpriteSortMode_Deferred, System::getCommonStates()->NonPremultiplied());
 
-	if (this->testCheckBox->isChecked())
-	{
-		System::getSpriteBatch()->Draw(this->testCheckBox->getCheckTexture(), this->testCheckBox->getPosition(), nullptr, this->testCheckBox == this->selectedElement ? DirectX::Colors::Red : DirectX::Colors::White);
-	}
+	this->testCheckBox->render(this->testCheckBox == this->selectedElement);
+	this->confirmButton->render(this->confirmButton == this->selectedElement);
 
-	System::getSpriteBatch()->Draw(this->confirmButton->getTexture(), this->confirmButton->getRect(), this->confirmButton == this->selectedElement ? DirectX::Colors::Red : DirectX::Colors::White);
-	System::getFontComicSans()->DrawString(System::getSpriteBatch(), this->confirmButton->getText().c_str(), this->confirmButton->getPosition(), DirectX::Colors::Black, 0.0f, Vector2::Zero, Vector2::One * 3);
 	System::getSpriteBatch()->End();
 	return true;
 }
