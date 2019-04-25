@@ -388,26 +388,24 @@ bool System::initialize()
 		mesh2.push_back(temp2[i]);
 	}
 
-	this->obj[0]->addModel(mesh2, indices2, 3);
-	this->obj[0]->setScale(2, 0.5, 0.5);
 	//this->obj[1]->addModel(mesh2, indices2, 3);
 	//this->obj[1]->setScale(2, 1, 1);
 	//D3D10_CULL_BACK; //Test
-	theModelLoader->loadGO(obj[1], "Resources/Models/cube1.lu"); //Library test //load anim_test6
+	theModelLoader->loadGO(obj[0], "Resources/Models/cube2.lu", "lovelive.tga"); //Library test //load anim_test6
+	this->obj[0]->setScale(2, 0.5, 0.5);
+	theModelLoader->loadGO(obj[1], "Resources/Models/cube2.lu", "lovelive.tga"); //Library test //load anim_test6
+	
 	//this->obj[1]->setScale(0.5f, 0.5f, 0.5f);
 	
-	this->players[0]->addModel(mesh, indices, 6);
+	theModelLoader->loadGO(this->players[0], "Resources/Models/cube2.lu", "cat.tga");
 	this->players[0]->setScale(0.5f, 0.4f, 0.1f);
-	this->players[1]->addModel(mesh, indices, 6);
+	theModelLoader->loadGO(this->players[1], "Resources/Models/cube2.lu", "cat.tga");
 	this->players[1]->setScale(0.6f, 0.8f, 0.1f);
-	this->players[2]->addModel(mesh, indices, 6);
+	theModelLoader->loadGO(this->players[2], "Resources/Models/cube2.lu", "cat.tga");
 	this->players[2]->setScale(0.6f, 0.8f, 0.1f);
-	this->players[3]->addModel(mesh, indices, 6);
-	this->players[0]->getModel(0)->setTexture("cat.tga");
-	this->players[1]->getModel(0)->setTexture("cat.tga");
-	this->players[2]->getModel(0)->setTexture("cat.tga");
-	this->players[3]->getModel(0)->setTexture("cat.tga");
+	theModelLoader->loadGO(this->players[3], "Resources/Models/cube2.lu", "cat.tga");
 	this->players[3]->setScale(0.6f, 0.8f, 0.1f);
+
 	this->handler.addObject(this->obj[1]);
 	this->handler.addObject(this->obj[0]);
 	for (int i = 0; i < 4; i++)
@@ -464,7 +462,6 @@ void System::renderImgui()
 	//ImGui::Text(textUse.c_str());
 	//textUse = "Height from 'Ground': " + std::to_string(this->height) + "m";
 	//ImGui::Text(textUse.c_str());
-
 
 	if (collide == true)
 	{
@@ -606,20 +603,6 @@ void System::update(float deltaTime)
 					temp->move(gamePtr->getDirection(i));
 				else
 					players[i]->move(gamePtr->getDirection(i));
-			}
-		}
-		for (int i = 0; i < 2; i++)
-		{
-			gamePtr = dynamic_cast<GunGameState*>(states[1]);
-			if (gamePtr != nullptr)
-			{
-
-				//gamePtr->collision(playerPos, playerScale, 0, obj1Pos, obj1Scale, 0);
-
-				if (obj[i]->getPosition().y - 0.5f*obj[i]->getScale().y > 0.f)
-					gamePtr->setObjGrounded(i, false);
-				else
-					gamePtr->setObjGrounded(i, true);
 			}
 		}
 	}
