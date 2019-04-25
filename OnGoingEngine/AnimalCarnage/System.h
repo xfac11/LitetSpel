@@ -79,7 +79,6 @@ private:
 	int currentInput; //imgui, controlls input
 	//ForwardShader* theForwardShader;
 	Camera* theCamera;
-	GameObjectHandler handler;
 	
 	//Model** model;
 
@@ -128,6 +127,9 @@ public:
 	static GamePad* theGamePad;
 	static GamePad::ButtonStateTracker* theTracker;
 	static RumbleTemp theRumble[4];
+
+	static GameObjectHandler handler;
+
 
 	static ModelLoader* theModelLoader;
 	static SpriteBatch* getSpriteBatch();

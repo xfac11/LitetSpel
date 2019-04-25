@@ -18,7 +18,7 @@ SpriteBatch* System::spriteBatch = nullptr;
 SpriteFont* System::fontComicSans = nullptr;
 SpriteFont* System::fontArial = nullptr;
 ShaderManager* System::shaderManager = nullptr;
-
+GameObjectHandler System::handler = GameObjectHandler();
 HWND System::InitWindow(HINSTANCE hInstance, float height, float width)
 {
 	WNDCLASSEX wcex = { 0 };
@@ -743,7 +743,7 @@ void System::render()
 	
 	//this->model[0]->setShader(shaderManager->getForwardShader());
 	//this->model[0]->draw();
-	this->handler.draw();
+	//this->handler.draw();
 
 	/*this->obj->draw();
 	this->obj2->draw();*/
@@ -757,7 +757,8 @@ void System::render()
 
 	
 
-	this->resetShaders();
+	if(currentState==MAINMENU)
+		this->resetShaders();
 	System::states[System::currentState]->render();
 
 	System::getDeviceContext()->GSSetShader(nullptr, nullptr, 0);
