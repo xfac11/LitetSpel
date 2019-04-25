@@ -4,12 +4,17 @@
 #include "GuiBase.h"
 #include "GuiElement.h"
 #include "Button.h"
+#include "PlayerSelector.h"
 
 class SelectGui : public GuiBase
 {
 private:
 	GuiElement* selectedElement;
 	Button* buttonTest;
+	PlayerSelector* playerSelector0;
+	PlayerSelector* playerSelector1;
+	PlayerSelector* playerSelector2;
+	PlayerSelector* playerSelector3;
 
 	bool changedLastFrame;
 	float timeSinceChanged;
