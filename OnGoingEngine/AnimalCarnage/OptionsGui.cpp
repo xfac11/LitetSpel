@@ -18,7 +18,7 @@ OptionsGui::~OptionsGui()
 
 bool OptionsGui::initialize()
 {
-	this->volume = new Slider("sliderBG.tga", "slider.tga", 0, 10, 1, DirectX::SimpleMath::Vector2(200, 400));
+	this->volume = new Slider(0, 10, 1, DirectX::SimpleMath::Vector2(200, 400));
 
 	this->selectedElement = this->volume;
 	this->volume->setConnectedElements(nullptr, nullptr, nullptr, nullptr);
@@ -101,7 +101,7 @@ bool OptionsGui::render()
 	System::getSpriteBatch()->Begin();
 	System::getFontComicSans()->DrawString(System::getSpriteBatch(), "Options", DirectX::SimpleMath::Vector2(200, 200), DirectX::Colors::Black, 0.0f, DirectX::SimpleMath::Vector2::Zero, DirectX::SimpleMath::Vector2::One * 3);
 	System::getSpriteBatch()->Draw(this->volume->getTextureBG(), this->volume->getPosition(), nullptr, this->volume == this->selectedElement ? DirectX::Colors::Red : DirectX::Colors::White);
-	System::getSpriteBatch()->Draw(this->volume->getTexture(), DirectX::SimpleMath::Rectangle(this->volume->getPosition().x, this->volume->getPosition().y, 100 * this->volume->getValue(), 100), nullptr, DirectX::Colors::White);
+	System::getSpriteBatch()->Draw(this->volume->getTexture(), DirectX::SimpleMath::Rectangle(static_cast<long>(this->volume->getPosition().x), static_cast<long>(this->volume->getPosition().y), 100 * this->volume->getValue(), 100), nullptr, DirectX::Colors::White);
 	System::getSpriteBatch()->End();
 
 	return true;

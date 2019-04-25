@@ -1,10 +1,18 @@
 #include "Slider.h"
 
-Slider::Slider(std::string sliderBG, std::string slider, int startValue, int maxValue, int stepSize, DirectX::SimpleMath::Vector2 position)
+bool Slider::texturesLoaded = false;
+Texture Slider::sliderBG = Texture();
+Texture Slider::slider = Texture();
+
+Slider::Slider(int startValue, int maxValue, int stepSize, DirectX::SimpleMath::Vector2 position)
 	: GuiElement(position), value(startValue), maxValue(maxValue), stepSize(stepSize)
 {
-	this->slider.setTexture(slider);
-	this->sliderBG.setTexture(sliderBG);
+	if (!Slider::texturesLoaded)
+	{
+		Slider::slider.setTexture("slider.tga");
+		Slider::sliderBG.setTexture("sliderBG.tga");
+		Slider::texturesLoaded = true;
+	}
 }
 
 Slider::~Slider()
@@ -51,10 +59,10 @@ int Slider::getMaxValue() const
 
 ID3D11ShaderResourceView * Slider::getTexture()
 {
-	return this->slider.getTexture();
+	return Slider::slider.getTexture();
 }
 
 ID3D11ShaderResourceView * Slider::getTextureBG()
 {
-	return this->sliderBG.getTexture();
+	return Slider::sliderBG.getTexture();
 }

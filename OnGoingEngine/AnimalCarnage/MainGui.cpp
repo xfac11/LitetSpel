@@ -87,9 +87,9 @@ MainGui::~MainGui()
 
 bool MainGui::initialize()
 {
-	this->playButton = new Button("cat.tga", "Start", Vector2(100, 0), Vector2(1000, 100));
-	this->optionsButton = new Button("cat.tga", "Options", Vector2(100, 200), Vector2(1000, 100));
-	this->quitButton = new Button("cat2.tga", "Quit", Vector2(100, 400), Vector2(1000, 100));
+	this->playButton = new Button("Start", Vector2(100, 0), Vector2(1000, 100));
+	this->optionsButton = new Button("Options", Vector2(100, 200), Vector2(1000, 100));
+	this->quitButton = new Button("Quit", Vector2(100, 400), Vector2(1000, 100));
 
 	this->selectedElement = playButton;
 	this->playButton->setConnectedElements(nullptr, nullptr, quitButton, optionsButton);

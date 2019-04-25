@@ -1,10 +1,18 @@
 #include "CheckBox.h"
 
-CheckBox::CheckBox(std::string texture, std::string checkTexture, bool checked, DirectX::SimpleMath::Vector2 position) : GuiElement(position)
+bool CheckBox::texturesLoaded = false;
+Texture CheckBox::texture = Texture();
+Texture CheckBox::checkTexture = Texture();
+
+CheckBox::CheckBox(bool checked, DirectX::SimpleMath::Vector2 position) : GuiElement(position), checked(checked)
 {
-	this->texture.setTexture(texture);
-	this->checkTexture.setTexture(checkTexture);
-	this->checked = checked;
+	if (!CheckBox::texturesLoaded)
+	{
+		CheckBox::texture.setTexture("check.tga");
+		CheckBox::checkTexture.setTexture("checkBG.tga");
+
+		CheckBox::texturesLoaded = true;
+	}
 }
 
 CheckBox::~CheckBox()
@@ -23,10 +31,10 @@ bool CheckBox::isChecked() const
 
 ID3D11ShaderResourceView * CheckBox::getTexture()
 {
-	return this->texture.getTexture();
+	return CheckBox::texture.getTexture();
 }
 
 ID3D11ShaderResourceView * CheckBox::getCheckTexture()
 {
-	return this->checkTexture.getTexture();
+	return CheckBox::checkTexture.getTexture();
 }

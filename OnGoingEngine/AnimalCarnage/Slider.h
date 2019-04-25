@@ -7,14 +7,16 @@
 class Slider : public GuiElement
 {
 private:
+	static bool texturesLoaded;
+	static Texture sliderBG;
+	static Texture slider;
+
 	int value;
 	int maxValue;
 	int stepSize;
-	Texture sliderBG;
-	Texture slider;
 
 public:
-	Slider(std::string sliderBG, std::string slider, int startValue, int maxValue, int stepSize, DirectX::SimpleMath::Vector2 position = DirectX::SimpleMath::Vector2::Zero);
+	Slider(int startValue, int maxValue, int stepSize, DirectX::SimpleMath::Vector2 position = DirectX::SimpleMath::Vector2::Zero);
 	virtual ~Slider();
 
 	void changeValueWithStep(bool remove);
@@ -23,8 +25,8 @@ public:
 	int getValue() const;
 	int getMaxValue() const;
 
-	ID3D11ShaderResourceView* getTexture();
-	ID3D11ShaderResourceView* getTextureBG();
+	static ID3D11ShaderResourceView* getTexture();
+	static ID3D11ShaderResourceView* getTextureBG();
 };
 
 #endif // !SLIDER_H

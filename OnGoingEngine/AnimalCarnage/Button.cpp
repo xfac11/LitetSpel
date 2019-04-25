@@ -1,8 +1,15 @@
 #include "Button.h"
 
-Button::Button(std::string texture, std::string text, Vector2 position, Vector2 size) : GuiElement(position), text(text), size(size)
+bool Button::texturesLoaded = false;
+Texture Button::texture = Texture();
+
+Button::Button(std::string text, Vector2 position, Vector2 size) : GuiElement(position), text(text), size(size)
 {
-	this->texture.setTexture(texture);
+	if (!Button::texturesLoaded)
+	{
+		Button::texture.setTexture("cat.tga");
+		Button::texturesLoaded = true;
+	}
 }
 
 Button::~Button()
@@ -23,7 +30,7 @@ Button::~Button()
 
 ID3D11ShaderResourceView * Button::getTexture()
 {
-	return this->texture.getTexture();
+	return Button::texture.getTexture();
 }
 
 Vector2 Button::getSize() const

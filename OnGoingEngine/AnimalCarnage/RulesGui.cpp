@@ -81,8 +81,8 @@ RulesGui::~RulesGui()
 
 bool RulesGui::initialize()
 {
-	this->testCheckBox = new CheckBox("checkBG.tga", "check.tga", false, Vector2(400, 200));
-	this->confirmButton = new Button("cat.tga", "Confirm", Vector2(200, 400), Vector2(1000, 100));
+	this->testCheckBox = new CheckBox(false, Vector2(400, 200));
+	this->confirmButton = new Button("Confirm", Vector2(200, 400), Vector2(1000, 100));
 
 	this->selectedElement = testCheckBox;
 	this->testCheckBox->setConnectedElements(nullptr, nullptr, confirmButton, confirmButton);
@@ -150,13 +150,6 @@ bool RulesGui::update(float deltaTime)
 		{
 			System::theTracker->Update(gamepadState);
 			this->changeSelected();
-
-
-			DirectX::GamePad::ButtonStateTracker temp;
-			temp.a = System::theTracker->a;
-			temp.b = System::theTracker->b;
-			temp.x = System::theTracker->x;
-			temp.y = System::theTracker->y;
 
 			if (System::theTracker->a == DirectX::GamePad::ButtonStateTracker::PRESSED)
 			{
