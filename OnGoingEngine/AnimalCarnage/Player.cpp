@@ -18,6 +18,7 @@ Player::Player()
 Player::~Player()
 {
 	//delete playerObj;
+	
 	playerObj = nullptr;
 }
 
@@ -25,7 +26,7 @@ void Player::initialize()
 {
 	this->playerObj = new GameObject(System::shaderManager->getForwardShader());
 	
-	System::theModelLoader->loadGO(this->playerObj, "Resources/Models/cube2.lu", "cat.tga");
+	System::theModelLoader->loadGO(this->playerObj, "Resources/Models/cube2.lu", "cat2.tga");
 	this->playerObj->setScale(0.5f, 0.4f, 0.1f);
 
 	System::handler.addObject(this->playerObj);
@@ -140,10 +141,10 @@ void Player::update(float deltaTime, int id)
 			playerObj->move(5 * (state.dpad.right - state.dpad.left) * deltaTime, 0, 0);
 			airSpeed = 5.f * (state.dpad.right - state.dpad.left);
 		}
-		else if (isJumping == false)
-			playerObj->move(0, 0, 0);
-		else
-			playerObj->move(0, 0, 0);
+		//else if (isJumping == false)
+		//	playerObj->move(0, 0, 0);
+		//else
+		//	playerObj->move(0, 0, 0);
 		//move(getPosition().x, 0, getPosition().z);; //= { 0,0,0 };
 
 	//IN AIR MOVEMENT

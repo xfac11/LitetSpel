@@ -35,7 +35,10 @@ GunGameState::GunGameState()
 		items[i].lastDir = 1;
 		items[i].weight = 2.f;
 	}
-	this->player = nullptr;
+	for (int i = 0; i < 4; i++)
+	{
+		this->player[i] = nullptr;
+	}
 	this->nrOfPlayers = 0;
 }
 
@@ -46,8 +49,12 @@ GunGameState::~GunGameState()
 
 bool GunGameState::initailize()
 {
-	player = new Player();
-	player->initialize();
+	for (int i = 0; i < 4; i++)
+	{
+		player[i] = new Player();
+		player[i]->initialize();
+		this->nrOfPlayers++;
+	}
 	return true;
 }
 
@@ -61,10 +68,11 @@ bool GunGameState::render()
 bool GunGameState::update(float deltaTime)
 {
 
-	player->update(deltaTime, 0);
 
-	//for (int i = 0; i < 4; i++) //nrOfPlayers
-	//{
+	for (int i = 0; i < 4; i++) //nrOfPlayers
+	{
+		player[i]->update(deltaTime, i);
+	}
 	//	DirectX::GamePad::State state = System::theGamePad->GetState(i);
 	//	if (state.IsConnected())
 	//	{
@@ -225,7 +233,11 @@ bool GunGameState::update(float deltaTime)
 
 void GunGameState::shutDown()
 {
-	delete player;
+	for (int i = 0; i < 4; i++)
+	{
+		//if (player[i])
+		delete player[i];
+	}
 }
 
 bool GunGameState::isGrounded(int id)

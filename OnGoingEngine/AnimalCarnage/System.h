@@ -75,8 +75,8 @@ private:
 	static SpriteFont* fontArial;
 	
 	GameObject* obj[2];
-	GameObject* players[4];
-	int currentInput; //imgui, controlls input
+	//GameObject* players[4];
+	
 	//ForwardShader* theForwardShader;
 	Camera* theCamera;
 	
@@ -89,6 +89,7 @@ private:
 	bool freezeCheck;
 	DirectX::XMFLOAT3 cullingPos;
 	bool collide;
+	//int currentInput; //imgui, controlls input
 
 	bool mouseShow;
 	bool mouseSwitch;

@@ -175,8 +175,5 @@ AABB GameObject::getCollisionBox()
 	tempBox.Min.z = this->colBox.Min.z + this->Position.z;
 	*/  
 
-	
-	
-
 	return this->colBox;
 }

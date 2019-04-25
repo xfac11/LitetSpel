@@ -11,7 +11,7 @@ class GunGameState : public State
 {
 private:
 	int nrOfPlayers;
-	Player* player;
+	Player* player[4];
 
 	//rumble
 	//struct RumbleTemp

@@ -300,6 +300,7 @@ System::~System()
 	this->theGraphicDevice->shutDown();
 	delete this->theGraphicDevice;
 
+
 	delete System::states[0];
 	delete System::states[1];
 	delete System::commonStates;
@@ -311,7 +312,8 @@ System::~System()
 bool System::initialize()
 {
 	this->theCamera = new Camera;
-	this->camPos = { 0,0,-2.f };
+	this->camPos = { 0,1,-2.f };
+	this->camRot = { 30.f,0,0 };
 	//this->theForwardShader = new ForwardShader;
 	this->theKeyboard = new Keyboard;
 	this->theMouse = new Mouse;
@@ -324,8 +326,8 @@ bool System::initialize()
 	this->obj[0] = new GameObject(shaderManager->getForwardShader());
 	this->obj[1] = new GameObject(shaderManager->getForwardShader());
 	
-	for (int i = 0; i < 4; i++)
-		this->players[i] = new GameObject(shaderManager->getForwardShader());
+	//for (int i = 0; i < 4; i++)
+	//	this->players[i] = new GameObject(shaderManager->getForwardShader());
 	
 
 
@@ -429,25 +431,26 @@ bool System::initialize()
 	//D3D10_CULL_BACK; //Test
 	theModelLoader->loadGO(obj[0], "Resources/Models/cube2.lu", "lovelive.tga"); //Library test //load anim_test6
 	this->obj[0]->setScale(3, 1, 1);
-	this->obj[0]->setPosition(0, -0.5, 0);
+	this->obj[0]->setPosition(1, -0.5, 0);
 	this->obj[1]->setScale(0.5f, 0.5f, 0.5f);
 	theModelLoader->loadGO(obj[1], "Resources/Models/cube2.lu", "lovelive.tga"); //Library test //load anim_test6
-	
-	theModelLoader->loadGO(this->players[0], "Resources/Models/cube2.lu", "cat.tga");
-	this->players[0]->setScale(0.5f, 0.4f, 0.1f);
-	theModelLoader->loadGO(this->players[1], "Resources/Models/cube2.lu", "cat.tga");
-	//obj[1]->setPosition(5, 5, 5);
+	this->obj[1]->setPosition(-1, -0.5, 0);
+																				 //
+	//theModelLoader->loadGO(this->players[0], "Resources/Models/cube2.lu", "foxTest.tga");
+	//this->players[0]->setScale(0.5f, 0.4f, 0.1f);
+	//theModelLoader->loadGO(this->players[1], "Resources/Models/cube2.lu", "foxTest.tga");
+	////obj[1]->setPosition(5, 5, 5);
 
-	this->players[1]->setScale(0.6f, 0.8f, 0.1f);
-	theModelLoader->loadGO(this->players[2], "Resources/Models/cube2.lu", "cat.tga");
-	this->players[2]->setScale(0.6f, 0.8f, 0.1f);
-	theModelLoader->loadGO(this->players[3], "Resources/Models/cube2.lu", "cat.tga");
-	this->players[3]->setScale(0.6f, 0.8f, 0.1f);
+	//this->players[1]->setScale(0.6f, 0.8f, 0.1f);
+	//theModelLoader->loadGO(this->players[2], "Resources/Models/cube2.lu", "cat.tga");
+	//this->players[2]->setScale(0.6f, 0.8f, 0.1f);
+	//theModelLoader->loadGO(this->players[3], "Resources/Models/cube2.lu", "cat.tga");
+	//this->players[3]->setScale(0.6f, 0.8f, 0.1f);
 
 	this->handler.addObject(this->obj[1]);
 	this->handler.addObject(this->obj[0]);
-	for (int i = 0; i < 4; i++)
-		this->handler.addObject(this->players[i]);
+	//for (int i = 0; i < 4; i++)
+	//	this->handler.addObject(this->players[i]);
 	
 
 	System::commonStates = new CommonStates(System::getDevice());
@@ -519,7 +522,7 @@ void System::renderImgui()
 	{
 		ImGui::Text("collision no");
 	}
-	ImGui::SliderInt("Player: ", &this->currentInput, 0, 5);
+	//ImGui::SliderInt("Player: ", &this->currentInput, 0, 5);
 	ImGui::TextColored(ImVec4(1, 1, 0, 1), "Controllers");
 	ImGui::BeginChild("Scrolling");
 	for (int n = 0; n < 4; n++)
