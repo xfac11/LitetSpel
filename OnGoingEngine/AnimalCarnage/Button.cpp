@@ -22,6 +22,6 @@ Button::~Button()
 bool Button::render(bool selected)
 {
 	System::getSpriteBatch()->Draw(selected ? Button::textureSelected.getTexture() : Button::texture.getTexture(), this->position, nullptr);
-	System::getFontComicSans()->DrawString(System::getSpriteBatch(), this->text.c_str(), this->position, DirectX::Colors::Black, 0.0f, Vector2::Zero, Vector2::One * 3);
+	System::getFontArial()->DrawString(System::getSpriteBatch(), this->text.c_str(), this->position + Vector2(300, 50), selected ? DirectX::Colors::DarkGray : DirectX::Colors::Black, 0.0f, System::getFontArial()->MeasureString(this->text.c_str()) / 2.f, Vector2::One / 4 * 3);
 	return true;
 }
