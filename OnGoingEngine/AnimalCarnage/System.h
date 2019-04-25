@@ -82,10 +82,12 @@ private:
 	
 	//Model** model;
 
-	//imgui variables
+	//IMGUI VARIABLES
 	DirectX::XMFLOAT3 camPos;
 	DirectX::XMFLOAT3 camRot;
 	bool guiCam;
+	bool freezeCheck;
+	DirectX::XMFLOAT3 cullingPos;
 	bool collide;
 
 	bool mouseShow;

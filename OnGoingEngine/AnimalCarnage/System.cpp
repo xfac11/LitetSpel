@@ -251,14 +251,11 @@ System::System(HINSTANCE hInstance, LPCSTR name, int nCmdShow)
 	this->nCMDShow = nCmdShow;
 	this->msg = { 0 };
 	this->theGraphicDevice = new GraphicsDevice();
-	/*graphics = nullptr;
-	graphics = new Graphics;
-	theKeyboard = nullptr;
-	theKeyboard = new Keyboard;
-	theMouse = nullptr;
-	theMouse = new Mouse;*/
-	//theKeyboard->EnableAutoRepeatChars();
-	//this->playerInputs = new InputHandler;
+
+	//backfaceCull
+	this->freezeCheck = false;
+	this->cullingPos = { 0,0,0 };
+
 	this->mouseShow = true;
 	this->mouseSwitch = true;
 	this->flySwitch = true;
@@ -404,6 +401,9 @@ bool System::initialize()
 	this->players[2]->setScale(0.6f, 0.8f, 0.1f);
 	this->players[3]->addModel(mesh, indices, 6);
 	this->players[0]->getModel(0)->setTexture("cat.tga");
+	this->players[1]->getModel(0)->setTexture("cat.tga");
+	this->players[2]->getModel(0)->setTexture("cat.tga");
+	this->players[3]->getModel(0)->setTexture("cat.tga");
 	this->players[3]->setScale(0.6f, 0.8f, 0.1f);
 	this->handler.addObject(this->obj[1]);
 	this->handler.addObject(this->obj[0]);
@@ -455,7 +455,7 @@ void System::renderImgui()
 	//ImGui::ColorEdit3("bg-color", (float*)&this->color);
 
 	//ImGui::SliderInt("Deferred Render", &this->texToShow, 0, 4);
-	//ImGui::Checkbox("Freeze culling ", &freezeCheck);
+	ImGui::Checkbox("Freeze culling ", &freezeCheck);
 	//textUse = "Mouse pick: " + this->mouseObject + ". ";
 	//ImGui::Text(textUse.c_str());
 	//textUse = "Height from 'Ground': " + std::to_string(this->height) + "m";
@@ -493,6 +493,8 @@ void System::update(float deltaTime)
 	int mouseX = 0;
 	int mouseY = 0;
 	int sensitivity = 20;
+
+
 	//while (!this->theMouse->EventBufferIsEmpty())
 	//{
 	//	MouseEvent mEvent = theMouse->ReadEvent();
@@ -704,6 +706,14 @@ void System::render()
 	//render imgui in states render
 	this->theCamera->Render();
 	
+	if (freezeCheck == false)
+	{
+		this->cullingPos = this->camPos;
+		shaderManager->getForwardShader()->setCamPosToMatricesPerFrame(this->camPos); //this->camPos
+	}
+	else shaderManager->getForwardShader()->setCamPosToMatricesPerFrame(this->cullingPos);
+
+
 	shaderManager->getForwardShader()->setViewProj(this->theCamera->GetViewMatrix(), this->theGraphicDevice->getProj(), DirectX::XMFLOAT4(this->theCamera->GetPosition().x, this->theCamera->GetPosition().y, this->theCamera->GetPosition().z, 1.0f));
 	shaderManager->getForwardShader()->setShaders();//tänker att man kör denna sen renderar allla som använder denna shader sen tar setshader på nästa osv.
 	

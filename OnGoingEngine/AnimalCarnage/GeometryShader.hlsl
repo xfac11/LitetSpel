@@ -39,32 +39,29 @@ void GS_main(triangle GSInput input[3], inout TriangleStream<GSOutput> theOutput
 	float3 normal = cross(u, v);
 	normal = normalize(normal);
 
-	/*if (normal.x < 0 || normal.y < 0 || normal.z < 0)
+	//back face culling 
+	//float3 tempPos = mul(float4(pos0, 1.0f), world).xyz;
+	float3 direction = camPos.xyz - input[0].Pos.xyz;
+	if ((dot(normal, direction)) >= 0.f)
 	{
-		float3 temp = input[0].Pos.xyz;
-		input[0].Pos.xyz = input[1].Pos.xyz;
-		input[1].Pos.xyz = input[2].Pos.xyz;
-		input[2].Pos.xyz = temp;
-	}*/
-
-	//back face culling ??
-	for (int i = 0; i < 3; i++)
-	{
-		//output.Pos = mul(world, input[i].Pos);
-		//output.Pos = mul(view, output.Pos);
-		output.Pos = mul(input[i].Pos, world);
-		output.Pos = mul(output.Pos, view);
-		output.Pos = mul(output.Pos, proj);
-		//output.Pos = mul(proj, input[i].Pos);
-		//output.Pos = input[i].Pos;
-		output.wPosition = mul(float4(input[i].Pos.xyz, 1.0f), world);
-		output.Tex = input[i].Tex;
-		output.NormalWS = float4(normal,1.0f);
-		output.TangentWS = input[i].Tangent;
-		output.BinormalWS = input[i].Binormal;
+		for (int i = 0; i < 3; i++)
+		{
+			//output.Pos = mul(world, input[i].Pos);
+			//output.Pos = mul(view, output.Pos);
+			output.Pos = mul(input[i].Pos, world);
+			output.Pos = mul(output.Pos, view);
+			output.Pos = mul(output.Pos, proj);
+			//output.Pos = mul(proj, input[i].Pos);
+			//output.Pos = input[i].Pos;
+			output.wPosition = mul(float4(input[i].Pos.xyz, 1.0f), world);
+			output.Tex = input[i].Tex;
+			output.NormalWS = float4(normal, 1.0f);
+			output.TangentWS = input[i].Tangent;
+			output.BinormalWS = input[i].Binormal;
 
 
-		theOutput.Append(output);
+			theOutput.Append(output);
+		}
 	}
 }
 

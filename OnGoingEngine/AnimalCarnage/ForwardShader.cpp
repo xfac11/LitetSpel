@@ -101,11 +101,18 @@ void ForwardShader::setViewProj(DirectX::XMMATRIX view, DirectX::XMMATRIX proj,D
 	proj = XMMatrixTranspose(proj);
 	this->perFrameCB.data.view = view;
 	this->perFrameCB.data.proj = proj;
-	this->perFrameCB.data.camPos = camPos;
+	//need to set campos separately to enable check for backface culling
+	//this->perFrameCB.data.camPos = camPos; 
 	this->perFrameCB.applyChanges(System::getDevice(),System::getDeviceContext());
 	this->setConstanbuffer(GEOMETRY, 0, this->perFrameCB.getBuffer());
 	this->setConstanbuffer(VERTEX, 0, this->perFrameCB.getBuffer());
 	this->setConstanbuffer(PIXEL, 0, this->perFrameCB.getBuffer());
+}
+
+void ForwardShader::setCamPosToMatricesPerFrame(XMFLOAT3 campos)
+{
+	XMFLOAT4 cam = { campos.x, campos.y,campos.z,1.f };
+	perFrameCB.data.camPos = cam;
 }
 
 void ForwardShader::shutdown()
