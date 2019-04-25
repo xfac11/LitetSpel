@@ -8,7 +8,40 @@ ModelLoader::ModelLoader()
 ModelLoader::~ModelLoader()
 {
 }
+void ModelLoader::loadGO(GameObject*& object, const char* filePath)
+{
+	Luna::Reader reader;
+	reader.readFile(filePath);
 
+	unsigned int meshCount = reader.getMeshCount();
+	std::vector<Luna::Vertex> vertices;
+	std::vector<Luna::Index> indices;
+	reader.getVertices(0, vertices);
+	reader.getIndices(0, indices);
+
+
+	//converting to fit functions and shaders
+	std::vector<Vertex3D> vertices3D;
+	vertices3D.resize(vertices.size());
+	for (int i = 0; i < vertices.size(); i++)
+		vertices3D[i] = vertices[i];
+
+	DWORD* dIndices = new DWORD[indices.size()];
+	for (int j = 0; j < indices.size(); j++)
+			dIndices[j] = indices[j].vertIndex;
+
+
+	//object = new GameObject;// *[meshCount];
+	for (int i = 0; i < (int)meshCount; i++)
+	{
+		//object[i] = new GameObject;
+		object[i].addModel(vertices3D, dIndices, (int)indices.size());
+		object[i].setTexture("lovelive.tga",i);
+	}
+
+	vertices3D.clear();
+	delete[]dIndices;
+}
 void ModelLoader::loadModel(Model**&model, const char* filePath)
 {
 	Luna::Reader reader;
@@ -21,29 +54,24 @@ void ModelLoader::loadModel(Model**&model, const char* filePath)
 	reader.getIndices(0, indices);
 
 
-
 	//converting to fit functions and shaders
-	//std::vector<Vertex3D> vertices3D; 
-	//for (int i = 0; i < vertices.size(); i++)
-	//	vertices3D[i] = vertices[i];
-	//DWORD* dIndices =new DWORD[indices.size()];
-	//for (int j = 0; j < indices.size(); j++)
-	//	dIndices[j] = indices[j].vertIndex;
+	std::vector<Vertex3D> vertices3D; 
+	vertices3D.resize(vertices.size());
+	for (int i = 0; i < vertices.size(); i++)
+		vertices3D[i] = vertices[i];
+	DWORD* dIndices =new DWORD[indices.size()];
+	for (int j = 0; j < indices.size(); j++)
+		dIndices[j] = indices[j].vertIndex;
 
-
-	//model[0]->setMesh(vertices3D, dIndices, 0);
-
-	/*model = new Model*[meshCount];
-	for (int i = 0; i < meshCount; i++)
+	model = new Model*[meshCount];
+	for (int i = 0; i < (int)meshCount; i++)
 	{
 		model[i] = new Model;
-		model[i]->setMesh(vertices3D, in )
-		//model[i]->setTexture();
-	}*/
+		model[i]->setMesh(vertices3D, dIndices, 0);
+		model[i]->setTexture("Textures/cat.tga");
+		model[i]->setSampler();
 
-	//model[0]->setMesh(vertices, nullptr, 0);
-	//model.setMesh(vertices, indices, mesh.indexCount);
-	
+	}
 
 }
 

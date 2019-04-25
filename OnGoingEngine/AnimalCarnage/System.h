@@ -53,8 +53,6 @@ enum GameState {
 class System
 {
 private:
-
-
 	enum Direction  // for the camera
 	{
 		Neutral = 0,
@@ -67,8 +65,6 @@ private:
 	HWND hwnd;
 	MSG msg;
 	int nCMDShow;
-	//Statemachine* statemachine
-	//Graphics* graphics;
 	
 	static GraphicsDevice* theGraphicDevice;
 	static std::vector<State*> states;
@@ -78,19 +74,13 @@ private:
 	static SpriteFont* fontComicSans;
 	
 	GameObject* obj[2];
-	//GameObject* playerOne;
-	//GameObject* playerTwo;
 	GameObject* players[4];
 	int currentInput; //imgui, controlls input
 	//ForwardShader* theForwardShader;
 	Camera* theCamera;
-	//Direction forward; 
-	//Direction left_right;
-	//Direction up_down;
 	GameObjectHandler handler;
 	
-	//InputHandler* playerInputs;
-	//DirectX::GamePad 	
+	//Model** model;
 
 	//imgui variables
 	DirectX::XMFLOAT3 camPos;

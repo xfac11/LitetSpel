@@ -327,6 +327,10 @@ bool System::initialize()
 	for (int i = 0; i < 4; i++)
 		this->players[i] = new GameObject(shaderManager->getForwardShader());
 	
+
+
+
+
 	std::vector<Vertex3D> mesh;
 	Vertex3D temp[] = {
 		DirectX::XMFLOAT3(-0.500000,-0.500000, 0.500000),	//pos
@@ -386,9 +390,10 @@ bool System::initialize()
 
 	this->obj[0]->addModel(mesh2, indices2, 3);
 	this->obj[0]->setScale(2, 0.5, 0.5);
-	this->obj[1]->addModel(mesh2, indices2, 3);
-	this->obj[1]->setScale(2, 1, 1);
-
+	//this->obj[1]->addModel(mesh2, indices2, 3);
+	//this->obj[1]->setScale(2, 1, 1);
+	theModelLoader->loadGO(obj[1], "Resources/Models/anim_test6.lu"); //Library test //load anim_test4
+	//this->obj[1]->setScale(0.5f, 0.5f, 0.5f);
 	
 	this->players[0]->addModel(mesh, indices, 6);
 	this->players[0]->setScale(0.5f, 0.4f, 0.1f);
@@ -444,6 +449,7 @@ void System::renderImgui()
 	}
 	ImGui::SliderFloat("Camera X-Rotation", &camRot.x, -90.0f, 90.0f);
 	ImGui::SliderFloat("Camera Y-Rotation", &camRot.y, -180.0f, 180.0f);
+	theCamera->SetRotation(camRot);
 	//ImGui::ColorEdit3("bg-color", (float*)&this->color);
 
 	//ImGui::SliderInt("Deferred Render", &this->texToShow, 0, 4);
@@ -699,7 +705,10 @@ void System::render()
 	shaderManager->getForwardShader()->setViewProj(this->theCamera->GetViewMatrix(), this->theGraphicDevice->getProj(), DirectX::XMFLOAT4(this->theCamera->GetPosition().x, this->theCamera->GetPosition().y, this->theCamera->GetPosition().z, 1.0f));
 	shaderManager->getForwardShader()->setShaders();//tänker att man kör denna sen renderar allla som använder denna shader sen tar setshader på nästa osv.
 	
+	//this->model[0]->setShader(shaderManager->getForwardShader());
+	//this->model[0]->draw();
 	this->handler.draw();
+
 	/*this->obj->draw();
 	this->obj2->draw();*/
 	
@@ -745,8 +754,9 @@ void System::run()
 		initImgui();
 		ShowWindow(this->hwnd, this->nCMDShow);
 		//graphics->initImgui(this->hwnd);
-		Model** model;
-		theModelLoader->loadModel(model, "Resources\\Models\\anim_test3.lu"); //Library test //load anim_test4
+		/*Model** model;*/
+		//theModelLoader->loadModel(this->model, "Resources\\Models\\anim_test3.lu"); //Library test //load anim_test4
+		
 		while (WM_QUIT != msg.message)
 		{
 			if (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE))

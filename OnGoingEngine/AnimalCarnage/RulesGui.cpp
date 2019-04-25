@@ -93,7 +93,6 @@ bool RulesGui::update(float deltaTime)
 				else
 				{
 					System::setState(GUNGAME);
-					//System::theTracker->Reset();
 				}
 
 				System::theRumble[i].rumble.x = 0.2f;

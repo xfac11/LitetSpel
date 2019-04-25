@@ -58,6 +58,7 @@ void GameObject::addModel(std::vector<Vertex3D> mesh, DWORD * indices, int numbe
 {
 	this->theModel[nrOfModels] = new Model;
 	this->theModel[nrOfModels]->setMesh(mesh, indices, numberOfIndices);
+	//this->theModel[nrOfModels]->setSampler();
 	nrOfModels++;
 }
 

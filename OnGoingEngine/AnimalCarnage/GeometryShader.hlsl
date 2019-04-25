@@ -39,6 +39,14 @@ void GS_main(triangle GSInput input[3], inout TriangleStream<GSOutput> theOutput
 	float3 normal = cross(u, v);
 	normal = normalize(normal);
 
+	/*if (normal.x < 0 || normal.y < 0 || normal.z < 0)
+	{
+		float3 temp = input[0].Pos.xyz;
+		input[0].Pos.xyz = input[1].Pos.xyz;
+		input[1].Pos.xyz = input[2].Pos.xyz;
+		input[2].Pos.xyz = temp;
+	}*/
+
 	//back face culling ??
 	for (int i = 0; i < 3; i++)
 	{
@@ -56,7 +64,6 @@ void GS_main(triangle GSInput input[3], inout TriangleStream<GSOutput> theOutput
 		output.BinormalWS = input[i].Binormal;
 
 
-		//output.NormalWS = mul(float4(normal,0.0f),world);
 		theOutput.Append(output);
 	}
 }
