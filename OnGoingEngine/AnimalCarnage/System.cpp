@@ -332,32 +332,69 @@ bool System::initialize()
 
 
 	std::vector<Vertex3D> mesh;
+	//Vertex3D temp[] = {
+	//	DirectX::XMFLOAT3(-0.500000,-0.500000, 0.500000),	//pos
+	//	DirectX::XMFLOAT2(0,1),								//uv
+	//	DirectX::XMFLOAT3(0,0,-1),							//normal  0
+	//	DirectX::XMFLOAT3(0,-1,0),							//tangent
+	//	DirectX::XMFLOAT3(-1,0,0),							//binormal
+	//	DirectX::XMFLOAT3(.500000, -0.500000, 0.500000),	//pos
+	//	DirectX::XMFLOAT2(1,1),								//uv
+	//	DirectX::XMFLOAT3(0,0,-1),							//normal  1
+	//	DirectX::XMFLOAT3(0,-1,0),							//tangent
+	//	DirectX::XMFLOAT3(-1,0,0),							//binormal
+	//	DirectX::XMFLOAT3(-.500000, 0.500000, 0.500000),	//pos
+	//	DirectX::XMFLOAT2(0,0),								//uv
+	//	DirectX::XMFLOAT3(0,0,-1),							//normal
+	//	DirectX::XMFLOAT3(0,-1,0),							//tangent  2
+	//	DirectX::XMFLOAT3(-1,0,0),							//binormal
+	//	DirectX::XMFLOAT3(.500000, 0.500000, 0.500000),		//pos
+	//	DirectX::XMFLOAT2(1,0),								//uv
+	//	DirectX::XMFLOAT3(0,0,-1),							//normal  3
+	//	DirectX::XMFLOAT3(0,-1,0),							//tangent
+	//	DirectX::XMFLOAT3(-1,0,0),							//binormal
+	//};
 	Vertex3D temp[] = {
-		DirectX::XMFLOAT3(-0.500000,-0.500000, 0.500000),	//pos
-		DirectX::XMFLOAT2(0,1),								//uv
-		DirectX::XMFLOAT3(0,0,-1),							//normal
-		DirectX::XMFLOAT3(0,-1,0),							//tangent
-		DirectX::XMFLOAT3(-1,0,0),							//binormal
 		DirectX::XMFLOAT3(.500000, -0.500000, 0.500000),	//pos
 		DirectX::XMFLOAT2(1,1),								//uv
-		DirectX::XMFLOAT3(0,0,-1),							//normal
+		DirectX::XMFLOAT3(0,0,-1),							//normal  1
 		DirectX::XMFLOAT3(0,-1,0),							//tangent
 		DirectX::XMFLOAT3(-1,0,0),							//binormal
+
+		DirectX::XMFLOAT3(-0.500000,-0.500000, 0.500000),	//pos
+		DirectX::XMFLOAT2(0,1),								//uv
+		DirectX::XMFLOAT3(0,0,-1),							//normal  0
+		DirectX::XMFLOAT3(0,-1,0),							//tangent
+		DirectX::XMFLOAT3(-1,0,0),							//binormal
+
 		DirectX::XMFLOAT3(-.500000, 0.500000, 0.500000),	//pos
 		DirectX::XMFLOAT2(0,0),								//uv
 		DirectX::XMFLOAT3(0,0,-1),							//normal
+		DirectX::XMFLOAT3(0,-1,0),							//tangent  2
+		DirectX::XMFLOAT3(-1,0,0),							//binormal
+
+		DirectX::XMFLOAT3(.500000, -0.500000, 0.500000),	//pos
+		DirectX::XMFLOAT2(1,1),								//uv
+		DirectX::XMFLOAT3(0,0,-1),							//normal  1
 		DirectX::XMFLOAT3(0,-1,0),							//tangent
 		DirectX::XMFLOAT3(-1,0,0),							//binormal
+
+		DirectX::XMFLOAT3(-.500000, 0.500000, 0.500000),	//pos
+		DirectX::XMFLOAT2(0,0),								//uv
+		DirectX::XMFLOAT3(0,0,-1),							//normal
+		DirectX::XMFLOAT3(0,-1,0),							//tangent  2
+		DirectX::XMFLOAT3(-1,0,0),							//binormal
+
 		DirectX::XMFLOAT3(.500000, 0.500000, 0.500000),		//pos
 		DirectX::XMFLOAT2(1,0),								//uv
-		DirectX::XMFLOAT3(0,0,-1),							//normal
+		DirectX::XMFLOAT3(0,0,-1),							//normal  3
 		DirectX::XMFLOAT3(0,-1,0),							//tangent
 		DirectX::XMFLOAT3(-1,0,0),							//binormal
 	};
 	DWORD indices[] = {
 		1, 0, 2, 1, 2, 3
 	};
-	for (int i = 0; i < 4; i++)
+	for (int i = 0; i < 6; i++)
 	{
 		mesh.push_back(temp[i]);
 	}
@@ -395,9 +432,9 @@ bool System::initialize()
 	//D3D10_CULL_BACK; //Test
 	theModelLoader->loadGO(obj[1], "Resources/Models/anim_test6.lu"); //Library test //load anim_test6
 	//this->obj[1]->setScale(0.5f, 0.5f, 0.5f);
-	
+	obj[1]->setPosition(5, 5, 5);
 	this->players[0]->addModel(mesh, indices, 6);
-	this->players[0]->setScale(0.5f, 0.4f, 0.1f);
+	this->players[0]->setScale(1.5f, 0.4f, 0.1f);
 	this->players[1]->addModel(mesh, indices, 6);
 	this->players[1]->setScale(0.6f, 0.8f, 0.1f);
 	this->players[2]->addModel(mesh, indices, 6);
