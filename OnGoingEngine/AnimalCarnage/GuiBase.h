@@ -7,6 +7,7 @@ class GuiBase
 {
 protected:
 	State* myState;
+	float keyboardDelay;
 
 public:
 	GuiBase(State* myState);
@@ -16,6 +17,8 @@ public:
 	virtual void shutDown() = 0;
 	virtual bool update(float deltaTime) = 0;
 	virtual bool render() = 0;
+
+	void activateDelay();
 };
 
 #endif // !GUI_H

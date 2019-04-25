@@ -33,31 +33,38 @@ void OptionsGui::shutDown()
 
 bool OptionsGui::update(float deltaTime)
 {
-	if (System::theKeyboard->KeyIsPressed('E'))
+	if (this->keyboardDelay <= 0.0F)
 	{
-		if (!this->pressedLastFrame)
+		if (System::theKeyboard->KeyIsPressed('E'))
 		{
-			if (this->volume->getValue() < this->volume->getMaxValue())
+			if (!this->pressedLastFrame)
 			{
-				this->volume->changeValueWithStep(false);
+				if (this->volume->getValue() < this->volume->getMaxValue())
+				{
+					this->volume->changeValueWithStep(false);
+				}
+				else
+				{
+					this->volume->setValue(0);
+				}
 			}
-			else
+
+			this->pressedLastFrame = true;
+		}
+		else
+		{
+			this->pressedLastFrame = false;
+
+			if (System::theKeyboard->KeyIsPressed('Q'))
 			{
-				this->volume->setValue(0);
+				MainMenu* state = dynamic_cast<MainMenu*>(this->myState);
+				state->setCurrentMenu(MAIN);
 			}
 		}
-
-		this->pressedLastFrame = true;
 	}
 	else
 	{
-		this->pressedLastFrame = false;
-
-		if (System::theKeyboard->KeyIsPressed('Q'))
-		{
-			MainMenu* state = dynamic_cast<MainMenu*>(this->myState);
-			state->setCurrentMenu(MAIN);
-		}
+		this->keyboardDelay -= deltaTime;
 	}
 
 	for (int i = 0; i < 4; i++)
