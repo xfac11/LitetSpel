@@ -17,7 +17,7 @@ Model::~Model()
 		this->SamplerState->Release();
 	if (this->texture != nullptr)
 	{
-		this->texture->cleanUp();
+		//this->texture->cleanUp();
 		delete this->texture;
 	}
 	if (this->normalMap != nullptr)
@@ -25,8 +25,7 @@ Model::~Model()
 		this->normalMap->cleanUp();
 		delete this->normalMap;
 	}
-	//if(this->texture)
-	//	this->texture.cleanUp();
+
 }
 
 void Model::setShader(Shader *theShader)
