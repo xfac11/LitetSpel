@@ -64,8 +64,6 @@ void Camera::Render()
 	float radians = 0.0174532925f;
 
 
-
-
 	DirectX::XMVECTOR CamPos = DirectX::XMVectorSet(this->position.x, this->position.y, this->position.z, 0.0);
 	DirectX::XMFLOAT3 YawPitchRoll = DirectX::XMFLOAT3(this->rotation.x*radians, this->rotation.y*radians, this->rotation.z*radians);
 	DirectX::XMMATRIX rotationMatrix = DirectX::XMMatrixRotationRollPitchYaw(YawPitchRoll.x, YawPitchRoll.y, YawPitchRoll.z);
@@ -87,9 +85,12 @@ DirectX::XMMATRIX& Camera::GetViewMatrix()
 	return this->viewMatrix;
 }
 
-void Camera::calcCamera(DirectX::XMFLOAT3 posLeft, DirectX::XMFLOAT3 posRight)
+void Camera::calcCamera(DirectX::XMFLOAT3 playerOne, DirectX::XMFLOAT3 playerTwo, DirectX::XMFLOAT3 playerThree, DirectX::XMFLOAT3 playerFour)
 {
-	float length = posRight.x - posLeft.x;
+	float min = fminf(playerOne.x, fminf(playerTwo.x, fminf(playerThree.x, playerFour.x)));
+	float max = fmaxf(playerOne.x,fmaxf(playerTwo.x, fmaxf(playerThree.x, playerFour.x)));
+
+	float length = max - min;
 	if (length < 2.5f)
 	{
 		length = 2.5f;

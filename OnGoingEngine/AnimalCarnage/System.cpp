@@ -480,7 +480,7 @@ void System::renderImgui()
 	std::string textUse;
 	ImGui::Begin("Hello, world!");                          // Create a window called "Hello, world!" and append into it.
 	
-	ImGui::Checkbox("Set camera positon with: Keyboard or Gui: ", &guiCam);
+	ImGui::Checkbox("Enable automatic-camera ", &guiCam);
 	if (guiCam == false)
 	{
 		ImGui::SliderFloat("Camera X-Position", &camPos.x, -10.0f, 10.0f);
@@ -646,7 +646,7 @@ void System::update(float deltaTime)
 
 
 
-	this->theCamera->calcCamera(players[0]->getPosition(), players[1]->getPosition());
+	this->theCamera->calcCamera(players[0]->getPosition(), players[1]->getPosition(), players[2]->getPosition(), players[3]->getPosition());
 
 	if (theKeyboard->KeyIsPressed('W'))
 	{

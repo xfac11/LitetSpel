@@ -33,6 +33,6 @@ public:
 
 	void Render();
 	DirectX::XMMATRIX& GetViewMatrix();
-	void calcCamera(DirectX::XMFLOAT3 posLeft, DirectX::XMFLOAT3 posRight);
+	void calcCamera(DirectX::XMFLOAT3 playerOne, DirectX::XMFLOAT3 playerTwo, DirectX::XMFLOAT3 playerThree, DirectX::XMFLOAT3 playerFour);
 };
 #endif
