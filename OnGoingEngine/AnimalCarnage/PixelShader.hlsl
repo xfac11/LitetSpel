@@ -27,7 +27,7 @@ Texture2D Tex:register(t0);
 SamplerState SampSt :register(s0);
 float4 PS_main(VS_OUT input) : SV_Target
 {
-	float4 ambient = float4(0.1f,0.1f,0.1f,0.0f);
+	float4 ambient = float4(0.5f,0.0f,0.5f,0.0f);
 	//float3 color = Tex.Sample(SampSt, input.Tex).xyz;
 	float4 colorT = Tex.Sample(SampSt, input.Tex).rgba;
 

@@ -19,7 +19,6 @@ void ModelLoader::loadGO(GameObject*& object, const char* filePath,std::string t
 	reader.getVertices(0, vertices);
 	reader.getIndices(0, indices);
 
-
 	//converting to fit functions and shaders
 	std::vector<Vertex3D> vertices3D;
 	vertices3D.resize(vertices.size());
@@ -42,7 +41,7 @@ void ModelLoader::loadGO(GameObject*& object, const char* filePath,std::string t
 	vertices3D.clear();
 	delete[]dIndices;
 }
-void ModelLoader::loadModel(Model**&model, const char* filePath)
+void ModelLoader::loadModel(Model**&model, const char* filePath) //unused?
 {
 	Luna::Reader reader;
 	reader.readFile(filePath);
