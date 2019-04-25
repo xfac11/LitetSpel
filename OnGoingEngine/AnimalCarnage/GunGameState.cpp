@@ -52,6 +52,7 @@ bool GunGameState::initailize()
 
 bool GunGameState::render()
 {
+	System::handler.draw();
 	//this->gui->render();
 	return true;
 }

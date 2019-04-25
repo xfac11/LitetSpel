@@ -41,7 +41,8 @@ void GS_main(triangle GSInput input[3], inout TriangleStream<GSOutput> theOutput
 
 	//back face culling 
 	//float3 tempPos = mul(float4(pos0, 1.0f), world).xyz;
-	float3 direction = camPos.xyz - input[0].Pos.xyz;
+
+	float3 direction = camPos.xyz - ((pos0+pos1+pos2)/3); //middle of the triangle
 	if ((dot(normal, direction)) >= 0.f)
 	{
 		for (int i = 0; i < 3; i++)
