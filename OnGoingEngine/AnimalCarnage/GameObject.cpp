@@ -98,18 +98,20 @@ void GameObject::calcAABB(std::vector<Vertex3D> mesh)
 	DirectX::XMFLOAT3 min;
 	max = DirectX::XMFLOAT3(mesh.at(maxX).position.x, mesh.at(maxY).position.y, mesh.at(maxZ).position.z);
 	min = DirectX::XMFLOAT3(mesh.at(minX).position.x, mesh.at(minY).position.y, mesh.at(minZ).position.z);
-	this->colBox.Max.x = max.x * this->Scale.x;
+	/*this->colBox.Max.x = max.x * this->Scale.x;
 	this->colBox.Max.y = max.y * this->Scale.y;
 	this->colBox.Max.z = max.z * this->Scale.z;
 
 	this->colBox.Min.x = min.x * this->Scale.x;
 	this->colBox.Min.y = min.y * this->Scale.y;
-	this->colBox.Min.z = min.z * this->Scale.z;
+	this->colBox.Min.z = min.z * this->Scale.z;*/
 
 
-
-
-	//this->colBox.Min = min;
+	this->colBox.width = max.x;
+	this->colBox.height = max.y;
+	this->colBox.depth = max.z;
+	this->colBox.Min = min;
+	this->colBox.Max = max;
 }
 
 void GameObject::addModel(std::vector<Vertex3D> mesh, DWORD * indices, int numberOfIndices)
@@ -154,15 +156,27 @@ void GameObject::draw()
 
 AABB GameObject::getCollisionBox()
 {
-
+	AABB tempBox;
 	//updates the collision box
-	this->colBox.Max.x + Position.x;
-	this->colBox.Max.y + Position.y;
-	this->colBox.Max.z + Position.z;
+	/*tempBox.Max.x = tempBox.Max.x * this->Scale.x;
+	tempBox.Max.y = tempBox.Max.y * this->Scale.y;
+	tempBox.Max.z = tempBox.Max.z * this->Scale.z;
 
-	this->colBox.Min.x + Position.x;
-	this->colBox.Min.y + Position.y;
-	this->colBox.Min.z + Position.z;
+	tempBox.Min.x = tempBox.Min.x * this->Scale.x;
+	tempBox.Min.y = tempBox.Min.y * this->Scale.y;
+	tempBox.Min.z = tempBox.Min.z * this->Scale.z;
+
+	tempBox.Max.x = this->colBox.Max.x + this->Position.x;
+	tempBox.Max.y = this->colBox.Max.y + this->Position.y;
+	tempBox.Max.z = this->colBox.Max.z + this->Position.z;
+
+	tempBox.Min.x = this->colBox.Min.x + this->Position.x;
+	tempBox.Min.y = this->colBox.Min.y + this->Position.y;
+	tempBox.Min.z = this->colBox.Min.z + this->Position.z;
+	*/  
+
+	
+	
 
 	return this->colBox;
 }

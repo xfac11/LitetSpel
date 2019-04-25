@@ -15,6 +15,8 @@ GameObjectHandler::GameObjectHandler()
 	{
 		this->gameObjects[i] = nullptr;
 	}
+	
+	
 }
 
 GameObjectHandler::~GameObjectHandler()
@@ -88,8 +90,24 @@ void GameObjectHandler::draw()
 	for (int i = 0; i < this->nrOfTrans; i++)
 	{
 		this->transModels[i].modelPtr->getShader()->setWorld(*this->transModels[i].worldPtr);
+		float pos[4] = {
+		0.0,1.0,0.0,1.0
+		};
+
+		/*this->lightsCB.data.lights[1].position[0] = pos[0];
+		this->lightsCB.data.lights[1].position[1] = pos[1];
+		this->lightsCB.data.lights[1].position[2] = pos[2];
+		this->lightsCB.data.lights[1].position[3] = pos[3];
+		this->lightsCB.data.nrOfLights = 1;
+		this->lightsCB.applyChanges(System::getDevice(), System::getDeviceContext());
+		this->opaqueModels[i].modelPtr->getShader()->setConstanbuffer(PIXEL, 1, this->lightsCB.getBuffer());*/
 		this->transModels[i].modelPtr->draw();
 	}
+}
+
+void GameObjectHandler::initialize()
+{
+	this->lightsCB.initialize(System::getDevice());
 }
 
 void GameObjectHandler::expandGameobjects()
