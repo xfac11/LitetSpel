@@ -114,12 +114,6 @@
     <ClCompile Include="InputHandler.cpp">
       <Filter>Unused</Filter>
     </ClCompile>
-    <ClCompile Include="MenuHandler.cpp">
-      <Filter>Unused</Filter>
-    </ClCompile>
-    <ClCompile Include="menuItem.cpp">
-      <Filter>Unused</Filter>
-    </ClCompile>
     <ClCompile Include="Sprite.cpp">
       <Filter>Unused</Filter>
     </ClCompile>
@@ -259,15 +253,6 @@
     </ClInclude>
     <ClInclude Include="OptionsGui.h">
       <Filter>Menu</Filter>
-    </ClInclude>
-    <ClInclude Include="InputHandler.h">
-      <Filter>Unused</Filter>
-    </ClInclude>
-    <ClInclude Include="MenuHandler.h">
-      <Filter>Unused</Filter>
-    </ClInclude>
-    <ClInclude Include="menuItem.h">
-      <Filter>Unused</Filter>
     </ClInclude>
     <ClInclude Include="Sprite.h">
       <Filter>Unused</Filter>

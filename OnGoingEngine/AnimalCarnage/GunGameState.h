@@ -48,9 +48,8 @@ private:
 	};
 	ItemTemp items[2];
 
-	//void updateRumble(float deltaTime, int id);
-	//void updatePlayers
-	//void updateObjects
+	//void inPause();
+	bool checkReset(DirectX::GamePad::State state);
 
 public:
 	GunGameState();

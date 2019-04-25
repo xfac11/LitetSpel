@@ -1,7 +1,24 @@
 #include "GunGameState.h"
 #include"System.h"
 
-GunGameState::GunGameState() 
+bool GunGameState::checkReset(DirectX::GamePad::State state)
+{
+
+	bool result = false;
+	//if (state.IsConnected())
+	//{
+		//tracker.Update(state);
+		if (((state.IsLeftTriggerPressed() && state.IsRightTriggerPressed())|| 
+			(state.buttons.leftShoulder && state.buttons.rightShoulder) )&&
+			state.buttons.a &&(state.buttons.back || state.buttons.menu))
+		{
+			result = true;
+		}
+	//}
+	return result;
+}
+
+GunGameState::GunGameState()
 {
 	for (int i = 0; i < 4; i++) //temp players
 	{
@@ -47,8 +64,13 @@ bool GunGameState::update(float deltaTime)
 		if (state.IsConnected())
 		{
 			System::theTracker->Update(state);
-			//Actions 
+			//L+R+A+START
+			if (checkReset(state))
+			{
+				System::setState(MAINMENU);
+			}
 
+			//Actions 
 			if (System::theTracker->a == DirectX::GamePad::ButtonStateTracker::PRESSED) //and
 			{
 				System::theRumble[i].rumble.x = 0.6f;

@@ -130,10 +130,11 @@ void Model::draw()
 	System::getDeviceContext()->IASetVertexBuffers(0, 1, &*this->vertexBuffer.GetAddressOf(), &*vertexBuffer.getStridePtr(), &offset);
 //	UINT offset = 0;
 	//devcon->IASetVertexBuffers(0, 1, &pVBuffer, &stride, &offset);
-	System::getDeviceContext()->IASetIndexBuffer(indexBuffer.getBuffer(), DXGI_FORMAT_R32_UINT, offset);
+
+	//System::getDeviceContext()->IASetIndexBuffer(indexBuffer.getBuffer(), DXGI_FORMAT_R32_UINT, offset);
 	System::getDeviceContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 	System::getDeviceContext()->PSSetSamplers(0, 1, &this->SamplerState);
 
 	this->theShader->renderShader(this->vertexCount,indexBuffer.getBufferSize());
-
+	//this->theShader->renderShader(this->vertexCount,0);
 }
