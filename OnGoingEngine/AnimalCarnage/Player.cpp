@@ -19,6 +19,7 @@ Player::Player()
 Player::~Player()
 {
 	//delete playerObj;
+	
 	playerObj = nullptr;
 }
 
@@ -26,7 +27,7 @@ void Player::initialize()
 {
 	this->playerObj = new GameObject(System::shaderManager->getForwardShader());
 	
-	System::theModelLoader->loadGO(this->playerObj, "Resources/Models/cube2.lu", "cat.tga");
+	System::theModelLoader->loadGO(this->playerObj, "Resources/Models/cube2.lu", "cat2.tga");
 	this->playerObj->setScale(0.5f, 0.4f, 0.1f);
 
 	System::handler.addObject(this->playerObj);
@@ -137,6 +138,15 @@ void Player::update(float deltaTime, int id)
 			playerObj->move(0, 0, 0);
 	
 		//IN AIR MOVEMENT
+
+		//else if (isJumping == false)
+		//	playerObj->move(0, 0, 0);
+		//else
+		//	playerObj->move(0, 0, 0);
+		//move(getPosition().x, 0, getPosition().z);; //= { 0,0,0 };
+
+	//IN AIR MOVEMENT
+		float airspeedAbs = abs(airSpeed);
 		if (stickAbsL > 0.f && !grounded)
 		{
 			float dir = 0.5f * state.thumbSticks.leftX;// airSpeed;// / stickAbsL;
