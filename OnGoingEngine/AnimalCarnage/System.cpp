@@ -2,6 +2,10 @@
 #include "MainMenu.h"
 #include "GunGameState.h"
 
+//Test
+#include "btBulletCollisionCommon.h"
+#include "BulletCollision\CollisionShapes\btBoxShape.h"
+
 //Keyboard* System::theKeyboard = 0;//for static
 GraphicsDevice* System::theGraphicDevice = 0;
 Mouse* System::theMouse = 0;
@@ -594,6 +598,7 @@ void System::run()
 		//graphics->initImgui(this->hwnd);
 		/*Model** model;*/
 		//theModelLoader->loadModel(this->model, "Resources\\Models\\anim_test3.lu"); //Library test //load anim_test4
+		btRigidBody* test;
 		
 		while (WM_QUIT != msg.message)
 		{
