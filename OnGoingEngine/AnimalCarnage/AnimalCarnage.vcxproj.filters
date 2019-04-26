@@ -135,8 +135,18 @@
     <ClCompile Include="Slider.cpp">
       <Filter>Menu</Filter>
     </ClCompile>
-    <ClCompile Include="SelectGui.cpp" />
-    <ClCompile Include="PlayerSelector.cpp" />
+    <ClCompile Include="JointTransformation.cpp">
+      <Filter>Skeletal</Filter>
+    </ClCompile>
+    <ClCompile Include="KeyFrame.cpp">
+      <Filter>Skeletal</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerSelector.cpp">
+      <Filter>Menu</Filter>
+    </ClCompile>
+    <ClCompile Include="SelectGui.cpp">
+      <Filter>Menu</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Bear.h">
@@ -277,8 +287,33 @@
     <ClInclude Include="Slider.h">
       <Filter>Menu</Filter>
     </ClInclude>
-    <ClInclude Include="SelectGui.h" />
-    <ClInclude Include="PlayerSelector.h" />
+    <ClInclude Include="JointTransformation.h">
+      <Filter>Skeletal</Filter>
+    </ClInclude>
+    <ClInclude Include="Animation.h">
+      <Filter>Skeletal</Filter>
+    </ClInclude>
+    <ClInclude Include="KeyFrame.h">
+      <Filter>Skeletal</Filter>
+    </ClInclude>
+    <ClInclude Include="JointAnimation.h">
+      <Filter>Skeletal</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerSelector.h">
+      <Filter>Menu</Filter>
+    </ClInclude>
+    <ClInclude Include="SelectGui.h">
+      <Filter>Menu</Filter>
+    </ClInclude>
+    <ClInclude Include="Animator.h">
+      <Filter>Skeletal</Filter>
+    </ClInclude>
+    <ClInclude Include="AnimatedModel.h">
+      <Filter>Skeletal</Filter>
+    </ClInclude>
+    <ClInclude Include="Joint.h">
+      <Filter>Skeletal</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="imgui\.gitkeep" />
@@ -314,6 +349,9 @@
     </Filter>
     <Filter Include="Engine">
       <UniqueIdentifier>{8891e7a1-759e-495a-9f5a-9ca10cdf9e00}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Skeletal">
+      <UniqueIdentifier>{0976c678-d4be-4b52-928c-d12573a29a10}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

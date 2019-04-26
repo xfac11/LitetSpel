@@ -334,7 +334,8 @@ bool System::initialize()
 	this->obj[1]->setScale(0.5f, 0.5f, 0.5f);
 	theModelLoader->loadGO(obj[1], "Resources/Models/cube2.lu", "lovelive.tga"); //Library test //load anim_test6
 	this->obj[1]->setPosition(-1, -0.5, 0);
-																				 //
+				
+	//
 
 	this->handler.addObject(this->obj[1]);
 	this->handler.addObject(this->obj[0]);
