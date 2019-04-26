@@ -101,7 +101,6 @@ void GameObject::calcAABB(std::vector<Vertex3D> mesh)
 	/*this->colBox.Max.x = max.x * this->Scale.x;
 	this->colBox.Max.y = max.y * this->Scale.y;
 	this->colBox.Max.z = max.z * this->Scale.z;
-
 	this->colBox.Min.x = min.x * this->Scale.x;
 	this->colBox.Min.y = min.y * this->Scale.y;
 	this->colBox.Min.z = min.z * this->Scale.z;*/

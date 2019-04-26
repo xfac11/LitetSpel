@@ -174,10 +174,6 @@ bool MainGui::update(float deltaTime)
 					MainMenu* state = dynamic_cast<MainMenu*>(this->myState);
 					state->setCurrentMenu(OPTIONS);
 				}
-
-				System::theRumble[i].rumble.x = 0.2f;
-				System::theRumble[i].rumble.y = 0.2f;
-				System::theRumble[i].rumbleTime = 0.2f;
 			}
 
 			break;

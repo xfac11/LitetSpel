@@ -37,14 +37,6 @@ using namespace DirectX;
 
 //using Microsoft::WRL::ComPtr;
 
-//rumble
-struct RumbleTemp
-{
-	float rumbleClock;
-	float rumbleTime;
-	DirectX::XMFLOAT2 rumble;
-};
-
 enum GameState {
 	MAINMENU,
 	GUNGAME
@@ -74,13 +66,9 @@ private:
 	static SpriteFont* fontComicSans;
 	static SpriteFont* fontArial;
 	
-	GameObject* obj[2];
-	//GameObject* players[4];
-	
+	GameObject* obj[2];	
 	//ForwardShader* theForwardShader;
 	Camera* theCamera;
-	
-	//Model** model;
 
 	//IMGUI VARIABLES
 	DirectX::XMFLOAT3 camPos;
@@ -107,7 +95,6 @@ private:
 	static LRESULT CALLBACK  WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
 	HWND InitWindow(HINSTANCE hInstance, float height, float width);
 	void change(bool & theSwitch);
-	static void updateRumble(float deltaTime, int id);
 public:
 
 	System(HINSTANCE hInstance, LPCSTR name, int nCmdShow);
@@ -127,7 +114,6 @@ public:
 	static Mouse* theMouse;
 	static GamePad* theGamePad;
 	static GamePad::ButtonStateTracker* theTracker;
-	static RumbleTemp theRumble[4];
 
 	static GameObjectHandler handler;
 

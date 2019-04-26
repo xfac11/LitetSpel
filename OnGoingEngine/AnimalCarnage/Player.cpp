@@ -41,18 +41,17 @@ void Player::update(float deltaTime, int id)
 	{
 		System::theTracker->Update(state);
 		//Actions 
-
 		if (System::theTracker->a == DirectX::GamePad::ButtonStateTracker::PRESSED) //and
 		{
-			System::theRumble->rumble.x = 0.6f;
-			System::theRumble->rumble.y = 0.6f;
-			System::theRumble->rumbleTime = 0.3f;
+			theRumble.rumble.x = 0.6f;
+			theRumble.rumble.y = 0.6f;
+			theRumble.rumbleTime = 0.3f;
 		}
 		if (System::theTracker->b == DirectX::GamePad::ButtonStateTracker::HELD) //and
 		{
-			System::theRumble->rumble.x = 0.2f;
-			System::theRumble->rumble.y = 0.2f;
-			System::theRumble->rumbleTime = 0.2f;
+			theRumble.rumble.x = 0.2f;
+			theRumble.rumble.y = 0.2f;
+			theRumble.rumbleTime = 0.2f;
 		}
 
 		//			//GROUND MOVEMENT
@@ -224,39 +223,57 @@ void Player::update(float deltaTime, int id)
 		if (state.buttons.leftShoulder ||
 			state.buttons.rightShoulder)
 		{
-			System::theRumble->rumble.x = 0.4f;
-			System::theRumble->rumble.y = 0.4f;
-			System::theRumble->rumbleTime = 0.4f;
+			theRumble.rumble.x = 0.4f;
+			theRumble.rumble.y = 0.4f;
+			theRumble.rumbleTime = 0.4f;
 		}
 
 		//pause
 		if (state.buttons.menu)
 		{
 			//pause
-			System::theRumble->rumble.x = 0.3f;
-			System::theRumble->rumbleTime = 0.1f;
+			theRumble.rumble.x = 0.3f;
+			theRumble.rumbleTime = 0.1f;
 		}
 
 		//exit(debug build)
 		if (state.buttons.back)
 		{
 			//exit game
-			System::theRumble->rumble.y = 0.3f;
-			System::theRumble->rumbleTime = 0.1f;
+			theRumble.rumble.y = 0.3f;
+			theRumble.rumbleTime = 0.1f;
 		}
 	}
 }
 
-void Player::update(float dt)
+bool Player::updateRumble(float dt, int id)
 {
-	const float Mass = 2.0f;
-	const XMFLOAT3 gravity = XMFLOAT3(0, -9.82f, 0);
-	this->Accleration = add(Accleration, mul(gravity, Mass));
-	//	this->Accleration = (Accleration + gravity) * Mass;
-		//this->Velocity = Velocity + Accleration * dt;
-	this->Velocity = add(Velocity, mul(Accleration, dt));
-	this->playerObj->move(mul(Velocity, dt));
+	if (!theRumble.rumbleEnabled) {
+		return false;
+	}
+	if (theRumble.rumbleTime > theRumble.rumbleClock)
+	{
+		theRumble.rumbleClock += dt;
+		System::theGamePad->SetVibration(id, theRumble.rumble.x, theRumble.rumble.y);
+	}
+	else
+	{
+		theRumble.rumbleClock = 0.f;
+		theRumble.rumbleTime = 0.f;
+		System::theGamePad->SetVibration(id, 0, 0);
+	}
+
+	return true;
 }
+
+bool Player::setRumble(bool rumble)
+{
+	return this->theRumble.rumbleEnabled = rumble;
+}
+
+
+
+
 
 
 XMFLOAT3 Player::mul(XMFLOAT3 l, float r)
@@ -300,6 +317,11 @@ void Player::setScale(float x, float y, float z)
 XMFLOAT3 Player::getPosition()
 {
 	return this->playerObj->getPosition();
+}
+
+AABB Player::getAABB()
+{
+	return this->playerObj->getCollisionBox();
 }
 
 float Player::magnitude(XMFLOAT3 l)

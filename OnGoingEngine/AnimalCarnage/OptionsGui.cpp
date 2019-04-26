@@ -90,10 +90,6 @@ bool OptionsGui::update(float deltaTime)
 			{
 				MainMenu* state = dynamic_cast<MainMenu*>(this->myState);
 				state->setCurrentMenu(MAIN);
-
-				System::theRumble[i].rumble.x = 0.2f;
-				System::theRumble[i].rumble.y = 0.2f;
-				System::theRumble[i].rumbleTime = 0.2f;
 			}
 
 			break;
