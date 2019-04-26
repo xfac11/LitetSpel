@@ -15,7 +15,7 @@ GameObjectHandler::GameObjectHandler()
 	{
 		this->gameObjects[i] = nullptr;
 	}
-	
+
 	
 }
 
@@ -82,6 +82,34 @@ GameObject & GameObjectHandler::getObject(int id)
 
 void GameObjectHandler::draw()
 {
+	//float pos[4] = {
+	//3.0,0.0,0.0,10.0f
+	//};
+	//DirectX::XMMATRIX worldPos = DirectX::XMMatrixTranslation(pos[0], pos[1], pos[2]);
+	//this->lightsCB.data.lights[1].worldLight=worldPos;//sun
+
+	//this->lightsCB.data.lights[0].position[0] = pos[0];//sun
+	//this->lightsCB.data.lights[0].position[1] = pos[1];
+	//this->lightsCB.data.lights[0].position[2] = pos[2];
+	//this->lightsCB.data.lights[0].position[3] = pos[3];
+	//this->lightsCB.data.lights[0].color[0] = 1.0f;
+	//this->lightsCB.data.lights[0].color[1] = 0.0f;
+	//this->lightsCB.data.lights[0].color[2] = 0.0f;
+	//this->lightsCB.data.lights[0].color[3] = 0.0f;
+	//this->lightsCB.data.lights[0].direction[0] = 0.0f;
+	//this->lightsCB.data.lights[0].direction[1] = 1.0f;
+	//this->lightsCB.data.lights[0].direction[2] = 0.0f;
+	//this->lightsCB.data.lights[0].direction[3] = 1.0f;
+
+	//this->lightsCB.data.lights[1].position[0] = pos[0];//pointlights
+	//this->lightsCB.data.lights[1].position[1] = pos[1];
+	//this->lightsCB.data.lights[1].position[2] = pos[2];
+	//this->lightsCB.data.lights[1].position[3] = pos[3];
+	//this->lightsCB.data.lights[1].color[0] = 0.0f;
+	//this->lightsCB.data.lights[1].color[1] = 1.0f;
+	//this->lightsCB.data.lights[1].color[2] = 0.0f;
+	//this->lightsCB.data.lights[1].color[3] = 1.0f;
+	//this->lightsCB.data.nrOfLights = 2;
 	for (int i = 0; i < this->nrOfOpaque; i++)
 	{
 		this->opaqueModels[i].modelPtr->getShader()->setWorld(*this->opaqueModels[i].worldPtr);
@@ -90,17 +118,11 @@ void GameObjectHandler::draw()
 	for (int i = 0; i < this->nrOfTrans; i++)
 	{
 		this->transModels[i].modelPtr->getShader()->setWorld(*this->transModels[i].worldPtr);
-		float pos[4] = {
-		0.0,1.0,0.0,1.0
-		};
-
-		/*this->lightsCB.data.lights[1].position[0] = pos[0];
-		this->lightsCB.data.lights[1].position[1] = pos[1];
-		this->lightsCB.data.lights[1].position[2] = pos[2];
-		this->lightsCB.data.lights[1].position[3] = pos[3];
-		this->lightsCB.data.nrOfLights = 1;
+		DirectX::XMMATRIX worldPos = DirectX::XMMatrixTranslation(gameObjects[2]->getPosition().x, gameObjects[2]->getPosition().y, gameObjects[2]->getPosition().z);
+		this->lightsCB.data.lights[1].worldLight = worldPos;
+		this->lightsCB.data.nrOfLights = nrOfLights;
 		this->lightsCB.applyChanges(System::getDevice(), System::getDeviceContext());
-		this->opaqueModels[i].modelPtr->getShader()->setConstanbuffer(PIXEL, 1, this->lightsCB.getBuffer());*/
+		this->transModels[i].modelPtr->getShader()->setConstanbuffer(PIXEL, 1, this->lightsCB.getBuffer());
 		this->transModels[i].modelPtr->draw();
 	}
 }
@@ -108,6 +130,22 @@ void GameObjectHandler::draw()
 void GameObjectHandler::initialize()
 {
 	this->lightsCB.initialize(System::getDevice());
+}
+
+void GameObjectHandler::addLight(float pos[4],float dir[4],float color[4] )
+{
+	if (nrOfLights != 16)
+	{
+		DirectX::XMMATRIX worldPos = DirectX::XMMatrixTranslation(pos[0], pos[1], pos[2]);
+		this->lightsCB.data.lights[nrOfLights].worldLight = worldPos;//sun
+		for (int i = 0; i < 4; i++)
+		{
+			this->lightsCB.data.lights[nrOfLights].position[i] = pos[i];
+			this->lightsCB.data.lights[nrOfLights].direction[i] = dir[i];
+			this->lightsCB.data.lights[nrOfLights].color[i] = color[i];
+		}
+		nrOfLights++;
+	}
 }
 
 void GameObjectHandler::expandGameobjects()

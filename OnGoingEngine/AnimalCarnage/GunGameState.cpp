@@ -48,14 +48,49 @@ bool GunGameState::initailize()
 		player[i] = new Player();
 		player[i]->initialize();
 	}
+	System::handler.initialize();
+
+	float pos[4] = {
+	0,0,-1,3.0
+	};
+	float dir[4] = {
+		0.0f,0.0f,1.0f,1.0f
+	};
+	float color[4] = {
+		1.0 , 1, 1.0 , 1.0f
+	};
+	System::handler.addLight(pos, dir, color);
+	float color2[4] = {
+		0.9 , 1.0f, 0.2f , 1.0f
+	};
+	System::handler.addLight(pos, dir, color2);
+
+
 	return true;
 }
 
 bool GunGameState::render()
 {
+	renderImgui();
 	System::handler.draw();
 	//this->gui->render();
 	return true;
+}
+
+void GunGameState::renderImgui()
+{
+	ImGui_ImplDX11_NewFrame();
+	ImGui_ImplWin32_NewFrame();
+	ImGui::NewFrame();
+	std::string textUse;
+	ImGui::Begin("Gungame");
+
+
+	//ImGui::EndChild();
+	ImGui::CaptureKeyboardFromApp(true);
+
+	ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+	ImGui::End();
 }
 
 bool GunGameState::update(float deltaTime)

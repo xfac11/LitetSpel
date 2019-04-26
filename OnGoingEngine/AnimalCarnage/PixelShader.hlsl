@@ -21,17 +21,78 @@ cbuffer CB_PER_FRAME : register(b0)
 	float4x4 proj;//proj
 	float4 camPos;
 }
-StructuredBuffer<AnyLight> lights : register(t1);
-Texture2D Tex:register(t0);
+cbuffer Lights : register(b1)
+{
+	int nrOfLights;
+	AnyLight lights[16];
+}
+float4 CalcLight(AnyLight light,  float3 normal, float3 wPos, float3 LightDirection)
+{
+	//float3 LightDirection = light.direction.xyz;
+	float ambientAmount = 0.2f;
+	float4 ambientColor = float4(light.color.xyz, 1.0f)*ambientAmount;
+	float diffuseFactor = dot(normal, -LightDirection);
 
+	float4 diffuseColor = float4(0.0f, 0.0f, 0.0f,0.0f);
+	float4 specularColor = float4(0.0f, 0.0f, 0.0f,0.0f);
+
+	if (diffuseFactor > 0)
+	{
+		diffuseColor = float4(light.color.xyz*0.5f*diffuseFactor, 1.0f);
+		float3 vecToEye = normalize((camPos.xyz - wPos));
+		float3 lightReflect = normalize(reflect(LightDirection, normal));
+		float specularFactor = dot(vecToEye, lightReflect);
+		if (specularFactor > 0)
+		{
+			specularFactor = pow(specularFactor, 32);
+			float specularStrength = 0.5f;
+			specularColor = float4(light.color.xyz*specularStrength*specularFactor, 1.0f);
+		}
+	}
+	return (ambientColor + diffuseColor + specularColor);
+}
+
+float4 dirLight(float3 normal, AnyLight light, float3 wPos)
+{
+	return CalcLight(light, normal, wPos, light.direction.xyz);
+}
+
+float4 pointLight(int index, float3 normal, float3 wPos)
+{
+	float4 lightPos= mul(lights[index].worldLight, float4(0.0f, 0.0f, 0.0f, 1.0f));
+	//lights[index].position = 
+	float3 lightDir = wPos - lightPos;
+	float distance = length(lightDir);
+
+	lightDir = normalize(lightDir);
+
+	float4 color = CalcLight(lights[index], normal, wPos,lightDir);
+
+	float attenuation = max(0, 1.0f - (lightDir / lights[index].position.w));// from 3d project
+
+	float Attenuation = 1.0f +
+		0.2f * distance +
+		1.8f * distance * distance;
+
+	return color / (Attenuation/lights[index].position.w);// color/attenuation in tutorial
+}
+
+Texture2D Tex:register(t0);
 SamplerState SampSt :register(s0);
 float4 PS_main(VS_OUT input) : SV_Target
 {
-	float4 ambient = float4(0.1f,0.1f,0.1f,0.0f);
-	//float3 color = Tex.Sample(SampSt, input.Tex).xyz;
-	float4 colorT = Tex.Sample(SampSt, input.Tex).rgba;
 
-	colorT = colorT + ambient;
+	float3 normal = normalize(input.NormalWS);
+	float4 totalLight = dirLight(normal, lights[0],input.wPosition.xyz);
+
+	for (int i = 1; i < nrOfLights; i++)
+	{
+		totalLight += pointLight(i, normal, input.wPosition.xyz);
+	}
+
+	float4 colorT = float4(Tex.Sample(SampSt, input.Tex).xyz*totalLight.xyz,Tex.Sample(SampSt,input.Tex).w);
+
+
 	//float4 colorT = float4(0.0f,1.0f,0.0f,1.0f);
 	//float3 final_colour = float3(0.2f, 0.2f, 0.2f);
 	//// diffuse, no attenuation.

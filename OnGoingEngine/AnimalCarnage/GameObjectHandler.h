@@ -11,6 +11,7 @@ public:
 	GameObject& getObject(int id);
 	void draw();
 	void initialize();
+	void addLight(float pos[4], float dir[4], float color[4]);
 private:
 	GameObject* *gameObjects;
 	int cap;
@@ -19,6 +20,7 @@ private:
 	int nrOfOpaque;
 	int capTrans;
 	int nrOfTrans;
+	int nrOfLights;
 	struct ModWorld
 	{
 		DirectX::XMMATRIX* worldPtr;
