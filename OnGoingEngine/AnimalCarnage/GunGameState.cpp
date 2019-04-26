@@ -220,7 +220,10 @@ bool GunGameState::update(float deltaTime)
 	//		//}
 	//	}
 	//}
-
+	if (Intersects(System::handler.getObject(2).getCollisionBox(), System::handler.getObject(2).getPosition(), System::handler.getObject(3).getCollisionBox(), System::handler.getObject(3).getPosition()))
+	{
+		
+	}
 	return true;
 }
 
