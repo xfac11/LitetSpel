@@ -4,6 +4,7 @@
 
 //Test
 #include "btBulletCollisionCommon.h"
+#include "btBulletDynamicsCommon.h"
 #include "BulletCollision\CollisionShapes\btBoxShape.h"
 
 //Keyboard* System::theKeyboard = 0;//for static
@@ -599,6 +600,11 @@ void System::run()
 		/*Model** model;*/
 		//theModelLoader->loadModel(this->model, "Resources\\Models\\anim_test3.lu"); //Library test //load anim_test4
 		btRigidBody* test;
+		btDynamicsWorld* world;
+		btDispatcher* dispatcher;
+		btBroadphaseInterface* broadphase;
+		btConstraintSolver* solver;
+		btCollisionConfiguration* collisionConfig;
 		
 		while (WM_QUIT != msg.message)
 		{
