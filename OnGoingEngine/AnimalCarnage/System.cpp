@@ -2,11 +2,6 @@
 #include "MainMenu.h"
 #include "GunGameState.h"
 
-//Test
-#include "btBulletCollisionCommon.h"
-#include "btBulletDynamicsCommon.h"
-#include "BulletCollision\CollisionShapes\btBoxShape.h"
-
 //Keyboard* System::theKeyboard = 0;//for static
 GraphicsDevice* System::theGraphicDevice = 0;
 Mouse* System::theMouse = 0;
@@ -605,6 +600,7 @@ void System::run()
 		btBroadphaseInterface* broadphase;
 		btConstraintSolver* solver;
 		btCollisionConfiguration* collisionConfig;
+		//this->collisionConfig = new btDefaultCollisionConfiguration();
 		
 		while (WM_QUIT != msg.message)
 		{

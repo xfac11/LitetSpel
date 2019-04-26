@@ -29,6 +29,11 @@
 #include "ModelLoader.h"
 #include"ShaderManager.h"
 
+//Test
+#include "btBulletCollisionCommon.h"
+#include "btBulletDynamicsCommon.h"
+#include "BulletCollision\CollisionShapes\btBoxShape.h"
+
 using namespace DirectX;
 //using namespace DirectX::SimpleMath;
 
@@ -95,6 +100,8 @@ private:
 	static LRESULT CALLBACK  WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
 	HWND InitWindow(HINSTANCE hInstance, float height, float width);
 	void change(bool & theSwitch);
+
+	//btCollisionConfiguration* collisionConfig; //Test
 public:
 
 	System(HINSTANCE hInstance, LPCSTR name, int nCmdShow);
