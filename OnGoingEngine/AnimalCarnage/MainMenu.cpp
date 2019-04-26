@@ -3,7 +3,7 @@
 #include "OptionsGui.h"
 #include "RulesGui.h"
 #include "SelectGui.h"
-
+#include"System.h"
 MainMenu::MainMenu()
 {
 	this->main = nullptr;
@@ -38,8 +38,26 @@ bool MainMenu::initailize()
 
 bool MainMenu::render()
 {
+	
+	this->renderImgui();
 	this->gui->render();
 	return true;
+}
+
+void MainMenu::renderImgui()
+{
+	ImGui_ImplDX11_NewFrame();
+	ImGui_ImplWin32_NewFrame();
+	ImGui::NewFrame();
+	std::string textUse;
+	ImGui::Begin("Main menu");
+
+
+	//ImGui::EndChild();
+	ImGui::CaptureKeyboardFromApp(true);
+
+	ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+	ImGui::End();
 }
 
 bool MainMenu::update(float deltaTime)

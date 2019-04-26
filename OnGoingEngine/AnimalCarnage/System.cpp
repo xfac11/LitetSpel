@@ -363,69 +363,69 @@ void System::initImgui()
 	ImGui::StyleColorsDark();
 }
 
-void System::renderImgui()
-{
-	ImGui_ImplDX11_NewFrame();
-	ImGui_ImplWin32_NewFrame();
-	ImGui::NewFrame();
-	std::string textUse;
-	ImGui::Begin("Hello, world!");                          // Create a window called "Hello, world!" and append into it.
-	
-	ImGui::Checkbox("Enable automatic-camera ", &guiCam);
-	if (guiCam == false)
-	{
-		ImGui::SliderFloat("Camera X-Position", &camPos.x, -10.0f, 10.0f);
-		ImGui::SliderFloat("Camera Y-Position", &camPos.y, -10.0f, 10.0f);
-		ImGui::SliderFloat("Camera Z-Position", &camPos.z, -200.0f, 10.0f);
-		theCamera->SetPosition(camPos);
-	}
-	ImGui::SliderFloat("Camera X-Rotation", &camRot.x, -90.0f, 90.0f);
-	ImGui::SliderFloat("Camera Y-Rotation", &camRot.y, -180.0f, 180.0f);
-	theCamera->SetRotation(camRot);
-	//ImGui::ColorEdit3("bg-color", (float*)&this->color);
-
-	//ImGui::SliderInt("Deferred Render", &this->texToShow, 0, 4);
-	ImGui::Checkbox("Freeze culling ", &freezeCheck);
-	//textUse = "Mouse pick: " + this->mouseObject + ". ";
-	//ImGui::Text(textUse.c_str());
-	//textUse = "Height from 'Ground': " + std::to_string(this->height) + "m";
-	//ImGui::Text(textUse.c_str());
-
-	ImGui::Text(("Max player 0: "
-		+ std::to_string(obj[1]->getCollisionBox().Max.x) + " "
-		+ std::to_string(obj[1]->getCollisionBox().Max.y) + " "
-		+ std::to_string(obj[1]->getCollisionBox().Max.z)).c_str());
-
-	ImGui::Text(("Min player 0: "
-		+ std::to_string(obj[1]->getCollisionBox().Min.x) + " "
-		+ std::to_string(obj[1]->getCollisionBox().Min.y) + " "
-		+ std::to_string(obj[1]->getCollisionBox().Min.z)).c_str());
-
-	if (collide == true)
-	{
-		ImGui::Text("collision yes");
-	}
-	else if(collide == false)
-	{
-		ImGui::Text("collision no");
-	}
-	//ImGui::SliderInt("Player: ", &this->currentInput, 0, 5);
-	ImGui::TextColored(ImVec4(1, 1, 0, 1), "Controllers");
-	ImGui::BeginChild("Scrolling");
-	for (int n = 0; n < 4; n++)
-	{
-		if (theGamePad->GetState(n).connected==true)
-			ImGui::Text("%02d: Connected",n);
-		else 
-			ImGui::Text("%02d: Disconnected",n);
-	}
-	ImGui::EndChild();
-	ImGui::CaptureKeyboardFromApp(true);
-
-	ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
-	ImGui::End();
-
-}
+//void System::renderImgui()
+//{
+//	//ImGui_ImplDX11_NewFrame();
+//	//ImGui_ImplWin32_NewFrame();
+//	//ImGui::NewFrame();
+//	//std::string textUse;
+//	//ImGui::Begin("Hello, world!");                          // Create a window called "Hello, world!" and append into it.
+//	//
+//	//ImGui::Checkbox("Enable automatic-camera ", &guiCam);
+//	//if (guiCam == false)
+//	//{
+//	//	ImGui::SliderFloat("Camera X-Position", &camPos.x, -10.0f, 10.0f);
+//	//	ImGui::SliderFloat("Camera Y-Position", &camPos.y, -10.0f, 10.0f);
+//	//	ImGui::SliderFloat("Camera Z-Position", &camPos.z, -200.0f, 10.0f);
+//	//	theCamera->SetPosition(camPos);
+//	//}
+//	//ImGui::SliderFloat("Camera X-Rotation", &camRot.x, -90.0f, 90.0f);
+//	//ImGui::SliderFloat("Camera Y-Rotation", &camRot.y, -180.0f, 180.0f);
+//	//theCamera->SetRotation(camRot);
+//	////ImGui::ColorEdit3("bg-color", (float*)&this->color);
+//
+//	////ImGui::SliderInt("Deferred Render", &this->texToShow, 0, 4);
+//	//ImGui::Checkbox("Freeze culling ", &freezeCheck);
+//	////textUse = "Mouse pick: " + this->mouseObject + ". ";
+//	////ImGui::Text(textUse.c_str());
+//	////textUse = "Height from 'Ground': " + std::to_string(this->height) + "m";
+//	////ImGui::Text(textUse.c_str());
+//
+//	//ImGui::Text(("Max player 0: "
+//	//	+ std::to_string(obj[1]->getCollisionBox().Max.x) + " "
+//	//	+ std::to_string(obj[1]->getCollisionBox().Max.y) + " "
+//	//	+ std::to_string(obj[1]->getCollisionBox().Max.z)).c_str());
+//
+//	//ImGui::Text(("Min player 0: "
+//	//	+ std::to_string(obj[1]->getCollisionBox().Min.x) + " "
+//	//	+ std::to_string(obj[1]->getCollisionBox().Min.y) + " "
+//	//	+ std::to_string(obj[1]->getCollisionBox().Min.z)).c_str());
+//
+//	//if (collide == true)
+//	//{
+//	//	ImGui::Text("collision yes");
+//	//}
+//	//else if(collide == false)
+//	//{
+//	//	ImGui::Text("collision no");
+//	//}
+//	////ImGui::SliderInt("Player: ", &this->currentInput, 0, 5);
+//	//ImGui::TextColored(ImVec4(1, 1, 0, 1), "Controllers");
+//	//ImGui::BeginChild("Scrolling");
+//	//for (int n = 0; n < 4; n++)
+//	//{
+//	//	if (theGamePad->GetState(n).connected==true)
+//	//		ImGui::Text("%02d: Connected",n);
+//	//	else 
+//	//		ImGui::Text("%02d: Disconnected",n);
+//	//}
+//	//ImGui::EndChild();
+//	//ImGui::CaptureKeyboardFromApp(true);
+//
+//	//ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+//	//ImGui::End();
+//
+//}
 
 void System::update(float deltaTime)
 {
@@ -536,10 +536,10 @@ void System::render()
 	
 	float color[] =
 	{
-		1.0f,0.1f,0.5f,1.0f
+		0.0f,0.0f,0.0f,1.0f
 	};
 
-	renderImgui();
+	//renderImgui();
 
 	theGraphicDevice->beginScene(color);//clear the back and depth buffer set depthStencilState
 	

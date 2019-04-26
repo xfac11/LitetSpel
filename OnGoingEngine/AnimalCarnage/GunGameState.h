@@ -61,6 +61,7 @@ public:
 
 	bool initailize();
 	bool render();
+	void renderImgui();
 	bool update(float deltaTime);
 	void shutDown();
 
