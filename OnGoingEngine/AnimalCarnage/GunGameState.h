@@ -6,36 +6,12 @@
 #include <string>
 #include <algorithm>
 #include <DirectXMath.h>
-//#include "GamePad.h"
+
 class GunGameState : public State
 {
 private:
 	int nrOfPlayers;
-	Player* player;
-
-	//rumble
-	//struct RumbleTemp
-	//{
-	//	float rumbleClock;
-	//	float rumbleTime;
-	//	DirectX::XMFLOAT2 rumble;
-	//};
-	//RumbleTemp theRumble[4];
-
-	//Temporary player stuct
-	/*struct PlayerTemp
-	{
-		bool isJumping;
-		bool inAir;
-		float airTimer;
-		float jumpDir; 
-		bool grounded;
-		bool canJump;
-		float airSpeed;
-		DirectX::XMFLOAT3 direction;
-	};
-	PlayerTemp tplayer[4];*/
-
+	Player** player;
 
 	struct ItemTemp
 	{
@@ -60,10 +36,6 @@ public:
 	bool update(float deltaTime);
 	void shutDown();
 
-	bool isGrounded(int id);
-	void setGrounded(int id, bool condition); //temp sets player
-	void setObjGrounded(int id, bool condition); //temp sets item
-	DirectX::XMFLOAT3 getDirection(int id);
 	bool controllerIsConnected(int controllerPort);
 
 	//Temporary

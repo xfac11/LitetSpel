@@ -11,6 +11,7 @@ Player::Player()
 	grounded = true;
 	jumpDir = 0;
 	inAir = false;
+	this->playerObj = nullptr;
 }
 
 
@@ -52,13 +53,6 @@ void Player::update(float deltaTime, int id)
 			System::theRumble->rumble.y = 0.2f;
 			System::theRumble->rumbleTime = 0.2f;
 		}
-		//if (System::theTracker->dpadUp == DirectX::GamePad::ButtonStateTracker::RELEASED) //and
-		//{
-		//	System::theRumble[i].rumble.x = 0.2f;
-		//	System::theRumble[i].rumble.y = 0.2f;
-		//	System::theRumble[i].rumbleTime = 0.2f;
-		//}
-
 
 		//			//GROUND MOVEMENT
 		//float stickAbsL = abs(state.thumbSticks.leftX);
@@ -130,47 +124,30 @@ void Player::update(float deltaTime, int id)
 		float stickAbsL = abs(state.thumbSticks.leftX);
 		if (stickAbsL > 0.f && grounded)
 		{
-			float dir = 5 * state.thumbSticks.leftX;// / stickAbsL;
+			float dir = 2 * state.thumbSticks.leftX;// / stickAbsL;
 
 			playerObj->move(dir * deltaTime, 0, 0);
-			airSpeed = dir;
 		}
 		else if ((state.dpad.right || state.dpad.left) && grounded)
 		{
-			playerObj->move(5 * (state.dpad.right - state.dpad.left) * deltaTime, 0, 0);
-			airSpeed = 5.f * (state.dpad.right - state.dpad.left);
+			float dir = 2 * (state.dpad.right - state.dpad.left);
+			playerObj->move(dir * deltaTime, 0, 0);
 		}
-		else if (isJumping == false)
-			playerObj->move(0, 0, 0);
 		else
 			playerObj->move(0, 0, 0);
-		//move(getPosition().x, 0, getPosition().z);; //= { 0,0,0 };
-
-	//IN AIR MOVEMENT
-		float airspeedAbs = abs(airSpeed);
+	
+		//IN AIR MOVEMENT
 		if (stickAbsL > 0.f && !grounded)
 		{
-			airSpeed += 0.5f * state.thumbSticks.leftX;
-			float dir = airSpeed;// / stickAbsL;
-
-			playerObj->move(dir * deltaTime, 0, 0);
-
-			if (airspeedAbs > 5)
-				airSpeed = airspeedAbs / airSpeed * 5;
+			float dir = 0.5f * state.thumbSticks.leftX;// airSpeed;// / stickAbsL;
+			playerObj->move(5*dir * deltaTime, 0, 0);
 		}
 		else if (state.dpad.right && !grounded || state.dpad.left && !grounded)
 		{
-			airSpeed += 0.5f * (state.dpad.right - state.dpad.left);
+			float dir = 0.5f * (state.dpad.right - state.dpad.left);
+			playerObj->move(5*dir* deltaTime, 0, 0);
 
-			if (!grounded) {
-				playerObj->move(airSpeed * deltaTime, 0, 0);
-			}
-
-			if (airspeedAbs > 5)
-				airSpeed = airspeedAbs / airSpeed * 5;
 		}
-
-
 
 		//JUMP INPUT
 		if ((state.buttons.x || state.buttons.y) && canJump)
@@ -257,10 +234,86 @@ void Player::update(float deltaTime, int id)
 			System::theRumble->rumble.y = 0.3f;
 			System::theRumble->rumbleTime = 0.1f;
 		}
-
-		//this->updateRumble(deltaTime, i);
-	//}
-
 	}
 }
 
+void Player::update(float dt)
+{
+	const float Mass = 2.0f;
+	const XMFLOAT3 gravity = XMFLOAT3(0, -9.82f, 0);
+	this->Accleration = add(Accleration, mul(gravity, Mass));
+	//	this->Accleration = (Accleration + gravity) * Mass;
+		//this->Velocity = Velocity + Accleration * dt;
+	this->Velocity = add(Velocity, mul(Accleration, dt));
+	this->playerObj->move(mul(Velocity, dt));
+}
+
+
+XMFLOAT3 Player::mul(XMFLOAT3 l, float r)
+{
+	return XMFLOAT3(l.x * r, l.y * r, l.z * r);
+}
+
+XMFLOAT3 Player::add(XMFLOAT3 l, XMFLOAT3 r)
+{
+	return XMFLOAT3(l.x + r.x, l.y + r.y, l.z + r.z);
+}
+
+
+void Player::addForce(XMFLOAT3 Dir, float force)
+{
+	this->Velocity = XMFLOAT3(0, 0, 0);
+	this->Accleration = mul(Dir, force);
+}
+
+
+void Player::move(float x, float y, float z)
+{
+	this->playerObj->move(x, y, z);
+}
+
+void Player::move(XMFLOAT3 source)
+{
+	this->move(source);
+}
+
+void Player::setPosition(float x, float y, float z)
+{
+	this->playerObj->setPosition(x, y, z);
+}
+
+void Player::setScale(float x, float y, float z)
+{
+	this->playerObj->setScale(x, y, z);
+}
+
+XMFLOAT3 Player::getPosition()
+{
+	return this->playerObj->getPosition();
+}
+
+float Player::magnitude(XMFLOAT3 l)
+{
+	float temp = sqrt((l.x * l.x) + (l.y * l.y) + (l.z * l.z));
+	return temp;
+}
+
+XMFLOAT3 Player::normalize(XMFLOAT3 l)
+{
+	float length = this->magnitude(l);
+	if (length != 0)
+		return XMFLOAT3(l.x / length, l.y / length, l.z / length);
+	else
+		return l;
+}
+
+float Player::dot(const XMFLOAT3 & l, const XMFLOAT3 & r)
+{
+	return (l.x * r.x) + (l.y * r.y) + (l.z * r.z);
+}
+
+XMFLOAT3 Player::cross(const XMFLOAT3 & l, XMFLOAT3 & r)
+{
+
+	return XMFLOAT3(l.y * r.z - l.z * r.y, l.z * r.x - l.x * r.z, l.x * r.y - l.y * r.x);
+}

@@ -20,13 +20,7 @@ bool GunGameState::checkReset(DirectX::GamePad::State state)
 
 GunGameState::GunGameState()
 {
-	//for (int i = 0; i < 4; i++) //temp players
-	//{
-	//	tplayer[i].isJumping = false;
-	//	tplayer[i].canJump = true;
-	//	tplayer[i].airTimer = 0.f;
-	//	tplayer[i].airSpeed = 0.f;
-	//}
+	
 	for (int i = 0; i < 2; i++)
 	{
 		items[i].isFlying = false;
@@ -46,8 +40,14 @@ GunGameState::~GunGameState()
 
 bool GunGameState::initailize()
 {
-	player = new Player();
-	player->initialize();
+	nrOfPlayers = 2;
+	player = new Player*[nrOfPlayers];
+	
+	for (int i = 0; i < nrOfPlayers; i++)
+	{
+		player[i] = new Player();
+		player[i]->initialize();
+	}
 	return true;
 }
 
@@ -60,194 +60,23 @@ bool GunGameState::render()
 
 bool GunGameState::update(float deltaTime)
 {
-
-	player->update(deltaTime, 0);
-
-	//for (int i = 0; i < 4; i++) //nrOfPlayers
-	//{
-	//	DirectX::GamePad::State state = System::theGamePad->GetState(i);
-	//	if (state.IsConnected())
-	//	{
-	//		System::theTracker->Update(state);
-	//		//L+R+A+START
-	//		if (checkReset(state))
-	//		{
-	//			System::setState(MAINMENU);
-	//		}
-	//		//Actions 
-	//		if (System::theTracker->a == DirectX::GamePad::ButtonStateTracker::PRESSED) //and
-	//		{
-	//			System::theRumble[i].rumble.x = 0.6f;
-	//			System::theRumble[i].rumble.y = 0.6f;
-	//			System::theRumble[i].rumbleTime = 0.3f;
-	//		}
-	//		if (System::theTracker->b == DirectX::GamePad::ButtonStateTracker::HELD) //and
-	//		{
-	//			System::theRumble[i].rumble.x = 0.2f;
-	//			System::theRumble[i].rumble.y = 0.2f;
-	//			System::theRumble[i].rumbleTime = 0.2f;
-	//		}
-	//		//if (System::theTracker->dpadUp == DirectX::GamePad::ButtonStateTracker::RELEASED) //and
-	//		//{
-	//		//	System::theRumble[i].rumble.x = 0.2f;
-	//		//	System::theRumble[i].rumble.y = 0.2f;
-	//		//	System::theRumble[i].rumbleTime = 0.2f;
-	//		//}
-
-
-	//		//GROUND MOVEMENT
-	//		float stickAbsL = abs(state.thumbSticks.leftX);
-	//		if (stickAbsL > 0.f && tplayer[i].grounded)
-	//		{
-	//			float dir = 5 * state.thumbSticks.leftX;// / stickAbsL;
-
-	//			this->tplayer[i].direction = DirectX::XMFLOAT3(dir * deltaTime, 0, 0);
-	//			tplayer[i].airSpeed = dir;
-	//		}
-	//		else if ((state.dpad.right || state.dpad.left) && tplayer[i].grounded)
-	//		{
-	//			this->tplayer[i].direction = DirectX::XMFLOAT3(5 * (state.dpad.right - state.dpad.left) * deltaTime, 0, 0);
-	//			tplayer[i].airSpeed = 5.f * (state.dpad.right - state.dpad.left);
-	//		}
-	//		else if (this->tplayer[i].isJumping == false)
-	//			this->tplayer[i].direction = { 0,0,0 };
-	//		else
-	//			this->tplayer[i].direction.y = 0; //= { 0,0,0 };
-
-	//		//IN AIR MOVEMENT
-	//		float airspeedAbs = abs(tplayer[i].airSpeed);
-	//		if (stickAbsL > 0.f && !tplayer[i].grounded) 
-	//		{
-	//			tplayer[i].airSpeed += 0.5f * state.thumbSticks.leftX;
-	//			float dir = tplayer[i].airSpeed;// / stickAbsL;
-
-	//			this->tplayer[i].direction = DirectX::XMFLOAT3(dir * deltaTime, 0, 0);
-
-	//			if (airspeedAbs > 5)
-	//				tplayer[i].airSpeed = airspeedAbs / tplayer[i].airSpeed*5;
-	//		}
-	//		else if (state.dpad.right && !tplayer[i].grounded || state.dpad.left && !tplayer[i].grounded)
-	//		{
-	//				tplayer[i].airSpeed += 0.5f * (state.dpad.right - state.dpad.left);
-
-	//			if (!tplayer[i].grounded) {
-	//				this->tplayer[i].direction = DirectX::XMFLOAT3(tplayer[i].airSpeed * deltaTime, 0, 0);
-	//			}
-	//
-	//			if (airspeedAbs > 5)
-	//				tplayer[i].airSpeed = airspeedAbs / tplayer[i].airSpeed*5;
-	//		}
-	//		
-	//		
-
-	//		//JUMP INPUT
-	//		if ((state.buttons.x || state.buttons.y) && tplayer[i].canJump)
-	//		{
-	//			this->tplayer[i].isJumping = true;
-	//			this->tplayer[i].grounded = false;
-	//		}
-
-	//		//canJump
-	//		if (state.buttons.x || state.buttons.y) {
-	//			tplayer[i].canJump = false;
-	//		}
-	//		if (tplayer[i].grounded /*&& System::theTracker->x == DirectX::GamePad::ButtonStateTracker::RELEASED || System::theTracker->y == DirectX::GamePad::ButtonStateTracker::RELEASED*/) {
-	//			tplayer[i].canJump = true;
-	//		}
-
-
-
-	//		//falling/jump function
-	//		if (this->tplayer[i].grounded == false)
-	//		{
-	//			this->tplayer[i].airTimer += deltaTime;
-	//			this->tplayer[i].direction.y += (-9.82f * this->tplayer[i].airTimer + (5.f*this->tplayer[i].isJumping)) * deltaTime;
-	//			//continue here
-	//		}
-	//		else if (this->tplayer[i].grounded == true)
-	//		{
-	//			this->tplayer[i].airTimer = 0.f;
-	//			this->tplayer[i].isJumping = false;
-	//			this->tplayer[i].direction.y = 0.f;
-	//			this->tplayer[i].airSpeed = 0.0f;
-	//		}
-
-
-	//		if (state.buttons.leftShoulder ||
-	//			state.buttons.rightShoulder)
-	//		{
-	//			System::theRumble[i].rumble.x = 0.4f;
-	//			System::theRumble[i].rumble.y = 0.4f;
-	//			System::theRumble[i].rumbleTime = 0.4f;
-	//		}
-
-	//		//pause
-	//		if (state.buttons.menu)
-	//		{
-	//			//pause
-	//			System::theRumble[i].rumble.x = 0.3f;
-	//			System::theRumble[i].rumbleTime = 0.1f;
-	//		}
-
-	//		//exit(debug build)
-	//		if (state.buttons.back)
-	//		{
-	//			//exit game
-	//			System::theRumble[i].rumble.y = 0.3f;
-	//			System::theRumble[i].rumbleTime = 0.1f;
-	//		}
-
-	//		//ITEMS not working properly  (does not leave ground)
-	//		//for (int i = 0; i < 2; i++)
-	//		//{
-	//		//	if (state.dpad.right - state.dpad.left != 0)
-	//		//		items[i].lastDir = state.dpad.right - state.dpad.left;
-	//		//	else if (abs(state.thumbSticks.leftX) == 1)
-	//		//		items[i].lastDir = state.thumbSticks.leftX;
-	//		//	if (items[i].grounded==false)
-	//		//	{
-	//		//		this->items[i].airTimer += deltaTime;
-	//		//		this->tplayer[i].direction.x += this->items[i].lastDir*deltaTime;
-	//		//		this->tplayer[i].direction.y += (-9.82f *items[i].airTimer + (2.f*this->items[i].isFlying))*deltaTime;
-	//		//	}
-	//		//	else if (items[i].grounded == true)
-	//		//	{
-	//		//		this->items[i].airTimer = 0.f;
-	//		//		this->items[i].isFlying = false;
-	//		//		this->items[i].direction.y = 0;
-	//		//		this->items[i].direction.x = 0;
-	//		//	}
-	//		//}
-	//	}
-	//}
+	for (int i = 0; i < nrOfPlayers; i++)
+	{
+		player[i]->update(deltaTime, i);
+	}
+	
 	return true;
 }
 
 void GunGameState::shutDown()
 {
-	delete player;
+	for (int i = 0; i < nrOfPlayers; i++)
+	{
+		delete player[i];
+	}
+	delete[] player;
 }
 
-bool GunGameState::isGrounded(int id)
-{
-	return true;// tplayer[id].grounded;
-}
-
-void GunGameState::setGrounded(int id, bool condition)
-{
-	//tplayer[id].grounded = condition;
-}
-
-void GunGameState::setObjGrounded(int id, bool condition)
-{
-	items[id].grounded = condition;
-}
-
-DirectX::XMFLOAT3 GunGameState::getDirection(int id)
-{
-	
-	return XMFLOAT3(0, 0, 0);// tplayer[id].direction;
-}
 
 bool GunGameState::controllerIsConnected(int controllerPort)
 {
