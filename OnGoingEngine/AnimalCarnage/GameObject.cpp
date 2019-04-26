@@ -101,7 +101,6 @@ void GameObject::calcAABB(std::vector<Vertex3D> mesh)
 	/*this->colBox.Max.x = max.x * this->Scale.x;
 	this->colBox.Max.y = max.y * this->Scale.y;
 	this->colBox.Max.z = max.z * this->Scale.z;
-
 	this->colBox.Min.x = min.x * this->Scale.x;
 	this->colBox.Min.y = min.y * this->Scale.y;
 	this->colBox.Min.z = min.z * this->Scale.z;*/
@@ -175,5 +174,16 @@ AABB GameObject::getCollisionBox()
 	tempBox.Min.z = this->colBox.Min.z + this->Position.z;
 	*/  
 
-	return this->colBox;
+	/*tempBox.Max.x = this->colBox.Max.x + this->Position.x;
+	tempBox.Max.y = this->colBox.Max.y + this->Position.y;
+	tempBox.Max.z = this->colBox.Max.z + this->Position.z;
+
+	tempBox.Min.x = this->colBox.Min.x + this->Position.x;
+	tempBox.Min.y = this->colBox.Min.y + this->Position.y;
+	tempBox.Min.z = this->colBox.Min.z + this->Position.z;*/
+
+	tempBox.width = this->colBox.width*this->Scale.x;
+	tempBox.height = this->colBox.height*this->Scale.y;
+	tempBox.depth = this->colBox.depth*this->Scale.z;
+	return tempBox;
 }

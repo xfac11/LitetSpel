@@ -155,10 +155,6 @@ bool SelectGui::update(float deltaTime)
 				{
 					System::setState(GUNGAME);
 				}
-
-				System::theRumble[i].rumble.x = 0.2f;
-				System::theRumble[i].rumble.y = 0.2f;
-				System::theRumble[i].rumbleTime = 0.2f;
 			}
 			else if (System::theTracker->b == DirectX::GamePad::ButtonStateTracker::PRESSED)
 			{

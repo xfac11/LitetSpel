@@ -8,7 +8,6 @@ Mouse* System::theMouse = 0;
 Keyboard* System::theKeyboard = 0;
 GamePad* System::theGamePad = 0;
 GamePad::ButtonStateTracker* System::theTracker = 0;
-RumbleTemp System::theRumble[4] = {};
 ModelLoader* System::theModelLoader = 0;
 std::vector<State*> System::states = std::vector<State*>();
 GameState System::currentState = GameState::MAINMENU;
@@ -325,107 +324,7 @@ bool System::initialize()
 	//this->theForwardShader->initialize();
 	this->obj[0] = new GameObject(shaderManager->getForwardShader());
 	this->obj[1] = new GameObject(shaderManager->getForwardShader());
-	
-	//for (int i = 0; i < 4; i++)
-	//	this->players[i] = new GameObject(shaderManager->getForwardShader());
-	
-
-
-
-
-	std::vector<Vertex3D> mesh;
-	//Vertex3D temp[] = {
-	//	DirectX::XMFLOAT3(-0.500000,-0.500000, 0.500000),	//pos
-	//	DirectX::XMFLOAT2(0,1),								//uv
-	//	DirectX::XMFLOAT3(0,0,-1),							//normal  0
-	//	DirectX::XMFLOAT3(0,-1,0),							//tangent
-	//	DirectX::XMFLOAT3(-1,0,0),							//binormal
-	//	DirectX::XMFLOAT3(.500000, -0.500000, 0.500000),	//pos
-	//	DirectX::XMFLOAT2(1,1),								//uv
-	//	DirectX::XMFLOAT3(0,0,-1),							//normal  1
-	//	DirectX::XMFLOAT3(0,-1,0),							//tangent
-	//	DirectX::XMFLOAT3(-1,0,0),							//binormal
-	//	DirectX::XMFLOAT3(-.500000, 0.500000, 0.500000),	//pos
-	//	DirectX::XMFLOAT2(0,0),								//uv
-	//	DirectX::XMFLOAT3(0,0,-1),							//normal
-	//	DirectX::XMFLOAT3(0,-1,0),							//tangent  2
-	//	DirectX::XMFLOAT3(-1,0,0),							//binormal
-	//	DirectX::XMFLOAT3(.500000, 0.500000, 0.500000),		//pos
-	//	DirectX::XMFLOAT2(1,0),								//uv
-	//	DirectX::XMFLOAT3(0,0,-1),							//normal  3
-	//	DirectX::XMFLOAT3(0,-1,0),							//tangent
-	//	DirectX::XMFLOAT3(-1,0,0),							//binormal
-	//};
-	Vertex3D temp[] = {
-		DirectX::XMFLOAT3(.500000, -0.500000, 0.500000),	//pos
-		DirectX::XMFLOAT2(1,1),								//uv
-		DirectX::XMFLOAT3(0,0,-1),							//normal  1
-		DirectX::XMFLOAT3(0,-1,0),							//tangent
-		DirectX::XMFLOAT3(-1,0,0),							//binormal
-
-		DirectX::XMFLOAT3(-0.500000,-0.500000, 0.500000),	//pos
-		DirectX::XMFLOAT2(0,1),								//uv
-		DirectX::XMFLOAT3(0,0,-1),							//normal  0
-		DirectX::XMFLOAT3(0,-1,0),							//tangent
-		DirectX::XMFLOAT3(-1,0,0),							//binormal
-
-		DirectX::XMFLOAT3(-.500000, 0.500000, 0.500000),	//pos
-		DirectX::XMFLOAT2(0,0),								//uv
-		DirectX::XMFLOAT3(0,0,-1),							//normal
-		DirectX::XMFLOAT3(0,-1,0),							//tangent  2
-		DirectX::XMFLOAT3(-1,0,0),							//binormal
-
-		DirectX::XMFLOAT3(.500000, -0.500000, 0.500000),	//pos
-		DirectX::XMFLOAT2(1,1),								//uv
-		DirectX::XMFLOAT3(0,0,-1),							//normal  1
-		DirectX::XMFLOAT3(0,-1,0),							//tangent
-		DirectX::XMFLOAT3(-1,0,0),							//binormal
-
-		DirectX::XMFLOAT3(-.500000, 0.500000, 0.500000),	//pos
-		DirectX::XMFLOAT2(0,0),								//uv
-		DirectX::XMFLOAT3(0,0,-1),							//normal
-		DirectX::XMFLOAT3(0,-1,0),							//tangent  2
-		DirectX::XMFLOAT3(-1,0,0),							//binormal
-
-		DirectX::XMFLOAT3(.500000, 0.500000, 0.500000),		//pos
-		DirectX::XMFLOAT2(1,0),								//uv
-		DirectX::XMFLOAT3(0,0,-1),							//normal  3
-		DirectX::XMFLOAT3(0,-1,0),							//tangent
-		DirectX::XMFLOAT3(-1,0,0),							//binormal
-	};
-	DWORD indices[] = {
-		1, 0, 2, 1, 2, 3
-	};
-	for (int i = 0; i < 6; i++)
-	{
-		mesh.push_back(temp[i]);
-	}
-
-	std::vector<Vertex3D> mesh2;
-	Vertex3D temp2[] = {
-		DirectX::XMFLOAT3(-0.500000,0.500000, 0.500000),
-		DirectX::XMFLOAT2(1,0),
-		DirectX::XMFLOAT3(0,0,-1),
-		DirectX::XMFLOAT3(0,-1,0),							//tangent
-		DirectX::XMFLOAT3(-1,0,0),							//binormal
-		DirectX::XMFLOAT3(00000, 1.000000, 0.500000),
-		DirectX::XMFLOAT2(1,0),
-		DirectX::XMFLOAT3(0,0,-1),
-		DirectX::XMFLOAT3(0,-1,0),							//tangent
-		DirectX::XMFLOAT3(-1,0,0),							//binormal
-		DirectX::XMFLOAT3(0.500000, 0.500000, 0.500000),
-		DirectX::XMFLOAT2(1,0),
-		DirectX::XMFLOAT3(0,0,-1),
-		DirectX::XMFLOAT3(0,-1,0),							//tangent
-		DirectX::XMFLOAT3(-1,0,0),							//binormal
-	};
-	DWORD indices2[] = {
-		0,1,2
-	};
-	for (int i = 0; i < 3; i++)
-	{
-		mesh2.push_back(temp2[i]);
-	}
+		
 
 
 	//D3D10_CULL_BACK; //Test
@@ -436,21 +335,9 @@ bool System::initialize()
 	theModelLoader->loadGO(obj[1], "Resources/Models/cube2.lu", "lovelive.tga"); //Library test //load anim_test6
 	this->obj[1]->setPosition(-1, -0.5, 0);
 																				 //
-	//theModelLoader->loadGO(this->players[0], "Resources/Models/cube2.lu", "foxTest.tga");
-	//this->players[0]->setScale(0.5f, 0.4f, 0.1f);
-	//theModelLoader->loadGO(this->players[1], "Resources/Models/cube2.lu", "foxTest.tga");
-	////obj[1]->setPosition(5, 5, 5);
-
-	//this->players[1]->setScale(0.6f, 0.8f, 0.1f);
-	//theModelLoader->loadGO(this->players[2], "Resources/Models/cube2.lu", "cat.tga");
-	//this->players[2]->setScale(0.6f, 0.8f, 0.1f);
-	//theModelLoader->loadGO(this->players[3], "Resources/Models/cube2.lu", "cat.tga");
-	//this->players[3]->setScale(0.6f, 0.8f, 0.1f);
 
 	this->handler.addObject(this->obj[1]);
 	this->handler.addObject(this->obj[0]);
-	//for (int i = 0; i < 4; i++)
-	//	this->handler.addObject(this->players[i]);
 	
 
 	System::commonStates = new CommonStates(System::getDevice());
@@ -577,88 +464,6 @@ void System::update(float deltaTime)
 	//theCamera->SetRotation(camRot);
 
 
-
-
-	//old input logic 
-	//bool grounded = true; //platform check
-
-	//DirectX::XMFLOAT2 objF = { obj->getPosition().x,obj->getPosition().y };
-	//DirectX::XMFLOAT2 scaleObj = { 0.5f, 0.3f };
-
-	//DirectX::XMFLOAT2 one = { playerOne->getPosition().x,playerOne->getPosition().y };
-	//DirectX::XMFLOAT2 scaleOne = { 0.3f,0.4f };
-	//DirectX::XMFLOAT2 two = { playerTwo->getPosition().x,playerTwo->getPosition().y };
-	//DirectX::XMFLOAT2 scaleTwo = { 0.6f,0.8f };
-	//if (this->playerInputs->collision(one, scaleOne, two, scaleTwo))
-	//	this->collide = true;
-	//else
-	//	this->collide = false;
-
-
-	//if (GUNGAME == currentState)
-	//{	
-	//	GameObject* temp= nullptr;
-	//	temp = obj[0];
-	//	if (currentInput == 0)
-	//	{
-	//		temp = players[0];
-	//	}
-	//	else if (currentInput == 1)
-	//	{
-	//		temp = players[1];
-	//	}
-	//	else if (currentInput == 2)
-	//	{
-	//		temp = players[2];
-	//	
-	//	}
-	//	else if (currentInput == 3)
-	//	{
-	//		temp = players[3];
-
-	//	}
-	//	else if (currentInput == 4)
-	//	{
-	//		temp = obj[0];
-
-	//	}
-	//	else if (currentInput == 5)
-	//	{
-	//		temp = obj[1];
-
-	//	}
-	//	DirectX::XMFLOAT2 playerPos = {temp->getPosition().x, temp->getPosition().y};
-	//	DirectX::XMFLOAT2 playerScale = { temp->getScale().x,temp->getScale().y };
-	//	DirectX::XMFLOAT2 player2Pos = { players[1]->getPosition().x, players[1]->getPosition().y };
-	//	DirectX::XMFLOAT2 player2Scale = { players[1]->getScale().x,players[1]->getScale().y };
-	//	
-	//	
-	//	DirectX::XMFLOAT2 obj1Pos = { obj[0]->getPosition().x, obj[0]->getPosition().y };
-	//	DirectX::XMFLOAT2 obj1Scale = { obj[0]->getScale().x,obj[0]->getScale().y };
-	//	
-
-	//	//GunGameState* gamePtr=nullptr;
-	//	//for (int i = 0; i < 4; i++)
-	//	//{
-	//	//	gamePtr = dynamic_cast<GunGameState*>(states[1]);
-	//	//	if (gamePtr != nullptr)
-	//	//	{
-
-	//	//		if (players[i]->getPosition().y - 0.5f*players[i]->getScale().y > 0.f)//0 is boundry for curent floor
-	//	//			gamePtr->setGrounded(i, false);
-	//	//		else
-	//	//			gamePtr->setGrounded(i, true);
-	//	//		
-	//	//		
-	//	//		if (i == 0)
-	//	//			temp->move(gamePtr->getDirection(i));
-	//	//		else
-	//	//			players[i]->move(gamePtr->getDirection(i));
-	//	//	}
-	//	//}
-	//}
-
-
 	//this->theCamera->calcCamera(players[0]->getPosition(), players[1]->getPosition(), players[2]->getPosition(), players[3]->getPosition());
 
 	if (theKeyboard->KeyIsPressed('W'))
@@ -718,8 +523,6 @@ void System::update(float deltaTime)
 	}
 
 
-
-
 	//theCamera->SetRotation(theMouse->GetPos().y, 0, 0);
 
 
@@ -754,22 +557,7 @@ void System::render()
 	shaderManager->getForwardShader()->setViewProj(this->theCamera->GetViewMatrix(), this->theGraphicDevice->getProj(), DirectX::XMFLOAT4(this->theCamera->GetPosition().x, this->theCamera->GetPosition().y, this->theCamera->GetPosition().z, 1.0f));
 	shaderManager->getForwardShader()->setShaders();//tänker att man kör denna sen renderar allla som använder denna shader sen tar setshader på nästa osv.
 	
-	//this->model[0]->setShader(shaderManager->getForwardShader());
-	//this->model[0]->draw();
-	//this->handler.draw();
-
-	/*this->obj->draw();
-	this->obj2->draw();*/
 	
-	//reset for the sprite
-	
-
-	//this->obj->draw();
-	//this->playerOne->draw();
-	//this->playerTwo->draw();
-
-	
-
 	if(currentState==MAINMENU)
 		this->resetShaders();
 	System::states[System::currentState]->render();
@@ -819,164 +607,11 @@ void System::run()
 				//Game
 				//make keyboard stuff into private function´?
 				float delteTime = ImGui::GetIO().DeltaTime;
-				update(delteTime);
-
-				for (int i = 0; i < 4; i++)
-				{
-					updateRumble(delteTime, i);
-				}
-				
+				update(delteTime);				
 				render();
-				
-
 
 				int xMouse = 0;
 				int yMouse = 0;
-				//
-				//while (!this->theMouse->EventBufferIsEmpty())
-				//{
-				//	MouseEvent mEvent = theMouse->ReadEvent();
-				//	//std::string posMsg = "Mouse pos: X=" + std::to_string(mEvent.GetPosX()-384) + ", Y="+ std::to_string(mEvent.GetPosY()-384) + "\n";
-				//	if (mEvent.GetType() == MouseEventType::RAW_MOVE)
-				//	{
-				//		//std::string rawMsg = "raw x: " + std::to_string(mEvent.GetPosX()) + ", Y:" + std::to_string(mEvent.GetPosY()) + "\n";
-				//		//OutputDebugStringA(rawMsg.c_str());
-				//		xMouse = mEvent.GetPosX();
-				//		yMouse = mEvent.GetPosY();
-				//	}
-				//	/*				if (mEvent.GetType() == LPress)
-				//					{
-				//						OutputDebugStringA("Pressed LeftMouse\n");
-				//					}
-				//					if (mEvent.GetType() == LRelease)
-				//					{
-				//						OutputDebugStringA("Released LeftMouse\n");
-				//					}
-				//					if (mEvent.GetType() == RPress)
-				//					{
-				//						OutputDebugStringA("Pressed RightMouse\n");
-				//					}
-				//					if (mEvent.GetType() == RRelease)
-				//					{
-				//						OutputDebugStringA("Released RightMouse\n");
-				//					}
-				//					if (mEvent.GetType() == MPress)
-				//					{
-				//						OutputDebugStringA("Pressed MiddleMouse\n");
-				//					}
-				//					if (mEvent.GetType() == MRelease)
-				//					{
-				//						OutputDebugStringA("Released MiddleMouse\n");
-				//					}
-				//					if (mEvent.GetType() == WheelUp)
-				//					{
-				//						OutputDebugStringA("WheelUp\n");
-				//					}
-				//					if (mEvent.GetType() == WheelDown)
-				//					{
-				//						OutputDebugStringA("WheelDown\n");
-				//					}
-				//					if (mEvent.GetType() == FPress)
-				//					{
-				//						OutputDebugStringA("Pressed FrontMouse\n");
-				//					}
-				//					if (mEvent.GetType() == FRelease)
-				//					{
-				//						OutputDebugStringA("Released FrontMouse\n");
-				//					}
-				//					if (mEvent.GetType() == BPress)
-				//					{
-				//						OutputDebugStringA("Pressed BackMouse\n");
-				//					}
-				//					if (mEvent.GetType() == BRelease)
-				//					{
-				//						OutputDebugStringA("Released BackMouse\n");
-				//					}*/
-
-				/*
-				while (!theKeyboard->CharBufferIsEmpty()) //decide if or while
-				{
-					unsigned char theChar = theKeyboard->ReadChar();
-					std::string theMsg = "Character: ";
-					theMsg += theChar;
-					theMsg += "\n";
-					//OutputDebugStringA(theMsg.c_str());
-					//for typing
-					//char inputs
-				}
-				while (!theKeyboard->KeyBufferIsEmpty())
-				{
-					KeyboardEvent keyEvent = theKeyboard->ReadKey();
-					unsigned char theKey = keyEvent.GetKeyCode();
-					char theKey = theKey;
-					std::string theMsg = "Key ";
-					if (keyEvent.IsPress())
-					{
-						theMsg += "Pressed: ";
-						theMsg += theKey;
-
-						if (theKeyboard->KeyIsPressed('W'))
-							forward = Positive;
-						else if (theKey == 'S')
-							forward = Negative;
-						if (theKey == 'D')
-							left_right = Positive;
-						else if (theKey == 'A')
-							left_right = Negative;
-						if (theKey == 32) //32 == space
-							up_down = Positive;
-						else if (theKey == 16) //shift
-							up_down = Negative;
-
-						if (theKey == 'B')
-						{
-							this->change(this->flySwitch);
-						}
-						if (theKey == 'M')
-						{
-							this->change(this->mouseSwitch);
-							ShowCursor(this->mouseSwitch);
-						}
-						if (theKey == 9) //tab
-						{
-							moveScreen = false;
-						}
-					}
-					if (keyEvent.IsRelease())
-					{
-						theMsg += "Released: ";
-						theMsg += theKey;
-
-
-						if (theKey == 'W')
-							forward = Neutral;
-						else if (theKey == 'S')
-							forward = Neutral;
-						if (theKey == 'A')
-							left_right = Neutral;
-						else if (theKey == 'D')
-							left_right = Neutral;
-						if (theKey == 32) //32 == space
-							up_down = Neutral;
-						else if (theKey == 16) //shift
-							up_down = Neutral;
-						if (theKey == 9) //tab
-						{
-							moveScreen = true;
-						}
-
-					}
-					theMsg += "\n";
-					OutputDebugStringA(theMsg.c_str());
-				}
-
-				if (this->mouseSwitch == false)
-					SetCursorPos(400, 400);
-
-
-				graphics->move(forward, left_right, this->up_down, this->flySwitch, xMouse, yMouse);
-				graphics->Frame(move1, move2);
-				*/
 				
 			}
 		}
@@ -1003,21 +638,6 @@ ID3D11Device *& System::getDevice()
 ID3D11DeviceContext *& System::getDeviceContext()
 {
 	return theGraphicDevice->getDeviceContext();
-}
-
-void System::updateRumble(float deltaTime, int id)
-{
-	if (theRumble[id].rumbleTime > theRumble[id].rumbleClock)
-	{
-		theRumble[id].rumbleClock += deltaTime;
-		System::theGamePad->SetVibration(id, theRumble[id].rumble.x, theRumble[id].rumble.y);
-	}
-	else
-	{
-		theRumble[id].rumbleClock = 0.f;
-		theRumble[id].rumbleTime = 0.f;
-		System::theGamePad->SetVibration(id, 0, 0);
-	}
 }
 
 SpriteBatch * System::getSpriteBatch()
