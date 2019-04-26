@@ -26,7 +26,7 @@ struct AABB {
 	AABB() : Max(1, 1, 1), Min(1, 1, 1) { }
 	AABB(const XMFLOAT3& p, const XMFLOAT3& s) :
 		Max(p), Min(s) { }
-	friend bool Intersects(const AABB b1, const AABB b2);
+	friend bool Intersects(const AABB a, XMFLOAT3 posA, const AABB b, XMFLOAT3 posB);
 }
 typedef AABB;
 

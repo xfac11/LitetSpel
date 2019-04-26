@@ -11,15 +11,27 @@ bool Intersects(const Sphere s1, const Sphere s2)
 	return distance < sum;
 }
 
-bool Intersects(const AABB a, const AABB b)
+bool Intersects(const AABB a, XMFLOAT3 posA, const AABB b, XMFLOAT3 posB)
 {
+	
+	DirectX::XMFLOAT3 minA;
+	DirectX::XMFLOAT3 maxA;
+	DirectX::XMFLOAT3 minB;
+	DirectX::XMFLOAT3 maxB;
+
+	minA = XMFLOAT3(posA.x - a.width, posA.y - a.height, posA.z - a.depth);
+	maxA = XMFLOAT3(posA.x + a.width, posA.y + a.height, posA.z + a.depth);
+
+	minB = XMFLOAT3(posB.x - b.width, posB.y - b.height, posB.z - b.depth);
+	maxB = XMFLOAT3(posB.x + b.width, posB.y + b.height, posB.z + b.depth);
 	//Check if AABB1's max is greater than AABB2's min and AABB1's min is less than AABB2's max
-	return(a.Max.x > b.Min.x &&
-		a.Min.x < b.Max.x &&
-		a.Max.y >b.Min.y &&
-		a.Min.y < b.Max.y &&
-		a.Max.z > b.Min.z &&
-		a.Min.z < b.Max.z);
+
+	return(maxA.x > minB.x &&
+		minA.x < maxB.x &&
+		maxA.y >minB.y &&
+		minA.y < maxB.y &&
+		maxA.z > minB.z &&
+		minA.z < maxB.z);
 }
 
 ostream& operator<<(ostream & stream, const Sphere & shape) {

@@ -2,8 +2,8 @@
 
 Camera::Camera()
 {
-	this->position = DirectX::XMFLOAT3(0.f, 0.f, -1.f);
-	this->rotation = DirectX::XMFLOAT3(0.f, 0.f, 0.f);
+	this->position = DirectX::XMFLOAT3(0.f, 1.f, -2.f);
+	this->rotation = DirectX::XMFLOAT3(35.f, 0.f, 0.f);
 
 }
 
