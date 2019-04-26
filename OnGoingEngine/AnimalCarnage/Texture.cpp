@@ -14,9 +14,18 @@ Texture::~Texture()
 
 void Texture::setTexture(std::string fileName)
 {
+
+	std::string modelTexture = "Resources/Textures/" + fileName;
 	std::string fileTexture = "Textures/" + fileName;
-	const char *file = fileTexture.c_str();
-	testTexture.Initialize(file);
+	//const char *file = fileTexture.c_str();
+
+	if (!testTexture.Initialize(fileTexture.c_str()))
+	{
+		if (!testTexture.Initialize(modelTexture.c_str()))
+		{
+			testTexture.Initialize("Textures/foxTest.tga");
+		}
+	}
 	/*if (!testTexture.Initialize(gDevice, gDeviceContext, fileName))
 	{
 		std::string out = "\n\nFailed load texture:  ";

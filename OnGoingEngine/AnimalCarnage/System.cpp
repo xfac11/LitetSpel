@@ -622,7 +622,7 @@ void System::run()
 
 void System::shutDown()
 {
-	//delete playerInputs;
+
 }
 
 WPARAM System::getMsgWParam()
