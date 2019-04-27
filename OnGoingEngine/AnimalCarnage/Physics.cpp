@@ -32,16 +32,22 @@ solver(new btSequentialImpulseConstraintSolver)
 
 Physics::~Physics()
 {
-	delete dispatcher;
-	delete broadphase;
-	delete solver;
-	delete collisionConfig;
+
 	//osäker på om man deletar på detta sätt
 	for (int i = 0; i < bodies.size(); i++)
 	{
 		this->world->removeRigidBody(bodies[i]);
-		delete bodies[i]->getMotionState();
+		btMotionState* motionState = bodies[i]->getMotionState();
+		btCollisionShape* shape = bodies[i]->getCollisionShape();
+		delete bodies[i];
+		delete shape;
+		delete motionState;
 	}
+	delete dispatcher;
+	delete collisionConfig;
+	delete solver;
+	delete broadphase;
+	delete world;
 	bodies.clear();
 
 }
@@ -62,7 +68,7 @@ btRigidBody* Physics::addSphere(float rad, float x, float y, float z, float mass
 	btTransform t; //
 	t.setIdentity();
 	t.setOrigin(btVector3(x, y,z));
-	btSphereShape * sphere = new btSphereShape(rad);
+	btSphereShape * sphere = new btSphereShape(rad); //raduius
 
 	btVector3 inertia(0, 0, 0);
 	if (mass != 0.0f) {

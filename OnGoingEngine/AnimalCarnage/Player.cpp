@@ -21,21 +21,27 @@ Player::~Player()
 	//delete playerObj;
 	
 	playerObj = nullptr;
+	delete this->physic;
 }
 
 void Player::initialize()
 {
+	physic = new Physics();
 	this->playerObj = new GameObject(System::shaderManager->getForwardShader());
+	
+	this->playerObj->setPosition(0, 1.2, 0);
+	btVector3 postion = btVector3(playerObj->getPosition().x, playerObj->getPosition().y, playerObj->getPosition().z);
+	this->playerObj->body() = physic->addSphere(0.5f, postion.getX(), postion.getX(), postion.getX(), 5.0f);
+	
 	
 	System::theModelLoader->loadGO(this->playerObj, "Resources/Models/cube2.lu", "cat2.tga");
 	this->playerObj->setScale(0.5f, 0.4f, 0.1f);
-
 	System::handler.addObject(this->playerObj);
 }
 
 void Player::update(float deltaTime, int id)
 {
-
+	physic->Update();
 	DirectX::GamePad::State state = System::theGamePad->GetState(id);
 	if (state.IsConnected())
 	{
@@ -120,78 +126,78 @@ void Player::update(float deltaTime, int id)
 
 
 
-			//GROUND MOVEMENT
-		float stickAbsL = abs(state.thumbSticks.leftX);
-		if (stickAbsL > 0.f && grounded)
-		{
-			float dir = 2 * state.thumbSticks.leftX;// / stickAbsL;
+	//		//GROUND MOVEMENT
+	//	float stickAbsL = abs(state.thumbSticks.leftX);
+	//	if (stickAbsL > 0.f && grounded)
+	//	{
+	//		float dir = 2 * state.thumbSticks.leftX;// / stickAbsL;
 
-			playerObj->move(dir * deltaTime, 0, 0);
-		}
-		else if ((state.dpad.right || state.dpad.left) && grounded)
-		{
-			float dir = 2 * (state.dpad.right - state.dpad.left);
-			playerObj->move(dir * deltaTime, 0, 0);
-		}
-		else
-			playerObj->move(0, 0, 0);
-	
-		//IN AIR MOVEMENT
+	//		playerObj->move(dir * deltaTime, 0, 0);
+	//	}
+	//	else if ((state.dpad.right || state.dpad.left) && grounded)
+	//	{
+	//		float dir = 2 * (state.dpad.right - state.dpad.left);
+	//		playerObj->move(dir * deltaTime, 0, 0);
+	//	}
+	//	else
+	//		playerObj->move(0, 0, 0);
+	//
+	//	//IN AIR MOVEMENT
 
-		//else if (isJumping == false)
-		//	playerObj->move(0, 0, 0);
-		//else
-		//	playerObj->move(0, 0, 0);
-		//move(getPosition().x, 0, getPosition().z);; //= { 0,0,0 };
+	//	//else if (isJumping == false)
+	//	//	playerObj->move(0, 0, 0);
+	//	//else
+	//	//	playerObj->move(0, 0, 0);
+	//	//move(getPosition().x, 0, getPosition().z);; //= { 0,0,0 };
 
-	//IN AIR MOVEMENT
-		float airspeedAbs = abs(airSpeed);
-		if (stickAbsL > 0.f && !grounded)
-		{
-			float dir = 0.5f * state.thumbSticks.leftX;// airSpeed;// / stickAbsL;
-			playerObj->move(5*dir * deltaTime, 0, 0);
-		}
-		else if (state.dpad.right && !grounded || state.dpad.left && !grounded)
-		{
-			float dir = 0.5f * (state.dpad.right - state.dpad.left);
-			playerObj->move(5*dir* deltaTime, 0, 0);
+	////IN AIR MOVEMENT
+	//	float airspeedAbs = abs(airSpeed);
+	//	if (stickAbsL > 0.f && !grounded)
+	//	{
+	//		float dir = 0.5f * state.thumbSticks.leftX;// airSpeed;// / stickAbsL;
+	//		playerObj->move(5*dir * deltaTime, 0, 0);
+	//	}
+	//	else if (state.dpad.right && !grounded || state.dpad.left && !grounded)
+	//	{
+	//		float dir = 0.5f * (state.dpad.right - state.dpad.left);
+	//		playerObj->move(5*dir* deltaTime, 0, 0);
 
-		}
+	//	}
 
-		//JUMP INPUT
-		if ((state.buttons.x || state.buttons.y) && canJump)
-		{
-			isJumping = true;
-			grounded = false;
-		}
+	//	//JUMP INPUT
+	//	if ((state.buttons.x || state.buttons.y) && canJump)
+	//	{
+	//		isJumping = true;
+	//		grounded = false;
+	//	}
 
-		//canJump
-		if (state.buttons.x || state.buttons.y) {
-			canJump = false;
-		}
-		if (grounded /*&& System::theTracker->x == DirectX::GamePad::ButtonStateTracker::RELEASED || System::theTracker->y == DirectX::GamePad::ButtonStateTracker::RELEASED*/) {
-			canJump = true;
-		}
+	//	//canJump
+	//	if (state.buttons.x || state.buttons.y) {
+	//		canJump = false;
+	//	}
+	//	if (grounded /*&& System::theTracker->x == DirectX::GamePad::ButtonStateTracker::RELEASED || System::theTracker->y == DirectX::GamePad::ButtonStateTracker::RELEASED*/) {
+	//		canJump = true;
+	//	}
 
 
 
-		//falling/jump function
-		if (grounded == false)
-		{
-			airTimer += deltaTime;
-			playerObj->move(0, (-9.82f * airTimer + (5.f * isJumping)) * deltaTime, 0);
-			//continue here
-		}
-		else if (grounded == true)
-		{
-			airTimer = 0.f;
-			isJumping = false;
-			this->playerObj->setPosition(this->playerObj->getPosition().x, 0, this->playerObj->getPosition().z);
-			airSpeed = 0.0f;
-		}
-		if (this->playerObj->getPosition().y < 0) {
-			grounded = true;
-		}
+	//	//falling/jump function
+	//	if (grounded == false)
+	//	{
+	//		airTimer += deltaTime;
+	//		playerObj->move(0, (-9.82f * airTimer + (5.f * isJumping)) * deltaTime, 0);
+	//		//continue here
+	//	}
+	//	else if (grounded == true)
+	//	{
+	//		airTimer = 0.f;
+	//		isJumping = false;
+	//		this->playerObj->setPosition(this->playerObj->getPosition().x, 0, this->playerObj->getPosition().z);
+	//		airSpeed = 0.0f;
+	//	}
+	//	if (this->playerObj->getPosition().y < 0) {
+	//		grounded = true;
+	//	}
 
 
 

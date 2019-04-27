@@ -1,5 +1,6 @@
 #include "GameObject.h"
 
+
 GameObject::GameObject()
 {
 	this->cap=5;
@@ -11,6 +12,7 @@ GameObject::GameObject()
 	}
 	this->theTransforms = Transform();
 	this->colBox = AABB();
+	
 }
 
 GameObject::GameObject(Shader * shader)
@@ -24,12 +26,14 @@ GameObject::GameObject(Shader * shader)
 	}
 	this->theTransforms = Transform();
 	this->colBox = AABB();
+	RGbody = nullptr;
 	/*this->theModel[0] = new Model;
 	this->theModel[0]->setShader(shader);
 	this->nrOfModels++;*/
 
 	//this->worldConstBuffer.initialize();
 }
+
 
 GameObject::~GameObject()
 {
