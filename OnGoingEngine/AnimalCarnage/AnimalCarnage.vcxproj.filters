@@ -600,6 +600,9 @@
     <ClCompile Include="BulletSDK\include\BulletCollision\CollisionDispatch\SphereTriangleDetector.cpp">
       <Filter>BulletSDK</Filter>
     </ClCompile>
+    <ClCompile Include="Physics.cpp">
+      <Filter>Phyiscs</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Bear.h">
@@ -1451,6 +1454,9 @@
     <ClInclude Include="BulletSDK\include\BulletCollision\CollisionDispatch\SphereTriangleDetector.h">
       <Filter>BulletSDK</Filter>
     </ClInclude>
+    <ClInclude Include="Physics.h">
+      <Filter>Phyiscs</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="imgui\.gitkeep" />
@@ -1492,6 +1498,9 @@
     </Filter>
     <Filter Include="BulletSDK">
       <UniqueIdentifier>{de9dc8d7-0af4-4be2-828b-d1e0d4ef9549}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Phyiscs">
+      <UniqueIdentifier>{14fb8e1c-61c9-47c1-b258-f5bf660cbe8e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
