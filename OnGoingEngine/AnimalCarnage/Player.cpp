@@ -61,13 +61,13 @@ void Player::update(float deltaTime, int id)
 		}
 
 		//			//GROUND MOVEMENT
-		//float stickAbsL = abs(state.thumbSticks.leftX);
-		//if (stickAbsL > 0.f && grounded)
-		//{
-		//	float dir = 5 * state.thumbSticks.leftX;// / stickAbsL;
-		//	move(dir * deltaTime, 0, 0);
-		//	airSpeed = dir;
-		//}
+		float stickAbsL = abs(state.thumbSticks.leftX);
+		if (stickAbsL > 0.f && grounded)
+		{
+			float dir = 5 * state.thumbSticks.leftX;// / stickAbsL;
+			move(dir * deltaTime, 0, 0);
+			airSpeed = dir;
+		}
 		//else if ((state.dpad.right || state.dpad.left) && grounded)
 		//{
 		//	move(5 * (state.dpad.right - state.dpad.left) * deltaTime, 0, 0);

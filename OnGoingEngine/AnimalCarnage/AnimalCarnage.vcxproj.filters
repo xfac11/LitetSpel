@@ -603,6 +603,12 @@
     <ClCompile Include="Physics.cpp">
       <Filter>Phyiscs</Filter>
     </ClCompile>
+    <ClCompile Include="DeferredShader.cpp">
+      <Filter>Shader</Filter>
+    </ClCompile>
+    <ClCompile Include="GBuffer.cpp">
+      <Filter>Shader</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Bear.h">
@@ -1456,6 +1462,12 @@
     </ClInclude>
     <ClInclude Include="Physics.h">
       <Filter>Phyiscs</Filter>
+    </ClInclude>
+    <ClInclude Include="DeferredShader.h">
+      <Filter>Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="GBuffer.h">
+      <Filter>Shader</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
