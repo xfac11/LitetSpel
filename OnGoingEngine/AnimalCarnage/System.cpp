@@ -10,7 +10,7 @@ GamePad* System::theGamePad = 0;
 GamePad::ButtonStateTracker* System::theTracker = 0;
 ModelLoader* System::theModelLoader = 0;
 std::vector<State*> System::states = std::vector<State*>();
-GameState System::currentState = GameState::MAINMENU;
+GameState System::currentState = GameState::GUNGAME;
 System* System::fusk = nullptr;
 CommonStates* System::commonStates = nullptr;
 SpriteBatch* System::spriteBatch = nullptr;
@@ -335,7 +335,7 @@ bool System::initialize()
 	theModelLoader->loadGO(obj[1], "Resources/Models/cube2.lu", "lovelive.tga"); //Library test //load anim_test6
 	this->obj[1]->setPosition(-1, -0.5, 0);
 				
-	//
+	
 
 	this->handler.addObject(this->obj[1]);
 	this->handler.addObject(this->obj[0]);

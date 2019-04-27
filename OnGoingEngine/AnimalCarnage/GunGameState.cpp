@@ -1,6 +1,31 @@
 #include "GunGameState.h"
 #include"System.h"
 
+//btRigidBody* GunGameState::addSphere(float rad, float x, float y, float z, float mass)
+//{	//add object set transform
+//	btTransform t; //
+//	t.setIdentity();
+//	t.setOrigin(btVector3(x, y,z));
+//	set shape for object
+//	btSphereShape * sphere = new btSphereShape(rad);
+//
+//	btVector3 inertia(0, 0, 0);
+//	if (mass != 0, 0) {
+//		sphere->calculateLocalInertia(mass, inertia);
+//	}
+//
+//	set motionshape aka set postion
+//	btMotionState* motion = new btDefaultMotionState(t);
+//	body definition check doc
+//	btRigidBody::btRigidBodyConstructionInfo info(mass, motion, sphere, inertia);
+//
+//	btRigidBody* body = new btRigidBody(info);
+//
+//	world->addRigidBody(body);
+//	bodies.push_back(body);
+//	return body;
+//}
+
 bool GunGameState::checkReset(DirectX::GamePad::State state)
 {
 
@@ -8,27 +33,18 @@ bool GunGameState::checkReset(DirectX::GamePad::State state)
 	//if (state.IsConnected())
 	//{
 		//tracker.Update(state);
-		if (((state.IsLeftTriggerPressed() && state.IsRightTriggerPressed())|| 
-			(state.buttons.leftShoulder && state.buttons.rightShoulder) )&&
-			state.buttons.a &&(state.buttons.back || state.buttons.menu))
-		{
-			result = true;
-		}
+	if (((state.IsLeftTriggerPressed() && state.IsRightTriggerPressed()) ||
+		(state.buttons.leftShoulder && state.buttons.rightShoulder)) &&
+		state.buttons.a && (state.buttons.back || state.buttons.menu))
+	{
+		result = true;
+	}
 	//}
 	return result;
 }
 
 GunGameState::GunGameState()
 {
-	
-	for (int i = 0; i < 2; i++)
-	{
-		items[i].isFlying = false;
-		items[i].airTimer = 0.f;
-		items[i].grounded = true;
-		items[i].lastDir = 1;
-		items[i].weight = 2.f;
-	}
 	
 }
 
@@ -41,7 +57,7 @@ bool GunGameState::initailize()
 {
 
 	nrOfPlayers = 4;
-	player = new Player*[nrOfPlayers];
+	player = new Player * [nrOfPlayers];
 
 	for (int i = 0; i < nrOfPlayers; i++)
 	{
@@ -66,6 +82,34 @@ bool GunGameState::initailize()
 	System::handler.addLight(pos, dir, color2);
 
 
+	////default values
+	//this->collisionConfig = new btDefaultCollisionConfiguration();
+	//dispatcher = new btCollisionDispatcher(collisionConfig);
+	//this->broadphase = new btDbvtBroadphase();
+	//this->solver = new btSequentialImpulseConstraintSolver();
+
+	//world = new btDiscreteDynamicsWorld(dispatcher, broadphase, solver, collisionConfig);
+	//world->setGravity(btVector3(0, -10, 0));
+
+	////add object set transform
+	//btTransform t; //
+	//t.setIdentity();
+	//t.setOrigin(btVector3(0, 0, 0));
+	////set shape for object
+	//btStaticPlaneShape* plane = new btStaticPlaneShape(btVector3(0, 1, 0), 0);
+	////set motionshape aka set postion
+	//btMotionState* motion = new btDefaultMotionState(t);
+	////body definition check doc
+	//btRigidBody::btRigidBodyConstructionInfo info(0.0, motion, plane);
+
+	//btRigidBody* body = new btRigidBody(info);
+
+	//world->addRigidBody(body);
+	//bodies.push_back(body);
+
+	////add sphere
+	//
+	////addSphere(1.0f, 0, 20, 0, 1.0);
 	return true;
 }
 
@@ -73,6 +117,15 @@ bool GunGameState::render()
 {
 	renderImgui();
 	System::handler.draw();
+
+	//for (int i = 0; i < bodies.size(); i++)
+	//{
+	//	
+	//		renderSphere(bodies[i]);
+	//	
+	//}
+	//world->stepSimulation(1 / 60.0);
+
 	//this->gui->render();
 	return true;
 }
@@ -95,23 +148,28 @@ void GunGameState::renderImgui()
 
 bool GunGameState::update(float deltaTime)
 {
-	
+
 	for (int i = 0; i < nrOfPlayers; i++)
 	{
 		player[i]->update(deltaTime, i);
 		player[i]->updateRumble(deltaTime, i);
 	}
-	
+
 	if (Intersects(System::handler.getObject(2).getCollisionBox(), System::handler.getObject(2).getPosition(), System::handler.getObject(3).getCollisionBox(), System::handler.getObject(3).getPosition()))
 	{
-		
+
 	}
 	return true;
 }
 
 void GunGameState::shutDown()
 {
-
+	/*delete dispatcher;
+	delete collisionConfig;
+	delete solver;
+	delete broadphase;
+	delete world;
+*/
 	for (int i = 0; i < nrOfPlayers; i++)
 	{
 		delete player[i];
@@ -176,8 +234,8 @@ bool GunGameState::collision(DirectX::XMFLOAT2 posOne, float radiusOne, DirectX:
 bool GunGameState::collision(DirectX::XMFLOAT2 posBox, DirectX::XMFLOAT2 scaleBox, DirectX::XMFLOAT2 posCircle, float radiusCircle)
 {
 	float size = 0.5f;
-	float widthBox = scaleBox.x*size * 2;
-	float heightBox = scaleBox.y*size * 2;
+	float widthBox = scaleBox.x * size * 2;
+	float heightBox = scaleBox.y * size * 2;
 
 
 	float Dx = posCircle.x - std::fmaxf(posBox.x, std::fminf(posCircle.x, posBox.x + widthBox));
