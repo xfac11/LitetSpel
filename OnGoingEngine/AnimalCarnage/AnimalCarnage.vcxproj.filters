@@ -603,6 +603,8 @@
     <ClCompile Include="Physics.cpp">
       <Filter>Phyiscs</Filter>
     </ClCompile>
+    <ClCompile Include="Animator.cpp" />
+    <ClCompile Include="Animation.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Bear.h">

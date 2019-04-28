@@ -1,6 +1,6 @@
 #ifndef ANIMATEDMODEL_H
 #define ANIMATEDMODEL_H
-#include "Animator.h"
+//#include "Animator.h"
 #include "Joint.h"
 class AnimatedModel
 {
@@ -19,5 +19,9 @@ private:
 	
 	*/
 public:
+
+	AnimatedModel();
+
+	Joint getRootJoint(); //make this point to root 
 };
 #endif // !AnimatedModel_H
