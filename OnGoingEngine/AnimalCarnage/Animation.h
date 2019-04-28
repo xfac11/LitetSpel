@@ -1,6 +1,6 @@
 #ifndef ANIMATION_H
 #define ANIMATION_H
-#include "JointAnimation.h""
+#include "JointAnimation.h"
 class Animation
 {
 private:

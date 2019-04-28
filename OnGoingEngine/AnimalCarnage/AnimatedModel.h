@@ -21,7 +21,7 @@ private:
 	Joint* root;// jointHierarchy; //root of the joint structure
 	int jointCount;
 
-	Animator* animator;
+	//Animator* animator;
 
 	void addJointsToArray(Joint* headJoint, DirectX::XMMATRIX**& jointMatrices);
 public:
