@@ -67,17 +67,17 @@ bool GunGameState::initailize()
 	System::handler.initialize();
 
 	float pos[4] = {
-	0,0,-1,3.0
+	0,0,0,10.0
 	};
 	float dir[4] = {
-		0.0f,0.0f,1.0f,1.0f
+		-1.0f,-1.0f,0.0f,1.0f
 	};
 	float color[4] = {
-		1.0 , 1, 1.0 , 1.0f
+		0.9 , 1.0f, 0.2f , 1.0f
 	};
 	System::handler.addLight(pos, dir, color);
 	float color2[4] = {
-		0.9 , 1.0f, 0.2f , 1.0f
+		0.0 , 1.0f, 1.0f , 1.0f
 	};
 	System::handler.addLight(pos, dir, color2);
 
