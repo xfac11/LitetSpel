@@ -131,6 +131,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Animal.cpp" />
+    <ClCompile Include="Animation.cpp" />
+    <ClCompile Include="Animator.cpp" />
     <ClCompile Include="Bear.cpp" />
     <ClCompile Include="BulletSDK\include\BulletCollision\BroadphaseCollision\btAxisSweep3.cpp" />
     <ClCompile Include="BulletSDK\include\BulletCollision\BroadphaseCollision\btBroadphaseProxy.cpp" />

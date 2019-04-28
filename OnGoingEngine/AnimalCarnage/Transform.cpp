@@ -77,6 +77,11 @@ Transform::~Transform()
 
 }
 
+void Transform::SetWorldToRigitBody()
+{
+	 this->world = btTransform_to_XMMATRIX(this->rgBody->getWorldTransform());
+}
+
 btTransform XMMATRIX_to_btTransform(XMMATRIX const& mat)
 {
 	// convert from XMMATRIX to btTransform (Bullet Physics)

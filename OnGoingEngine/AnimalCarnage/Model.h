@@ -37,6 +37,10 @@ private:
 	Texture* normalMap;
 	int vertexCount;
 	
+	//Joint jointHierarchy
+	//int3 jointIDs
+	//float3 weights
+
 	Opacity type;
 	Shader * theShader;//pointer to the shader it uses. Comes from system or state. Do not delete
 };
