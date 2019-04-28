@@ -1,6 +1,6 @@
 #include "Player.h"
 #include "System.h"
-
+#include"Transform.h"
 
 Player::Player()
 {
@@ -29,10 +29,10 @@ void Player::initialize()
 	physic = new Physics();
 	this->playerObj = new GameObject(System::shaderManager->getForwardShader());
 	
-	this->playerObj->setPosition(0, 1.2, 0);
+	this->playerObj->setPosition(0, 1, 1);
 	btVector3 postion = btVector3(playerObj->getPosition().x, playerObj->getPosition().y, playerObj->getPosition().z);
-	this->playerObj->body() = physic->addSphere(1.0f, postion.getX(), postion.getX(), postion.getX(),2.0f);
-	
+	this->playerObj->body() = physic->addSphere(1.0f, postion.getX(), postion.getX(), postion.getX(),1);
+	//this->playerObj->body()->getWorldTransform()
 	////btMotionState* ms = this->playerObj->body()->getMotionState();
 
 	////btMatrix3x3 orn = ms->getWorldTransform(); //get basis of world transformation
@@ -47,7 +47,7 @@ void Player::initialize()
 	//this->playerObj->getWorld() = btMatrix3x3(this->playerObj->body()->getInvInertiaTensorWorld());
 
 	//
-
+	this->playerObj->body()->setWorldTransform(XMMATRIX_to_btTransform(this->playerObj->getWorld()));
 	System::theModelLoader->loadGO(this->playerObj, "Resources/Models/cube2.lu", "cat2.tga");
 	this->playerObj->setScale(0.5f, 0.4f, 0.1f);
 	System::handler.addObject(this->playerObj);
@@ -55,7 +55,24 @@ void Player::initialize()
 
 void Player::update(float deltaTime, int id)
 {
+	this->playerObj->setPosition(this->playerObj->body()->getWorldTransform().getOrigin().getX()
+		, this->playerObj->body()->getWorldTransform().getOrigin().getY(),
+		this->playerObj->body()->getWorldTransform().getOrigin().getZ());
+	//this->playerObj->body()->setWorldTransform(XMMATRIX_to_btTransform(this->playerObj->getWorld()));
+	
+
+	/*this->playerObj->setRotation(this->playerObj->body()->getWorldTransform().getBasis().getgetX()
+		, this->playerObj->body()->getWorldTransform().getOrigin().getY(),
+		this->playerObj->body()->getWorldTransform().getOrigin().getZ());*/
+
 	physic->Update();
+	/*if (System::theKeyboard->KeyIsPressed('K'))
+	{
+		this->playerObj->setPosition(0, 100, 1);
+	
+		this->playerObj->body()->setWorldTransform(XMMATRIX_to_btTransform(this->playerObj->getWorld()));
+	}
+	*/
 	DirectX::GamePad::State state = System::theGamePad->GetState(id);
 	if (state.IsConnected())
 	{
@@ -79,7 +96,7 @@ void Player::update(float deltaTime, int id)
 		if (stickAbsL > 0.f && grounded)
 		{
 			float dir = 5 * state.thumbSticks.leftX;// / stickAbsL;
-			move(dir * deltaTime, 0, 0);
+			this->playerObj->body()->applyForce(btVector3(dir, 0, 0), btVector3(0, 1, 0));
 			airSpeed = dir;
 		}
 		//else if ((state.dpad.right || state.dpad.left) && grounded)

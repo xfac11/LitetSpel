@@ -35,10 +35,11 @@ public:
 	~Transform();
 
 
-	//Bullet
-	static btTransform XMMATRIX_to_btTransform(XMMATRIX const& mat);
-	static XMMATRIX btTransform_to_XMMATRIX(btTransform const& trans);
-	//Get Position from btTransform
-	static XMFLOAT3 btTransform_to_XMFLOAT3(btTransform const& trans);
+
 
 };
+//Bullet
+btTransform XMMATRIX_to_btTransform(XMMATRIX const& mat);
+XMMATRIX btTransform_to_XMMATRIX(btTransform const& trans);
+//Get Position from btTransform
+XMFLOAT3 btTransform_to_XMFLOAT3(btTransform const& trans);

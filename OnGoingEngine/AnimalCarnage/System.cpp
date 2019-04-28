@@ -299,7 +299,8 @@ System::~System()
 	this->theGraphicDevice->shutDown();
 	delete this->theGraphicDevice;
 
-
+	delete this->obj[0];
+	delete this->obj[1];
 	delete System::states[0];
 	delete System::states[1];
 	delete System::commonStates;
@@ -337,8 +338,8 @@ bool System::initialize()
 				
 	
 
-	this->handler.addObject(this->obj[1]);
-	this->handler.addObject(this->obj[0]);
+	//this->handler.addObject(this->obj[1]);
+	//this->handler.addObject(this->obj[0]);
 	
 
 	System::commonStates = new CommonStates(System::getDevice());
@@ -490,7 +491,11 @@ void System::update(float deltaTime)
 		//this->obj2->move(-1 * deltaTime, 0, 0);
 		theCamera->move(-1 * deltaTime, 0, 0);
 	}
-
+	if (theKeyboard->KeyIsPressed('X'))
+	{
+		//this->obj2->move(-1 * deltaTime, 0, 0);
+		theCamera->move(0, -1 * deltaTime, 0);
+	}
 	if (theKeyboard->KeyIsPressed('V'))
 	{
 		this->change(this->moveScreen);

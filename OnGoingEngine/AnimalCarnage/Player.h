@@ -27,7 +27,6 @@ private:
 	bool canJump;
 	float airSpeed;
 
-	GameObject* playerObj;
 	RumbleProperties theRumble;
 
 	XMFLOAT3 Accleration = XMFLOAT3(0, 0, 0);
@@ -61,5 +60,7 @@ public:
 	XMFLOAT3 getPosition();
 	AABB getAABB();
 
+
+	GameObject* playerObj;
 };
 

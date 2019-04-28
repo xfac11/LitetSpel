@@ -47,7 +47,7 @@ void GameObjectHandler::addObject(GameObject *& gameObject)
 				this->expandTransModels();
 			//gameObject->getModel(i).setShader(Shader);
 			this->transModels[this->nrOfTrans].modelPtr = gameObject->getModel(i);
-			this->transModels[this->nrOfTrans].worldPtr = &gameObject->getWorld();
+			this->transModels[this->nrOfTrans].worldPtr = &gameObject->getWorld();//&btTransform_to_XMMATRIX(gameObject->body()->getWorldTransform());
 			gameObject->getModel(i)->setShader(System::shaderManager->getForwardShader());
 			this->nrOfTrans++;
 			/*Model* *ptr = new Model*[4];
