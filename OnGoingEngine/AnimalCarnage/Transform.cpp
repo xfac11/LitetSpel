@@ -77,3 +77,55 @@ Transform::~Transform()
 
 }
 
+btTransform Transform::XMMATRIX_to_btTransform(XMMATRIX const& mat)
+{
+	// convert from XMMATRIX to btTransform (Bullet Physics)
+	btMatrix3x3 Rotation;
+	btVector3 Position;
+	// copy rotation matrix
+
+	XMFLOAT4X4 xmatrix;
+	XMStoreFloat4x4(&xmatrix, mat);
+
+	for (int row = 0; row < 3; ++row)
+
+		for (int column = 0; column < 3; ++column)
+
+			Rotation[row][column] = xmatrix.m[column][row];
+
+	// copy position
+	for (int column = 0; column < 3; ++column)
+
+		Position[column] = xmatrix.m[3][column];
+
+	return btTransform(Rotation, Position);
+}
+
+XMMATRIX Transform::btTransform_to_XMMATRIX(btTransform const& trans)
+{
+	//store btTranform in 4x4 Matrix
+	XMFLOAT4X4 matrix4x4;
+	btMatrix3x3 const& Rotation = trans.getBasis();
+	btVector3 const& Position = trans.getOrigin();
+	// copy rotation matrix
+	for (int row = 0; row < 3; ++row)
+
+		for (int column = 0; column < 3; ++column)
+
+			matrix4x4.m[row][column] = Rotation[column][row];
+
+	// copy position
+	for (int column = 0; column < 3; ++column)
+
+		matrix4x4.m[3][column] = Position[column];
+
+	return XMLoadFloat4x4(&matrix4x4);
+}
+
+XMFLOAT3 Transform::btTransform_to_XMFLOAT3(btTransform const& trans)
+{
+	btVector3 const Position = trans.getOrigin();
+
+	return XMFLOAT3(Position.getX(),Position.getY(),Position.getZ());
+}
+

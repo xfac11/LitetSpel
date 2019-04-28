@@ -31,9 +31,23 @@ void Player::initialize()
 	
 	this->playerObj->setPosition(0, 1.2, 0);
 	btVector3 postion = btVector3(playerObj->getPosition().x, playerObj->getPosition().y, playerObj->getPosition().z);
-	this->playerObj->body() = physic->addSphere(0.5f, postion.getX(), postion.getX(), postion.getX(), 5.0f);
+	this->playerObj->body() = physic->addSphere(1.0f, postion.getX(), postion.getX(), postion.getX(),2.0f);
 	
-	
+	////btMotionState* ms = this->playerObj->body()->getMotionState();
+
+	////btMatrix3x3 orn = ms->getWorldTransform(); //get basis of world transformation
+
+	////orn *= btMatrix3x3(btQuaternion(axis, radians));     //Multiply it by rotation matrix
+
+	//btMatrix3x3 transform = this->playerObj->body()->getWorldTransform().getBasis();
+
+	//this->playerObj->body()->getWorldTransform().setBasis(transform); //set new rotation for the object
+
+
+	//this->playerObj->getWorld() = btMatrix3x3(this->playerObj->body()->getInvInertiaTensorWorld());
+
+	//
+
 	System::theModelLoader->loadGO(this->playerObj, "Resources/Models/cube2.lu", "cat2.tga");
 	this->playerObj->setScale(0.5f, 0.4f, 0.1f);
 	System::handler.addObject(this->playerObj);

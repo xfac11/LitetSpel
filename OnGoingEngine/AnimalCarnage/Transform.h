@@ -1,6 +1,7 @@
 #pragma once
 #include<DirectXMath.h>
-
+#include "BulletSDK/include/btBulletDynamicsCommon.h"
+#include "BulletSDK/include/btBulletCollisionCommon.h"
 using namespace DirectX;
 class Transform
 {
@@ -34,7 +35,10 @@ public:
 	~Transform();
 
 
-	//Operators
-
+	//Bullet
+	static btTransform XMMATRIX_to_btTransform(XMMATRIX const& mat);
+	static XMMATRIX btTransform_to_XMMATRIX(btTransform const& trans);
+	//Get Position from btTransform
+	static XMFLOAT3 btTransform_to_XMFLOAT3(btTransform const& trans);
 
 };

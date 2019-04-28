@@ -1,6 +1,7 @@
 #include "Bear.h"
 #include "GamePad.h"
 #include "Physics.h"
+
 enum CHARACTER{
 	BEAR,FOX
 };
