@@ -47,7 +47,7 @@ void GameObjectHandler::addObject(GameObject *& gameObject)
 				this->expandTransModels();
 			//gameObject->getModel(i).setShader(Shader);
 			this->transModels[this->nrOfTrans].modelPtr = gameObject->getModel(i);
-			this->transModels[this->nrOfTrans].worldPtr = &gameObject->getWorld();
+			this->transModels[this->nrOfTrans].worldPtr = &gameObject->getWorld();//&btTransform_to_XMMATRIX(gameObject->body()->getWorldTransform());
 			gameObject->getModel(i)->setShader(System::shaderManager->getForwardShader());
 			this->nrOfTrans++;
 			/*Model* *ptr = new Model*[4];
@@ -113,6 +113,11 @@ void GameObjectHandler::draw()
 	for (int i = 0; i < this->nrOfOpaque; i++)
 	{
 		this->opaqueModels[i].modelPtr->getShader()->setWorld(*this->opaqueModels[i].worldPtr);
+		DirectX::XMMATRIX worldPos = DirectX::XMMatrixTranslation(gameObjects[2]->getPosition().x, gameObjects[2]->getPosition().y, gameObjects[2]->getPosition().z);
+		this->lightsCB.data.lights[1].worldLight = worldPos;
+		this->lightsCB.data.nrOfLights = nrOfLights;
+		this->lightsCB.applyChanges(System::getDevice(), System::getDeviceContext());
+		this->opaqueModels[i].modelPtr->getShader()->setConstanbuffer(PIXEL, 1, this->lightsCB.getBuffer());
 		this->opaqueModels[i].modelPtr->draw();
 	}
 	for (int i = 0; i < this->nrOfTrans; i++)

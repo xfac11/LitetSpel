@@ -1,7 +1,5 @@
 #include "Physics.h"
 
-
-
 Physics::Physics() :broadphase(new btDbvtBroadphase()),
 collisionConfig(new btDefaultCollisionConfiguration()),
 solver(new btSequentialImpulseConstraintSolver)
@@ -10,15 +8,15 @@ solver(new btSequentialImpulseConstraintSolver)
 	dispatcher = new btCollisionDispatcher(collisionConfig);
 	world = new btDiscreteDynamicsWorld(dispatcher, broadphase, solver, collisionConfig);
 	//ska vara -10 av någon anledning
-	this->world->setGravity(btVector3(0, -10, 0));
+	this->world->setGravity(btVector3(0, -9.82, 0));
 	//temp plane inf
-	btTransform t;
-	t.setIdentity();
-	t.setOrigin(btVector3(0, 0, 0));
-	//set shape for object
+	//btTransform t;
+	//t.setIdentity();
+	//t.setOrigin(btVector3(0, 0, 0));
+	////set shape for object
 	btStaticPlaneShape* plane = new btStaticPlaneShape(btVector3(0, 1, 0), 0);
 	//set motionshape aka set postion
-	btMotionState* motion = new btDefaultMotionState(t);
+	btMotionState* motion = new btDefaultMotionState(btTransform(btQuaternion(0, 0, 0, 1), btVector3(0, -1, 0)));
 	//body definition check doc
 	btRigidBody::btRigidBodyConstructionInfo info(0.0, motion, plane);
 

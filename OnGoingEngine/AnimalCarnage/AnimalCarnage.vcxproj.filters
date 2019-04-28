@@ -603,8 +603,17 @@
     <ClCompile Include="Physics.cpp">
       <Filter>Phyiscs</Filter>
     </ClCompile>
+<<<<<<< HEAD
     <ClCompile Include="Animator.cpp" />
     <ClCompile Include="Animation.cpp" />
+=======
+    <ClCompile Include="DeferredShader.cpp">
+      <Filter>Shader</Filter>
+    </ClCompile>
+    <ClCompile Include="GBuffer.cpp">
+      <Filter>Shader</Filter>
+    </ClCompile>
+>>>>>>> 2acad5d802630273152c0146ea71aa375368241c
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Bear.h">
@@ -1458,6 +1467,12 @@
     </ClInclude>
     <ClInclude Include="Physics.h">
       <Filter>Phyiscs</Filter>
+    </ClInclude>
+    <ClInclude Include="DeferredShader.h">
+      <Filter>Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="GBuffer.h">
+      <Filter>Shader</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

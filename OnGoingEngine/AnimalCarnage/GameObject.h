@@ -4,7 +4,7 @@
 #include"Transform.h"
 #include"ConstantBuffer.h"
 #include"Geometry.h"
-#include "Physics.h"
+#include "btBulletDynamicsCommon.h"
 
 
 class GameObject: public Transform//arv

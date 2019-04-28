@@ -299,7 +299,8 @@ System::~System()
 	this->theGraphicDevice->shutDown();
 	delete this->theGraphicDevice;
 
-
+	delete this->obj[0];
+	delete this->obj[1];
 	delete System::states[0];
 	delete System::states[1];
 	delete System::commonStates;
@@ -333,12 +334,12 @@ bool System::initialize()
 	this->obj[0]->setPosition(1, -0.5, 0);
 	this->obj[1]->setScale(0.5f, 0.5f, 0.5f);
 	theModelLoader->loadGO(obj[1], "Resources/Models/cube2.lu", "lovelive.tga"); //Library test //load anim_test6
-	this->obj[1]->setPosition(-1, -0.5, 0);
+	this->obj[1]->setPosition(-1, 0.5, 0);
 				
 	
 
-	this->handler.addObject(this->obj[1]);
-	this->handler.addObject(this->obj[0]);
+	//this->handler.addObject(this->obj[1]);
+	//this->handler.addObject(this->obj[0]);
 	
 
 	System::commonStates = new CommonStates(System::getDevice());
@@ -490,7 +491,11 @@ void System::update(float deltaTime)
 		//this->obj2->move(-1 * deltaTime, 0, 0);
 		theCamera->move(-1 * deltaTime, 0, 0);
 	}
-
+	if (theKeyboard->KeyIsPressed('X'))
+	{
+		//this->obj2->move(-1 * deltaTime, 0, 0);
+		theCamera->move(0, -1 * deltaTime, 0);
+	}
 	if (theKeyboard->KeyIsPressed('V'))
 	{
 		this->change(this->moveScreen);
@@ -547,17 +552,17 @@ void System::render()
 	//render imgui in states render
 	this->theCamera->Render();
 	
-	if (freezeCheck == false)
-	{
-		this->cullingPos = this->camPos;
-		shaderManager->getForwardShader()->setCamPosToMatricesPerFrame(this->camPos); //this->camPos
-	}
-	else shaderManager->getForwardShader()->setCamPosToMatricesPerFrame(this->cullingPos);
+	//if (freezeCheck == false)
+	//{
+	//	this->cullingPos = this->camPos;
+	//	shaderManager->getForwardShader()->setCamPosToMatricesPerFrame(this->camPos); //this->camPos
+	//}
+	//else shaderManager->getForwardShader()->setCamPosToMatricesPerFrame(this->cullingPos);
 
-
+	shaderManager->getForwardShader()->setCamPosToMatricesPerFrame(this->theCamera->GetPosition());
 	shaderManager->getForwardShader()->setViewProj(this->theCamera->GetViewMatrix(), this->theGraphicDevice->getProj(), DirectX::XMFLOAT4(this->theCamera->GetPosition().x, this->theCamera->GetPosition().y, this->theCamera->GetPosition().z, 1.0f));
 	shaderManager->getForwardShader()->setShaders();//tänker att man kör denna sen renderar allla som använder denna shader sen tar setshader på nästa osv.
-	
+	shaderManager->getForwardShader()->setCBuffers();
 	
 	if(currentState==MAINMENU)
 		this->resetShaders();

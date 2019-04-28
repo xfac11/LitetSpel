@@ -221,7 +221,7 @@ bool TextureLoad::LoadTarga(const char* filename, int& height, int& width)
 			m_targaData[index + 1] = targaImage[k + 1];  // Green.
 			m_targaData[index + 2] = targaImage[k + 0];  // Blue
 			m_targaData[index + 3] = targaImage[k + 3];  // Alpha
-			if (!transparent&&m_targaData[index + 3] != 1)
+			if (!transparent&&m_targaData[index + 3] != 255)
 			{
 				transparent = true;
 			}

@@ -1,19 +1,21 @@
-#include"ForwardShader.h"
+#include "DeferredShader.h"
 #include"System.h"
-ForwardShader::ForwardShader()
-	:Shader()
+
+DeferredShader::DeferredShader() :
+	Shader()
 {
-	this->blendState = nullptr;
-	this->rasState = nullptr;
+
 }
 
-ForwardShader::~ForwardShader()
+
+DeferredShader::~DeferredShader()
 {
-	this->shutdown();
 }
 
-bool ForwardShader::initialize()
+bool DeferredShader::initialize(int height, int width, float nearPlane, float farPlane)
 {
+	this->gBuffer.initialize(System::getDevice(), height, width, nearPlane, farPlane);
+
 	D3D11_INPUT_ELEMENT_DESC inputDesc[] = {
 		{
 			"SV_POSITION",		// "semantic" name in shader
@@ -42,7 +44,7 @@ bool ForwardShader::initialize()
 			D3D11_APPEND_ALIGNED_ELEMENT,							// offset of FIRST element (after POSITION)
 			D3D11_INPUT_PER_VERTEX_DATA,
 			0
-		 //for normal mapping. tangent binormal
+			//for normal mapping. tangent binormal
 		},
 		{
 			"TANGENT", //normal maps
@@ -61,12 +63,12 @@ bool ForwardShader::initialize()
 			D3D11_APPEND_ALIGNED_ELEMENT,
 			D3D11_INPUT_PER_VERTEX_DATA,
 			0
-		} 
+		}
 
 
 	};
 	HRESULT result;
-	if (!this->load(L"VertexShader.hlsl", inputDesc,ARRAYSIZE(inputDesc), L"PixelShader.hlsl", L"GeometryShader.hlsl"))
+	if (!this->load(L"DRGBVertexShader.hlsl", inputDesc, ARRAYSIZE(inputDesc), L"DRGBPixelShader.hlsl", L"DRGBGeometryShader.hlsl"))
 	{
 		return false;
 	}
@@ -80,51 +82,34 @@ bool ForwardShader::initialize()
 	{
 		return false;
 	}
-
 	return true;
-	//Rasteriser state, blend state, depthstencil state is in GraphicsDevice. 
-	//Like a default. The rasteriser state is set in the initialize of GraphicsDevice
 }
 
-void ForwardShader::setWorld(DirectX::XMMATRIX world)
+void DeferredShader::setWorld(DirectX::XMMATRIX world)
 {
 	world = XMMatrixTranspose(world);
 	this->worldCB.data.world = world;
 	this->worldCB.applyChanges(System::getDevice(), System::getDeviceContext());
-	
+	this->setConstanbuffer(VERTEX, 1, this->worldCB.getBuffer());
+	this->setConstanbuffer(GEOMETRY, 1, this->worldCB.getBuffer());
 }
 
-void ForwardShader::setViewProj(DirectX::XMMATRIX view, DirectX::XMMATRIX proj,DirectX::XMFLOAT4 camPos)
+void DeferredShader::setViewProj(DirectX::XMMATRIX view, DirectX::XMMATRIX proj, DirectX::XMFLOAT4 camPos)
 {
-	
 	view = XMMatrixTranspose(view);
 	proj = XMMatrixTranspose(proj);
 	this->perFrameCB.data.view = view;
 	this->perFrameCB.data.proj = proj;
 	//need to set campos separately to enable check for backface culling
 	//this->perFrameCB.data.camPos = camPos; 
-	this->perFrameCB.applyChanges(System::getDevice(),System::getDeviceContext());
-}
-
-void ForwardShader::setCamPosToMatricesPerFrame(XMFLOAT3 campos)
-{
-	XMFLOAT4 cam = { campos.x, campos.y,campos.z,1.f };
-	perFrameCB.data.camPos = cam;
-}
-
-void ForwardShader::setCBuffers()
-{
+	this->perFrameCB.applyChanges(System::getDevice(), System::getDeviceContext());
 	this->setConstanbuffer(GEOMETRY, 0, this->perFrameCB.getBuffer());
 	this->setConstanbuffer(VERTEX, 0, this->perFrameCB.getBuffer());
 	this->setConstanbuffer(PIXEL, 0, this->perFrameCB.getBuffer());
-	this->setConstanbuffer(VERTEX, 1, this->worldCB.getBuffer());
-	this->setConstanbuffer(GEOMETRY, 1, this->worldCB.getBuffer());
 }
 
-void ForwardShader::shutdown()
+void DeferredShader::setCamPosToMatricesPerFrame(DirectX::XMFLOAT3 campos)
 {
-	if(this->blendState!=nullptr)
-		this->blendState->Release();
-	if (this->rasState != nullptr)
-		this->rasState->Release();
+	XMFLOAT4 cam = { campos.x, campos.y,campos.z,1.f };
+	perFrameCB.data.camPos = cam;
 }

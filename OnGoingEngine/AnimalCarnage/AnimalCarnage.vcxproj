@@ -41,7 +41,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v141</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
@@ -288,9 +288,11 @@
     <ClCompile Include="Button.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="CheckBox.cpp" />
+    <ClCompile Include="DeferredShader.cpp" />
     <ClCompile Include="ForwardShader.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GameObjectHandler.cpp" />
+    <ClCompile Include="GBuffer.cpp" />
     <ClCompile Include="Geometry.cpp" />
     <ClCompile Include="GraphicsDevice.cpp" />
     <ClCompile Include="GuiBase.cpp" />
@@ -574,9 +576,11 @@
     <ClInclude Include="Camera.h" />
     <ClInclude Include="CheckBox.h" />
     <ClInclude Include="ConstantBuffer.h" />
+    <ClInclude Include="DeferredShader.h" />
     <ClInclude Include="ForwardShader.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="GameObjectHandler.h" />
+    <ClInclude Include="GBuffer.h" />
     <ClInclude Include="Geometry.h" />
     <ClInclude Include="GraphicsDevice.h" />
     <ClInclude Include="GuiBase.h" />
