@@ -20,12 +20,15 @@ namespace Luna {
 		void setVertexTangent(Vertex& vertex, float x, float y, float z);
 		void setVertexBiTangent(Vertex& vertex, float x, float y, float z);
 
+		void setMaterialAmbient(Material& mat, float r, float g, float b);
+		void setMaterialDiffuse(Material& mat, float r, float g, float b);
+		void setMaterialSpecular(Material& mat, float r, float g, float b);
+
 		void write(std::ofstream& outfile, Scene& scene);
 		void write(std::ofstream& outfile, Mesh& mesh);
 		void write(std::ofstream& outfile, Vertex& vertex);
 		void write(std::ofstream& outfile, Index& index);
 		void write(std::ofstream& outfile, Material& mat);
-		void write(std::ofstream& outfile, NormalMap& normalmap);
 		void write(std::ofstream& outfile, Weights& weights);
 		void write(std::ofstream& outfile, Skeleton& skel);
 		void write(std::ofstream& outfile, Joint& joint);
@@ -35,6 +38,7 @@ namespace Luna {
 
 		Scene scene;
 		std::vector<Mesh> meshes;
+		std::vector<Material> materials;
 
 	private:
 	
