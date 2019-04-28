@@ -13,6 +13,7 @@ public:
 	void setViewProj(DirectX::XMMATRIX view, DirectX::XMMATRIX proj, DirectX::XMFLOAT4 camPos);
 	//uses the rendershader in Shader
 	void setCamPosToMatricesPerFrame(DirectX::XMFLOAT3 campos);
+	void setCBuffers();
 	GBuffer gBuffer;
 private:
 	ID3D11BlendState* blendState;
