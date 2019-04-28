@@ -8,24 +8,24 @@ class Transform
 private:
 	XMMATRIX world = XMMATRIX(XMMatrixIdentity());
 	void ApplyTransform();
+	btRigidBody * rgBody;
 protected:
 	XMFLOAT3 Position = XMFLOAT3(0.0f, 0.0f, 0.0f);
 	XMFLOAT3 Scale = XMFLOAT3(1.0f, 1.0f, 1.0f);
 	XMFLOAT3 Rotation = XMFLOAT3(0.0f, 0.0f, 0.0f);
 	float Angle = 0.0f;
-
-	//test
-	XMFLOAT3 LeftVec = XMFLOAT3(-1.0f, 0.0f, 0.0f);
-	XMFLOAT3 RightVec = XMFLOAT3(1.0f, 0.0f, 0.0f);
-	XMFLOAT3 UpVec = XMFLOAT3(0.0f, 1.0f, 0.0f);
-	XMFLOAT3 DownVec = XMFLOAT3(0.0f, -1.0f, 0.0f);
 public:
+	//vectors for bullet
+	btVector3 LEFTVECTOR = btVector3(-1.0f, 0.0f, 0.0f);
+	btVector3 RIGHTVECTOR = btVector3(1.0f, 0.0f, 0.0f);
+	btVector3 UPVECTOR = btVector3(0.0f, 1.0f, 0.0f);
+	btVector3 DOWNVECTOR = btVector3(0.0f, -1.0f, 0.0f);
+	//
+
 	const XMFLOAT3& getPosition()const;
 	const XMFLOAT3& getScale()const;
 	const XMFLOAT3& getRotation()const;
-
 	XMMATRIX& getWorld() { return world; }
-
 	void move(XMFLOAT3 Position);
 	void move(float x, float y, float z);
 	void setPosition(float x, float y, float z);
@@ -34,7 +34,8 @@ public:
 
 	~Transform();
 
-
+	//Bullet
+	void SetWorldToRigitBody();
 
 
 };
