@@ -25,3 +25,13 @@ void KeyFrame::operator=(const Luna::Keyframe & obj)
 	}
 	this->transform = JointTransformation(temp);
 }
+
+float KeyFrame::getLenght() const
+{
+	return this->timeStamp;
+}
+
+JointTransformation KeyFrame::getJointKeyFrames() const
+{
+	return this->transform;
+}

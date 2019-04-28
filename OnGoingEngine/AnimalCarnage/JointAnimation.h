@@ -4,7 +4,7 @@
 class JointAnimation
 {
 private:
-	KeyFrame**frame;
+	KeyFrame** frame;
 	int nrOfKeyFrames;
 public:
 

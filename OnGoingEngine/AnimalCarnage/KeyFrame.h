@@ -11,5 +11,9 @@ public:
 	KeyFrame();
 	~KeyFrame();
 	void operator=(const Luna::Keyframe& obj);
+
+
+	float getLenght()const;
+	JointTransformation getJointKeyFrames()const;
 };
 #endif
