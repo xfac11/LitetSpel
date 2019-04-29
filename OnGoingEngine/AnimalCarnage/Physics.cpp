@@ -101,3 +101,16 @@ void Physics::renderPlane(btRigidBody* plane)
 	btTransform t;
 	plane->getMotionState()->getWorldTransform(t);
 }
+
+
+Transformbt::Transformbt(float locX, float locY, float locZ, float quatX, float quatY, float quatZ, float quatW)
+	:
+	locX(locX),
+		locY(locY),
+		locZ(locZ),
+		quatX(quatX),
+		quatY(quatY),
+		quatZ(quatZ),
+		quatW(quatW)
+	{
+	}

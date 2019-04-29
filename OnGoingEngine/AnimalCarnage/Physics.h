@@ -5,8 +5,20 @@
 #include <vector>
 #include <iostream>
 #include <string>
+#include<DirectXMath.h>
 #include <algorithm>
-
+class Transformbt
+{
+public:
+	Transformbt(float locX, float locY, float locZ, float quatX, float quatY, float quatZ, float quatW);
+	float locX;
+	float locY;
+	float locZ;
+	float quatX;
+	float quatY;
+	float quatZ;
+	float quatW;
+};
 class Physics
 {
 private:
