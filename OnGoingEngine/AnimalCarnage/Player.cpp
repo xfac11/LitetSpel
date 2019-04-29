@@ -43,7 +43,7 @@ void Player::initialize()
 
 	//
 	this->playerObj->getRigidbody()->setWorldTransform(XMMATRIX_to_btTransform(this->playerObj->getWorld()));
-	System::theModelLoader->loadGO(this->playerObj, "Resources/Models/cube2.lu", "cat2.tga");
+	System::theModelLoader->loadGO(this->playerObj, "Resources/Models/fox_test.lu", "fox_character_diffuse.tga");
 	//this->playerObj->setScale(1f, 0.4f, 0.1f);
 	System::handler.addObject(this->playerObj);
 
@@ -92,7 +92,7 @@ void Player::update(float deltaTime, int id)
 		float stickAbsL = abs(state.thumbSticks.leftX);
 		if (stickAbsL > 0.f && grounded)
 		{
-			float dir = 0.5 * state.thumbSticks.leftX;// / stickAbsL;
+			float dir = 0.5f * state.thumbSticks.leftX;// / stickAbsL;
 		//	this->playerObj->getRigidbody()->applyForce(btVector3(dir, 0, 0), btVector3(0, 1, 0));
 			this->playerObj->getRigidbody()->setLinearVelocity(btVector3(dir, 0, 0));
 			airSpeed = dir;
@@ -335,9 +335,9 @@ void Player::move(float x, float y, float z)
 	this->playerObj->move(x, y, z);
 }
 
-void Player::move(XMFLOAT3 source)
+void Player::move(XMFLOAT3 source) //fix this ALAN
 {
-	this->move(source);
+	//this->move(source);
 }
 
 void Player::setPosition(float x, float y, float z)

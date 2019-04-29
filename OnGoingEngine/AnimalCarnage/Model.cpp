@@ -136,5 +136,5 @@ void Model::draw()
 	System::getDeviceContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 	System::getDeviceContext()->PSSetSamplers(0, 1, &this->SamplerState);
 
-	this->theShader->renderShader(mesh.size(),indexBuffer.getBufferSize());
+	this->theShader->renderShader((int)mesh.size(),indexBuffer.getBufferSize());
 }

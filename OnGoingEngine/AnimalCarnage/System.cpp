@@ -302,8 +302,8 @@ System::~System()
 	this->theGraphicDevice->shutDown();
 	delete this->theGraphicDevice;
 
-	delete this->obj[0];
-	delete this->obj[1];
+	//delete this->obj[0];
+	//delete this->obj[1];
 	delete System::states[0];
 	delete System::states[1];
 	delete System::commonStates;
@@ -327,18 +327,18 @@ bool System::initialize()
 	this->shaderManager = new ShaderManager;
 	this->shaderManager->initialize();
 	//this->theForwardShader->initialize();
-	this->obj[0] = new GameObject(shaderManager->getForwardShader());
-	this->obj[1] = new GameObject(shaderManager->getForwardShader());
+	//this->obj[0] = new GameObject(shaderManager->getForwardShader());
+	//this->obj[1] = new GameObject(shaderManager->getForwardShader());
 		
 
 
 	//D3D10_CULL_BACK; //Test
-	theModelLoader->loadGO(obj[0], "Resources/Models/cube2.lu", "lovelive.tga"); //Library test //load anim_test6
-	this->obj[0]->setScale(3, 1, 1);
-	this->obj[0]->setPosition(1, -0.5, 0);
-	this->obj[1]->setScale(0.5f, 0.5f, 0.5f);
-	theModelLoader->loadGO(obj[1], "Resources/Models/cube2.lu", "lovelive.tga"); //Library test //load anim_test6
-	this->obj[1]->setPosition(-1, 0.5, 0);
+	//theModelLoader->loadGO(obj[0], "Resources/Models/cube2.lu", "lovelive.tga"); //Library test //load anim_test6
+	//this->obj[0]->setScale(3, 2, 1);
+	//this->obj[0]->setPosition(1, -0.5, 0);
+	//this->obj[1]->setScale(0.5f, 0.5f, 0.5f);
+	//theModelLoader->loadGO(obj[1], "Resources/Models/fox_test.lu", "lovelive.tga"); //Library test //load anim_test6
+	//this->obj[1]->setPosition(-1, 0.5, 0);
 				
 	
 
@@ -606,12 +606,12 @@ void System::run()
 		//graphics->initImgui(this->hwnd);
 		/*Model** model;*/
 		//theModelLoader->loadModel(this->model, "Resources\\Models\\anim_test3.lu"); //Library test //load anim_test4
-		btRigidBody* test;
-		btDynamicsWorld* world;
-		btDispatcher* dispatcher;
-		btBroadphaseInterface* broadphase;
-		btConstraintSolver* solver;
-		btCollisionConfiguration* collisionConfig;
+		//btRigidBody* test;
+		//btDynamicsWorld* world;
+		//btDispatcher* dispatcher;
+		//btBroadphaseInterface* broadphase;
+		//btConstraintSolver* solver;
+		//btCollisionConfiguration* collisionConfig;
 		//this->collisionConfig = new btDefaultCollisionConfiguration();
 		
 		while (WM_QUIT != msg.message)

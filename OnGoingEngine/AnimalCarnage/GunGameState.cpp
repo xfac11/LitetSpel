@@ -73,11 +73,11 @@ bool GunGameState::initailize()
 		-1.0f,-1.0f,0.0f,1.0f
 	};
 	float color[4] = {
-		0.9 , 1.0f, 0.2f , 1.0f
+		0.9f , 1.0f, 0.2f , 1.0f
 	};
 	System::handler.addLight(pos, dir, color);
 	float color2[4] = {
-		0.0 , 1.0f, 1.0f , 1.0f
+		0.0f , 1.0f, 1.0f , 1.0f
 	};
 	System::handler.addLight(pos, dir, color2);
 	//player[0]->playerObj->body()->getWorldTransform().setOrigin(btVector3(-2, 2, 0));

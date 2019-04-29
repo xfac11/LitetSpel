@@ -73,7 +73,7 @@ private:
 	static SpriteFont* fontArial;
 	static Physics* physices;
 
-	GameObject* obj[2];	
+	//GameObject* obj[2];	
 	//ForwardShader* theForwardShader;
 	Camera* theCamera;
 
