@@ -33,6 +33,7 @@
 #include "btBulletCollisionCommon.h"
 #include "btBulletDynamicsCommon.h"
 #include "BulletCollision\CollisionShapes\btBoxShape.h"
+#include "Physics.h"
 
 using namespace DirectX;
 //using namespace DirectX::SimpleMath;
@@ -70,7 +71,8 @@ private:
 	static SpriteBatch* spriteBatch;
 	static SpriteFont* fontComicSans;
 	static SpriteFont* fontArial;
-	
+	static Physics* physices;
+
 	GameObject* obj[2];	
 	//ForwardShader* theForwardShader;
 	Camera* theCamera;
@@ -130,7 +132,7 @@ public:
 	static CommonStates* getCommonStates();
 	static SpriteFont* getFontComicSans();
 	static SpriteFont* getFontArial();
-
+	static Physics* getphysices();
 	static void closeWindow();
 	static void setState(GameState state);
 };

@@ -10,7 +10,6 @@ GameObject::GameObject()
 	{
 		this->theModel[i] = nullptr;
 	}
-	this->theTransforms = Transform();
 	this->colBox = AABB();
 	
 }
@@ -24,9 +23,7 @@ GameObject::GameObject(Shader * shader)
 	{
 		this->theModel[i] = nullptr;
 	}
-	this->theTransforms = Transform();
 	this->colBox = AABB();
-	RGbody = nullptr;
 	/*this->theModel[0] = new Model;
 	this->theModel[0]->setShader(shader);
 	this->nrOfModels++;*/

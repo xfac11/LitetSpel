@@ -25,17 +25,13 @@ public:
 	void setTexture(std::string file, int id);
 	void draw();
 	AABB getCollisionBox();
-	btRigidBody*& body(){ return RGbody; }
 private:
 	Model* *theModel;
 	int cap;
 
 	AABB colBox;
-	btRigidBody* RGbody;
-
 	//ConstantBuffer<WorldMatrix> worldConstBuffer;
 	//Hitbox theHitbox; a model with just the index and vertices and a color. no textures etc
-	Transform theTransforms;
 	int nrOfModels;
 };
 #endif // !GAMEOBJECT_H

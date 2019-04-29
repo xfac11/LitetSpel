@@ -80,10 +80,10 @@ bool GunGameState::initailize()
 		0.0 , 1.0f, 1.0f , 1.0f
 	};
 	System::handler.addLight(pos, dir, color2);
-	player[0]->playerObj->body()->getWorldTransform().setOrigin(btVector3(-2, 2, 0));
-	player[1]->playerObj->body()->getWorldTransform().setOrigin(btVector3(0, 2, 0));
-	player[2]->playerObj->body()->getWorldTransform().setOrigin(btVector3(2, 2, 0));
-	player[3]->playerObj->body()->getWorldTransform().setOrigin(btVector3(4, 2, 0));
+	//player[0]->playerObj->body()->getWorldTransform().setOrigin(btVector3(-2, 2, 0));
+	//player[1]->playerObj->body()->getWorldTransform().setOrigin(btVector3(0, 2, 0));
+	//player[2]->playerObj->body()->getWorldTransform().setOrigin(btVector3(2, 2, 0));
+	//player[3]->playerObj->body()->getWorldTransform().setOrigin(btVector3(4, 2, 0));
 
 
 	////default values
@@ -142,7 +142,7 @@ void GunGameState::renderImgui()
 	std::string textUse;
 	ImGui::Begin("Gungame");
 	
-	btVector3 pos = this->player[0]->playerObj->body()->getWorldTransform().getOrigin();
+	btVector3 pos = this->player[0]->playerObj->getRigidbody()->getWorldTransform().getOrigin();
 
 	std::string playerPos = "Player pos: " + std::to_string(pos.getX()) + " " +
 		std::to_string(pos.getY()) + " " +

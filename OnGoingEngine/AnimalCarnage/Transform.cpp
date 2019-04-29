@@ -79,7 +79,7 @@ Transform::~Transform()
 
 void Transform::SetWorldToRigitBody()
 {
-	 this->world = btTransform_to_XMMATRIX(this->rgBody->getWorldTransform());
+	 this->world = btTransform_to_XMMATRIX(this->rigidbody->getWorldTransform());
 }
 
 btTransform XMMATRIX_to_btTransform(XMMATRIX const& mat)

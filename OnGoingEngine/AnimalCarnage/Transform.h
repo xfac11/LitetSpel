@@ -8,7 +8,7 @@ class Transform
 private:
 	XMMATRIX world = XMMATRIX(XMMatrixIdentity());
 	void ApplyTransform();
-	btRigidBody * rgBody;
+	btRigidBody * rigidbody;
 protected:
 	XMFLOAT3 Position = XMFLOAT3(0.0f, 0.0f, 0.0f);
 	XMFLOAT3 Scale = XMFLOAT3(1.0f, 1.0f, 1.0f);
@@ -26,6 +26,7 @@ public:
 	const XMFLOAT3& getScale()const;
 	const XMFLOAT3& getRotation()const;
 	XMMATRIX& getWorld() { return world; }
+	btRigidBody* &getRigidbody() { return rigidbody; }
 	void move(XMFLOAT3 Position);
 	void move(float x, float y, float z);
 	void setPosition(float x, float y, float z);

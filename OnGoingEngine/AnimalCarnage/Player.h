@@ -32,9 +32,6 @@ private:
 	XMFLOAT3 Accleration = XMFLOAT3(0, 0, 0);
 	XMFLOAT3 Velocity = XMFLOAT3(0, 0, 0);
 
-	//test
-	Physics* physic;
-
 public:
 	Player();
 	~Player();

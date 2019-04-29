@@ -18,6 +18,9 @@ SpriteFont* System::fontComicSans = nullptr;
 SpriteFont* System::fontArial = nullptr;
 ShaderManager* System::shaderManager = nullptr;
 GameObjectHandler System::handler = GameObjectHandler();
+Physics* System::physices = nullptr;
+
+
 HWND System::InitWindow(HINSTANCE hInstance, float height, float width)
 {
 	WNDCLASSEX wcex = { 0 };
@@ -307,6 +310,7 @@ System::~System()
 	delete System::spriteBatch;
 	delete System::fontComicSans;
 	delete System::fontArial;
+	delete System::physices;
 }
 
 bool System::initialize()
@@ -346,6 +350,7 @@ bool System::initialize()
 	System::spriteBatch = new SpriteBatch(System::getDeviceContext());
 	System::fontComicSans = new SpriteFont(System::getDevice(), L"./Fonts/comic_sans.spritefont");
 	System::fontArial = new SpriteFont(System::getDevice(), L"./Fonts/arial.spritefont");
+	System::physices = new Physics();
 
 	System::states.push_back(new MainMenu());
 	System::states[MAINMENU]->initailize();
@@ -568,6 +573,7 @@ void System::render()
 		this->resetShaders();
 	System::states[System::currentState]->render();
 
+	physices->Update();
 	System::getDeviceContext()->GSSetShader(nullptr, nullptr, 0);
     ImGui::Render();
 
@@ -671,6 +677,11 @@ SpriteFont * System::getFontComicSans()
 SpriteFont * System::getFontArial()
 {
 	return System::fontArial;
+}
+
+Physics* System::getphysices()
+{
+	return System::physices;
 }
 
 void System::closeWindow()
