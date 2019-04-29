@@ -123,7 +123,7 @@ bool GBuffer::initialize(ID3D11Device * device, int height, int width, float nea
 bool GBuffer::setRenderTargets(ID3D11Device *& device, ID3D11DeviceContext * deviceContext)
 {
 	ID3D11ShaderResourceView* null[] = { nullptr, nullptr, nullptr };
-	deviceContext->PSSetShaderResources(0, 3, null);
+	deviceContext->PSSetShaderResources(0, GBUFFERCAP, nullptr);
 	deviceContext->OMSetRenderTargets(GBUFFERCAP, this->renderTars, depthStencView);
 	deviceContext->RSSetViewports(1, &viewP);
 	return true;//always returns true
@@ -171,6 +171,7 @@ void GBuffer::clear(ID3D11DeviceContext * deviceContext, float color[4])
 
 void GBuffer::setShaderResViews(ID3D11DeviceContext* deviceContext)
 {
+	deviceContext->PSSetShaderResources(0, GBUFFERCAP, nullptr);
 	deviceContext->PSSetShaderResources(0, GBUFFERCAP, this->shaderResViews);
 }
 

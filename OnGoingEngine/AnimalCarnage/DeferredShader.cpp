@@ -90,8 +90,6 @@ void DeferredShader::setWorld(DirectX::XMMATRIX world)
 	world = XMMatrixTranspose(world);
 	this->worldCB.data.world = world;
 	this->worldCB.applyChanges(System::getDevice(), System::getDeviceContext());
-	this->setConstanbuffer(VERTEX, 1, this->worldCB.getBuffer());
-	this->setConstanbuffer(GEOMETRY, 1, this->worldCB.getBuffer());
 }
 
 void DeferredShader::setViewProj(DirectX::XMMATRIX view, DirectX::XMMATRIX proj, DirectX::XMFLOAT4 camPos)
@@ -103,13 +101,18 @@ void DeferredShader::setViewProj(DirectX::XMMATRIX view, DirectX::XMMATRIX proj,
 	//need to set campos separately to enable check for backface culling
 	//this->perFrameCB.data.camPos = camPos; 
 	this->perFrameCB.applyChanges(System::getDevice(), System::getDeviceContext());
-	this->setConstanbuffer(GEOMETRY, 0, this->perFrameCB.getBuffer());
-	this->setConstanbuffer(VERTEX, 0, this->perFrameCB.getBuffer());
-	this->setConstanbuffer(PIXEL, 0, this->perFrameCB.getBuffer());
 }
 
 void DeferredShader::setCamPosToMatricesPerFrame(DirectX::XMFLOAT3 campos)
 {
 	XMFLOAT4 cam = { campos.x, campos.y,campos.z,1.f };
 	perFrameCB.data.camPos = cam;
+}
+void DeferredShader::setCBuffers()
+{
+	this->setConstanbuffer(GEOMETRY, 0, this->perFrameCB.getBuffer());
+	this->setConstanbuffer(VERTEX, 0, this->perFrameCB.getBuffer());
+	this->setConstanbuffer(PIXEL, 0, this->perFrameCB.getBuffer());
+	this->setConstanbuffer(VERTEX, 1, this->worldCB.getBuffer());
+	this->setConstanbuffer(GEOMETRY, 1, this->worldCB.getBuffer());
 }

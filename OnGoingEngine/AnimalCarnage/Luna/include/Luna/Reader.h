@@ -1,6 +1,5 @@
 #pragma once
 #include "Luna.h"
-#include "MeshData.h"
 #include <fstream>
 #include <vector>
 
@@ -20,7 +19,10 @@ namespace Luna {
 		Mesh getMesh(int id) const;
 		void getVertices(int meshID, std::vector<Vertex>& vertices);
 		void getIndices(int meshID, std::vector<Index>& indices);
+		Material getMaterial(int meshID) const;
+		void getMaterials(std::vector<Material>& materials);
 		void getWeights(int meshID, std::vector<Weights>& weights); //The number of weights is equal to the number of vertices
+		void getAnimation();
 
 	private:
 		void read(std::ifstream& infile, Scene& scene);
@@ -28,7 +30,6 @@ namespace Luna {
 		void read(std::ifstream& infile, Vertex& vertex);
 		void read(std::ifstream& infile, Index& index);
 		void read(std::ifstream& infile, Material& mat);
-		void read(std::ifstream& infile, NormalMap& normalmap);
 		void read(std::ifstream& infile, Weights& weights);
 		void read(std::ifstream& infile, Skeleton& skeleton);
 		void read(std::ifstream& infile, Joint& joint);
@@ -42,8 +43,7 @@ namespace Luna {
 		std::vector<Mesh> meshes;
 		std::vector<Vertex*> meshVertices;
 		std::vector<Index*> meshIndices;
-
-		//std::vector<MeshData> meshdata;
+		std::vector<Material> materials;
 
 		unsigned int meshCount;
 		unsigned int materialCount;

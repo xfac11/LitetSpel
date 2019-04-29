@@ -1,12 +1,9 @@
 #pragma once
+
 namespace Luna {
 
 #define NAME_SIZE 64
 #define PATH_SIZE 128
-
-	//struct Scene {
-	//	unsigned int modelCount;
-	//};
 
 	struct Scene {
 		unsigned int meshCount = 0;
@@ -20,7 +17,6 @@ namespace Luna {
 		float pos[3] = { 0.0f };
 		unsigned int vertexCount = 0;
 		unsigned int indexCount = 0;
-		unsigned int materialID = 0;
 		bool hasSkeleton = false;
 		bool hasBoundingBox = false;
 	};
@@ -60,16 +56,14 @@ namespace Luna {
 	};
 
 	struct Material {
-		unsigned int index = 0;
 		float diffuseVal[3] = { 0.0f };
 		float ambientVal[3] = { 0.0f };
 		float specularVal[3] = { 0.0f };
-		char diffuseTexPath[PATH_SIZE] = "";
+		char diffuseTexPath[PATH_SIZE] = "\0";
+		char normalTexPath[PATH_SIZE] = "\0";
+		char glowTexPath[PATH_SIZE] = "\0";
 		bool hasNormalMap = false;
-	};
-
-	struct NormalMap {
-		char normalTexPath[PATH_SIZE] = "";
+		bool hasGlowMap = false;
 	};
 
 	struct Weights {
@@ -84,7 +78,7 @@ namespace Luna {
 	};
 
 	struct Joint {
-		char jointName[NAME_SIZE] = "";
+		char jointName[NAME_SIZE] = "\0";
 		unsigned int jointID = 0;
 		unsigned int parentID = 0;
 		float bindposeMatrix[4][4];
@@ -93,7 +87,7 @@ namespace Luna {
 	struct Animation {
 		float fps = 0.0f;
 		float duration = 0.0f;
-		char animationName[NAME_SIZE] = "";
+		char animationName[NAME_SIZE] = "\0";
 		unsigned int animationID = 0;
 		unsigned int keyframeCount = 0;
 	};
@@ -107,5 +101,4 @@ namespace Luna {
 		float pos[3] = { 0.0f };
 		float halfSize[3] = { 0.0f };
 	};
-
 }
