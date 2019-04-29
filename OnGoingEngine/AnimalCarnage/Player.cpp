@@ -26,7 +26,7 @@ void Player::initialize()
 	
 	this->playerObj->setPosition(0, 1, 1);
 	btVector3 postion = btVector3(playerObj->getPosition().x, playerObj->getPosition().y, playerObj->getPosition().z);
-	this->playerObj->getRigidbody() = System::getphysices()->addSphere(1.0f, postion.getX(), postion.getX(), postion.getX(),1);
+	this->playerObj->getRigidbody() = System::getphysices()->addSphere(0.5f, postion.getX(), postion.getX(), postion.getX(),1);
 	//this->playerObj->body()->getWorldTransform()
 	////btMotionState* ms = this->playerObj->body()->getMotionState();
 
@@ -69,6 +69,7 @@ void Player::update(float deltaTime, int id)
 		this->playerObj->body()->setWorldTransform(XMMATRIX_to_btTransform(this->playerObj->getWorld()));
 	}
 	*/
+	this->playerObj->getRigidbody()->setLinearVelocity(btVector3(0, 0, 0));
 	DirectX::GamePad::State state = System::theGamePad->GetState(id);
 	if (state.IsConnected())
 	{
@@ -91,8 +92,9 @@ void Player::update(float deltaTime, int id)
 		float stickAbsL = abs(state.thumbSticks.leftX);
 		if (stickAbsL > 0.f && grounded)
 		{
-			float dir = 0.1 * state.thumbSticks.leftX;// / stickAbsL;
-			this->playerObj->getRigidbody()->applyForce(btVector3(dir, 0, 0), btVector3(0, 1, 0));
+			float dir = 0.5 * state.thumbSticks.leftX;// / stickAbsL;
+		//	this->playerObj->getRigidbody()->applyForce(btVector3(dir, 0, 0), btVector3(0, 1, 0));
+			this->playerObj->getRigidbody()->setLinearVelocity(btVector3(dir, 0, 0));
 			airSpeed = dir;
 		}
 		//else if ((state.dpad.right || state.dpad.left) && grounded)
