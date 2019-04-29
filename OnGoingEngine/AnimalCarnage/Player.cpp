@@ -51,6 +51,9 @@ void Player::initialize()
 	System::theModelLoader->loadGO(this->playerObj, "Resources/Models/cube2.lu", "cat2.tga");
 	this->playerObj->setScale(0.5f, 0.4f, 0.1f);
 	System::handler.addObject(this->playerObj);
+
+	/////////////
+	this->playerObj->body()->setActivationState(DISABLE_DEACTIVATION);
 }
 
 void Player::update(float deltaTime, int id)
@@ -127,12 +130,13 @@ void Player::update(float deltaTime, int id)
 		//	if (airspeedAbs > 5)
 		//		airSpeed = airspeedAbs / airSpeed * 5;
 		//}
-		////JUMP INPUT
-		//if ((state.buttons.x || state.buttons.y) && canJump)//== DirectX::GamePad::ButtonStateTracker::PRESSED 
-		//{
-		//	isJumping = true;
-		//	grounded = false;
-		//}
+		//JUMP INPUT
+		if ((state.buttons.x || state.buttons.y) && canJump)//== DirectX::GamePad::ButtonStateTracker::PRESSED 
+		{
+			//isJumping = true;
+			//grounded = false;
+			this->playerObj->body()->applyImpulse(btVector3(0, 1, 0), btVector3(0, 1, 0));
+		}
 		////canJump
 		//if (state.buttons.x || state.buttons.y) {
 		//	canJump = false;
