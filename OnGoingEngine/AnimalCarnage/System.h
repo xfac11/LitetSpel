@@ -64,7 +64,6 @@ private:
 	MSG msg;
 	int nCMDShow;
 	
-	static GraphicsDevice* theGraphicDevice;
 	static std::vector<State*> states;
 	static GameState currentState;
 	static CommonStates* commonStates;
@@ -124,7 +123,8 @@ public:
 	static GamePad* theGamePad;
 	static GamePad::ButtonStateTracker* theTracker;
 
-	static GameObjectHandler handler;
+	static GameObjectHandler* handler;
+	static GraphicsDevice* theGraphicDevice;
 
 
 	static ModelLoader* theModelLoader;
@@ -135,5 +135,7 @@ public:
 	static Physics* getphysices();
 	static void closeWindow();
 	static void setState(GameState state);
+
+
 };
 #endif

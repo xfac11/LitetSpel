@@ -16,6 +16,21 @@
     <FxCompile Include="SimplePS.hlsl">
       <Filter>Physics</Filter>
     </FxCompile>
+    <FxCompile Include="LSPixelShader.hlsl">
+      <Filter>Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="LSVertexShader.hlsl">
+      <Filter>Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="DRGBGeometryShader.hlsl">
+      <Filter>Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="DRGBPixelShader.hlsl">
+      <Filter>Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="DRGBVertexShader.hlsl">
+      <Filter>Shaders</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="InputHandler.cpp" />
@@ -626,6 +641,9 @@
     </ClCompile>
     <ClCompile Include="DEBUG_DRAW.cpp">
       <Filter>Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="LightShader.cpp">
+      <Filter>Shaders</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1492,6 +1510,9 @@
     </ClInclude>
     <ClInclude Include="DEBUG_DRAW.h">
       <Filter>Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="LightShader.h">
+      <Filter>Shaders</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

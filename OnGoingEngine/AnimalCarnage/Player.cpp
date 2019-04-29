@@ -39,7 +39,7 @@ void Player::initialize()
 	this->playerObj->getRigidbody()->setWorldTransform(XMMATRIX_to_btTransform(this->playerObj->getWorld()));
 	System::theModelLoader->loadGO(this->playerObj, "Resources/Models/fox_test.lu", "fox_character_diffuse.tga");
 	//this->playerObj->setScale(1f, 0.4f, 0.1f);
-	System::handler.addObject(this->playerObj);
+	System::handler->addObject(this->playerObj);
 
 	/////////////
 	this->playerObj->getRigidbody()->setActivationState(DISABLE_DEACTIVATION);
