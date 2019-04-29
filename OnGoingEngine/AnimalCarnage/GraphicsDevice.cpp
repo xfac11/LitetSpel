@@ -23,7 +23,7 @@ void GraphicsDevice::beginScene(float color[4])
 {
 	deviceContext->ClearRenderTargetView(renderTargetView, color);
 	// Clear the depth buffer.
-	deviceContext->ClearDepthStencilView(depthStencilView, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0xFF);
+	deviceContext->ClearDepthStencilView(depthStencilView, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 1);
 	deviceContext->OMSetDepthStencilState(this->depthStencilState, 0); //1
 }
 
@@ -150,7 +150,7 @@ bool GraphicsDevice::initialize(int screenWidth, int screenHeight, bool vsync, H
 		// Depth test parameters
 
 // Depth test parameters
-		depthStencilDescL.DepthEnable = true;
+		depthStencilDescL.DepthEnable = false;
 		depthStencilDescL.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
 		depthStencilDescL.DepthFunc = D3D11_COMPARISON_GREATER;
 
@@ -296,4 +296,37 @@ ID3D11Device *& GraphicsDevice::getDevice()
 ID3D11DeviceContext *& GraphicsDevice::getDeviceContext()
 {
 	return deviceContext;
+}
+
+void GraphicsDevice::turnOnZ()
+{
+	deviceContext->OMSetDepthStencilState(this->depthStencilState, 0);
+}
+
+void GraphicsDevice::turnOffZ()
+{
+	deviceContext->OMSetDepthStencilState(this->disableDepthStencilState, 1);
+}
+
+void GraphicsDevice::setRasterState()
+{
+	deviceContext->RSSetState(rasterState);
+}
+
+void GraphicsDevice::setBlendState()
+{
+	float blendFactor[4] = { 0.f, 0.f, 0.f, 0.f };
+
+	// Turn on the alpha blending.
+	deviceContext->OMSetBlendState(alphaEnableBlendingState, blendFactor, 0xffffffff);
+}
+
+void GraphicsDevice::setBackBuffer()
+{
+	deviceContext->OMSetRenderTargets(1, &renderTargetView, this->depthStencilView);
+}
+
+void GraphicsDevice::setBackBuffer(ID3D11DepthStencilView * view)
+{
+	deviceContext->OMSetRenderTargets(1, &renderTargetView, view);
 }

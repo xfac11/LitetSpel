@@ -25,13 +25,14 @@ public:
 	virtual void setCBuffers()=0;
 	void setShaders();
 private:
-	ID3D11VertexShader* vertexShader;
-	ID3D11PixelShader* pixelShader;
 	ID3D11GeometryShader* geometryShader;
 	ID3D11ComputeShader* comShader;
-	ID3D11InputLayout* vertexLayout;
 	ID3D11SamplerState* sampler;
 
 	void shutdown();
+protected:
+	ID3D11VertexShader* vertexShader;
+	ID3D11PixelShader* pixelShader;
+	ID3D11InputLayout* vertexLayout;
 };
 #endif // !SHADER_H

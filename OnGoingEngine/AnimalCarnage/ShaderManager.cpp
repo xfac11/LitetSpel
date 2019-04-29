@@ -3,21 +3,41 @@
 ShaderManager::ShaderManager()
 {
 	this->fShader = nullptr;
+	this->dShader = nullptr;
+	this->lShader = nullptr;
 }
 
 ShaderManager::~ShaderManager()
 {
 	if(this->fShader!=nullptr)
 		delete this->fShader;
+	if (this->dShader != nullptr)
+		delete this->dShader;
+	if (this->lShader != nullptr)
+		delete this->lShader;
 }
 
-void ShaderManager::initialize()
+void ShaderManager::initialize(int height, int width, float nearPlane, float farPlane)
 {
 	this->fShader = new ForwardShader;
 	this->fShader->initialize();
+	this->dShader = new DeferredShader;
+	this->dShader->initialize(height, width, nearPlane, farPlane);
+	this->lShader = new LightShader;
+	this->lShader->initialize();
 }
 
 ForwardShader *& ShaderManager::getForwardShader()
 {
 	return this->fShader;
+}
+
+DeferredShader *& ShaderManager::getDefShader()
+{
+	return this->dShader;
+}
+
+LightShader *& ShaderManager::getLightShader()
+{
+	return this->lShader;
 }

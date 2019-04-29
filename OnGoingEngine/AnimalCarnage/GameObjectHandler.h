@@ -26,6 +26,17 @@ private:
 		DirectX::XMMATRIX* worldPtr;
 		Model* modelPtr;
 	};
+
+	
+	struct LightVertex
+	{
+		float position[3];
+		float uv[2];
+	};
+	std::vector<LightVertex> quad;
+	VertexBuffer<LightVertex> vertexBufferQuad;
+	std::vector<LightVertex> sphere;
+	VertexBuffer<LightVertex> vertexBufferSphere;
 	struct AnyLight
 	{
 		DirectX::XMMATRIX worldLight;
@@ -36,6 +47,7 @@ private:
 	};
 	struct TheLights
 	{
+		int index;
 		int nrOfLights;
 		AnyLight lights[16];
 	};
@@ -45,6 +57,8 @@ private:
 	void expandGameobjects();
 	void expandTransModels();
 	void expandOpaqueModels();
+	void renderToTexture(float* color);
+	void deferredRender();
 };
 
 #endif // !GAMEOBJECTHANDLER_H

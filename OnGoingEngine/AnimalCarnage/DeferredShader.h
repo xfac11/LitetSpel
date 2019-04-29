@@ -14,6 +14,8 @@ public:
 	//uses the rendershader in Shader
 	void setCamPosToMatricesPerFrame(DirectX::XMFLOAT3 campos);
 	void setCBuffers();
+	void prepGBuffer(float* color);
+	void prepForLight();
 	GBuffer gBuffer;
 private:
 	ID3D11BlendState* blendState;
