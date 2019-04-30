@@ -31,6 +31,14 @@ public:
 	static ID3D11Device*& getDevice();
 	static ID3D11DeviceContext*& getDeviceContext();
 
+	void turnOnZ();
+	void turnOffZ();
+	void setRasterState();
+
+	void setBlendState();
+	void setBackBuffer();
+	void setBackBuffer(ID3D11DepthStencilView* view);
+
 private:
 
 	bool vSync_enabled;

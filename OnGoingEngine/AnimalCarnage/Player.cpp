@@ -31,21 +31,15 @@ void Player::initialize()
 	////btMotionState* ms = this->playerObj->body()->getMotionState();
 
 	////btMatrix3x3 orn = ms->getWorldTransform(); //get basis of world transformation
-
 	////orn *= btMatrix3x3(btQuaternion(axis, radians));     //Multiply it by rotation matrix
-
 	//btMatrix3x3 transform = this->playerObj->body()->getWorldTransform().getBasis();
-
 	//this->playerObj->body()->getWorldTransform().setBasis(transform); //set new rotation for the object
-
-
 	//this->playerObj->getWorld() = btMatrix3x3(this->playerObj->body()->getInvInertiaTensorWorld());
 
-	//
 	this->playerObj->getRigidbody()->setWorldTransform(XMMATRIX_to_btTransform(this->playerObj->getWorld()));
 	System::theModelLoader->loadGO(this->playerObj, "Resources/Models/fox_test.lu", "fox_character_diffuse.tga");
 	//this->playerObj->setScale(1f, 0.4f, 0.1f);
-	System::handler.addObject(this->playerObj);
+	System::handler->addObject(this->playerObj);
 
 	/////////////
 	this->playerObj->getRigidbody()->setActivationState(DISABLE_DEACTIVATION);

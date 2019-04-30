@@ -1,11 +1,7 @@
 struct VS_OUT
 {
-	float4 Pos : SV_POSITION;
-	float2 Tex : TEXCOORD;
-	float4 wPosition : POSITION;
-	float4 NormalWS : NORMAL;
-	float4 TangentWS : TANGENT;
-	float4 BinormalWS : BINORMAL;
+	float4 screenPos : SV_POSITION;
+	float2 TexCoord : TEXCOORD;
 };
 struct AnyLight
 {
@@ -20,6 +16,8 @@ cbuffer CB_PER_FRAME : register(b0)
 	float4x4 view;//view
 	float4x4 proj;//proj
 	float4 camPos;
+	float2 screenSize;
+	float2 padding;
 }
 cbuffer Lights : register(b1)
 {
@@ -27,12 +25,12 @@ cbuffer Lights : register(b1)
 	int nrOfLights;
 	AnyLight lights[16];
 }
-float4 CalcLight(AnyLight light,  float3 normal, float3 wPos, float3 LightDirection)
+float4 CalcLight(AnyLight light, float3 normal, float3 wPos, float3 LightDirection)
 {
 	//float3 LightDirection = light.direction.xyz;
 	float ambientAmount = 0.1f;
 	float4 ambientColor = float4(light.color.xyz, 1.0f)*ambientAmount;
-	float diffuseFactor = max(0,dot(normal, -LightDirection));
+	float diffuseFactor = max(0, dot(normal, -LightDirection));
 	/*float theShade = diffuseFactor;
 		if( theShade < 0.2f)
 			theShade=0.f;
@@ -45,8 +43,8 @@ float4 CalcLight(AnyLight light,  float3 normal, float3 wPos, float3 LightDirect
 		else if( theShade >= 0.8f)
 			theShade=0.8f;
 	diffuseFactor = max(theShade,0);*/
-	float4 diffuseColor = float4(0.0f, 0.0f, 0.0f,0.0f);
-	float4 specularColor = float4(0.0f, 0.0f, 0.0f,0.0f);
+	float4 diffuseColor = float4(0.0f, 0.0f, 0.0f, 0.0f);
+	float4 specularColor = float4(0.0f, 0.0f, 0.0f, 0.0f);
 
 	if (diffuseFactor > 0)
 	{
@@ -72,14 +70,14 @@ float4 dirLight(float3 normal, AnyLight light, float3 wPos)
 
 float4 pointLight(int index, float3 normal, float3 wPos)
 {
-	float4 lightPos= mul(lights[index].worldLight,float4(0.0f, 0.0f, 0.0f, 1.0f));
+	float4 lightPos = mul(lights[index].worldLight, float4(0.0f, 0.0f, 0.0f, 1.0f));
 	//lights[index].position = 
 	float3 lightDir = wPos - lightPos.xyz;
 	float distance = length(lightDir);
 
 	lightDir = normalize(lightDir);
 
-	float4 color = CalcLight(lights[index], normal, wPos,lightDir);
+	float4 color = CalcLight(lights[index], normal, wPos, lightDir);
 
 	float attenuation = max(0, 1.0f - (distance / lights[index].position.w));// from 3d project
 
@@ -87,23 +85,36 @@ float4 pointLight(int index, float3 normal, float3 wPos)
 		0.2f * distance +
 		1.8f * distance * distance;
 
-	return color / (Attenuation/lights[index].position.w);// color/attenuation in tutorial
+	return color / (Attenuation / lights[index].position.w);// color/attenuation in tutorial
 }
-
-Texture2D Tex:register(t0);
+Texture2D NormalTex : register(t0);
+Texture2D Tex : register(t1);
+Texture2D PositionTexture : register(t2);
+Texture2D BumpNormalTex : register(t3);
 SamplerState SampSt :register(s0);
 float4 PS_main(VS_OUT input) : SV_Target
 {
 
-	float3 normal = input.NormalWS.xyz;
-	float4 totalLight = dirLight(normal, lights[0],input.wPosition.xyz);
 
-	for (int i = 1; i < nrOfLights; i++)
+	//input.TexCoord = float2(input.screenPos.x / screenSize.x,input.screenPos.y / screenSize.y);//screenposition divided by screen size(Send it in)
+	//float2((input.screenPos.x * 0.5) + 0.5, (input.screenPos.y * 0.5) + 0.5);
+
+	//bumpNormal = BumpNormalTex.Sample(SampSt, input.TexCoord).xyz *2.0f - 1.0f;// back to [-1...1] 
+	//colors = Tex.Sample(SampSt, input.TexCoord).xyz;
+	float3 pos = PositionTexture.Sample(SampSt, input.TexCoord).xyz;
+	float3 normal = NormalTex.Sample(SampSt, input.TexCoord).xyz*2.0f - 1.0f;
+	float4 totalLight;
+	if (index == 0)
 	{
-		totalLight += pointLight(i, normal, input.wPosition.xyz);
+		totalLight = dirLight(normal, lights[0], pos);
 	}
+	else
+	{
+		totalLight = pointLight(index, normal, pos);
+	}
+	
 
-	float4 colorT = float4(Tex.Sample(SampSt, input.Tex).xyz *totalLight.xyz, Tex.Sample(SampSt, input.Tex).w);
+	float4 colorT = float4(Tex.Sample(SampSt, input.TexCoord).xyz *totalLight.xyz, 1.0f);
 
 	return colorT;
 }

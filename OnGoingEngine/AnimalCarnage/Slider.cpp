@@ -25,8 +25,8 @@ Slider::~Slider()
 bool Slider::render(bool selected)
 {
 	System::getSpriteBatch()->Draw(Slider::sliderBG.getTexture(), this->position, nullptr, DirectX::Colors::White);
-	System::getSpriteBatch()->Draw(Slider::slider.getTexture(), DirectX::SimpleMath::Rectangle(static_cast<long>(this->position.x + 5), static_cast<long>(this->position.y + 5), 60 * this->value, 25), DirectX::Colors::White);
-	System::getSpriteBatch()->Draw(Slider::sliderButton.getTexture(), this->position + DirectX::SimpleMath::Vector2(-20.0F + 60 * this->value, -5.0F), nullptr, DirectX::Colors::White);
+	System::getSpriteBatch()->Draw(Slider::slider.getTexture(), DirectX::SimpleMath::Rectangle(static_cast<long>(this->position.x + 5), static_cast<long>(this->position.y + 5), (this->value / static_cast<float>(this->maxValue)) * 600, 25), DirectX::Colors::White);
+	System::getSpriteBatch()->Draw(Slider::sliderButton.getTexture(), this->position + DirectX::SimpleMath::Vector2(-20.0F + (this->value / static_cast<float>(this->maxValue)) * 600, -5.0F), nullptr, DirectX::Colors::White);
 
 	return true;
 }

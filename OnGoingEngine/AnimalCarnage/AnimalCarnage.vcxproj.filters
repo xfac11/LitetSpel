@@ -10,6 +10,27 @@
     <FxCompile Include="VertexShader.hlsl">
       <Filter>Shaders</Filter>
     </FxCompile>
+    <FxCompile Include="SimpleVS.hlsl">
+      <Filter>Physics</Filter>
+    </FxCompile>
+    <FxCompile Include="SimplePS.hlsl">
+      <Filter>Physics</Filter>
+    </FxCompile>
+    <FxCompile Include="LSPixelShader.hlsl">
+      <Filter>Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="LSVertexShader.hlsl">
+      <Filter>Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="DRGBGeometryShader.hlsl">
+      <Filter>Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="DRGBPixelShader.hlsl">
+      <Filter>Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="DRGBVertexShader.hlsl">
+      <Filter>Shaders</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="InputHandler.cpp" />
@@ -554,9 +575,6 @@
     <ClCompile Include="ModelLoader.cpp">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="Physics.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
     <ClCompile Include="Player.cpp">
       <Filter>Source</Filter>
     </ClCompile>
@@ -614,8 +632,26 @@
     <ClCompile Include="AnimatedModel.cpp">
       <Filter>Skeletal</Filter>
     </ClCompile>
+<<<<<<< HEAD
     <ClCompile Include="Joint.cpp">
       <Filter>Skeletal</Filter>
+=======
+    <ClCompile Include="Physics.cpp">
+      <Filter>Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="Primitives.cpp" />
+    <ClCompile Include="SimpleShaderClass.cpp">
+      <Filter>Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="DEBUG_DRAW.cpp">
+      <Filter>Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="LightShader.cpp">
+      <Filter>Shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="HealthBar.cpp">
+      <Filter>Menu</Filter>
+>>>>>>> 1864f0964f125345a68a2f217fc41b9de2c7602c
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1440,9 +1476,6 @@
     <ClInclude Include="Player.h">
       <Filter>Header</Filter>
     </ClInclude>
-    <ClInclude Include="Physics.h">
-      <Filter>Header</Filter>
-    </ClInclude>
     <ClInclude Include="ModelLoader.h">
       <Filter>Header</Filter>
     </ClInclude>
@@ -1475,6 +1508,22 @@
     </ClInclude>
     <ClInclude Include="Fox.h">
       <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Physics.h">
+      <Filter>Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="Primitives.h" />
+    <ClInclude Include="SimpleShaderClass.h">
+      <Filter>Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="DEBUG_DRAW.h">
+      <Filter>Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="LightShader.h">
+      <Filter>Shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="HealthBar.h">
+      <Filter>Menu</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1514,6 +1563,9 @@
     </Filter>
     <Filter Include="Input">
       <UniqueIdentifier>{75fce35e-89be-49c9-b191-81c740e17dd1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Physics">
+      <UniqueIdentifier>{144dfe23-2d0e-41ed-a950-49a7c1850ba0}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

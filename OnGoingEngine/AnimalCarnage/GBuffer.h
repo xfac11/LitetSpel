@@ -7,12 +7,12 @@ class GBuffer
 public:
 	GBuffer();
 	~GBuffer();
-	bool initialize(ID3D11Device* device, int height, int width, float nearPlane, float farPlane);
-	bool setRenderTargets(ID3D11Device*& device, ID3D11DeviceContext* deviceContext);
+	bool initialize(int height, int width, float nearPlane, float farPlane);
+	bool setRenderTargets();
 	ID3D11RenderTargetView*& getRenView(int id);
 	void shutDown();
-	void clear(ID3D11DeviceContext *deviceContext, float color[4]);
-	void setShaderResViews(ID3D11DeviceContext* deviceContext);
+	void clear(float color[4]);
+	void setShaderResViews();
 	ID3D11DepthStencilView*& getDepthStcView();
 	ID3D11ShaderResourceView* getShadResView(int id);
 	ID3D11Texture2D* getTexture(int id);

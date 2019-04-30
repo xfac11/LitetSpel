@@ -64,7 +64,7 @@ bool GunGameState::initailize()
 		player[i] = new Player();
 		player[i]->initialize();
 	}
-	System::handler.initialize();
+	System::handler->initialize();
 
 	float pos[4] = {
 	0,0,0,10.0
@@ -75,11 +75,11 @@ bool GunGameState::initailize()
 	float color[4] = {
 		0.9f , 1.0f, 0.2f , 1.0f
 	};
-	System::handler.addLight(pos, dir, color);
+	System::handler->addLight(pos, dir, color);
 	float color2[4] = {
 		0.0f , 1.0f, 1.0f , 1.0f
 	};
-	System::handler.addLight(pos, dir, color2);
+	System::handler->addLight(pos, dir, color2);
 	//player[0]->playerObj->body()->getWorldTransform().setOrigin(btVector3(-2, 2, 0));
 	//player[1]->playerObj->body()->getWorldTransform().setOrigin(btVector3(0, 2, 0));
 	//player[2]->playerObj->body()->getWorldTransform().setOrigin(btVector3(2, 2, 0));
@@ -120,7 +120,7 @@ bool GunGameState::initailize()
 bool GunGameState::render()
 {
 	renderImgui();
-	System::handler.draw();
+	System::handler->draw();
 
 	//for (int i = 0; i < bodies.size(); i++)
 	//{
@@ -165,7 +165,7 @@ bool GunGameState::update(float deltaTime)
 		player[i]->updateRumble(deltaTime, i);
 	}
 
-	if (Intersects(System::handler.getObject(2).getCollisionBox(), System::handler.getObject(2).getPosition(), System::handler.getObject(3).getCollisionBox(), System::handler.getObject(3).getPosition()))
+	if (Intersects(System::handler->getObject(2).getCollisionBox(), System::handler->getObject(2).getPosition(), System::handler->getObject(3).getCollisionBox(), System::handler->getObject(3).getPosition()))
 	{
 
 	}

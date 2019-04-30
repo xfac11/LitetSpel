@@ -10,11 +10,15 @@ DeferredShader::DeferredShader() :
 
 DeferredShader::~DeferredShader()
 {
+	if (this->blendState != nullptr)
+		this->blendState->Release();
+	if (this->rasState != nullptr)
+		this->rasState->Release();
 }
 
 bool DeferredShader::initialize(int height, int width, float nearPlane, float farPlane)
 {
-	this->gBuffer.initialize(System::getDevice(), height, width, nearPlane, farPlane);
+	this->gBuffer.initialize(height, width, nearPlane, farPlane);
 
 	D3D11_INPUT_ELEMENT_DESC inputDesc[] = {
 		{
@@ -115,4 +119,15 @@ void DeferredShader::setCBuffers()
 	this->setConstanbuffer(PIXEL, 0, this->perFrameCB.getBuffer());
 	this->setConstanbuffer(VERTEX, 1, this->worldCB.getBuffer());
 	this->setConstanbuffer(GEOMETRY, 1, this->worldCB.getBuffer());
+}
+
+void DeferredShader::prepGBuffer(float* color)
+{
+	this->gBuffer.setRenderTargets();
+	this->gBuffer.clear(color);
+}
+
+void DeferredShader::prepForLight()
+{
+	this->gBuffer.setShaderResViews();
 }

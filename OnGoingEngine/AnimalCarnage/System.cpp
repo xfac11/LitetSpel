@@ -17,7 +17,7 @@ SpriteBatch* System::spriteBatch = nullptr;
 SpriteFont* System::fontComicSans = nullptr;
 SpriteFont* System::fontArial = nullptr;
 ShaderManager* System::shaderManager = nullptr;
-GameObjectHandler System::handler = GameObjectHandler();
+GameObjectHandler* System::handler = nullptr;
 Physics* System::physices = nullptr;
 
 
@@ -302,6 +302,7 @@ System::~System()
 	this->theGraphicDevice->shutDown();
 	delete this->theGraphicDevice;
 
+	delete this->handler;
 	//delete this->obj[0];
 	//delete this->obj[1];
 	delete System::states[0];
@@ -315,6 +316,8 @@ System::~System()
 
 bool System::initialize()
 {
+	this->handler = new GameObjectHandler;
+	//this->handler->initialize();
 	this->theCamera = new Camera;
 	this->camPos = { 0,1,-2.f };
 	this->camRot = { 30.f,0,0 };
@@ -324,8 +327,7 @@ bool System::initialize()
 	this->theGamePad = new GamePad;
 	this->theTracker = new GamePad::ButtonStateTracker;
 	this->theModelLoader = new ModelLoader;
-	this->shaderManager = new ShaderManager;
-	this->shaderManager->initialize();
+	
 	//this->theForwardShader->initialize();
 	//this->obj[0] = new GameObject(shaderManager->getForwardShader());
 	//this->obj[1] = new GameObject(shaderManager->getForwardShader());
@@ -566,8 +568,15 @@ void System::render()
 
 	shaderManager->getForwardShader()->setCamPosToMatricesPerFrame(this->theCamera->GetPosition());
 	shaderManager->getForwardShader()->setViewProj(this->theCamera->GetViewMatrix(), this->theGraphicDevice->getProj(), DirectX::XMFLOAT4(this->theCamera->GetPosition().x, this->theCamera->GetPosition().y, this->theCamera->GetPosition().z, 1.0f));
-	shaderManager->getForwardShader()->setShaders();//tänker att man kör denna sen renderar allla som använder denna shader sen tar setshader på nästa osv.
-	shaderManager->getForwardShader()->setCBuffers();
+
+	shaderManager->getDefShader()->setCamPosToMatricesPerFrame(this->theCamera->GetPosition());
+	shaderManager->getDefShader()->setViewProj(this->theCamera->GetViewMatrix(), this->theGraphicDevice->getProj(), DirectX::XMFLOAT4(this->theCamera->GetPosition().x, this->theCamera->GetPosition().y, this->theCamera->GetPosition().z, 1.0f));
+
+	shaderManager->getLightShader()->setCamPosToMatricesPerFrame(this->theCamera->GetPosition());
+	shaderManager->getLightShader()->setViewProj(this->theCamera->GetViewMatrix(), this->theGraphicDevice->getProj(), DirectX::XMFLOAT4(this->theCamera->GetPosition().x, this->theCamera->GetPosition().y, this->theCamera->GetPosition().z, 1.0f));
+
+
+
 	
 	if(currentState==MAINMENU)
 		this->resetShaders();
@@ -599,7 +608,8 @@ void System::run()
 	{
 
 		theGraphicDevice->initialize(WIDTH, HEIGHT ,true , hwnd, false, 0.1f, 500.0f);
-
+		this->shaderManager = new ShaderManager;
+		this->shaderManager->initialize(HEIGHT, WIDTH, 0.1f, 500.0f);
 		this->initialize();
 		initImgui();
 		ShowWindow(this->hwnd, this->nCMDShow);

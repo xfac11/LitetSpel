@@ -1,5 +1,5 @@
 #include"GBuffer.h"
-
+#include"System.h"
 GBuffer::GBuffer()
 {
 	for (int i = 0; i < GBUFFERCAP; i++)
@@ -18,7 +18,7 @@ GBuffer::~GBuffer()
 	shutDown();
 }
 
-bool GBuffer::initialize(ID3D11Device * device, int height, int width, float nearPlane, float farPlane)
+bool GBuffer::initialize(int height, int width, float nearPlane, float farPlane)
 {
 	HRESULT result;
 	D3D11_TEXTURE2D_DESC texDesc{};
@@ -45,7 +45,7 @@ bool GBuffer::initialize(ID3D11Device * device, int height, int width, float nea
 
 	for (int i = 0; i < GBUFFERCAP; i++)
 	{
-		result = device->CreateTexture2D(&texDesc, NULL, &this->texTures[i]);
+		result = System::getDevice()->CreateTexture2D(&texDesc, NULL, &this->texTures[i]);
 		if (FAILED(result))
 			return false;
 
@@ -57,7 +57,7 @@ bool GBuffer::initialize(ID3D11Device * device, int height, int width, float nea
 
 	for (int i = 0; i < GBUFFERCAP; i++)
 	{
-		result = device->CreateRenderTargetView(this->texTures[i], &renTarViewDesc, &this->renderTars[i]);
+		result = System::getDevice()->CreateRenderTargetView(this->texTures[i], &renTarViewDesc, &this->renderTars[i]);
 		if (FAILED(result))
 			return false;
 
@@ -69,7 +69,7 @@ bool GBuffer::initialize(ID3D11Device * device, int height, int width, float nea
 
 	for (int i = 0; i < GBUFFERCAP; i++)
 	{
-		result = device->CreateShaderResourceView(this->texTures[i], &shaderResViewDesc, &this->shaderResViews[i]);
+		result = System::getDevice()->CreateShaderResourceView(this->texTures[i], &shaderResViewDesc, &this->shaderResViews[i]);
 		if (FAILED(result))
 			return false;
 
@@ -87,7 +87,7 @@ bool GBuffer::initialize(ID3D11Device * device, int height, int width, float nea
 	depthBufferDesc.BindFlags = D3D11_BIND_DEPTH_STENCIL;
 	depthBufferDesc.CPUAccessFlags = 0;
 	depthBufferDesc.MiscFlags = 0;
-	result = device->CreateTexture2D(&depthBufferDesc, NULL, &depthBuffer);
+	result = System::getDevice()->CreateTexture2D(&depthBufferDesc, NULL, &depthBuffer);
 	if (FAILED(result))
 	{
 		return false;
@@ -99,12 +99,12 @@ bool GBuffer::initialize(ID3D11Device * device, int height, int width, float nea
 	depthStencViewDesc.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2D;
 	depthStencViewDesc.Texture2D.MipSlice = 0;
 
-	result = device->CreateDepthStencilView(depthBuffer, &depthStencViewDesc, &depthStencView);
+	result = System::getDevice()->CreateDepthStencilView(depthBuffer, &depthStencViewDesc, &depthStencView);
 	if (FAILED(result))
 	{
 		return false;
 	}
-	//result=device->CreateShaderResourceView(depthBuffer, &shaderResViewDesc, &this->depthSource);
+	//result=System::getDevice()->CreateShaderResourceView(depthBuffer, &shaderResViewDesc, &this->depthSource);
 	if (FAILED(result))
 	{
 		return false;
@@ -120,12 +120,12 @@ bool GBuffer::initialize(ID3D11Device * device, int height, int width, float nea
 	return true;
 }
 
-bool GBuffer::setRenderTargets(ID3D11Device *& device, ID3D11DeviceContext * deviceContext)
+bool GBuffer::setRenderTargets()
 {
-	ID3D11ShaderResourceView* null[] = { nullptr, nullptr, nullptr };
-	deviceContext->PSSetShaderResources(0, GBUFFERCAP, nullptr);
-	deviceContext->OMSetRenderTargets(GBUFFERCAP, this->renderTars, depthStencView);
-	deviceContext->RSSetViewports(1, &viewP);
+	ID3D11ShaderResourceView* null[] = { nullptr, nullptr, nullptr,nullptr };
+	System::getDeviceContext()->PSSetShaderResources(0, GBUFFERCAP, null);
+	System::getDeviceContext()->OMSetRenderTargets(GBUFFERCAP, this->renderTars, depthStencView);
+	System::getDeviceContext()->RSSetViewports(1, &viewP);
 	return true;//always returns true
 }
 
@@ -139,9 +139,12 @@ void GBuffer::shutDown()
 
 	for (int i = 0; i < GBUFFERCAP; i++)
 	{
-		this->texTures[i]->Release();
-		this->renderTars[i]->Release();
-		this->shaderResViews[i]->Release();
+		if(this->texTures[i]!=nullptr)
+			this->texTures[i]->Release();
+		if (this->renderTars[i] != nullptr)
+			this->renderTars[i]->Release();
+		if (this->shaderResViews[i] != nullptr)
+			this->shaderResViews[i]->Release();
 	}
 
 	if (this->depthBuffer)
@@ -159,20 +162,23 @@ void GBuffer::shutDown()
 	}
 }
 
-void GBuffer::clear(ID3D11DeviceContext * deviceContext, float color[4])
+void GBuffer::clear(float color[4])
 {
 	for (int i = 0; i < GBUFFERCAP; i++)
 	{
-		deviceContext->ClearRenderTargetView(this->renderTars[i], color);
+		System::getDeviceContext()->ClearRenderTargetView(this->renderTars[i], color);
 	}
-	deviceContext->ClearDepthStencilView(depthStencView, D3D11_CLEAR_DEPTH, 1.0f, 0);
+	System::getDeviceContext()->ClearDepthStencilView(depthStencView, D3D11_CLEAR_DEPTH, 1.0f, 0);
 }
 
 
-void GBuffer::setShaderResViews(ID3D11DeviceContext* deviceContext)
+void GBuffer::setShaderResViews()
 {
-	deviceContext->PSSetShaderResources(0, GBUFFERCAP, nullptr);
-	deviceContext->PSSetShaderResources(0, GBUFFERCAP, this->shaderResViews);
+	ID3D11RenderTargetView* null[] = { nullptr, nullptr, nullptr,nullptr };
+	ID3D11ShaderResourceView* null2[] = { nullptr, nullptr, nullptr,nullptr };
+	//System::getDeviceContext()->OMSetRenderTargets(GBUFFERCAP, null, nullptr);
+	System::getDeviceContext()->PSSetShaderResources(0, GBUFFERCAP, null2);
+	System::getDeviceContext()->PSSetShaderResources(0, GBUFFERCAP, this->shaderResViews);
 }
 
 ID3D11DepthStencilView *& GBuffer::getDepthStcView()
