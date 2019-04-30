@@ -30,12 +30,14 @@ bool DEBUG_DRAW::addPrimitives(Primitives * shape)
 
 void DEBUG_DRAW::Draw(XMMATRIX view,XMMATRIX proj)
 {
+	if (!DebugDraw)
+		return;
 	XMFLOAT4 p(0,0,0,0);
 	this->shader->setCBuffers();
 	this->shader->setShaders();
 	this->shader->setViewProj(view, proj,p);
 	for (int i = 0; i < shapes.size(); i++)
 	{
-		this->shapes[i]->draw(this->shader);
+		this->shapes[i]->Draw(this->shader);
 	}
 }

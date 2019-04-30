@@ -26,8 +26,8 @@ GameObject::GameObject(Shader * shader)
 	this->colBox = AABB();
 
 	this->CollisionShape = new Primitives();
-	this->CollisionShape->initialize(1,btVector3(1,1,1));
-	this->CollisionShape->setWorld(&this->getWorld());
+	this->CollisionShape->Initialize(1,btVector3(1,1,1));
+	this->CollisionShape->SetWorld(&this->getWorld());
 	System::getDebugDraw()->addPrimitives(this->CollisionShape);
 	/*this->theModel[0] = new Model;
 	this->theModel[0]->setShader(shader);

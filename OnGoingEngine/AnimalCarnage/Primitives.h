@@ -12,21 +12,18 @@ struct VertexObject
 class Primitives
 {
 private:
-	std::vector<VertexObject> vertices;
-	std::vector<DWORD> indices;
-
 	VertexBuffer<VertexObject> vertexBuffer;
 	IndexBuffer indicesbuffer;
 	bool CreateBox(btVector3 size);
-	UINT indice;
+	UINT indices;
 	XMMATRIX* world;
 public:
 	//functions
 	Primitives();
-	void setWorld(XMMATRIX* xmWorld) { this->world = xmWorld; }
-	void initialize(int shapes,btVector3 size);
+	void SetWorld(XMMATRIX* xmWorld) { this->world = xmWorld; }
+	void Initialize(int shapes,btVector3 size);
 	~Primitives();
-	void draw(SimpleShader* shader);
+	void Draw(SimpleShader* shader);
 };
 
 
