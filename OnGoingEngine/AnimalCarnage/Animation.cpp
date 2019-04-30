@@ -1,5 +1,9 @@
 #include "Animation.h"
 
+Animation::Animation()
+{
+}
+
 void Animation::operator=(const Animation & obj)
 {
 }

@@ -300,6 +300,7 @@
     <ClCompile Include="GuiBase.cpp" />
     <ClCompile Include="GuiElement.cpp" />
     <ClCompile Include="GunGameState.cpp" />
+    <ClCompile Include="HealthBar.cpp" />
     <ClCompile Include="imgui\imgui.cpp" />
     <ClCompile Include="imgui\imgui_demo.cpp" />
     <ClCompile Include="imgui\imgui_draw.cpp" />
@@ -310,6 +311,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="Joint.cpp" />
     <ClCompile Include="JointTransformation.cpp" />
     <ClCompile Include="Keyboard.cpp" />
     <ClCompile Include="KeyboardEvent.cpp" />
@@ -593,6 +595,7 @@
     <ClInclude Include="GuiBase.h" />
     <ClInclude Include="GuiElement.h" />
     <ClInclude Include="GunGameState.h" />
+    <ClInclude Include="HealthBar.h" />
     <ClInclude Include="imgui\imconfig.h" />
     <ClInclude Include="imgui\imgui.h" />
     <ClInclude Include="imgui\imgui_impl_dx11.h" />

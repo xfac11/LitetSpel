@@ -115,14 +115,14 @@ void GameObjectHandler::draw()
 	this->lightsCB.applyChanges(System::getDevice(), System::getDeviceContext());
 	System::getDeviceContext()->IASetVertexBuffers(0, 1, &*this->vertexBufferQuad.GetAddressOf(), &*vertexBufferQuad.getStridePtr(), &offset);
 	System::getDeviceContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-	System::shaderManager->getLightShader()->renderShaderDir(quad.size(), System::shaderManager->getDefShader()->gBuffer.getDepthStcView());
+	System::shaderManager->getLightShader()->renderShaderDir((int)quad.size(), System::shaderManager->getDefShader()->gBuffer.getDepthStcView());
 	for (int i = 1; i < nrOfLights; i++)
 	{
 		this->lightsCB.data.index = i;
 		this->lightsCB.applyChanges(System::getDevice(), System::getDeviceContext());
 		System::getDeviceContext()->IASetVertexBuffers(0, 1, &*this->vertexBufferQuad.GetAddressOf(), &*vertexBufferQuad.getStridePtr(), &offset);
 		System::getDeviceContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-		System::shaderManager->getLightShader()->renderShaderDir(quad.size(), System::shaderManager->getDefShader()->gBuffer.getDepthStcView());
+		System::shaderManager->getLightShader()->renderShaderDir((int)quad.size(), System::shaderManager->getDefShader()->gBuffer.getDepthStcView());
 	}
 	System::theGraphicDevice->turnOnZ();
 	System::theGraphicDevice->setRasterState();
