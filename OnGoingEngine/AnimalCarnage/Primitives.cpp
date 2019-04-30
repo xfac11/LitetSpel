@@ -61,6 +61,8 @@ bool Primitives::CreateQuad()
 
 Primitives::Primitives()
 {
+	this->indice = 0;
+	this->world = nullptr;
 }
 
 void Primitives::initialize(int shapes)

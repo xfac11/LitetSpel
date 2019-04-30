@@ -35,9 +35,10 @@ public:
 	~Physics();
 	void Update();
 	btRigidBody* addSphere(float rad, float x, float y, float z, float mass);
-	void renderSphere(btRigidBody* sphere);
-	void renderPlane(btRigidBody* plane);
-
+	btRigidBody* addBox(btVector3 Origin, btVector3 size, float mass);
+	//void renderSphere(btRigidBody* sphere);
+	//void renderPlane(btRigidBody* plane);
+	//void renderBox(btRigidBody* box);
 };
 
 #endif // !PHYSICS_H

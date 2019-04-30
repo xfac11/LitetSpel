@@ -505,6 +505,12 @@ void System::update(float deltaTime)
 		//this->obj2->move(-1 * deltaTime, 0, 0);
 		theCamera->move(0, -1 * deltaTime, 0);
 	}
+	if (theKeyboard->KeyIsPressed('Z'))
+	{
+		//this->obj2->move(-1 * deltaTime, 0, 0);
+		theCamera->move(0, 1 * deltaTime, 0);
+	}
+
 	if (theKeyboard->KeyIsPressed('V'))
 	{
 		this->change(this->moveScreen);
@@ -513,12 +519,6 @@ void System::update(float deltaTime)
 	{
 		this->change(this->mouseShow);
 		ShowCursor(this->mouseShow);
-	}
-
-
-	if (theKeyboard->KeyIsPressed('X'))
-	{
-
 	}
 
 	if (theMouse->IsLeftDown())

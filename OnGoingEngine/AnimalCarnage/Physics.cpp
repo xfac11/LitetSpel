@@ -52,11 +52,11 @@ Physics::~Physics()
 
 void Physics::Update()
 {
-	for (int i = 0; i < this->bodies.size(); i++)
+	/*for (int i = 0; i < this->bodies.size(); i++)
 	{
 		renderSphere(bodies[i]);
 		renderPlane(bodies[i]);
-	}
+	}*/
 
 	this->world->stepSimulation(1 / 60.f, 10);
 }
@@ -83,34 +83,53 @@ btRigidBody* Physics::addSphere(float rad, float x, float y, float z, float mass
 	return body;
 }
 
-void Physics::renderSphere(btRigidBody* sphere)
+btRigidBody* Physics::addBox(btVector3 Origin, btVector3 size,float mass)
 {
-	if (sphere->getCollisionShape()->getShapeType() != SPHERE_SHAPE_PROXYTYPE) {
-		return;
+	//add object set transform
+	btTransform t; //
+	t.setIdentity();
+	t.setOrigin(btVector3(Origin));
+	btBoxShape* box = new btBoxShape(btVector3(size)); //raduius
+
+	btVector3 inertia(0, 0, 0);
+	if (mass != 0.0f) {
+		box->calculateLocalInertia(mass, inertia);
 	}
-	float r = ((btSphereShape*)sphere->getCollisionShape())->getRadius();
-	btTransform t;
-	sphere->getMotionState()->getWorldTransform(t);
+	btMotionState* motion = new btDefaultMotionState(t);
+	btRigidBody::btRigidBodyConstructionInfo info(mass, motion, box, inertia);
+
+	btRigidBody* body = new btRigidBody(info);
+
+	this->world->addRigidBody(body);
+	bodies.push_back(body);
+	return body;
 }
 
-void Physics::renderPlane(btRigidBody* plane)
-{
-	if (plane->getCollisionShape()->getShapeType() != STATIC_PLANE_PROXYTYPE) {
-		return;
-	}
-	btTransform t;
-	plane->getMotionState()->getWorldTransform(t);
-}
-
-
-Transformbt::Transformbt(float locX, float locY, float locZ, float quatX, float quatY, float quatZ, float quatW)
-	:
-	locX(locX),
-		locY(locY),
-		locZ(locZ),
-		quatX(quatX),
-		quatY(quatY),
-		quatZ(quatZ),
-		quatW(quatW)
-	{
-	}
+//void Physics::renderSphere(btRigidBody* sphere)
+//{
+//	if (sphere->getCollisionShape()->getShapeType() != SPHERE_SHAPE_PROXYTYPE) {
+//		return;
+//	}
+//	float r = ((btSphereShape*)sphere->getCollisionShape())->getRadius();
+//	btTransform t;
+//	sphere->getMotionState()->getWorldTransform(t);
+//}
+//
+//void Physics::renderPlane(btRigidBody* plane)
+//{
+//	if (plane->getCollisionShape()->getShapeType() != STATIC_PLANE_PROXYTYPE) {
+//		return;
+//	}
+//	btTransform t;
+//	plane->getMotionState()->getWorldTransform(t);
+//}
+//
+//void Physics::renderBox(btRigidBody* box)
+//{
+//	if (box->getCollisionShape()->getShapeType() != SPHERE_SHAPE_PROXYTYPE) {
+//		return;
+//	}
+//	btVector3 extent = ((btBoxShape*)box->getCollisionShape())->getHalfExtentsWithoutMargin();
+//	btTransform t;
+//	box->getMotionState()->getWorldTransform(t);
+//}

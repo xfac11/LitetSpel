@@ -26,7 +26,8 @@ void Player::initialize()
 	
 	this->playerObj->setPosition(0, 1, 1);
 	btVector3 postion = btVector3(playerObj->getPosition().x, playerObj->getPosition().y, playerObj->getPosition().z);
-	this->playerObj->getRigidbody() = System::getphysices()->addSphere(0.5f, postion.getX(), postion.getX(), postion.getX(),1);
+	//this->playerObj->getRigidbody() = System::getphysices()->addSphere(0.5f, postion.getX(), postion.getX(), postion.getX(),1);
+	this->playerObj->getRigidbody() = System::getphysices()->addBox(btVector3(0,0,0),btVector3(1,1,1),10.0f);
 	//this->playerObj->body()->getWorldTransform()
 	////btMotionState* ms = this->playerObj->body()->getMotionState();
 
