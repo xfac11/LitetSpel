@@ -23,7 +23,10 @@ void ModelLoader::loadGO(GameObject*& object, const char* filePath,std::string t
 	std::vector<Vertex3D> vertices3D;
 	vertices3D.resize(vertices.size());
 	for (int i = 0; i < vertices.size(); i++)
+	{
 		vertices3D[i] = vertices[i];
+		vertices3D[i].uv.y = 1 - vertices3D[i].uv.y;
+	}
 
 	DWORD* dIndices = new DWORD[indices.size()];
 	for (int j = 0; j < indices.size(); j++)
