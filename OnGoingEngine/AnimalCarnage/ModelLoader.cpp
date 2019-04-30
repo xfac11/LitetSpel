@@ -25,7 +25,7 @@ void ModelLoader::loadGO(GameObject*& object, const char* filePath,std::string t
 	for (int i = 0; i < vertices.size(); i++)
 	{
 		vertices3D[i] = vertices[i];
-		vertices3D[i].uv.y = 1 - vertices3D[i].uv.y;
+		vertices3D[i].uv.y = abs(1 - vertices3D[i].uv.y);
 	}
 
 	DWORD* dIndices = new DWORD[indices.size()];
