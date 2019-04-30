@@ -11,6 +11,10 @@ DEBUG_DRAW::DEBUG_DRAW()
 
 DEBUG_DRAW::~DEBUG_DRAW()
 {
+	for (int i = 0; i < shapes.size(); i++)
+	{
+		delete this->shapes[i];
+	}
 }
 
 bool DEBUG_DRAW::addPrimitives(Primitives * shape)
@@ -27,7 +31,7 @@ void DEBUG_DRAW::Draw(XMMATRIX view,XMMATRIX proj)
 	this->shader->setCBuffers();
 	this->shader->setShaders();
 	this->shader->setViewProj(view, proj,p);
-	for (int i = 3; i < shapes.size(); i++)
+	for (int i = 0; i < shapes.size(); i++)
 	{
 		this->shapes[i]->draw(this->shader);
 	}
