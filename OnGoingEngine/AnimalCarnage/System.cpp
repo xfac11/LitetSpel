@@ -19,7 +19,7 @@ SpriteFont* System::fontArial = nullptr;
 ShaderManager* System::shaderManager = nullptr;
 GameObjectHandler* System::handler = nullptr;
 Physics* System::physices = nullptr;
-
+DEBUG_DRAW* System::debugDraw = nullptr;
 
 HWND System::InitWindow(HINSTANCE hInstance, float height, float width)
 {
@@ -353,7 +353,7 @@ bool System::initialize()
 	System::fontComicSans = new SpriteFont(System::getDevice(), L"./Fonts/comic_sans.spritefont");
 	System::fontArial = new SpriteFont(System::getDevice(), L"./Fonts/arial.spritefont");
 	System::physices = new Physics();
-
+	System::debugDraw = new DEBUG_DRAW();
 	System::states.push_back(new MainMenu());
 	System::states[MAINMENU]->initailize();
 	System::states.push_back(new GunGameState());
@@ -583,6 +583,7 @@ void System::render()
 	System::states[System::currentState]->render();
 
 	physices->Update();
+	debugDraw->Draw(this->theCamera->GetViewMatrix(), this->theGraphicDevice->getProj());
 	System::getDeviceContext()->GSSetShader(nullptr, nullptr, 0);
     ImGui::Render();
 
@@ -692,6 +693,11 @@ SpriteFont * System::getFontArial()
 Physics* System::getphysices()
 {
 	return System::physices;
+}
+
+DEBUG_DRAW* System::getDebugDraw()
+{
+	return System::debugDraw;
 }
 
 void System::closeWindow()

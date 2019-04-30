@@ -1,9 +1,14 @@
-cbuffer MatrixBuffer : register(b0)
+cbuffer PerFrameMatrices : register(b0)
 {
-	matrix worldMatrix;
 	matrix viewMatrix;
 	matrix projectionMatrix;
+	float3 camera;
 };
+
+cbuffer WorldMatrix : register(b1)
+{
+	matrix worldMatrix;
+}
 struct VS_IN
 {
 	float4 position : POSITION;
@@ -16,7 +21,7 @@ struct VS_OUT
 	float4 color : COLOR;
 };
 
-VS_OUT main(VS_IN input)
+VS_OUT VS_main(VS_IN input)
 {
 	VS_OUT output;
 

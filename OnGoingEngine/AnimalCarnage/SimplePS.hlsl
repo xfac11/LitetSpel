@@ -4,7 +4,7 @@ struct VS_OUT
 	float4 color : COLOR;
 };
 
-float4 main(VS_OUT input) : SV_TARGET
+float4 PS_main(VS_OUT input) : SV_TARGET
 {
 	return input.color;
 }

@@ -1,34 +1,31 @@
 #ifndef PRIMITIVES_H
 #define PRIMITIVES_H
-#include "Transform.h"
 #include "VertexBuffer.h"
 #include "IndexBuffer.h"
-#include <iostream>
-#include "System.h"
-using namespace std;
-enum SHAPES {
-	QUAD
-};
-struct Vertex
+#include "SimpleShaderClass.h"
+#include "Transform.h"
+struct VertexObject
 {
 	float x, y, z;
 	float cx, cy, cz;
 };
-class Primitives : public Transform
+class Primitives :public Transform
 {
 private:
-	UINT indice;
+	std::vector<VertexObject> vertices;
+	std::vector<DWORD> indices;
 
-	ID3D11Buffer* VerticesBuffer;
-	ID3D11Buffer* IndicesBuffer;
+	VertexBuffer<VertexObject> vertexBuffer;
+	IndexBuffer indicesbuffer;
 	bool CreateQuad();
+	UINT indice;
 public:
 	//functions
-	Primitives(SHAPES shapes= QUAD);
+	Primitives();
+
+	void initialize(int shapes);
 	~Primitives();
-	ID3D11Buffer** GetVerticesBuffer() { return &this->VerticesBuffer; }
-	ID3D11Buffer* GetIndicesBuffer() { return this->IndicesBuffer; }
-	UINT GetIndices() { return this->indice; }
+	void draw(SimpleShader* shader);
 };
 
 

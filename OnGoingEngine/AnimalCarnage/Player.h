@@ -1,5 +1,6 @@
 #include "Bear.h"
 #include "GamePad.h"
+#include "Primitives.h"
 enum CHARACTER{
 	BEAR,FOX
 };
@@ -29,7 +30,7 @@ private:
 
 	XMFLOAT3 Accleration = XMFLOAT3(0, 0, 0);
 	XMFLOAT3 Velocity = XMFLOAT3(0, 0, 0);
-
+	Primitives *CollisionShape;
 public:
 	Player();
 	~Player();

@@ -1,46 +1,17 @@
 #include "SimpleShaderClass.h"
+#include"System.h"
 
-bool VertexShader::CreatVertexShader(ID3D11Device* device, std::wstring fileName, D3D11_INPUT_ELEMENT_DESC* layout, UINT elements)
+SimpleShader::SimpleShader()
 {
-	HRESULT hr = D3DReadFileToBlob(fileName.c_str(), this->buffer.GetAddressOf());
-	if (FAILED(hr))
-	{
-		return false;
-	}
 
-	hr = device->CreateVertexShader(this->buffer->GetBufferPointer(), this->buffer->GetBufferSize(), NULL, this->shader.GetAddressOf());
-	if (FAILED(hr))
-	{
-
-		return false;
-	}
-
-	hr = device->CreateInputLayout(layout, elements, this->buffer->GetBufferPointer(), this->buffer->GetBufferSize(), this->inputLayout.GetAddressOf());
-	if (FAILED(hr))
-	{
-		return false;
-	}
-	return true;
 }
 
-bool PixelShader::CreatPixelShader(ID3D11Device* device, std::wstring fileName)
+SimpleShader::~SimpleShader()
 {
-	HRESULT hr = D3DReadFileToBlob(fileName.c_str(), this->buffer.GetAddressOf());
-	if (FAILED(hr))
-	{
-		return false;
-	}
-
-	hr = device->CreatePixelShader(this->buffer.Get()->GetBufferPointer(), this->buffer.Get()->GetBufferSize(), NULL, this->shader.GetAddressOf());
-	if (FAILED(hr))
-	{
-		return false;
-	}
-
-	return true;
+	this->shutdown();
 }
 
-bool SimpleShader::InitializeShaders()
+bool SimpleShader::initialize()
 {
 	D3D11_INPUT_ELEMENT_DESC layout[] =
 	{
@@ -50,64 +21,61 @@ bool SimpleShader::InitializeShaders()
 
 	UINT numElements = ARRAYSIZE(layout);
 	std::wstring shaderfolder = L"..\\x64\\Debug\\";
-
-	CreatVertexShader(System::getDevice(), shaderfolder + L"SimpleVS.cso", layout, numElements);
-	CreatPixelShader(System::getDevice(), shaderfolder + L"SimplePS.cso");
-
-	//Create sampler description for sampler state
-	D3D11_SAMPLER_DESC sampDesc;
-	ZeroMemory(&sampDesc, sizeof(sampDesc));
-	sampDesc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
-	sampDesc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
-	sampDesc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
-	sampDesc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
-	sampDesc.ComparisonFunc = D3D11_COMPARISON_NEVER;
-	sampDesc.MinLOD = 0;
-	sampDesc.MaxLOD = D3D11_FLOAT32_MAX;
-	HRESULT hr = System::getDevice()->CreateSamplerState(&sampDesc, &this->samplerState); //Create sampler state
-	if (FAILED(hr))
-	{
-		MessageBox(NULL, "D3D11CreateDevice Failed.",
-			"CreateVertexBuffer Error", MB_OK);
+	if (!this->load(L"SimpleVS.hlsl", layout, numElements, L"SimplePS.hlsl"))
 		return false;
-	}
-	return false;
-}
 
-bool SimpleShader::CreatGeometryShader(ID3D11Device* device, std::wstring fileName)
-{
-	if (!this->geometryShader.CreatGeometryShader(device, fileName))
-		return false;
-	return true;
-}
-
-bool SimpleShader::CreatVertexShader(ID3D11Device* device, std::wstring fileName, D3D11_INPUT_ELEMENT_DESC* layout, UINT elements)
-{
-	if (!this->vertexShader.CreatVertexShader(device, fileName, layout, elements))
-		return false;
-	return true;
-}
-
-bool SimpleShader::CreatPixelShader(ID3D11Device* device, std::wstring fileName)
-{
-	if (!this->pixdelShader.CreatPixelShader(device, fileName))
-		return false;
-	return true;
-}
-
-bool GeometryShader::CreatGeometryShader(ID3D11Device* device, std::wstring fileName)
-{
-	HRESULT hr = D3DReadFileToBlob(fileName.c_str(), this->buffer.GetAddressOf());
-	if (FAILED(hr))
+	HRESULT result;
+	result = this->perFrameCB.initialize(System::getDevice());
+	if (FAILED(result))
 	{
 		return false;
 	}
-
-	hr = device->CreateGeometryShader(this->buffer.Get()->GetBufferPointer(), this->buffer.Get()->GetBufferSize(), NULL, this->shader.GetAddressOf());
-	if (FAILED(hr))
+	result = this->worldCB.initialize(System::getDevice());
+	if (FAILED(result))
 	{
 		return false;
 	}
 
 	return true;
+}
+
+void SimpleShader::setWorld(DirectX::XMMATRIX world)
+{
+	world = XMMatrixTranspose(world);
+	this->worldCB.data.world = world;
+	this->worldCB.applyChanges(System::getDevice(), System::getDeviceContext());
+}
+
+void SimpleShader::setViewProj(DirectX::XMMATRIX view, DirectX::XMMATRIX proj, DirectX::XMFLOAT4 camPos)
+{
+	view = XMMatrixTranspose(view);
+	proj = XMMatrixTranspose(proj);
+	this->perFrameCB.data.view = view;
+	this->perFrameCB.data.proj = proj;
+	//need to set campos separately to enable check for backface culling
+	//this->perFrameCB.data.camPos = camPos; 
+	this->perFrameCB.applyChanges(System::getDevice(), System::getDeviceContext());
+}
+
+void SimpleShader::setCamPosToMatricesPerFrame(DirectX::XMFLOAT3 campos)
+{
+	XMFLOAT4 cam = { campos.x, campos.y,campos.z,1.f };
+	perFrameCB.data.camPos = cam;
+}
+
+void SimpleShader::setCBuffers()
+{
+	this->setConstanbuffer(VERTEX, 0, this->perFrameCB.getBuffer());
+	this->setConstanbuffer(VERTEX, 1, this->worldCB.getBuffer());
+}
+void SimpleShader::renderShader(int vertexCount, int indexCount)
+{
+	System::getDeviceContext()->DrawIndexed(vertexCount, 0,0);
+}
+void SimpleShader::shutdown()
+{
+	if (this->blendState != nullptr)
+		this->blendState->Release();
+	if (this->rasState != nullptr)
+		this->rasState->Release();
 }

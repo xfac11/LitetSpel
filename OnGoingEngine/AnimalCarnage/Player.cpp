@@ -43,6 +43,9 @@ void Player::initialize()
 
 	/////////////
 	this->playerObj->getRigidbody()->setActivationState(DISABLE_DEACTIVATION);
+	this->CollisionShape = new Primitives();
+	this->CollisionShape->initialize(1);
+	System::getDebugDraw()->addPrimitives(this->CollisionShape);
 }
 
 void Player::update(float deltaTime, int id)

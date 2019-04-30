@@ -1,11 +1,10 @@
 #include "Primitives.h"
+#include "System.h"
+
 
 
 bool Primitives::CreateQuad()
 {
-	std::vector<Vertex> vertices;
-	std::vector<UINT> indices;
-
 	vertices.resize(4);
 	indices.resize(6);
 
@@ -25,38 +24,21 @@ bool Primitives::CreateQuad()
 	indices[4] = 2;
 	indices[5] = 3;
 
-	D3D11_BUFFER_DESC vertexBufferDesc{ 0, D3D11_USAGE_IMMUTABLE, D3D11_BIND_VERTEX_BUFFER, 0, 0, 0 };
-	D3D11_SUBRESOURCE_DATA vertexSubresourceData{};
-	D3D11_BUFFER_DESC indicesBufferDesc{ 0, D3D11_USAGE_IMMUTABLE, D3D11_BIND_INDEX_BUFFER, 0, 0, 0 };
-	D3D11_SUBRESOURCE_DATA indexSubresourceData{};
 	indice = 6;
-
-	vertexBufferDesc.ByteWidth = (sizeof(Vertex)) * 4;
-	vertexSubresourceData.pSysMem = vertices.data();
-	HRESULT hr =	System::getDevice()->CreateBuffer(&vertexBufferDesc, &vertexSubresourceData, &VerticesBuffer);
-	 if (FAILED(hr))
-	 {
-		 MessageBox(NULL, "Create VertexBuffer failed.",
-			 "Didn't VertexBuffer for QUAD", MB_OK);
-		 return false;
-	 }
-	indicesBufferDesc.ByteWidth = sizeof(UINT) * 6;
-	indexSubresourceData.pSysMem = indices.data();
-	hr = System::getDevice()->CreateBuffer(&indicesBufferDesc, &indexSubresourceData, &IndicesBuffer);
-	if (FAILED(hr))
-	{
-		MessageBox(NULL, "Create VertexBuffer failed.",
-			"Didn't VertexBuffer for QUAD", MB_OK);
-		return false;
-	}
+	this->vertexBuffer.initialize(vertices.data(), 4, System::getDevice());
+	this->indicesbuffer.initialize(indices.data(), indice, System::getDevice());
 	return true;
 }
 
-Primitives::Primitives(SHAPES shapes)
+Primitives::Primitives()
+{
+}
+
+void Primitives::initialize(int shapes)
 {
 	switch (shapes)
 	{
-	case QUAD:
+	case 1:
 		this->CreateQuad();
 		break;
 	}
@@ -64,4 +46,18 @@ Primitives::Primitives(SHAPES shapes)
 
 Primitives::~Primitives()
 {
+}
+
+void Primitives::draw(SimpleShader* shader)
+{
+	shader->setWorld(this->getWorld());
+	const UINT offset = 0;
+	const UINT stride = sizeof(VertexObject);
+	// Set the vertex buffer
+	System::getDeviceContext()->IASetVertexBuffers(0, 1, vertexBuffer.GetAddressOf(), &stride, &offset);
+	System::getDeviceContext()->IASetIndexBuffer(indicesbuffer.getBuffer(), DXGI_FORMAT_R32_UINT, 0);
+	System::getDeviceContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_LINESTRIP);
+	System::getDeviceContext()->DrawIndexed(this->indice, 0, 0);
+
+
 }
