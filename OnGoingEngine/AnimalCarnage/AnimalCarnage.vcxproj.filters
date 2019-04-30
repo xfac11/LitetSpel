@@ -645,6 +645,9 @@
     <ClCompile Include="LightShader.cpp">
       <Filter>Shaders</Filter>
     </ClCompile>
+    <ClCompile Include="HealthBar.cpp">
+      <Filter>Menu</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource1.h" />
@@ -1513,6 +1516,9 @@
     </ClInclude>
     <ClInclude Include="LightShader.h">
       <Filter>Shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="HealthBar.h">
+      <Filter>Menu</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
