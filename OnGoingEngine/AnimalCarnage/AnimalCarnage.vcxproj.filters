@@ -614,6 +614,9 @@
     <ClCompile Include="AnimatedModel.cpp">
       <Filter>Skeletal</Filter>
     </ClCompile>
+    <ClCompile Include="Joint.cpp">
+      <Filter>Skeletal</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource1.h" />

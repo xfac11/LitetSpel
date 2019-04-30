@@ -1,4 +1,5 @@
 #include "Bear.h"
+#include "Fox.h"
 #include "GamePad.h"
 enum CHARACTER{
 	BEAR,FOX

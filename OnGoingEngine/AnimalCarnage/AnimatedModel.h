@@ -1,7 +1,8 @@
 #ifndef ANIMATEDMODEL_H
 #define ANIMATEDMODEL_H
-#include "Animator.h"
+//#include "Animator.h"
 #include "Joint.h"
+#include "Animation.h"
 //#include "modelLoader.h"
 class AnimatedModel
 {
@@ -23,6 +24,8 @@ private:
 
 	//Animator* animator;
 
+	//setup joints
+	void setupJoints();
 	void addJointsToArray(Joint* headJoint, DirectX::XMMATRIX**& jointMatrices);
 public:
 
