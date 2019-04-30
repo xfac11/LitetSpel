@@ -4,14 +4,25 @@
 #include "GuiBase.h"
 #include "GuiElement.h"
 #include "Slider.h"
+#include "CheckBox.h"
 
 class OptionsGui : public GuiBase
 {
 private:
 	GuiElement* selectedElement;
-	Slider* volume;
+	Slider* sliderMusic;
+	Slider* sliderSound;
+	CheckBox* checkBoxRumble1;
+	CheckBox* checkBoxRumble2;
+	CheckBox* checkBoxRumble3;
+	CheckBox* checkBoxRumble4;
 
 	bool pressedLastFrame;
+	bool changedLastFrame;
+	float timeSinceChanged;
+
+	void changeSelected_Keyboard();
+	void changeSelected();
 
 public:
 	OptionsGui(State* myState);

@@ -17,6 +17,7 @@ private:
 	static Texture playerCircle;
 	static Texture arrowLeft;
 	static Texture arrowRight;
+	static Texture playerFox;
 
 	Players currentPlayer;
 
