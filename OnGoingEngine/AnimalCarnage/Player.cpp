@@ -24,9 +24,9 @@ void Player::initialize()
 {
 	this->playerObj = new GameObject(System::shaderManager->getForwardShader());
 	
-	this->playerObj->setPosition(0, 1, 1);
+	/*this->playerObj->setPosition(0, 1, 1);*/
 	btVector3 postion = btVector3(playerObj->getPosition().x, playerObj->getPosition().y, playerObj->getPosition().z);
-	//this->playerObj->getRigidbody() = System::getphysices()->addSphere(0.5f, postion.getX(), postion.getX(), postion.getX(),1);
+	//this->playerObj->getRigidbody() = System::getphysices()->addSphere(0.5f,btVector3(0,0,0),1);
 	this->playerObj->getRigidbody() = System::getphysices()->addBox(btVector3(0,0,0),btVector3(1,1,1),10.0f);
 	//this->playerObj->body()->getWorldTransform()
 	////btMotionState* ms = this->playerObj->body()->getMotionState();
@@ -123,9 +123,8 @@ void Player::update(float deltaTime, int id)
 		//JUMP INPUT
 		if ((state.buttons.x || state.buttons.y) && canJump)//== DirectX::GamePad::ButtonStateTracker::PRESSED 
 		{
-			//isJumping = true;
-			//grounded = false;
-			//this->playerObj->body()->applyImpulse(btVector3(0, 1, 0), btVector3(0, 1, 0));
+		
+			this->playerObj->getRigidbody()->setLinearVelocity(btVector3(0,1, 0));
 		}
 		////canJump
 		//if (state.buttons.x || state.buttons.y) {

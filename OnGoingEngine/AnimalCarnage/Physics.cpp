@@ -61,12 +61,12 @@ void Physics::Update()
 	this->world->stepSimulation(1 / 60.f, 10);
 }
 
-btRigidBody* Physics::addSphere(float rad, float x, float y, float z, float mass)
+btRigidBody* Physics::addSphere(float radius, btVector3 Origin, float mass)
 {	//add object set transform
 	btTransform t; //
 	t.setIdentity();
-	t.setOrigin(btVector3(x, y,z));
-	btSphereShape * sphere = new btSphereShape(rad); //raduius
+	t.setOrigin(btVector3(Origin));
+	btSphereShape * sphere = new btSphereShape(radius); //raduius
 
 	btVector3 inertia(0, 0, 0);
 	if (mass != 0.0f) {
@@ -89,7 +89,7 @@ btRigidBody* Physics::addBox(btVector3 Origin, btVector3 size,float mass)
 	btTransform t; //
 	t.setIdentity();
 	t.setOrigin(btVector3(Origin));
-	btBoxShape* box = new btBoxShape(btVector3(size)); //raduius
+	btBoxShape* box = new btBoxShape(btVector3(size));
 
 	btVector3 inertia(0, 0, 0);
 	if (mass != 0.0f) {
