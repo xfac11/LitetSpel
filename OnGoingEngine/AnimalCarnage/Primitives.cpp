@@ -9,16 +9,16 @@ bool Primitives::CreateQuad()
 	indices.resize(24);
 
 	vertices[0] = { -1.0f, -1.0f, 0.0f , 
-					 0.0f, 0.0f, 1.0f };
+					 1.0f, 0.0f, 0.0f };
 	vertices[1] = { -1.0f,  1.0f, 0.0f ,
-					 0.0f, 0.0f, 1.0f  };
+					 1.0f, 0.0f, 0.0f  };
 	vertices[2] = {  1.0f,  1.0f, 0.0f ,
-					 0.0f, 0.0f, 1.0f };
+					 1.0f, 0.0f, 0.0f };
 	vertices[3] = {  1.0f, -1.0f, 0.0f ,
-					 0.0f, 0.0f, 1.0f };
+					 1.0f, 0.0f, 0.0f };
 	
 	vertices[4] = { -1.0f, -1.0f, 1.0f ,
-				 0.0f, 0.0f, 1.0f };
+				     0.0f, 0.0f, 1.0f };
 	vertices[5] = { -1.0f,  1.0f, 1.0f ,
 					 0.0f, 0.0f, 1.0f };
 	vertices[6] = { 1.0f,  1.0f, 1.0f ,
