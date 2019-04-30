@@ -312,6 +312,7 @@ System::~System()
 	delete System::fontComicSans;
 	delete System::fontArial;
 	delete System::physices;
+	delete System::debugDraw;
 }
 
 bool System::initialize()
@@ -354,6 +355,7 @@ bool System::initialize()
 	System::fontArial = new SpriteFont(System::getDevice(), L"./Fonts/arial.spritefont");
 	System::physices = new Physics();
 	System::debugDraw = new DEBUG_DRAW();
+
 	System::states.push_back(new MainMenu());
 	System::states[MAINMENU]->initailize();
 	System::states.push_back(new GunGameState());

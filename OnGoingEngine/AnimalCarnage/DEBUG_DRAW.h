@@ -13,6 +13,7 @@ private:
 public:
 	DEBUG_DRAW();
 	~DEBUG_DRAW();
+	
 	bool addPrimitives(Primitives* shape);
 	void Draw(XMMATRIX view, XMMATRIX proj);
 };

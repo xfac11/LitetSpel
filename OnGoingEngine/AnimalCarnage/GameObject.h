@@ -5,7 +5,7 @@
 #include"ConstantBuffer.h"
 #include"Geometry.h"
 #include "btBulletDynamicsCommon.h"
-
+#include "Primitives.h"
 
 class GameObject: public Transform//arv
 {
@@ -25,6 +25,8 @@ public:
 	void setTexture(std::string file, int id);
 	void draw();
 	AABB getCollisionBox();
+	Primitives * CollisionShape;
+	
 private:
 	Model* *theModel;
 	int cap;

@@ -13,8 +13,11 @@ DEBUG_DRAW::~DEBUG_DRAW()
 {
 	for (int i = 0; i < shapes.size(); i++)
 	{
-		delete this->shapes[i];
+		Primitives* temp = this->shapes[i];
+		delete temp;
 	}
+	shapes.clear();
+	delete shader;
 }
 
 bool DEBUG_DRAW::addPrimitives(Primitives * shape)

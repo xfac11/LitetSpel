@@ -9,7 +9,7 @@ struct VertexObject
 	float x, y, z;
 	float cx, cy, cz;
 };
-class Primitives :public Transform
+class Primitives
 {
 private:
 	std::vector<VertexObject> vertices;
@@ -19,10 +19,11 @@ private:
 	IndexBuffer indicesbuffer;
 	bool CreateQuad();
 	UINT indice;
+	XMMATRIX* world;
 public:
 	//functions
 	Primitives();
-
+	void setWorld(XMMATRIX* xmWorld) { this->world = xmWorld; }
 	void initialize(int shapes);
 	~Primitives();
 	void draw(SimpleShader* shader);

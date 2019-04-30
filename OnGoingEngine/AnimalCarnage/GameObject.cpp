@@ -1,5 +1,5 @@
 #include "GameObject.h"
-
+#include "System.h"
 
 GameObject::GameObject()
 {
@@ -11,7 +11,7 @@ GameObject::GameObject()
 		this->theModel[i] = nullptr;
 	}
 	this->colBox = AABB();
-	
+
 }
 
 GameObject::GameObject(Shader * shader)
@@ -24,6 +24,11 @@ GameObject::GameObject(Shader * shader)
 		this->theModel[i] = nullptr;
 	}
 	this->colBox = AABB();
+
+	this->CollisionShape = new Primitives();
+	this->CollisionShape->initialize(1);
+	this->CollisionShape->setWorld(&this->getWorld());
+	System::getDebugDraw()->addPrimitives(this->CollisionShape);
 	/*this->theModel[0] = new Model;
 	this->theModel[0]->setShader(shader);
 	this->nrOfModels++;*/
