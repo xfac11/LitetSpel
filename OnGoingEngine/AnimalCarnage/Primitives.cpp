@@ -3,28 +3,44 @@
 
 
 
-bool Primitives::CreateQuad()
+bool Primitives::CreateBox(btVector3 size)
 {
 	vertices.resize(8);
 	indices.resize(24);
+	vertices[0] = { -size.getX(), -size.getY(), -size.getZ() ,
+				 1.0f, 0.0f, 0.0f };
+	vertices[1] = { -size.getX(),  size.getY(), -size.getZ() ,
+					 1.0f, 0.0f, 0.0f };
+	vertices[2] = { size.getX(),  size.getY(), -size.getZ() ,
+					 1.0f, 0.0f, 0.0f };
+	vertices[3] = { size.getX(), -size.getY(), -size.getZ() ,
+					 1.0f, 0.0f, 0.0f };
 
-	vertices[0] = { -1.0f, -1.0f, 0.0f , 
-					 1.0f, 0.0f, 0.0f };
-	vertices[1] = { -1.0f,  1.0f, 0.0f ,
-					 1.0f, 0.0f, 0.0f  };
-	vertices[2] = {  1.0f,  1.0f, 0.0f ,
-					 1.0f, 0.0f, 0.0f };
-	vertices[3] = {  1.0f, -1.0f, 0.0f ,
-					 1.0f, 0.0f, 0.0f };
-	
-	vertices[4] = { -1.0f, -1.0f, 1.0f ,
-				     0.0f, 0.0f, 1.0f };
-	vertices[5] = { -1.0f,  1.0f, 1.0f ,
+	vertices[4] = { -size.getX(), -size.getY(), size.getZ(),
 					 0.0f, 0.0f, 1.0f };
-	vertices[6] = { 1.0f,  1.0f, 1.0f ,
+	vertices[5] = { -size.getX(),  size.getY(), size.getZ() ,
 					 0.0f, 0.0f, 1.0f };
-	vertices[7] = { 1.0f, -1.0f, 1.0f ,
+	vertices[6] = { size.getX(),  size.getY(), size.getZ() ,
 					 0.0f, 0.0f, 1.0f };
+	vertices[7] = { size.getX(), -size.getY(), size.getZ() ,
+					 0.0f, 0.0f, 1.0f };
+	//vertices[0] = { -1.0f, -1.0f, 0.0f , 
+	//				 1.0f, 0.0f, 0.0f };
+	//vertices[1] = { -1.0f,  1.0f, 0.0f ,
+	//				 1.0f, 0.0f, 0.0f  };
+	//vertices[2] = {  1.0f,  1.0f, 0.0f ,
+	//				 1.0f, 0.0f, 0.0f };
+	//vertices[3] = {  1.0f, -1.0f, 0.0f ,
+	//				 1.0f, 0.0f, 0.0f };
+	//
+	//vertices[4] = { -1.0f, -1.0f, 1.0f ,
+	//			     0.0f, 0.0f, 1.0f };
+	//vertices[5] = { -1.0f,  1.0f, 1.0f ,
+	//				 0.0f, 0.0f, 1.0f };
+	//vertices[6] = { 1.0f,  1.0f, 1.0f ,
+	//				 0.0f, 0.0f, 1.0f };
+	//vertices[7] = { 1.0f, -1.0f, 1.0f ,
+	//				 0.0f, 0.0f, 1.0f };
 
 	indices[0] = 0;
 	indices[1] = 1;
@@ -65,12 +81,12 @@ Primitives::Primitives()
 	this->world = nullptr;
 }
 
-void Primitives::initialize(int shapes)
+void Primitives::initialize(int shapes, btVector3 size)
 {
 	switch (shapes)
 	{
 	case 1:
-		this->CreateQuad();
+		this->CreateBox(size);
 		break;
 	}
 }

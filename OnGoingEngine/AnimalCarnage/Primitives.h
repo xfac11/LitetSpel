@@ -17,14 +17,14 @@ private:
 
 	VertexBuffer<VertexObject> vertexBuffer;
 	IndexBuffer indicesbuffer;
-	bool CreateQuad();
+	bool CreateBox(btVector3 size);
 	UINT indice;
 	XMMATRIX* world;
 public:
 	//functions
 	Primitives();
 	void setWorld(XMMATRIX* xmWorld) { this->world = xmWorld; }
-	void initialize(int shapes);
+	void initialize(int shapes,btVector3 size);
 	~Primitives();
 	void draw(SimpleShader* shader);
 };
