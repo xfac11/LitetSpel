@@ -8,7 +8,7 @@ solver(new btSequentialImpulseConstraintSolver)
 	dispatcher = new btCollisionDispatcher(collisionConfig);
 	world = new btDiscreteDynamicsWorld(dispatcher, broadphase, solver, collisionConfig);
 	//ska vara -10 av någon anledning
-	this->world->setGravity(btVector3(0, -9.82, 0));
+	this->world->setGravity(btVector3(0, -9.82*0.01, 0));
 	//temp plane inf
 	//btTransform t;
 	//t.setIdentity();
