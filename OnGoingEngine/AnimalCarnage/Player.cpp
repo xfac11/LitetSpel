@@ -42,12 +42,12 @@ void Player::update(float deltaTime, int id)
 	this->playerObj->setPosition(this->playerObj->getRigidbody()->getWorldTransform().getOrigin().getX()
 		, this->playerObj->getRigidbody()->getWorldTransform().getOrigin().getY(), this->playerObj->getRigidbody()->getWorldTransform().getOrigin().getZ());
 
-	//this->playerObj->setRotation(this->playerObj->getRotation().x, this->playerObj->getRotation().y,this->playerObj->getRigidbody()->getWorldTransform().getRotation().getZ(), this->playerObj->getRigidbody()->getWorldTransform().getRotation().getAngle());
+	//this->playerObj->setRotation(0, 1,this->playerObj->getRigidbody()->getWorldTransform().getRotation().getZ(), 3.14 / 2);
 
 	//kolla collision mellan spelar objecten så de inte rör sig i z-led
 	//this->playerObj->getRigidbody()->setLinearVelocity(btVector3(0, 0, 0));
 	this->playerObj->getRigidbody()->setLinearFactor(btVector3(1, 1, 0));
-	this->playerObj->getRigidbody()->setAngularFactor(btVector3(1, 0, 0));
+	//this->playerObj->getRigidbody()->setAngularFactor(btVector3(1, 0, 0));
 
 	DirectX::GamePad::State state = System::theGamePad->GetState(id);
 	if (state.IsConnected())
@@ -67,9 +67,9 @@ void Player::update(float deltaTime, int id)
 
 		float stickAbsL = abs(state.thumbSticks.leftX);
 		if (stickAbsL > 0.f && grounded){
-			float dir = 5.0f * state.thumbSticks.leftX;// / stickAbsL;
+			float dir = 500.0f * state.thumbSticks.leftX;// / stickAbsL;
 			//this->playerObj->getRigidbody()->setLinearVelocity(btVector3(dir, 0, 0));
-			if ((playerObj->getRigidbody()->getLinearVelocity().getX() < 0.5f) && (playerObj->getRigidbody()->getLinearVelocity().getX() > -0.5f)) {
+			if ((playerObj->getRigidbody()->getLinearVelocity().getX() < 5.0f) && (playerObj->getRigidbody()->getLinearVelocity().getX() > -5.0f)) {
 				playerObj->getRigidbody()->applyForce(btVector3(dir, 0, 0), btVector3(0, 0, 0));
 			}
 			airSpeed = dir;
@@ -77,7 +77,8 @@ void Player::update(float deltaTime, int id)
 		}
 		if ((state.buttons.x || state.buttons.y) && canJump){
 			//this->playerObj->getRigidbody()->setLinearVelocity(btVector3(0,1, 0));
-			this->playerObj->getRigidbody()->applyImpulse(btVector3(0,0.1f,0),btVector3(0,0,0));
+			//his->playerObj->getRigidbody()->applyImpulse(btVector3(0,05.0f,0),btVector3(0,0,0));
+			playerObj->getRigidbody()->applyForce(btVector3(0, 500.0f, 0), btVector3(0, 0, 0));
 		}
 		if (state.buttons.leftShoulder ||
 			state.buttons.rightShoulder)

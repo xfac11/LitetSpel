@@ -22,7 +22,7 @@ private:
 public:
 	Physics();
 	~Physics();
-	void Update();
+	void Update(float deltaTime);
 	btRigidBody* addSphere(float radius, btVector3 Origin, float mass);
 	btRigidBody* addBox(btVector3 Origin, btVector3 size, float mass);
 	//void renderSphere(btRigidBody* sphere);

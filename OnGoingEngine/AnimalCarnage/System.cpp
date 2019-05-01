@@ -547,7 +547,8 @@ void System::update(float deltaTime)
 
 
 	//theCamera->SetRotation(theMouse->GetPos().y, 0, 0);
-
+	
+	physices->Update(deltaTime);
 
 	System::states[System::currentState]->update(deltaTime);
 }
@@ -594,7 +595,7 @@ void System::render()
 		this->resetShaders();
 	System::states[System::currentState]->render();
 
-	physices->Update();
+	//physices->Update();
 	debugDraw->Draw(this->theCamera->GetViewMatrix(), this->theGraphicDevice->getProj());
 	System::getDeviceContext()->GSSetShader(nullptr, nullptr, 0);
     ImGui::Render();
@@ -620,7 +621,7 @@ void System::run()
 	if (this->hwnd)
 	{
 
-		theGraphicDevice->initialize(WIDTH, HEIGHT ,false , hwnd, false, 0.1f, 500.0f);
+		theGraphicDevice->initialize(WIDTH, HEIGHT ,true , hwnd, false, 0.1f, 500.0f);
 		this->shaderManager = new ShaderManager;
 		this->shaderManager->initialize(HEIGHT, WIDTH, 0.1f, 500.0f);
 		this->initialize();

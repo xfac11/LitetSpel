@@ -193,14 +193,13 @@ btDiscreteDynamicsWorld::btDiscreteDynamicsWorld(btDispatcher* dispatcher, btBro
 	  m_sortedConstraints(),
 	  m_solverIslandCallback(NULL),
 	  m_constraintSolver(constraintSolver),
-	  m_gravity(0, -0.10, 0),
+	  m_gravity(0, -10, 0),
 	  m_localTime(0),
 	  m_fixedTimeStep(0),
 	  m_synchronizeAllMotionStates(false),
 	  m_applySpeculativeContactRestitution(false),
 	  m_profileTimings(0),
 	  m_latencyMotionStateInterpolation(true)
-
 {
 	if (!m_constraintSolver)
 	{

@@ -8,7 +8,7 @@ solver(new btSequentialImpulseConstraintSolver)
 	dispatcher = new btCollisionDispatcher(collisionConfig);
 	world = new btDiscreteDynamicsWorld(dispatcher, broadphase, solver, collisionConfig);
 	//ska vara -10 av någon anledning
-	this->world->setGravity(btVector3(0, -9.82*0.01, 0));
+	this->world->setGravity(btVector3(0, -9.82, 0));
 	//temp plane inf
 	//btTransform t;
 	//t.setIdentity();
@@ -50,7 +50,7 @@ Physics::~Physics()
 
 }
 
-void Physics::Update()
+void Physics::Update(float deltaTime)
 {
 	/*for (int i = 0; i < this->bodies.size(); i++)
 	{
@@ -58,7 +58,8 @@ void Physics::Update()
 		renderPlane(bodies[i]);
 	}*/
 
-	this->world->stepSimulation(1 / 60.f, 10);
+	//this->world->stepSimulation(1 / 60.f, 10);
+	this->world->stepSimulation(deltaTime);
 }
 
 btRigidBody* Physics::addSphere(float radius, btVector3 Origin, float mass)
