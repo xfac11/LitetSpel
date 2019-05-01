@@ -174,10 +174,10 @@ void GBuffer::clear(float color[4])
 
 void GBuffer::setShaderResViews()
 {
-	ID3D11RenderTargetView* null[] = { nullptr, nullptr, nullptr,nullptr };
-	ID3D11ShaderResourceView* null2[] = { nullptr, nullptr, nullptr,nullptr };
+	//ID3D11RenderTargetView* null[] = { nullptr, nullptr, nullptr,nullptr };
+	//ID3D11ShaderResourceView* null2[] = { nullptr, nullptr, nullptr,nullptr };
 	//System::getDeviceContext()->OMSetRenderTargets(GBUFFERCAP, null, nullptr);
-	System::getDeviceContext()->PSSetShaderResources(0, GBUFFERCAP, null2);
+	//System::getDeviceContext()->PSSetShaderResources(0, GBUFFERCAP, null2);
 	System::getDeviceContext()->PSSetShaderResources(0, GBUFFERCAP, this->shaderResViews);
 }
 

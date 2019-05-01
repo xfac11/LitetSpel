@@ -20,6 +20,7 @@ ShaderManager* System::shaderManager = nullptr;
 GameObjectHandler* System::handler = nullptr;
 Physics* System::physices = nullptr;
 DEBUG_DRAW* System::debugDraw = nullptr;
+Skybox* System::skybox = nullptr;
 
 HWND System::InitWindow(HINSTANCE hInstance, float height, float width)
 {
@@ -302,6 +303,7 @@ System::~System()
 	this->theGraphicDevice->shutDown();
 	delete this->theGraphicDevice;
 
+	delete this->skybox;
 	delete this->handler;
 	//delete this->obj[0];
 	//delete this->obj[1];
@@ -317,6 +319,8 @@ System::~System()
 
 bool System::initialize()
 {
+	this->skybox = new Skybox;
+	this->skybox->initialize();
 	this->handler = new GameObjectHandler;
 	//this->handler->initialize();
 	this->theCamera = new Camera;
@@ -474,7 +478,10 @@ void System::update(float deltaTime)
 	//	this->camRot.y = 180;
 	//theCamera->SetRotation(camRot);
 
-
+	if (theKeyboard->KeyIsPressed('R'))
+	{
+		theCamera->rotate(0, 1, 0);
+	}
 	//this->theCamera->calcCamera(players[0]->getPosition(), players[1]->getPosition(), players[2]->getPosition(), players[3]->getPosition());
 
 	if (theKeyboard->KeyIsPressed('W'))
@@ -487,6 +494,7 @@ void System::update(float deltaTime)
 
 		
 	}
+	
 	else if (theKeyboard->KeyIsPressed('S'))
 	{
 		theCamera->move(0, 0, 1 * deltaTime);
@@ -568,6 +576,8 @@ void System::render()
 	//}
 	//else shaderManager->getForwardShader()->setCamPosToMatricesPerFrame(this->cullingPos);
 
+	DirectX::XMMATRIX camWorld = DirectX::XMMatrixTranslation(this->theCamera->GetPosition().x, this->theCamera->GetPosition().y, this->theCamera->GetPosition().z);
+
 	shaderManager->getForwardShader()->setCamPosToMatricesPerFrame(this->theCamera->GetPosition());
 	shaderManager->getForwardShader()->setViewProj(this->theCamera->GetViewMatrix(), this->theGraphicDevice->getProj(), DirectX::XMFLOAT4(this->theCamera->GetPosition().x, this->theCamera->GetPosition().y, this->theCamera->GetPosition().z, 1.0f));
 
@@ -577,8 +587,8 @@ void System::render()
 	shaderManager->getLightShader()->setCamPosToMatricesPerFrame(this->theCamera->GetPosition());
 	shaderManager->getLightShader()->setViewProj(this->theCamera->GetViewMatrix(), this->theGraphicDevice->getProj(), DirectX::XMFLOAT4(this->theCamera->GetPosition().x, this->theCamera->GetPosition().y, this->theCamera->GetPosition().z, 1.0f));
 
-
-
+	this->skybox->setViewProj(this->theCamera->GetViewMatrix(), this->theGraphicDevice->getProj());
+	this->skybox->setWorld(camWorld);
 	
 	if(currentState==MAINMENU)
 		this->resetShaders();
@@ -610,7 +620,7 @@ void System::run()
 	if (this->hwnd)
 	{
 
-		theGraphicDevice->initialize(WIDTH, HEIGHT ,true , hwnd, false, 0.1f, 500.0f);
+		theGraphicDevice->initialize(WIDTH, HEIGHT ,false , hwnd, false, 0.1f, 500.0f);
 		this->shaderManager = new ShaderManager;
 		this->shaderManager->initialize(HEIGHT, WIDTH, 0.1f, 500.0f);
 		this->initialize();

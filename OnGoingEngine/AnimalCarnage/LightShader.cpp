@@ -230,9 +230,9 @@ void LightShader::renderShaderDir(int vertexCount, ID3D11DepthStencilView* view)
 {
 	float blendFactor[4] = { 0.f, 0.f, 0.f, 0.f };
 	
-	System::getDeviceContext()->OMSetDepthStencilState(dpthQuad, 0);
+	//System::getDeviceContext()->OMSetDepthStencilState(dpthQuad, 0);
 	System::getDeviceContext()->RSSetState(rasState);
-	System::getDeviceContext()->OMSetBlendState(blendState, blendFactor, 1);
+	//System::getDeviceContext()->OMSetBlendState(blendState, blendFactor, 1);
 	this->renderPixels(vertexCount);//shade the pixels
 }
 

@@ -1,6 +1,7 @@
 #ifndef GAMEOBJECTHANDLER_H
 #define GAMEOBJECTHANDLER_H
 #include"GameObject.h"
+#include"Skybox.h"
 class GameObjectHandler
 {
 public:

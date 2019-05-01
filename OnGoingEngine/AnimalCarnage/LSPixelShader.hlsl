@@ -101,20 +101,22 @@ float4 PS_main(VS_OUT input) : SV_Target
 
 	//bumpNormal = BumpNormalTex.Sample(SampSt, input.TexCoord).xyz *2.0f - 1.0f;// back to [-1...1] 
 	//colors = Tex.Sample(SampSt, input.TexCoord).xyz;
+	float4 colorT = Tex.Sample(SampSt, input.TexCoord).xyzw;
 	float3 pos = PositionTexture.Sample(SampSt, input.TexCoord).xyz;
 	float3 normal = NormalTex.Sample(SampSt, input.TexCoord).xyz*2.0f - 1.0f;
-	float4 totalLight;
-	if (index == 0)
+	if (length(normal) > 0)
 	{
-		totalLight = dirLight(normal, lights[0], pos);
-	}
-	else
-	{
-		totalLight = pointLight(index, normal, pos);
-	}
-	
+		float4 totalLight = dirLight(normal, lights[0], pos);
 
-	float4 colorT = float4(Tex.Sample(SampSt, input.TexCoord).xyz *totalLight.xyz, 1.0f);
+		for (int i = 1; i < nrOfLights; i++)
+		{
+			totalLight += pointLight(i, normal, pos);
+		}
 
-	return colorT;
+		//float4 colorT = float4(Tex.Sample(SampSt, input.Tex).xyz *totalLight.xyz, Tex.Sample(SampSt, input.Tex).w);
+
+
+		colorT = float4(Tex.Sample(SampSt, input.TexCoord).xyz *totalLight.xyz, 1.0f);
+	}
+	return float4(colorT.xyz,1.0f);
 }

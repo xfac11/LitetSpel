@@ -84,12 +84,12 @@ void GameObjectHandler::draw()
 
 	this->lightsCB.data.nrOfLights = nrOfLights;
 	DirectX::XMMATRIX worldPos = DirectX::XMMatrixTranslation(gameObjects[2]->getPosition().x, gameObjects[2]->getPosition().y, gameObjects[2]->getPosition().z);
-	this->lightsCB.data.lights[1].worldLight = worldPos;
+	//this->lightsCB.data.lights[1].worldLight = worldPos;
 	this->lightsCB.applyChanges(System::getDevice(), System::getDeviceContext());
 	float color[] = {
 		0,0,0,1.0f
 	};
-	System::theGraphicDevice->turnOnZ();
+	//System::theGraphicDevice->turnOnZ();
 	System::shaderManager->getDefShader()->setCBuffers();
 	System::shaderManager->getDefShader()->setConstanbuffer(PIXEL, 1, this->lightsCB.getBuffer());
 	System::shaderManager->getDefShader()->setShaders();
@@ -100,46 +100,59 @@ void GameObjectHandler::draw()
 		this->opaqueModels[i].modelPtr->draw();
 	}
 	
-
-	System::theGraphicDevice->setBackBuffer();
-	System::theGraphicDevice->beginScene(color);
-	System::shaderManager->getDefShader()->prepForLight();
+	//System::theGraphicDevice->setBackBuffer();
+	
 	System::theGraphicDevice->setBackBuffer(System::shaderManager->getDefShader()->gBuffer.getDepthStcView());
+	//System::theGraphicDevice->beginScene(color);
+	System::shaderManager->getDefShader()->prepForLight();
 	//
 	System::shaderManager->getLightShader()->setCBuffers();
 	System::shaderManager->getLightShader()->setConstanbuffer(PIXEL, 1, this->lightsCB.getBuffer());
-	//System::theGraphicDevice->turnOffZ();
+	System::theGraphicDevice->turnOffZ();
 
-	UINT32 offset = 0; 
-	this->lightsCB.data.index = 0;
-	this->lightsCB.applyChanges(System::getDevice(), System::getDeviceContext());
+
+	UINT32 offset = 0; 	
+
+	//this->lightsCB.data.index = 0;
+	//this->lightsCB.applyChanges(System::getDevice(), System::getDeviceContext());
 	System::getDeviceContext()->IASetVertexBuffers(0, 1, &*this->vertexBufferQuad.GetAddressOf(), &*vertexBufferQuad.getStridePtr(), &offset);
 	System::getDeviceContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-	System::shaderManager->getLightShader()->renderShaderDir((int)quad.size(), System::shaderManager->getDefShader()->gBuffer.getDepthStcView());
-	for (int i = 1; i < nrOfLights; i++)
+	System::shaderManager->getLightShader()->renderShaderDir((int)quad.size(), System::shaderManager->getDefShader()->gBuffer.getDepthStcView());//render fullscreen quad with all lights
+	/*for (int i = 1; i < nrOfLights; i++)
 	{
 		this->lightsCB.data.index = i;
 		this->lightsCB.applyChanges(System::getDevice(), System::getDeviceContext());
 		System::getDeviceContext()->IASetVertexBuffers(0, 1, &*this->vertexBufferQuad.GetAddressOf(), &*vertexBufferQuad.getStridePtr(), &offset);
 		System::getDeviceContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 		System::shaderManager->getLightShader()->renderShaderDir((int)quad.size(), System::shaderManager->getDefShader()->gBuffer.getDepthStcView());
-	}
+	}*/
 	System::theGraphicDevice->turnOnZ();
 	System::theGraphicDevice->setRasterState();
-	System::theGraphicDevice->setBlendState();
 	//Light render sphere etc
+	//Skybox
+	System::skybox->setCB();
+	System::skybox->render();
 
 
 	////Forward
-	System::shaderManager->getForwardShader()->setShaders();//tänker att man kör denna sen renderar allla som använder denna shader sen tar setshader på nästa osv.
-	System::shaderManager->getForwardShader()->setCBuffers();
-	System::shaderManager->getForwardShader()->setConstanbuffer(PIXEL, 1, this->lightsCB.getBuffer());
-
-	for (int i = 0; i < this->nrOfTrans; i++)
+	if (this->nrOfTrans > 0)
 	{
-		this->transModels[i].modelPtr->getShader()->setWorld(*this->transModels[i].worldPtr);
-		this->transModels[i].modelPtr->draw();
+		System::theGraphicDevice->setBlendState();
+		System::shaderManager->getForwardShader()->setShaders();//tänker att man kör denna sen renderar allla som använder denna shader sen tar setshader på nästa osv.
+		System::shaderManager->getForwardShader()->setCBuffers();
+		System::shaderManager->getForwardShader()->setConstanbuffer(PIXEL, 1, this->lightsCB.getBuffer());
+
+		for (int i = 0; i < this->nrOfTrans; i++)
+		{
+			this->transModels[i].modelPtr->getShader()->setWorld(*this->transModels[i].worldPtr);
+			this->transModels[i].modelPtr->draw();
+		}
 	}
+	/*for (int i = 0; i < this->nrOfOpaque; i++)
+	{
+		this->opaqueModels[i].modelPtr->getShader()->setWorld(*this->opaqueModels[i].worldPtr);
+		this->opaqueModels[i].modelPtr->draw();
+	}*/
 	
 }
 
@@ -190,7 +203,7 @@ void GameObjectHandler::initialize()
 	quad.push_back(temp);
 	
 	this->vertexBufferQuad.initialize(quad.data(), quad.size(), System::getDevice());
-
+	System::skybox->setTexture("oasisnight");
 }
 
 void GameObjectHandler::addLight(float pos[4],float dir[4],float color[4] )

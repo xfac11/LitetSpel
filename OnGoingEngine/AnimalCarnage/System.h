@@ -28,7 +28,7 @@
 #include "SpriteBatch.h"
 #include "ModelLoader.h"
 #include"ShaderManager.h"
-
+#include"Skybox.h"
 //Test
 #include "btBulletCollisionCommon.h"
 #include "btBulletDynamicsCommon.h"
@@ -116,6 +116,8 @@ public:
 	WPARAM getMsgWParam();
 	static ID3D11Device*& getDevice();
 	static ID3D11DeviceContext*& getDeviceContext();
+	
+	static Skybox* skybox;
 
 	static ShaderManager* shaderManager;
 	static System* fusk;
