@@ -203,7 +203,6 @@ void GameObjectHandler::initialize()
 	quad.push_back(temp);
 	
 	this->vertexBufferQuad.initialize(quad.data(), quad.size(), System::getDevice());
-	System::skybox->setTexture("oasisnight");
 }
 
 void GameObjectHandler::addLight(float pos[4],float dir[4],float color[4] )
@@ -221,6 +220,11 @@ void GameObjectHandler::addLight(float pos[4],float dir[4],float color[4] )
 		this->lightsCB.data.index = nrOfLights;
 		nrOfLights++;
 	}
+}
+
+void GameObjectHandler::setSkyboxTexture(std::string file)
+{
+	System::skybox->setTexture(file);
 }
 
 void GameObjectHandler::expandGameobjects()

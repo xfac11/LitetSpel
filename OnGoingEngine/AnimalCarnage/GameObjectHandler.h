@@ -13,6 +13,7 @@ public:
 	void draw();
 	void initialize();
 	void addLight(float pos[4], float dir[4], float color[4]);
+	void setSkyboxTexture(std::string file);
 private:
 	GameObject* *gameObjects;
 	int cap;

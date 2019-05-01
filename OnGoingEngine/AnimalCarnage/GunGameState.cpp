@@ -55,7 +55,7 @@ GunGameState::~GunGameState()
 
 bool GunGameState::initailize()
 {
-
+	
 	nrOfPlayers = 4;
 	player = new Player * [nrOfPlayers];
 
@@ -65,7 +65,7 @@ bool GunGameState::initailize()
 		player[i]->initialize();
 	}
 	System::handler->initialize();
-
+	System::handler->setSkyboxTexture("oasisnight");
 	float pos[4] = {
 	0,0,0,10.0
 	};
