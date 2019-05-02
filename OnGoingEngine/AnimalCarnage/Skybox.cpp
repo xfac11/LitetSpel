@@ -179,11 +179,11 @@ void Skybox::setCB()
 
 bool Skybox::initialize()
 {
-	if (FAILED(this->indexBuffer.initialize(this->indices.data(), this->indices.size(), System::getDevice())))
+	if (FAILED(this->indexBuffer.initialize(this->indices.data(), (UINT)this->indices.size(), System::getDevice())))
 	{
 		return false;
 	}
-	if(FAILED(this->vertexBuffer.initialize(this->vertices.data(), this->vertices.size(), System::getDevice())))
+	if(FAILED(this->vertexBuffer.initialize(this->vertices.data(), (UINT)this->vertices.size(), System::getDevice())))
 	{
 		return false;
 	}

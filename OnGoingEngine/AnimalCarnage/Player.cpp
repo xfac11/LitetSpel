@@ -31,12 +31,12 @@ void Player::initialize()
 	this->hitbox.time = 0;
 	this->hitbox.totalTime = 30;
 	System::theModelLoader->loadGO(this->hitbox.hitbox, "Resources/Models/cube2.lu", "");
-	this->hitbox.hitbox->setScale(0.2, 0.2, 0.2);
+	this->hitbox.hitbox->setScale(0.2f, 0.2f, 0.2f);
 	//this->playerObj->getRigidbody() = System::getphysices()->addSphere(0.5f,btVector3(0,0,0),1);
 	this->playerObj->getRigidbody() = System::getphysices()->addBox(btVector3(0, 0, 0), btVector3(1, 1, 1), 10.0f);
 	//this->playerObj->getRigidbody()->getWorldTransform().setRotation(btQuaternion(3.14 / 2, 0, 0));
 	this->playerObj->getRigidbody()->setWorldTransform(XMMATRIX_to_btTransform(this->playerObj->getWorld()));
-	this->playerObj->setRotationRollPitchYaw(0,3.14/2,0);
+	this->playerObj->setRotationRollPitchYaw(0.f,3.14f/2.f,0.f);
 	System::theModelLoader->loadGO(this->playerObj, "Resources/Models/fox_run_final.lu", "fox_character_diffuse.tga");
 	//this->playerObj->setScale(0.4f, 0.2f, 1.0f);
 	System::handler->addObject(this->playerObj);
@@ -231,11 +231,11 @@ void Player::update(float deltaTime, int id)
 			dir = 1;
 			this->playerObj->setRotationRollPitchYaw(this->playerObj->getRotation().x, facing, this->playerObj->getRotation().z);
 		}
-		if (facing > (3.14 / 2)) {
-			facing = 3.14 / 2;
+		if (facing > (3.14f / 2.f)) {
+			facing = 3.14f/ 2.f;
 		}
-		if (facing < (-3.14 /2)) {
-			facing = -3.14 / 2;
+		if (facing < (-3.14f /2.f)) {
+			facing = -3.14f / 2.f;
 		}
 		this->playerObj->setRotationRollPitchYaw(this->playerObj->getRotation().x, facing, this->playerObj->getRotation().z);
 	}
