@@ -336,6 +336,7 @@
     <ClCompile Include="SimpleShaderClass.cpp" />
     <ClCompile Include="Skybox.cpp" />
     <ClCompile Include="Slider.cpp" />
+    <ClCompile Include="SoundManager.cpp" />
     <ClCompile Include="Sprite.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
@@ -632,6 +633,7 @@
     <ClInclude Include="SimpleShaderClass.h" />
     <ClInclude Include="Skybox.h" />
     <ClInclude Include="Slider.h" />
+    <ClInclude Include="SoundManager.h" />
     <ClInclude Include="Sprite.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>

@@ -27,8 +27,9 @@
 #include "SpriteFont.h"
 #include "SpriteBatch.h"
 #include "ModelLoader.h"
-#include"ShaderManager.h"
-#include"Skybox.h"
+#include "ShaderManager.h"
+#include "Skybox.h"
+#include "SoundManager.h"
 //Test
 #include "btBulletCollisionCommon.h"
 #include "btBulletDynamicsCommon.h"
@@ -73,6 +74,7 @@ private:
 	static SpriteFont* fontArial;
 	static Physics* physices;
 	static DEBUG_DRAW* debugDraw;
+	static SoundManager* soundManager;
 
 	//GameObject* obj[2];	
 	//ForwardShader* theForwardShader;
@@ -134,6 +136,7 @@ public:
 	static ModelLoader* theModelLoader;
 	static SpriteBatch* getSpriteBatch();
 	static CommonStates* getCommonStates();
+	static SoundManager* getSoundManager();
 	static SpriteFont* getFontComicSans();
 	static SpriteFont* getFontArial();
 	static Physics* getphysices();

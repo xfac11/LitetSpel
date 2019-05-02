@@ -11,7 +11,7 @@
 #include"VertexBuffer.h"
 #include"IndexBuffer.h"
 #include <d3dcompiler.h>
-#define SIZE 1.0f
+#define SKYBOX_SIZE 1.0f
 
 class Skybox
 {
