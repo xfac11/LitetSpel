@@ -34,6 +34,29 @@ bool Intersects(const AABB a, XMFLOAT3 posA, const AABB b, XMFLOAT3 posB)
 		minA.z < maxB.z);
 }
 
+bool Intersects(DirectX::XMFLOAT3 aabbmin, DirectX::XMFLOAT3 aabbMax,const AABB b, XMFLOAT3 posB)
+{
+
+	DirectX::XMFLOAT3 minA;
+	DirectX::XMFLOAT3 maxA;
+	DirectX::XMFLOAT3 minB;
+	DirectX::XMFLOAT3 maxB;
+
+	minA = aabbmin;
+	maxA = aabbMax;
+
+	minB = XMFLOAT3(posB.x - b.width, posB.y - b.height, posB.z - b.depth);
+	maxB = XMFLOAT3(posB.x + b.width, posB.y + b.height, posB.z + b.depth);
+	//Check if AABB1's max is greater than AABB2's min and AABB1's min is less than AABB2's max
+
+	return(maxA.x > minB.x &&
+		minA.x < maxB.x &&
+		maxA.y >minB.y &&
+		minA.y < maxB.y &&
+		maxA.z > minB.z &&
+		minA.z < maxB.z);
+}
+
 ostream& operator<<(ostream & stream, const Sphere & shape) {
 	stream << "\nPosition:(" << shape.position.x << ", " << shape.position.y << ", " << shape.position.z << "), " <<
 		"Radius: " << shape.radius;

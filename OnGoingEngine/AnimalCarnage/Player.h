@@ -13,7 +13,12 @@ struct RumbleProperties
 	DirectX::XMFLOAT2 rumble = XMFLOAT2(0, 0);
 	bool rumbleEnabled = true;
 };
-
+struct Hitbox
+{
+	int totalTime;
+	int time;
+	GameObject* hitbox;
+};
 class Player
 {
 private:
@@ -28,6 +33,8 @@ private:
 	float airSpeed;
 
 	RumbleProperties theRumble;
+
+	int dir;
 
 	XMFLOAT3 Accleration = XMFLOAT3(0, 0, 0);
 	XMFLOAT3 Velocity = XMFLOAT3(0, 0, 0);
@@ -57,6 +64,7 @@ public:
 	XMFLOAT3 getPosition();
 	AABB getAABB();
 
+	Hitbox hitbox;
 
 	GameObject* playerObj;
 };

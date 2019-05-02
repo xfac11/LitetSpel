@@ -324,6 +324,8 @@ bool System::initialize()
 	this->handler = new GameObjectHandler;
 	//this->handler->initialize();
 	this->theCamera = new Camera;
+	this->theCamera->SetPosition(0, 6, -15);
+	this->theCamera->SetRotation(5, 0, 0);
 	this->camPos = { 0,1,-2.f };
 	this->camRot = { 30.f,0,0 };
 	//this->theForwardShader = new ForwardShader;
@@ -486,11 +488,11 @@ void System::update(float deltaTime)
 
 	if (theKeyboard->KeyIsPressed('W'))
 	{
-		theCamera->move(0, 0, 1 * deltaTime);
+		theCamera->move(0, 0, 100 * deltaTime);
 	}
 	else if (theKeyboard->KeyIsPressed('S'))
 	{
-		theCamera->move(0, 0, -1 * deltaTime);
+		theCamera->move(0, 0, -100 * deltaTime);
 
 		
 	}
@@ -501,12 +503,12 @@ void System::update(float deltaTime)
 	}
 	if (theKeyboard->KeyIsPressed('D'))
 	{
-		theCamera->move(1 * deltaTime, 0, 0);
+		theCamera->move(100 * deltaTime, 0, 0);
 	}
 	else if (theKeyboard->KeyIsPressed('A'))
 	{
 		//this->obj2->move(-1 * deltaTime, 0, 0);
-		theCamera->move(-1 * deltaTime, 0, 0);
+		theCamera->move(-100 * deltaTime, 0, 0);
 	}
 	if (theKeyboard->KeyIsPressed('X'))
 	{
@@ -596,7 +598,8 @@ void System::render()
 	System::states[System::currentState]->render();
 
 	//physices->Update();
-	debugDraw->Draw(this->theCamera->GetViewMatrix(), this->theGraphicDevice->getProj());
+	if(currentState==GUNGAME)
+		debugDraw->Draw(this->theCamera->GetViewMatrix(), this->theGraphicDevice->getProj());
 	System::getDeviceContext()->GSSetShader(nullptr, nullptr, 0);
     ImGui::Render();
 

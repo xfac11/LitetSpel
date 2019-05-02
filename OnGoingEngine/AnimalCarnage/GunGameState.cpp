@@ -45,7 +45,7 @@ bool GunGameState::checkReset(DirectX::GamePad::State state)
 
 GunGameState::GunGameState()
 {
-	
+	this->testColBox = false;
 }
 
 GunGameState::~GunGameState()
@@ -149,6 +149,14 @@ void GunGameState::renderImgui()
 		std::to_string(pos.getZ());
 	ImGui::Text(playerPos.c_str());
 
+	if (this->testColBox)
+	{
+		ImGui::Text("Kolliderar ja");
+	}
+	else
+	{
+		ImGui::Text("Kolliderar nej");
+	}
 	//ImGui::EndChild();
 	ImGui::CaptureKeyboardFromApp(true);
 	ImGui::Checkbox("Debug Draw",&System::getDebugDraw()->DebugDraw);
@@ -161,10 +169,27 @@ bool GunGameState::update(float deltaTime)
 
 	for (int i = 0; i < nrOfPlayers; i++)
 	{
+		if (i != 0)
+		{
+			btVector3 min;
+			btVector3 max;
+			player[i]->playerObj->getRigidbody()->getAabb(min, max);
+			DirectX::XMFLOAT3 minTemp(min.getX(), min.getY(), min.getZ());
+			DirectX::XMFLOAT3 maxTemp(max.getX(), max.getY(), max.getZ());
+			if (Intersects(minTemp, maxTemp, player[0]->hitbox.hitbox->getCollisionBox(), player[0]->hitbox.hitbox->getPosition()))
+			{
+				this->testColBox = true;
+				player[i]->playerObj->getRigidbody()->applyCentralImpulse(btVector3(200, 0, 0));// , btVector3(1, 0, 0));
+			}
+			else
+			{
+				this->testColBox = false;
+			}
+		}
 		player[i]->update(deltaTime, i);
 		player[i]->updateRumble(deltaTime, i);
 	}
-
+	
 	if (Intersects(System::handler->getObject(2).getCollisionBox(), System::handler->getObject(2).getPosition(), System::handler->getObject(3).getCollisionBox(), System::handler->getObject(3).getPosition()))
 	{
 

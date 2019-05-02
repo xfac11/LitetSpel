@@ -33,7 +33,7 @@ private:
 	//	btTransform t;
 	//	sphere->getMotionState()->getWorldTransform(t);
 	//}
-
+	bool testColBox;
 
 	//void inPause();
 	bool checkReset(DirectX::GamePad::State state);

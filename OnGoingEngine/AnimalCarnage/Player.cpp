@@ -10,6 +10,7 @@ Player::Player()
 	grounded = true;
 	jumpDir = 0;
 	inAir = false;
+	dir = 1;
 	this->playerObj = nullptr;
 }
 
@@ -18,23 +19,35 @@ Player::Player()
 Player::~Player()
 {
 	playerObj = nullptr;
+	delete this->hitbox.hitbox;
 }
 
 void Player::initialize()
 {
 	this->playerObj = new GameObject(System::shaderManager->getForwardShader());
-	
-	//this->playerObj->getRigidbody() = System::getphysices()->addSphere(0.5f,btVector3(0,0,0),1);
-	this->playerObj->getRigidbody() = System::getphysices()->addBox(btVector3(0,0,0),btVector3(1,1,1),10.0f);
 
+	this->hitbox.hitbox = new GameObject();
+	//this->hitbox.hitbox->setRotation(0, 1, 0, 3.14 / 2);
+	this->hitbox.time = 0;
+	this->hitbox.totalTime = 30;
+	System::theModelLoader->loadGO(this->hitbox.hitbox, "Resources/Models/cube2.lu", "");
+	this->hitbox.hitbox->setScale(0.2, 0.2, 0.2);
+	//this->playerObj->getRigidbody() = System::getphysices()->addSphere(0.5f,btVector3(0,0,0),1);
+	this->playerObj->getRigidbody() = System::getphysices()->addBox(btVector3(0, 0, 0), btVector3(1, 1, 1), 10.0f);
+	//this->playerObj->getRigidbody()->getWorldTransform().setRotation(btQuaternion(3.14 / 2, 0, 0));
 	this->playerObj->getRigidbody()->setWorldTransform(XMMATRIX_to_btTransform(this->playerObj->getWorld()));
+	this->playerObj->setRotation(0, 1, 0, 3.14 / 2);
 	System::theModelLoader->loadGO(this->playerObj, "Resources/Models/fox_test.lu", "fox_character_diffuse.tga");
 	//this->playerObj->setScale(0.4f, 0.2f, 1.0f);
 	System::handler->addObject(this->playerObj);
-
+	//System::handler->addObject(this->hitbox.hitbox);
+	Primitives *CollisionShape;
+	CollisionShape = new Primitives();
+	CollisionShape->Initialize(1, btVector3(1, 1, 1));
+	CollisionShape->SetWorld(&this->hitbox.hitbox->getWorld());
+	System::getDebugDraw()->addPrimitives(CollisionShape);
 	/////////////
 	this->playerObj->getRigidbody()->setActivationState(DISABLE_DEACTIVATION);
-	this->playerObj->setRotation(0,1,0,3.14/2);
 }
 
 void Player::update(float deltaTime, int id)
@@ -48,7 +61,10 @@ void Player::update(float deltaTime, int id)
 	//this->playerObj->getRigidbody()->setLinearVelocity(btVector3(0, 0, 0));
 	this->playerObj->getRigidbody()->setLinearFactor(btVector3(1, 1, 0));
 	//this->playerObj->getRigidbody()->setAngularFactor(btVector3(1, 0, 0));
-
+	if (hitbox.time == 0)
+	{
+		this->hitbox.hitbox->setPosition(this->getPosition().x, this->getPosition().y, this->getPosition().z);
+	}
 	DirectX::GamePad::State state = System::theGamePad->GetState(id);
 	if (state.IsConnected())
 	{
@@ -75,11 +91,44 @@ void Player::update(float deltaTime, int id)
 			airSpeed = dir;
 
 		}
-		if ((state.buttons.x || state.buttons.y) && canJump){
+		if ((state.buttons.x) && canJump){
 			//this->playerObj->getRigidbody()->setLinearVelocity(btVector3(0,1, 0));
 			//his->playerObj->getRigidbody()->applyImpulse(btVector3(0,05.0f,0),btVector3(0,0,0));
 			playerObj->getRigidbody()->applyForce(btVector3(0, 500.0f, 0), btVector3(0, 0, 0));
 		}
+
+		if (hitbox.time > 0 && hitbox.time < hitbox.totalTime)
+		{
+			hitbox.time++;
+		}
+		if (hitbox.time == hitbox.totalTime)
+		{
+			this->hitbox.hitbox->setPosition(this->getPosition().x, this->getPosition().y, this->getPosition().z);
+			this->hitbox.time = 0;
+		}
+		float dist = 700;
+		if (state.buttons.y || this->hitbox.time > 0)
+		{
+
+			/*if (this->hitbox.time > 0 &&state.thumbSticks.leftX < 0)
+			{
+				dist = -700;
+			}
+			else if (this->hitbox.time > 0 && state.thumbSticks.leftX > 0)
+			{
+				dist = 700;
+			}*/
+
+
+			if (hitbox.time > hitbox.totalTime / 2)
+				this->hitbox.hitbox->move((dir*-dist * deltaTime) / hitbox.totalTime, 0, 0);
+			else
+			{
+				this->hitbox.hitbox->move((dir*dist * deltaTime) / hitbox.totalTime, 0, 0);
+			}
+			this->hitbox.time++;
+		}
+
 		if (state.buttons.leftShoulder ||
 			state.buttons.rightShoulder)
 		{
@@ -102,6 +151,16 @@ void Player::update(float deltaTime, int id)
 			//exit game
 			theRumble.rumble.y = 0.3f;
 			theRumble.rumbleTime = 0.1f;
+		}
+		if (state.thumbSticks.leftX < 0 && dir == 1)
+		{
+			dir = -1;
+			this->playerObj->setRotation(0, 1, 0, -3.14 / 2);
+		}
+		else if (state.thumbSticks.leftX > 0 && dir == -1)
+		{
+			dir = 1;
+			this->playerObj->setRotation(0, 1, 0, 3.14 / 2);
 		}
 	}
 }

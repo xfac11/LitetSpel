@@ -48,7 +48,7 @@ float4 CalcLight(AnyLight light, float3 normal, float3 wPos, float3 LightDirecti
 
 	if (diffuseFactor > 0)
 	{
-		float diffuseIntensity = 0.4f;
+		float diffuseIntensity = 1.0f;
 		diffuseColor = float4(light.color.xyz*diffuseIntensity*diffuseFactor, 1.0f);
 		float3 vecToEye = normalize((camPos.xyz - wPos));
 		float3 lightReflect = normalize(reflect(LightDirection, normal));
