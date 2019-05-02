@@ -19,6 +19,14 @@ void ModelLoader::loadGO(GameObject*& object, const char* filePath,std::string t
 	reader.getVertices(0, vertices);
 	reader.getIndices(0, indices);
 
+	//int skltn = (int)reader.getSkeletonCount();
+	//std::vector<Luna::Joint> joints;
+	//std::vector<Luna::Weights> weights;
+	//std::vector<Luna::Animation> anims;
+	//reader.getWeights(0, weights);
+	//reader.getAnimation();
+
+
 	//converting to fit functions and shaders
 	std::vector<Vertex3D> vertices3D;
 	vertices3D.resize(vertices.size());

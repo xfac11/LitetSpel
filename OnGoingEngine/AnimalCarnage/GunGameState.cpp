@@ -95,7 +95,7 @@ bool GunGameState::initailize()
 	{
 		player[i] = new Player();
 		player[i]->initialize();
-		player[i]->setRigidbodyPosition(0, i * 2, 0);
+		player[i]->setRigidbodyPosition(0.f, i * 2.f, 0.f);
 	}
 	
 	System::handler->initialize();
@@ -191,10 +191,19 @@ void GunGameState::renderImgui()
 	{
 		ImGui::Text("Kolliderar nej");
 	}
-	//ImGui::EndChild();
 	ImGui::CaptureKeyboardFromApp(true);
 	ImGui::Checkbox("Debug Draw",&System::getDebugDraw()->DebugDraw);
 	ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+	ImGui::TextColored(ImVec4(1, 1, 0, 1), "Controllers");
+	ImGui::BeginChild("Scrolling");
+	for (int n = 0; n < 4; n++)
+	{
+		if (controllerIsConnected(n) == true)
+			ImGui::Text("%02d: Connected", n);
+		else
+			ImGui::Text("%02d: Disconnected", n);
+	}
+	ImGui::EndChild();
 	ImGui::End();
 }
 
@@ -206,7 +215,6 @@ bool GunGameState::update(float deltaTime)
 
 	wall1->setPosition(wall1->getRigidbody()->getWorldTransform().getOrigin().getX(), wall1->getRigidbody()->getWorldTransform().getOrigin().getY(), wall1->getRigidbody()->getWorldTransform().getOrigin().getZ());
 	wall2->setPosition(wall2->getRigidbody()->getWorldTransform().getOrigin().getX(), wall2->getRigidbody()->getWorldTransform().getOrigin().getY(), wall2->getRigidbody()->getWorldTransform().getOrigin().getZ());
-
 
 	for (int i = 0; i < nrOfPlayers; i++)
 	{
@@ -304,28 +312,28 @@ bool GunGameState::controllerIsConnected(int controllerPort)
 //	return result;
 //}
 
-bool GunGameState::collision(DirectX::XMFLOAT2 posOne, float radiusOne, DirectX::XMFLOAT2 posTwo, float radiusTwo)
-{
-	bool result = false;
-	float deltaX = posTwo.x - posOne.x;
-	float deltaY = posTwo.y - posOne.y;
-	float rad = radiusOne + radiusTwo;
-	if ((deltaX * deltaX) + (deltaY * deltaY) < rad * rad)
-	{
-		result = true;
-	}
-	return result;
-}
-
-bool GunGameState::collision(DirectX::XMFLOAT2 posBox, DirectX::XMFLOAT2 scaleBox, DirectX::XMFLOAT2 posCircle, float radiusCircle)
-{
-	float size = 0.5f;
-	float widthBox = scaleBox.x * size * 2;
-	float heightBox = scaleBox.y * size * 2;
-
-
-	float Dx = posCircle.x - std::fmaxf(posBox.x, std::fminf(posCircle.x, posBox.x + widthBox));
-	float Dy = posCircle.y - std::fmaxf(posBox.y, std::fminf(posCircle.y, posBox.y + heightBox));
-
-	return (Dx * Dx + Dy * Dy) < (radiusCircle * radiusCircle);
-}
+//bool GunGameState::collision(DirectX::XMFLOAT2 posOne, float radiusOne, DirectX::XMFLOAT2 posTwo, float radiusTwo)
+//{
+//	bool result = false;
+//	float deltaX = posTwo.x - posOne.x;
+//	float deltaY = posTwo.y - posOne.y;
+//	float rad = radiusOne + radiusTwo;
+//	if ((deltaX * deltaX) + (deltaY * deltaY) < rad * rad)
+//	{
+//		result = true;
+//	}
+//	return result;
+//}
+//
+//bool GunGameState::collision(DirectX::XMFLOAT2 posBox, DirectX::XMFLOAT2 scaleBox, DirectX::XMFLOAT2 posCircle, float radiusCircle)
+//{
+//	float size = 0.5f;
+//	float widthBox = scaleBox.x * size * 2;
+//	float heightBox = scaleBox.y * size * 2;
+//
+//
+//	float Dx = posCircle.x - std::fmaxf(posBox.x, std::fminf(posCircle.x, posBox.x + widthBox));
+//	float Dy = posCircle.y - std::fmaxf(posBox.y, std::fminf(posCircle.y, posBox.y + heightBox));
+//
+//	return (Dx * Dx + Dy * Dy) < (radiusCircle * radiusCircle);
+//}

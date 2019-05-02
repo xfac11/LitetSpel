@@ -1,5 +1,17 @@
 #include "Joint.h"
 
+void Joint::calcInverseBindTransform(DirectX::XMMATRIX parentBindTransform)
+{
+	DirectX::XMMATRIX bindTransform = DirectX::XMMatrixMultiply(parentBindTransform, locaBindTransform);
+	DirectX::XMVECTOR det= DirectX::XMMatrixDeterminant(bindTransform);
+	this->inverseBindTransform = DirectX::XMMatrixInverse(&det,bindTransform);
+	for (int i = 0; i < nrOfChildren; i++)
+	{
+		children[i]->calcInverseBindTransform(bindTransform);
+	}
+
+}
+
 Joint::Joint()
 {
 	this->name = "Default";
@@ -39,6 +51,11 @@ void Joint::init(std::string name, int id, int nrOf)
 	}
 }
 
+void Joint::setAnimationTransform(DirectX::XMMATRIX animationTransform)
+{
+	this->animatedTransform = animationTransform;
+}
+
 bool Joint::setParent(Joint *theJoint)
 {
 	//std::string test;
@@ -73,6 +90,21 @@ bool Joint::setChildJoint(Joint * theJoint, int index)
 		result = true;
 	}
 	return result;;
+}
+
+DirectX::XMMATRIX Joint::getLocaBindTransform()
+{
+	return this->locaBindTransform;
+}
+
+DirectX::XMMATRIX Joint::getInverseBindTransform()
+{
+	return this->inverseBindTransform;
+}
+
+DirectX::XMMATRIX Joint::getAnimatedTransform()
+{
+	return this->animatedTransform;
 }
 
 int Joint::getNrOfChildren() const

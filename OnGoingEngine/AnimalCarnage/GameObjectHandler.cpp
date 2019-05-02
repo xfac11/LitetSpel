@@ -205,7 +205,7 @@ void GameObjectHandler::initialize()
 	temp.uv[1] = 1.0f;
 	quad.push_back(temp);
 	
-	this->vertexBufferQuad.initialize(quad.data(), quad.size(), System::getDevice());
+	this->vertexBufferQuad.initialize(quad.data(), (UINT)quad.size(), System::getDevice());
 }
 
 void GameObjectHandler::addLight(float pos[4],float dir[4],float color[4] )

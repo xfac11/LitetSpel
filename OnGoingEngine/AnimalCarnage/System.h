@@ -53,13 +53,6 @@ enum GameState {
 class System
 {
 private:
-	enum Direction  // for the camera
-	{
-		Neutral = 0,
-		Positive = 1,
-		Negative = -1
-	};
-
 	LPCSTR applicationName;
 	HINSTANCE hinstance;
 	HWND hwnd;
@@ -76,27 +69,24 @@ private:
 	static DEBUG_DRAW* debugDraw;
 	static SoundManager* soundManager;
 
-	//GameObject* obj[2];	
 	//ForwardShader* theForwardShader;
 	Camera* theCamera;
 
 	//IMGUI VARIABLES
-	DirectX::XMFLOAT3 camPos;
-	DirectX::XMFLOAT3 camRot;
-	bool guiCam;
-	bool freezeCheck;
-	DirectX::XMFLOAT3 cullingPos;
-	bool collide;
+	//DirectX::XMFLOAT3 camPos;
+	//DirectX::XMFLOAT3 camRot;
+	//bool guiCam;
+	//bool freezeCheck;
+	//DirectX::XMFLOAT3 cullingPos;
+	//bool collide;
 	//int currentInput; //imgui, controlls input
 
 	bool mouseShow;
 	bool mouseSwitch;
-	bool flySwitch;
 	bool moveScreen;
-	bool isPressed;
 
 	void initImgui();
-	void renderImgui();
+	//void renderImgui();
 	void update(float deltaTime);
 	void render();
 	void resetShaders();

@@ -3,12 +3,12 @@
 #include "GunGameState.h"
 
 //Keyboard* System::theKeyboard = 0;//for static
-GraphicsDevice* System::theGraphicDevice = 0;
-Mouse* System::theMouse = 0;
-Keyboard* System::theKeyboard = 0;
-GamePad* System::theGamePad = 0;
-GamePad::ButtonStateTracker* System::theTracker = 0;
-ModelLoader* System::theModelLoader = 0;
+GraphicsDevice* System::theGraphicDevice = nullptr;
+Mouse* System::theMouse = nullptr;
+Keyboard* System::theKeyboard = nullptr;
+GamePad* System::theGamePad = nullptr;
+GamePad::ButtonStateTracker* System::theTracker = nullptr;
+ModelLoader* System::theModelLoader = nullptr;
 std::vector<State*> System::states = std::vector<State*>();
 GameState System::currentState = GameState::GUNGAME;
 System* System::fusk = nullptr;
@@ -174,76 +174,76 @@ LRESULT CALLBACK System::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM 
 		int y = HIWORD(lParam);
 		theMouse->OnRightPressed(x, y);
 	}
-	else if (message == WM_MBUTTONDOWN)
-	{
-		int x = LOWORD(lParam);
-		int y = HIWORD(lParam);
-		theMouse->OnMiddlePressed(x, y);
-	}
-	else if (message == WM_LBUTTONUP)
-	{
-		int x = LOWORD(lParam);
-		int y = HIWORD(lParam);
-		theMouse->OnLeftReleased(x, y);
-	}
-	else if (message == WM_RBUTTONDOWN)
-	{
-		int x = LOWORD(lParam);
-		int y = HIWORD(lParam);
-		theMouse->OnRightPressed(x, y);
-	}
-	else if (message == WM_RBUTTONUP)
-	{
-		int x = LOWORD(lParam);
-		int y = HIWORD(lParam);
-		theMouse->OnRightReleased(x, y);
-	}
-	else if (message == WM_MBUTTONUP)
-	{
-		int x = LOWORD(lParam);
-		int y = HIWORD(lParam);
-		theMouse->OnMiddleReleased(x, y);
-	}
-	else if (message == WM_MOUSEWHEEL)
-	{
-		int x = LOWORD(lParam);
-		int y = HIWORD(lParam);
-		if (GET_WHEEL_DELTA_WPARAM(wParam) > 0)
-		{
-			theMouse->OnWheelUp(x, y);
-		}
-		else if (GET_WHEEL_DELTA_WPARAM(wParam) < 0)
-		{
-			theMouse->OnWheelDown(x, y);
-		}
-	}
-	else if (message == WM_XBUTTONDOWN)
-	{
-		int x = LOWORD(lParam);
-		int y = HIWORD(lParam);
+	//else if (message == WM_MBUTTONDOWN)
+	//{
+	//	int x = LOWORD(lParam);
+	//	int y = HIWORD(lParam);
+	//	theMouse->OnMiddlePressed(x, y);
+	//}
+	//else if (message == WM_LBUTTONUP)
+	//{
+	//	int x = LOWORD(lParam);
+	//	int y = HIWORD(lParam);
+	//	theMouse->OnLeftReleased(x, y);
+	//}
+	//else if (message == WM_RBUTTONDOWN)
+	//{
+	//	int x = LOWORD(lParam);
+	//	int y = HIWORD(lParam);
+	//	theMouse->OnRightPressed(x, y);
+	//}
+	//else if (message == WM_RBUTTONUP)
+	//{
+	//	int x = LOWORD(lParam);
+	//	int y = HIWORD(lParam);
+	//	theMouse->OnRightReleased(x, y);
+	//}
+	//else if (message == WM_MBUTTONUP)
+	//{
+	//	int x = LOWORD(lParam);
+	//	int y = HIWORD(lParam);
+	//	theMouse->OnMiddleReleased(x, y);
+	//}
+	//else if (message == WM_MOUSEWHEEL)
+	//{
+	//	int x = LOWORD(lParam);
+	//	int y = HIWORD(lParam);
+	//	if (GET_WHEEL_DELTA_WPARAM(wParam) > 0)
+	//	{
+	//		theMouse->OnWheelUp(x, y);
+	//	}
+	//	else if (GET_WHEEL_DELTA_WPARAM(wParam) < 0)
+	//	{
+	//		theMouse->OnWheelDown(x, y);
+	//	}
+	//}
+	//else if (message == WM_XBUTTONDOWN)
+	//{
+	//	int x = LOWORD(lParam);
+	//	int y = HIWORD(lParam);
 
-		if (GET_XBUTTON_WPARAM(wParam) == 2)
-		{
-			theMouse->OnForwardPressed(x, y);
-		}
-		if (GET_XBUTTON_WPARAM(wParam) == 1)
-		{
-			theMouse->OnBackPressed(x, y);
-		}
-	}
-	else if (message == WM_XBUTTONUP)
-	{
-		int x = LOWORD(lParam);
-		int y = HIWORD(lParam);
-		if (GET_XBUTTON_WPARAM(wParam) == 2)
-		{
-			theMouse->OnForwardReleased(x, y);
-		}
-		if (GET_XBUTTON_WPARAM(wParam) == 1)
-		{
-			theMouse->OnBackPressed(x, y);
-		}
-	}
+	//	if (GET_XBUTTON_WPARAM(wParam) == 2)
+	//	{
+	//		theMouse->OnForwardPressed(x, y);
+	//	}
+	//	if (GET_XBUTTON_WPARAM(wParam) == 1)
+	//	{
+	//		theMouse->OnBackPressed(x, y);
+	//	}
+	//}
+	//else if (message == WM_XBUTTONUP)
+	//{
+	//	int x = LOWORD(lParam);
+	//	int y = HIWORD(lParam);
+	//	if (GET_XBUTTON_WPARAM(wParam) == 2)
+	//	{
+	//		theMouse->OnForwardReleased(x, y);
+	//	}
+	//	if (GET_XBUTTON_WPARAM(wParam) == 1)
+	//	{
+	//		theMouse->OnBackPressed(x, y);
+	//	}
+	//}
 	return DefWindowProc(hWnd, message, wParam, lParam);
 }
 
@@ -259,17 +259,12 @@ System::System(HINSTANCE hInstance, LPCSTR name, int nCmdShow)
 	this->theGraphicDevice = new GraphicsDevice();
 
 	//backfaceCull
-	this->freezeCheck = false;
-	this->cullingPos = { 0,0,0 };
+	//this->freezeCheck = false;
+	//this->cullingPos = { 0,0,0 };
 
 	this->mouseShow = true;
 	this->mouseSwitch = true;
-	this->flySwitch = true;
 	this->moveScreen = true;
-	this->isPressed = false;
-	//this->forward = Neutral;
-	//this->left_right = Neutral;
-	//this->up_down = Neutral;
 
 	static bool raw_input_initialized = false; 
 	if (raw_input_initialized == false)
@@ -306,8 +301,7 @@ System::~System()
 
 	delete this->skybox;
 	delete this->handler;
-	//delete this->obj[0];
-	//delete this->obj[1];
+
 	delete System::states[0];
 	delete System::states[1];
 	delete System::commonStates;
@@ -327,9 +321,9 @@ bool System::initialize()
 	//this->handler->initialize();
 	this->theCamera = new Camera;
 	this->theCamera->SetPosition(0, 6, -15);
-	this->theCamera->SetRotation(5, 0, 0);
-	this->camPos = { 0,1,-2.f };
-	this->camRot = { 30.f,0,0 };
+	this->theCamera->SetRotation(30, 0, 0);
+	//this->camPos = { 0,1,-2.f };
+	//this->camRot = { 30.f,0,0 };
 	//this->theForwardShader = new ForwardShader;
 	this->theKeyboard = new Keyboard;
 	this->theMouse = new Mouse;
@@ -449,9 +443,9 @@ void System::initImgui()
 
 void System::update(float deltaTime)
 {
-	int mouseX = 0;
-	int mouseY = 0;
-	int sensitivity = 20;
+	//int mouseX = 0;
+	//int mouseY = 0;
+	//int sensitivity = 20;
 
 
 	//while (!this->theMouse->EventBufferIsEmpty())
@@ -496,14 +490,8 @@ void System::update(float deltaTime)
 	else if (theKeyboard->KeyIsPressed('S'))
 	{
 		theCamera->move(0, 0, -100 * deltaTime);
-
-		
 	}
 	
-	else if (theKeyboard->KeyIsPressed('S'))
-	{
-		theCamera->move(0, 0, 1 * deltaTime);
-	}
 	if (theKeyboard->KeyIsPressed('D'))
 	{
 		theCamera->move(100 * deltaTime, 0, 0);
@@ -515,12 +503,10 @@ void System::update(float deltaTime)
 	}
 	if (theKeyboard->KeyIsPressed('X'))
 	{
-		//this->obj2->move(-1 * deltaTime, 0, 0);
 		theCamera->move(0, -1 * deltaTime, 0);
 	}
 	if (theKeyboard->KeyIsPressed('Z'))
 	{
-		//this->obj2->move(-1 * deltaTime, 0, 0);
 		theCamera->move(0, 1 * deltaTime, 0);
 	}
 
@@ -549,7 +535,6 @@ void System::update(float deltaTime)
 			this->currentState = MAINMENU;
 		}
 	}
-
 
 	//theCamera->SetRotation(theMouse->GetPos().y, 0, 0);
 	
@@ -582,6 +567,7 @@ void System::render()
 	//	shaderManager->getForwardShader()->setCamPosToMatricesPerFrame(this->camPos); //this->camPos
 	//}
 	//else shaderManager->getForwardShader()->setCamPosToMatricesPerFrame(this->cullingPos);
+
 
 	DirectX::XMMATRIX camWorld = DirectX::XMMatrixTranslation(this->theCamera->GetPosition().x, this->theCamera->GetPosition().y, this->theCamera->GetPosition().z);
 
@@ -627,10 +613,10 @@ void System::run()
 
 	if (this->hwnd)
 	{
-
 		theGraphicDevice->initialize(WIDTH, HEIGHT ,true , hwnd, false, 0.1f, 500.0f);
+
 		this->shaderManager = new ShaderManager;
-		this->shaderManager->initialize(HEIGHT, WIDTH, 0.1f, 500.0f);
+		this->shaderManager->initialize(HEIGHT, WIDTH, 0.1f, 100.0f);
 		this->initialize();
 		initImgui();
 		ShowWindow(this->hwnd, this->nCMDShow);

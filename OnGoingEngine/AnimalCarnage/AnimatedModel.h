@@ -4,6 +4,7 @@
 #include "Joint.h"
 #include "Animation.h"
 //#include "modelLoader.h"
+class Animator; //forward-declaration
 class AnimatedModel
 {
 private:
@@ -22,20 +23,20 @@ private:
 	Joint* root;// jointHierarchy; //root of the joint structure
 	int jointCount;
 
-	//Animator* animator;
+	Animator* animator;
 
 	//setup joints
 	void setupJoints();
-	void addJointsToArray(Joint* headJoint, DirectX::XMMATRIX**& jointMatrices);
+	void addJointsToArray(Joint* headJoint, DirectX::XMMATRIX*& jointMatrices);
 public:
 
 	AnimatedModel();
 	~AnimatedModel();
 	bool setRootJoint();
 
-	void doAnimation(Animation animation);
+	void doAnimation(Animation* animation);
 	void update(float deltaTime);
 	Joint* getRootJoint(); //make this point to root 
-	DirectX::XMMATRIX**& getJointTransforms();
+	DirectX::XMMATRIX*& getJointTransforms(DirectX::XMMATRIX*& jointMatrices);
 };
 #endif // !AnimatedModel_H
