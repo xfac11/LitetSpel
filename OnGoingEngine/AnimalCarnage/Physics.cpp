@@ -8,23 +8,24 @@ solver(new btSequentialImpulseConstraintSolver)
 	dispatcher = new btCollisionDispatcher(collisionConfig);
 	world = new btDiscreteDynamicsWorld(dispatcher, broadphase, solver, collisionConfig);
 	//ska vara -10 av någon anledning
-	this->world->setGravity(btVector3(0, -9.82, 0));
+	this->world->setGravity(btVector3(0, /*-9.82*/-30, 0));
 	//temp plane inf
 	//btTransform t;
 	//t.setIdentity();
 	//t.setOrigin(btVector3(0, 0, 0));
+
+
 	////set shape for object
-	btStaticPlaneShape* plane = new btStaticPlaneShape(btVector3(0, 1, 0), 0);
+	plane = new btStaticPlaneShape(btVector3(0, 1, 0), 0);
 	//set motionshape aka set postion
 	btMotionState* motion = new btDefaultMotionState(btTransform(btQuaternion(0, 0, 0, 1), btVector3(0, -1, 0)));
-	//body definition check doc
+	////body definition check doc
 	btRigidBody::btRigidBodyConstructionInfo info(0.0, motion, plane);
 
 	btRigidBody* body = new btRigidBody(info);
 
 	world->addRigidBody(body);
 	bodies.push_back(body);
-
 }
 
 
@@ -104,6 +105,11 @@ btRigidBody* Physics::addBox(btVector3 Origin, btVector3 size,float mass)
 	this->world->addRigidBody(body);
 	bodies.push_back(body);
 	return body;
+}
+
+btStaticPlaneShape* Physics::getPlaneRigidBody()
+{
+	return plane;
 }
 
 //void Physics::renderSphere(btRigidBody* sphere)

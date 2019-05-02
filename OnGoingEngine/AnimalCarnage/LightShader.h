@@ -13,7 +13,7 @@ public:
 	//uses the rendershader in Shader
 	void setCamPosToMatricesPerFrame(DirectX::XMFLOAT3 campos);
 	void setCBuffers();
-	void renderShaderDir(int vertexCount, ID3D11DepthStencilView* view);
+	void renderShaderDir(int vertexCount);
 	void renderShaderPoint(int vertexCount, ID3D11DepthStencilView* view);
 private:
 	ConstantBuffer<WorldMatrix> worldCB;

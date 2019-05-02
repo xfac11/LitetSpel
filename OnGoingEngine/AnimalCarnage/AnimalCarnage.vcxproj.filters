@@ -663,6 +663,9 @@
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="Skybox.cpp" />
+    <ClCompile Include="SoundManager.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource1.h" />
@@ -1538,6 +1541,9 @@
       <Filter>Header</Filter>
     </ClInclude>
     <ClInclude Include="Skybox.h" />
+    <ClInclude Include="SoundManager.h">
+      <Filter>Header</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="imgui\.gitkeep" />

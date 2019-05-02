@@ -89,6 +89,5 @@ void Texture::cleanUp()
 		this->textureView->Release();
 	//this->texture->Release();
 
-	
 	this->testTexture.Shutdown();
 }

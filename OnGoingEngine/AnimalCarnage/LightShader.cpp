@@ -7,6 +7,7 @@ LightShader::LightShader():
 {
 	this->blendState = nullptr;
 	this->rasState = nullptr;
+	
 }
 
 
@@ -221,17 +222,16 @@ void LightShader::setCamPosToMatricesPerFrame(DirectX::XMFLOAT3 campos)
 
 void LightShader::setCBuffers()
 {
-	this->setConstanbuffer(VERTEX, 0, this->perFrameCB.getBuffer());
+	//this->setConstanbuffer(VERTEX, 0, this->perFrameCB.getBuffer());
 	this->setConstanbuffer(PIXEL, 0, this->perFrameCB.getBuffer());
-	this->setConstanbuffer(VERTEX, 1, this->worldCB.getBuffer());
+	//this->setConstanbuffer(VERTEX, 1, this->worldCB.getBuffer());
 }
 
-void LightShader::renderShaderDir(int vertexCount, ID3D11DepthStencilView* view)
+void LightShader::renderShaderDir(int vertexCount)
 {
-	float blendFactor[4] = { 0.f, 0.f, 0.f, 0.f };
-	
 	//System::getDeviceContext()->OMSetDepthStencilState(dpthQuad, 0);
-	System::getDeviceContext()->RSSetState(rasState);
+	//System::getDeviceContext()->PSSetSamplers(0, 1, &sampler);
+	//System::getDeviceContext()->RSSetState(rasState);
 	//System::getDeviceContext()->OMSetBlendState(blendState, blendFactor, 1);
 	this->renderPixels(vertexCount);//shade the pixels
 }
@@ -266,15 +266,7 @@ void LightShader::renderUnmark(int count)
 
 void LightShader::renderPixels(int count)
 {
-	System::getDeviceContext()->VSSetShader(this->vertexShader, nullptr, 0);
-	System::getDeviceContext()->HSSetShader(nullptr, nullptr, 0);
-	System::getDeviceContext()->DSSetShader(nullptr, nullptr, 0);
-	System::getDeviceContext()->GSSetShader(nullptr, nullptr, 0);
-	System::getDeviceContext()->PSSetShader(this->pixelShader, nullptr, 0);
-	System::getDeviceContext()->IASetInputLayout(this->vertexLayout);
-	System::getDeviceContext()->PSSetSamplers(0, 1, &sampler);
-	System::getDeviceContext()->Draw(count, 0);
-	System::getDeviceContext()->GSSetShader(nullptr, nullptr, 0);
+	this->renderShader(count, count);
 }
 
 void LightShader::shutdown()
@@ -289,5 +281,8 @@ void LightShader::shutdown()
 		this->disDepthStencilState->Release();
 	if (this->fRasState != nullptr)
 		this->fRasState->Release();
-
+	if (this->dpthQuad != nullptr)
+		this->dpthQuad->Release();
+	if (this->sampler != nullptr)
+		this->sampler->Release();
 }

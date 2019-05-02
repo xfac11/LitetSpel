@@ -31,10 +31,10 @@ private:
 	bool grounded; //collision On ground
 	bool canJump;
 	float airSpeed;
+	float facing;
 
 	RumbleProperties theRumble;
 
-	int dir;
 
 	XMFLOAT3 Accleration = XMFLOAT3(0, 0, 0);
 	XMFLOAT3 Velocity = XMFLOAT3(0, 0, 0);
@@ -60,11 +60,15 @@ public:
 	void move(float x, float y, float z);
 	void move(XMFLOAT3 source);
 	void setPosition(float x, float y, float z);
+	void setRigidbodyPosition(float x, float y, float z);
 	void setScale(float x, float y, float z);
 	XMFLOAT3 getPosition();
 	AABB getAABB();
 
 	Hitbox hitbox;
+	int dir;
+
+	void setGrounded(bool grounded);
 
 	GameObject* playerObj;
 };

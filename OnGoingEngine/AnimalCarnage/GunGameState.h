@@ -4,6 +4,7 @@
 #include "Player.h"
 #include <iostream>
 #include <string>
+#include"Geometry.h"
 #include <algorithm>
 #include <DirectXMath.h>
 #include "btBulletCollisionCommon.h"
@@ -37,6 +38,8 @@ private:
 
 	//void inPause();
 	bool checkReset(DirectX::GamePad::State state);
+
+	GameObject* ground;
 
 public:
 	GunGameState();

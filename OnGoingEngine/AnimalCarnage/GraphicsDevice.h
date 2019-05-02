@@ -37,12 +37,12 @@ public:
 
 	void setBlendState();
 	void setBackBuffer();
-	void setBackBuffer(ID3D11DepthStencilView* view);
+	void setBackBuffer(ID3D11DepthStencilView*& view);
 
 private:
 
 	bool vSync_enabled;
-
+	float blendFactor[4] = { 0.f, 0.f, 0.f, 0.f };
 	IDXGISwapChain* swapChain;
 	static ID3D11Device *device;
 	static ID3D11DeviceContext *deviceContext;

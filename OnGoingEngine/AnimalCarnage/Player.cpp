@@ -12,6 +12,7 @@ Player::Player()
 	inAir = false;
 	dir = 1;
 	this->playerObj = nullptr;
+	facing = 0.0f;
 }
 
 
@@ -25,7 +26,6 @@ Player::~Player()
 void Player::initialize()
 {
 	this->playerObj = new GameObject(System::shaderManager->getForwardShader());
-
 	this->hitbox.hitbox = new GameObject();
 	//this->hitbox.hitbox->setRotation(0, 1, 0, 3.14 / 2);
 	this->hitbox.time = 0;
@@ -36,7 +36,7 @@ void Player::initialize()
 	this->playerObj->getRigidbody() = System::getphysices()->addBox(btVector3(0, 0, 0), btVector3(1, 1, 1), 10.0f);
 	//this->playerObj->getRigidbody()->getWorldTransform().setRotation(btQuaternion(3.14 / 2, 0, 0));
 	this->playerObj->getRigidbody()->setWorldTransform(XMMATRIX_to_btTransform(this->playerObj->getWorld()));
-	this->playerObj->setRotation(0, 1, 0, 3.14 / 2);
+	this->playerObj->setRotationRollPitchYaw(0,3.14/2,0);
 	System::theModelLoader->loadGO(this->playerObj, "Resources/Models/fox_run_final.lu", "fox_character_diffuse.tga");
 	//this->playerObj->setScale(0.4f, 0.2f, 1.0f);
 	System::handler->addObject(this->playerObj);
@@ -44,27 +44,48 @@ void Player::initialize()
 	Primitives *CollisionShape;
 	CollisionShape = new Primitives();
 	CollisionShape->Initialize(1, btVector3(1, 1, 1));
+	/*DirectX::XMMatrixTranspose(
+		XMMatrixScaling(Scale.x, Scale.y, Scale.z) *
+		XMMatrixTranslation(Position.x, Position.y, Position.z));*/
 	CollisionShape->SetWorld(&this->hitbox.hitbox->getWorld());
 	System::getDebugDraw()->addPrimitives(CollisionShape);
 	/////////////
 	this->playerObj->getRigidbody()->setActivationState(DISABLE_DEACTIVATION);
+	this->playerObj->getRigidbody()->setFriction(0.5);
+	this->playerObj->getRigidbody()->setAngularFactor(btVector3(0, 0, 0));
 }
 
 void Player::update(float deltaTime, int id)
 {
+	
+	//Cool rotation
+	this->playerObj->setRotationRollPitchYaw(-(this->playerObj->getRigidbody()->getLinearVelocity().getY() / 20), this->playerObj->getRotation().y, this->playerObj->getRotation().z);
+
+
 	this->playerObj->setPosition(this->playerObj->getRigidbody()->getWorldTransform().getOrigin().getX()
 		, this->playerObj->getRigidbody()->getWorldTransform().getOrigin().getY(), this->playerObj->getRigidbody()->getWorldTransform().getOrigin().getZ());
 
 	//this->playerObj->setRotation(0, 1,this->playerObj->getRigidbody()->getWorldTransform().getRotation().getZ(), 3.14 / 2);
+	
+	/*playerObj->setRotation(this->playerObj->getRigidbody()->getWorldTransform().getRotation().getAxis().getX(),
+		this->playerObj->getRigidbody()->getWorldTransform().getRotation().getAxis().getY(),
+		this->playerObj->getRigidbody()->getWorldTransform().getRotation().getAxis().getZ(),
+		this->playerObj->getRigidbody()->getWorldTransform().getRotation().getAngle());*/
 
 	//kolla collision mellan spelar objecten så de inte rör sig i z-led
 	//this->playerObj->getRigidbody()->setLinearVelocity(btVector3(0, 0, 0));
 	this->playerObj->getRigidbody()->setLinearFactor(btVector3(1, 1, 0));
-	//this->playerObj->getRigidbody()->setAngularFactor(btVector3(1, 0, 0));
+	this->playerObj->getRigidbody()->setAngularFactor(btVector3(0, 0, 0));
+	//btVector3 velocity = this->playerObj->getRigidbody()->getLinearVelocity();
+	//this->playerObj->getRigidbody()->setLinearVelocity(btVector3(velocity.getX(), 0, velocity.getZ()));
+
+
+
 	if (hitbox.time == 0)
 	{
 		this->hitbox.hitbox->setPosition(this->getPosition().x, this->getPosition().y, this->getPosition().z);
 	}
+	this->hitbox.hitbox->setPosition(this->hitbox.hitbox->getPosition().x, this->getPosition().y, this->getPosition().z);
 	DirectX::GamePad::State state = System::theGamePad->GetState(id);
 	if (state.IsConnected())
 	{
@@ -80,22 +101,55 @@ void Player::update(float deltaTime, int id)
 			theRumble.rumble.y = 0.2f;
 			theRumble.rumbleTime = 0.2f;
 		}
-
+		
+		//GROUND MOVEMENT
 		float stickAbsL = abs(state.thumbSticks.leftX);
-		if (stickAbsL > 0.f && grounded){
-			float dir = 500.0f * state.thumbSticks.leftX;// / stickAbsL;
+		if (stickAbsL > 0.f && canJump){
+			float dir = 1750.0f * state.thumbSticks.leftX;// / stickAbsL;
 			//this->playerObj->getRigidbody()->setLinearVelocity(btVector3(dir, 0, 0));
-			if ((playerObj->getRigidbody()->getLinearVelocity().getX() < 5.0f) && (playerObj->getRigidbody()->getLinearVelocity().getX() > -5.0f)) {
-				playerObj->getRigidbody()->applyForce(btVector3(dir, 0, 0), btVector3(0, 0, 0));
+			
+			playerObj->getRigidbody()->applyForce(btVector3(dir, 0, 0), btVector3(0, 0, 0));
+
+			if (playerObj->getRigidbody()->getLinearVelocity().getX() > 15.0f) {
+				playerObj->getRigidbody()->setLinearVelocity(btVector3(15.0f, playerObj->getRigidbody()->getLinearVelocity().getY(), playerObj->getRigidbody()->getLinearVelocity().getZ()));
+			}
+			if (playerObj->getRigidbody()->getLinearVelocity().getX() < -15.0f) {
+				playerObj->getRigidbody()->setLinearVelocity(btVector3(-15.0f, playerObj->getRigidbody()->getLinearVelocity().getY(), playerObj->getRigidbody()->getLinearVelocity().getZ()));
 			}
 			airSpeed = dir;
-
 		}
+
+		//AIR MOVEMENT
+		if (stickAbsL > 0.f && !canJump) {
+			float dir = 350.0f * state.thumbSticks.leftX;// / stickAbsL;
+			//this->playerObj->getRigidbody()->setLinearVelocity(btVector3(dir, 0, 0));
+
+			playerObj->getRigidbody()->applyForce(btVector3(dir, 0, 0), btVector3(0, 0, 0));
+
+			if (playerObj->getRigidbody()->getLinearVelocity().getX() > 15.0f) {
+				playerObj->getRigidbody()->setLinearVelocity(btVector3(15.0f, playerObj->getRigidbody()->getLinearVelocity().getY(), playerObj->getRigidbody()->getLinearVelocity().getZ()));
+			}
+			if (playerObj->getRigidbody()->getLinearVelocity().getX() < -15.0f) {
+				playerObj->getRigidbody()->setLinearVelocity(btVector3(-15.0f, playerObj->getRigidbody()->getLinearVelocity().getY(), playerObj->getRigidbody()->getLinearVelocity().getZ()));
+			}
+			airSpeed = dir;
+		}
+		
+		//JUMP
 		if ((state.buttons.x) && canJump){
 			//this->playerObj->getRigidbody()->setLinearVelocity(btVector3(0,1, 0));
-			//his->playerObj->getRigidbody()->applyImpulse(btVector3(0,05.0f,0),btVector3(0,0,0));
-			playerObj->getRigidbody()->applyForce(btVector3(0, 500.0f, 0), btVector3(0, 0, 0));
+			this->playerObj->getRigidbody()->applyImpulse(btVector3(0, 65.0f,0),btVector3(0,0,0));
+			//playerObj->getRigidbody()->applyForce(btVector3(0, 1500.0f, 0), btVector3(0, 0, 0));
+			grounded = false;
 		}
+		if (grounded == true) {
+			canJump = true;
+		}
+		else if (grounded == false) {
+			canJump = false;
+		}
+
+
 
 		if (hitbox.time > 0 && hitbox.time < hitbox.totalTime)
 		{
@@ -152,16 +206,38 @@ void Player::update(float deltaTime, int id)
 			theRumble.rumble.y = 0.3f;
 			theRumble.rumbleTime = 0.1f;
 		}
+
+		//Facing Direction
+		
+		if (dir == 1 && grounded) {
+			facing += 0.5f;
+		}
+		if (dir == -1 && grounded) {
+			facing -= 0.5f;
+		}
+		if (dir == 1 && !grounded) {
+			facing += 0.1f;
+		}
+		if (dir == -1 && !grounded) {
+			facing -= 0.1f;
+		}
 		if (state.thumbSticks.leftX < 0 && dir == 1)
 		{
 			dir = -1;
-			this->playerObj->setRotation(0, 1, 0, -3.14 / 2);
+			this->playerObj->setRotationRollPitchYaw(this->playerObj->getRotation().x, facing, this->playerObj->getRotation().z);
 		}
 		else if (state.thumbSticks.leftX > 0 && dir == -1)
 		{
 			dir = 1;
-			this->playerObj->setRotation(0, 1, 0, 3.14 / 2);
+			this->playerObj->setRotationRollPitchYaw(this->playerObj->getRotation().x, facing, this->playerObj->getRotation().z);
 		}
+		if (facing > (3.14 / 2)) {
+			facing = 3.14 / 2;
+		}
+		if (facing < (-3.14 /2)) {
+			facing = -3.14 / 2;
+		}
+		this->playerObj->setRotationRollPitchYaw(this->playerObj->getRotation().x, facing, this->playerObj->getRotation().z);
 	}
 }
 
@@ -228,6 +304,11 @@ void Player::setPosition(float x, float y, float z)
 	this->playerObj->setPosition(x, y, z);
 }
 
+void Player::setRigidbodyPosition(float x, float y, float z)
+{
+	this->playerObj->getRigidbody()->getWorldTransform().setOrigin(btVector3(x,y,x));
+}
+
 void Player::setScale(float x, float y, float z)
 {
 	this->playerObj->setScale(x, y, z);
@@ -241,6 +322,12 @@ XMFLOAT3 Player::getPosition()
 AABB Player::getAABB()
 {
 	return this->playerObj->getCollisionBox();
+}
+
+void Player::setGrounded(bool grounded)
+{
+	this->grounded = grounded;
+	//playerObj->getRigidbody()->applyImpulse(btVector3(0, 100.0f, 0), btVector3(0, 0, 0));
 }
 
 float Player::magnitude(XMFLOAT3 l)

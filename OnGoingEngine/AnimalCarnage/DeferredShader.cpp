@@ -13,7 +13,9 @@ DeferredShader::~DeferredShader()
 	if (this->blendState != nullptr)
 		this->blendState->Release();
 	if (this->rasState != nullptr)
+	{
 		this->rasState->Release();
+	}
 }
 
 bool DeferredShader::initialize(int height, int width, float nearPlane, float farPlane)
@@ -119,6 +121,15 @@ void DeferredShader::setCBuffers()
 	this->setConstanbuffer(PIXEL, 0, this->perFrameCB.getBuffer());
 	this->setConstanbuffer(VERTEX, 1, this->worldCB.getBuffer());
 	this->setConstanbuffer(GEOMETRY, 1, this->worldCB.getBuffer());
+}
+
+void DeferredShader::resetCB()
+{
+	this->setConstanbuffer(GEOMETRY, 0, nullptr);
+	this->setConstanbuffer(VERTEX, 0, nullptr);
+	this->setConstanbuffer(PIXEL, 0, nullptr);
+	this->setConstanbuffer(VERTEX, 1, nullptr);
+	this->setConstanbuffer(GEOMETRY, 1, nullptr);
 }
 
 void DeferredShader::prepGBuffer(float* color)

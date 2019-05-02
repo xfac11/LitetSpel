@@ -21,6 +21,7 @@ GameObjectHandler* System::handler = nullptr;
 Physics* System::physices = nullptr;
 DEBUG_DRAW* System::debugDraw = nullptr;
 Skybox* System::skybox = nullptr;
+SoundManager* System::soundManager = nullptr;
 
 HWND System::InitWindow(HINSTANCE hInstance, float height, float width)
 {
@@ -315,6 +316,7 @@ System::~System()
 	delete System::fontArial;
 	delete System::physices;
 	delete System::debugDraw;
+	delete System::soundManager;
 }
 
 bool System::initialize()
@@ -334,6 +336,7 @@ bool System::initialize()
 	this->theGamePad = new GamePad;
 	this->theTracker = new GamePad::ButtonStateTracker;
 	this->theModelLoader = new ModelLoader;
+	this->soundManager = new SoundManager();
 	
 	//this->theForwardShader->initialize();
 	//this->obj[0] = new GameObject(shaderManager->getForwardShader());
@@ -553,6 +556,7 @@ void System::update(float deltaTime)
 	physices->Update(deltaTime);
 
 	System::states[System::currentState]->update(deltaTime);
+	System::soundManager->update();
 }
 
 
@@ -624,7 +628,7 @@ void System::run()
 	if (this->hwnd)
 	{
 
-		theGraphicDevice->initialize(WIDTH, HEIGHT ,true , hwnd, false, 0.1f, 500.0f);
+		theGraphicDevice->initialize(WIDTH, HEIGHT ,false , hwnd, false, 0.1f, 500.0f);
 		this->shaderManager = new ShaderManager;
 		this->shaderManager->initialize(HEIGHT, WIDTH, 0.1f, 500.0f);
 		this->initialize();
@@ -694,6 +698,11 @@ SpriteBatch * System::getSpriteBatch()
 CommonStates * System::getCommonStates()
 {
 	return System::commonStates;
+}
+
+SoundManager * System::getSoundManager()
+{
+	return System::soundManager;
 }
 
 SpriteFont * System::getFontComicSans()

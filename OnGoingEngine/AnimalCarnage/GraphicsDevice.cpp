@@ -151,25 +151,8 @@ bool GraphicsDevice::initialize(int screenWidth, int screenHeight, bool vsync, H
 
 // Depth test parameters
 		depthStencilDescL.DepthEnable = false;
-		depthStencilDescL.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
+		depthStencilDescL.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ZERO;
 		depthStencilDescL.DepthFunc = D3D11_COMPARISON_GREATER;
-
-		// Stencil test parameters
-		depthStencilDescL.StencilEnable = false;
-		depthStencilDescL.StencilReadMask = 0xFF;
-		depthStencilDescL.StencilWriteMask = 0xFF;
-
-		// Stencil operations if pixel is front-facing
-		depthStencilDescL.FrontFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
-		depthStencilDescL.FrontFace.StencilDepthFailOp = D3D11_STENCIL_OP_INCR;
-		depthStencilDescL.FrontFace.StencilPassOp = D3D11_STENCIL_OP_DECR_SAT;
-		depthStencilDescL.FrontFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
-
-		// Stencil operations if pixel is back-facing
-		depthStencilDescL.BackFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
-		depthStencilDescL.BackFace.StencilDepthFailOp = D3D11_STENCIL_OP_DECR;
-		depthStencilDescL.BackFace.StencilPassOp = D3D11_STENCIL_OP_DECR_SAT;
-		depthStencilDescL.BackFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
 		// Create depth stencil state
 		result = device->CreateDepthStencilState(&depthStencilDescL, &disableDepthStencilState);
 		if (FAILED(result))
@@ -274,6 +257,7 @@ void GraphicsDevice::shutDown()
 		this->swapChain->Release();
 	if (this->deviceContext)
 		this->deviceContext->Release();
+	
 	debug->ReportLiveDeviceObjects(D3D11_RLDO_SUMMARY | D3D11_RLDO_DETAIL);
 	if (this->device)
 		this->device->Release();
@@ -300,7 +284,7 @@ ID3D11DeviceContext *& GraphicsDevice::getDeviceContext()
 
 void GraphicsDevice::turnOnZ()
 {
-	deviceContext->OMSetDepthStencilState(this->depthStencilState, 0);
+	deviceContext->OMSetDepthStencilState(this->depthStencilState, 1);
 }
 
 void GraphicsDevice::turnOffZ()
@@ -315,8 +299,6 @@ void GraphicsDevice::setRasterState()
 
 void GraphicsDevice::setBlendState()
 {
-	float blendFactor[4] = { 0.f, 0.f, 0.f, 0.f };
-
 	// Turn on the alpha blending.
 	deviceContext->OMSetBlendState(alphaEnableBlendingState, blendFactor, 0xffffffff);
 }
@@ -326,7 +308,7 @@ void GraphicsDevice::setBackBuffer()
 	deviceContext->OMSetRenderTargets(1, &renderTargetView, this->depthStencilView);
 }
 
-void GraphicsDevice::setBackBuffer(ID3D11DepthStencilView * view)
+void GraphicsDevice::setBackBuffer(ID3D11DepthStencilView *& view)
 {
 	deviceContext->OMSetRenderTargets(1, &renderTargetView, view);
 }

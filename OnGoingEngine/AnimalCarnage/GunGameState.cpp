@@ -55,6 +55,16 @@ GunGameState::~GunGameState()
 
 bool GunGameState::initailize()
 {
+	//->setLinearFactor(btVector3(0,0,0));
+	ground = new GameObject(System::shaderManager->getForwardShader());
+	ground->setScale(100,2,40);
+	ground->getRigidbody() = System::getphysices()->addBox(btVector3(0, -3, 0), btVector3(100,2,40),1000);
+	ground->getRigidbody()->setLinearFactor(btVector3(1,1,1));
+	this->ground->getRigidbody()->setFriction(3);
+	ground->getRigidbody()->setCollisionFlags(btCollisionObject::CF_STATIC_OBJECT);
+	System::theModelLoader->loadGO(ground, "Resources/Models/cube2.lu", "stones_and_rocks_diffuse_base.tga");
+	System::handler->addObject(ground);
+	this->ground->getRigidbody()->setActivationState(DISABLE_DEACTIVATION);
 	
 	nrOfPlayers = 4;
 	player = new Player * [nrOfPlayers];
@@ -63,7 +73,9 @@ bool GunGameState::initailize()
 	{
 		player[i] = new Player();
 		player[i]->initialize();
+		player[i]->setRigidbodyPosition(0, i * 2, 0);
 	}
+	
 	System::handler->initialize();
 	System::handler->setSkyboxTexture("oasisnight");
 	float pos[4] = {
@@ -166,35 +178,50 @@ void GunGameState::renderImgui()
 
 bool GunGameState::update(float deltaTime)
 {
+	ground->setPosition(ground->getRigidbody()->getWorldTransform().getOrigin().getX(), ground->getRigidbody()->getWorldTransform().getOrigin().getY(), ground->getRigidbody()->getWorldTransform().getOrigin().getZ());
+	ground->getRigidbody()->setLinearFactor(btVector3(0, 0, 0));
+	//ground->getRigidbody()->setCollisionFlags(btCollisionObject::CF_STATIC_OBJECT);
+	//this->ground->getRigidbody()->setActivationState(DISABLE_DEACTIVATION);
+
 
 	for (int i = 0; i < nrOfPlayers; i++)
 	{
-		if (i != 0)
-		{
-			btVector3 min;
-			btVector3 max;
-			player[i]->playerObj->getRigidbody()->getAabb(min, max);
-			DirectX::XMFLOAT3 minTemp(min.getX(), min.getY(), min.getZ());
-			DirectX::XMFLOAT3 maxTemp(max.getX(), max.getY(), max.getZ());
-			if (Intersects(minTemp, maxTemp, player[0]->hitbox.hitbox->getCollisionBox(), player[0]->hitbox.hitbox->getPosition()))
+		btVector3 min;
+		btVector3 max;
+		player[i]->playerObj->getRigidbody()->getAabb(min, max);
+		DirectX::XMFLOAT3 minTemp(min.getX(), min.getY(), min.getZ());
+		DirectX::XMFLOAT3 maxTemp(max.getX(), max.getY(), max.getZ());
+		for (int j = 0; j < nrOfPlayers; j++) {
+			if (i != j)
 			{
-				this->testColBox = true;
-				player[i]->playerObj->getRigidbody()->applyCentralImpulse(btVector3(200, 0, 0));// , btVector3(1, 0, 0));
-			}
-			else
-			{
-				this->testColBox = false;
+				if (Intersects(minTemp, maxTemp, player[j]->hitbox.hitbox->getCollisionBox(), player[j]->hitbox.hitbox->getPosition()))
+				{
+					this->testColBox = true;
+					player[i]->playerObj->getRigidbody()->applyCentralImpulse(btVector3(player[j]->dir * 50, 25, 0));// , btVector3(1, 0, 0));
+				}
+				else
+				{
+					this->testColBox = false;
+				}
+
 			}
 		}
 		player[i]->update(deltaTime, i);
 		player[i]->updateRumble(deltaTime, i);
+
+		if (/*System::getphysices()->getPlaneRigidBody()->getPlaneConstant()*/  max.getY() < 1.2f){
+		//	//DirectX::XMFLOAT3 aabbmin, DirectX::XMFLOAT3 aabbMax,const AABB b, XMFLOAT3 posB
+			player[i]->setGrounded(true);
+		}
 	}
-	
+	//System::getphysices()->getPlaneRigidBody()->getpl().getY();
 	if (Intersects(System::handler->getObject(2).getCollisionBox(), System::handler->getObject(2).getPosition(), System::handler->getObject(3).getCollisionBox(), System::handler->getObject(3).getPosition()))
 	{
 
 	}
 	return true;
+
+
 }
 
 void GunGameState::shutDown()
