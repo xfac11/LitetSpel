@@ -31,10 +31,12 @@ bool GBuffer::initialize(int height, int width, float nearPlane, float farPlane)
 	this->width = width;
 
 	ZeroMemory(&texDesc, sizeof(texDesc));
-
+	/*float4 Normal : SV_Target0;
+	float4 TexColor : SV_Target1;
+	float4 Pos : SV_Target2;*/
 	texDesc.Width = width;
 	texDesc.Height = height;
-	texDesc.Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
+	texDesc.Format = DXGI_FORMAT_R16G16B16A16_FLOAT;
 	texDesc.ArraySize = 1;
 	texDesc.MipLevels = 1;
 	texDesc.CPUAccessFlags = 0;
@@ -125,7 +127,7 @@ bool GBuffer::setRenderTargets()
 	ID3D11ShaderResourceView* null[] = { nullptr, nullptr, nullptr,nullptr };
 	System::getDeviceContext()->PSSetShaderResources(0, GBUFFERCAP, null);
 	System::getDeviceContext()->OMSetRenderTargets(GBUFFERCAP, this->renderTars, depthStencView);
-	System::getDeviceContext()->RSSetViewports(1, &viewP);
+	//System::getDeviceContext()->RSSetViewports(1, &viewP);
 	return true;//always returns true
 }
 
@@ -174,9 +176,9 @@ void GBuffer::clear(float color[4])
 
 void GBuffer::setShaderResViews()
 {
-	//ID3D11RenderTargetView* null[] = { nullptr, nullptr, nullptr,nullptr };
+	ID3D11RenderTargetView* null[] = { nullptr, nullptr, nullptr,nullptr };
 	//ID3D11ShaderResourceView* null2[] = { nullptr, nullptr, nullptr,nullptr };
-	//System::getDeviceContext()->OMSetRenderTargets(GBUFFERCAP, null, nullptr);
+	System::getDeviceContext()->OMSetRenderTargets(GBUFFERCAP, null, nullptr);
 	//System::getDeviceContext()->PSSetShaderResources(0, GBUFFERCAP, null2);
 	System::getDeviceContext()->PSSetShaderResources(0, GBUFFERCAP, this->shaderResViews);
 }

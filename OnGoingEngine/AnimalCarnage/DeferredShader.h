@@ -7,13 +7,14 @@ class DeferredShader :
 {
 public:
 	DeferredShader();
-	~DeferredShader();
+	virtual~DeferredShader();
 	bool initialize(int height, int width, float nearPlane, float farPlane);
 	void setWorld(DirectX::XMMATRIX world);
 	void setViewProj(DirectX::XMMATRIX view, DirectX::XMMATRIX proj, DirectX::XMFLOAT4 camPos);
 	//uses the rendershader in Shader
 	void setCamPosToMatricesPerFrame(DirectX::XMFLOAT3 campos);
 	void setCBuffers();
+	void resetCB();
 	void prepGBuffer(float* color);
 	void prepForLight();
 	GBuffer gBuffer;

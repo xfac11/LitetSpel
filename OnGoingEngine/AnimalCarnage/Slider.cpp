@@ -20,6 +20,7 @@ Slider::Slider(int startValue, int maxValue, int stepSize, DirectX::SimpleMath::
 
 Slider::~Slider()
 {
+
 }
 
 bool Slider::render(bool selected)

@@ -261,6 +261,7 @@ void Shader::shutdown()
 
 	if (this->vertexLayout != nullptr)
 		this->vertexLayout->Release();
+
 }
 
 void Shader::renderShader(int vertexCount, int indexCount)

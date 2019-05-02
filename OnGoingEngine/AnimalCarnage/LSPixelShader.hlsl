@@ -16,8 +16,6 @@ cbuffer CB_PER_FRAME : register(b0)
 	float4x4 view;//view
 	float4x4 proj;//proj
 	float4 camPos;
-	float2 screenSize;
-	float2 padding;
 }
 cbuffer Lights : register(b1)
 {
@@ -90,7 +88,7 @@ float4 pointLight(int index, float3 normal, float3 wPos)
 Texture2D NormalTex : register(t0);
 Texture2D Tex : register(t1);
 Texture2D PositionTexture : register(t2);
-Texture2D BumpNormalTex : register(t3);
+//Texture2D BumpNormalTex : register(t3);
 SamplerState SampSt :register(s0);
 float4 PS_main(VS_OUT input) : SV_Target
 {
@@ -106,17 +104,20 @@ float4 PS_main(VS_OUT input) : SV_Target
 	float3 normal = NormalTex.Sample(SampSt, input.TexCoord).xyz*2.0f - 1.0f;
 	if (length(normal) > 0)
 	{
-		float4 totalLight = dirLight(normal, lights[0], pos);
-
-		for (int i = 1; i < nrOfLights; i++)
+		if (nrOfLights > 0)
 		{
-			totalLight += pointLight(i, normal, pos);
+			float4 totalLight = dirLight(normal, lights[0], pos);
+
+			for (int i = 1; i < nrOfLights; i++)
+			{
+				totalLight += pointLight(i, normal, pos);
+			}
+
+			//float4 colorT = float4(Tex.Sample(SampSt, input.Tex).xyz *totalLight.xyz, Tex.Sample(SampSt, input.Tex).w);
+
+
+			colorT = float4(Tex.Sample(SampSt, input.TexCoord).xyz *totalLight.xyz, 1.0f);
 		}
-
-		//float4 colorT = float4(Tex.Sample(SampSt, input.Tex).xyz *totalLight.xyz, Tex.Sample(SampSt, input.Tex).w);
-
-
-		colorT = float4(Tex.Sample(SampSt, input.TexCoord).xyz *totalLight.xyz, 1.0f);
 	}
 	return float4(colorT.xyz,1.0f);
 }

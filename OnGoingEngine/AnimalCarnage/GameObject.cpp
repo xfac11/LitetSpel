@@ -112,6 +112,7 @@ void GameObject::calcAABB(std::vector<Vertex3D> mesh)
 	this->colBox.Min.z = min.z * this->Scale.z;*/
 
 
+
 	this->colBox.width = max.x;
 	this->colBox.height = max.y;
 	this->colBox.depth = max.z;

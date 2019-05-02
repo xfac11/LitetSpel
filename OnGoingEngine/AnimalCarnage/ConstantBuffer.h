@@ -12,7 +12,6 @@ public:
 	{
 		
 	}
-
 	T data;
 
 	ID3D11Buffer* getBuffer()const
@@ -27,7 +26,7 @@ public:
 
 	HRESULT initialize(ID3D11Device* device)
 	{
-		D3D11_BUFFER_DESC desc;
+		D3D11_BUFFER_DESC desc = { 0 };
 
 		desc.Usage = D3D11_USAGE_DYNAMIC;
 		desc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
@@ -52,7 +51,6 @@ public:
 
 		CopyMemory(mappedResource.pData, &data, sizeof(T));
 		deviceContext->Unmap(buffer.Get(), 0);
-
 		return true;
 	}
 private:

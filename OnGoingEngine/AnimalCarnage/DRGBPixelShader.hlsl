@@ -16,7 +16,7 @@ struct PS_OUT
 	float4 Normal : SV_Target0;
 	float4 TexColor : SV_Target1;
 	float4 Pos : SV_Target2;
-	float4 BumpNor : SV_Target3;
+	//float4 BumpNor : SV_Target3;
 	//float3 Tangent : TANGENT; //Normal maps
 	//float3 Binormal : BINORMAL; //Normal maps
 
@@ -80,7 +80,7 @@ PS_OUT PS_main(PS_IN input)
 	float3 norScale = float3(x, y, z);
 	output.Normal = float4(norScale, 1.0f); //bumpNormal
 	output.Pos = float4(xP, yP, zP, 1.0f);
-	output.BumpNor = float4(bux, buy, buz, 1.0f);
+	//output.BumpNor = float4(bux, buy, buz, 1.0f);
 
 
 	//output.Pos = mul(world,float4(input.PositionWS, 1.0f));

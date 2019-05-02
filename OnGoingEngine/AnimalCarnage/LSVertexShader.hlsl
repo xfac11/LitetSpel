@@ -1,28 +1,3 @@
-cbuffer CB_PER_FRAME : register(b0)
-{
-	float4x4 view;//view
-	float4x4 proj;//proj
-	float4 camPos;
-}
-
-cbuffer world : register(b1)
-{
-	float4x4 world;//world
-}
-struct AnyLight
-{
-	float4x4 worldLight;
-	float4 position; // w/a = Radius/Range
-	float4 color; // w/a = intensity
-	float4 cameraPos;// for specular calc w/a = numberoflights
-	float4 direction;// directional light
-};
-cbuffer Lights : register(b2)
-{
-	int index;
-	int nrOfLights;
-	AnyLight lights[16];
-}
 struct VS_IN
 {
 	float3 screenPos : POSITION;
