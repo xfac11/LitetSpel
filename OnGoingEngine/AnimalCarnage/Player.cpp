@@ -105,32 +105,32 @@ void Player::update(float deltaTime, int id)
 		//GROUND MOVEMENT
 		float stickAbsL = abs(state.thumbSticks.leftX);
 		if (stickAbsL > 0.f && canJump){
-			float dir = 1750.0f * state.thumbSticks.leftX;// / stickAbsL;
+			float dir = 17.0f * state.thumbSticks.leftX;// / stickAbsL;
 			//this->playerObj->getRigidbody()->setLinearVelocity(btVector3(dir, 0, 0));
 			
-			playerObj->getRigidbody()->applyForce(btVector3(dir, 0, 0), btVector3(0, 0, 0));
+			playerObj->getRigidbody()->setLinearVelocity(btVector3(dir, playerObj->getRigidbody()->getLinearVelocity().getY(), playerObj->getRigidbody()->getLinearVelocity().getZ()));
 
-			if (playerObj->getRigidbody()->getLinearVelocity().getX() > 15.0f) {
-				playerObj->getRigidbody()->setLinearVelocity(btVector3(15.0f, playerObj->getRigidbody()->getLinearVelocity().getY(), playerObj->getRigidbody()->getLinearVelocity().getZ()));
+			if (playerObj->getRigidbody()->getLinearVelocity().getX() > 17.0f) {
+				playerObj->getRigidbody()->setLinearVelocity(btVector3(17.0f, playerObj->getRigidbody()->getLinearVelocity().getY(), playerObj->getRigidbody()->getLinearVelocity().getZ()));
 			}
-			if (playerObj->getRigidbody()->getLinearVelocity().getX() < -15.0f) {
-				playerObj->getRigidbody()->setLinearVelocity(btVector3(-15.0f, playerObj->getRigidbody()->getLinearVelocity().getY(), playerObj->getRigidbody()->getLinearVelocity().getZ()));
+			if (playerObj->getRigidbody()->getLinearVelocity().getX() < -17.0f) {
+				playerObj->getRigidbody()->setLinearVelocity(btVector3(-17.0f, playerObj->getRigidbody()->getLinearVelocity().getY(), playerObj->getRigidbody()->getLinearVelocity().getZ()));
 			}
 			airSpeed = dir;
 		}
 
 		//AIR MOVEMENT
 		if (stickAbsL > 0.f && !canJump) {
-			float dir = 350.0f * state.thumbSticks.leftX;// / stickAbsL;
+			float dir = 400.0f * state.thumbSticks.leftX;// / stickAbsL;
 			//this->playerObj->getRigidbody()->setLinearVelocity(btVector3(dir, 0, 0));
 
 			playerObj->getRigidbody()->applyForce(btVector3(dir, 0, 0), btVector3(0, 0, 0));
 
-			if (playerObj->getRigidbody()->getLinearVelocity().getX() > 15.0f) {
-				playerObj->getRigidbody()->setLinearVelocity(btVector3(15.0f, playerObj->getRigidbody()->getLinearVelocity().getY(), playerObj->getRigidbody()->getLinearVelocity().getZ()));
+			if (playerObj->getRigidbody()->getLinearVelocity().getX() > 17.0f) {
+				playerObj->getRigidbody()->setLinearVelocity(btVector3(17.0f, playerObj->getRigidbody()->getLinearVelocity().getY(), playerObj->getRigidbody()->getLinearVelocity().getZ()));
 			}
-			if (playerObj->getRigidbody()->getLinearVelocity().getX() < -15.0f) {
-				playerObj->getRigidbody()->setLinearVelocity(btVector3(-15.0f, playerObj->getRigidbody()->getLinearVelocity().getY(), playerObj->getRigidbody()->getLinearVelocity().getZ()));
+			if (playerObj->getRigidbody()->getLinearVelocity().getX() < -17.0f) {
+				playerObj->getRigidbody()->setLinearVelocity(btVector3(-17.0f, playerObj->getRigidbody()->getLinearVelocity().getY(), playerObj->getRigidbody()->getLinearVelocity().getZ()));
 			}
 			airSpeed = dir;
 		}
@@ -138,8 +138,8 @@ void Player::update(float deltaTime, int id)
 		//JUMP
 		if ((state.buttons.x) && canJump){
 			//this->playerObj->getRigidbody()->setLinearVelocity(btVector3(0,1, 0));
-			this->playerObj->getRigidbody()->applyImpulse(btVector3(0, 65.0f,0),btVector3(0,0,0));
-			//playerObj->getRigidbody()->applyForce(btVector3(0, 1500.0f, 0), btVector3(0, 0, 0));
+			this->playerObj->getRigidbody()->applyImpulse(btVector3(0, 65.0f *deltaTime * 60,0),btVector3(0,0,0));
+			//playerObj->getRigidbody()->applyForce(btVector3(0, 4500.0f, 0), btVector3(0, 0, 0));
 			grounded = false;
 		}
 		if (grounded == true) {
@@ -153,7 +153,7 @@ void Player::update(float deltaTime, int id)
 
 		if (hitbox.time > 0 && hitbox.time < hitbox.totalTime)
 		{
-			hitbox.time++;
+			hitbox.time += 1 * deltaTime * 60;
 		}
 		if (hitbox.time == hitbox.totalTime)
 		{
@@ -210,16 +210,16 @@ void Player::update(float deltaTime, int id)
 		//Facing Direction
 		
 		if (dir == 1 && grounded) {
-			facing += 0.5f;
+			facing += 0.5f*deltaTime * 60;
 		}
 		if (dir == -1 && grounded) {
-			facing -= 0.5f;
+			facing -= 0.5f*deltaTime * 60;
 		}
 		if (dir == 1 && !grounded) {
-			facing += 0.1f;
+			facing += 0.1f*deltaTime * 60;
 		}
 		if (dir == -1 && !grounded) {
-			facing -= 0.1f;
+			facing -= 0.1f*deltaTime*60;
 		}
 		if (state.thumbSticks.leftX < 0 && dir == 1)
 		{

@@ -57,14 +57,36 @@ bool GunGameState::initailize()
 {
 	//->setLinearFactor(btVector3(0,0,0));
 	ground = new GameObject(System::shaderManager->getForwardShader());
-	ground->setScale(100,2,40);
-	ground->getRigidbody() = System::getphysices()->addBox(btVector3(0, -3, 0), btVector3(100,2,40),1000);
-	ground->getRigidbody()->setLinearFactor(btVector3(1,1,1));
+	ground->setScale(100,2,20);
+	ground->getRigidbody() = System::getphysices()->addBox(btVector3(0, -3, 0), btVector3(100,2,20),0);
+	ground->getRigidbody()->setLinearFactor(btVector3(0,0,0));
 	this->ground->getRigidbody()->setFriction(3);
 	ground->getRigidbody()->setCollisionFlags(btCollisionObject::CF_STATIC_OBJECT);
 	System::theModelLoader->loadGO(ground, "Resources/Models/cube2.lu", "stones_and_rocks_diffuse_base.tga");
 	System::handler->addObject(ground);
 	this->ground->getRigidbody()->setActivationState(DISABLE_DEACTIVATION);
+
+	wall1 = new GameObject(System::shaderManager->getForwardShader());
+	wall1->setScale(2, 20, 20);
+	wall1->getRigidbody() = System::getphysices()->addBox(btVector3(-24, 6, 0), btVector3(2, 20, 20), 0);
+	wall1->getRigidbody()->setLinearFactor(btVector3(0, 0, 0));
+	this->wall1->getRigidbody()->setFriction(0.5);
+	wall1->getRigidbody()->setCollisionFlags(btCollisionObject::CF_STATIC_OBJECT);
+	System::theModelLoader->loadGO(wall1, "Resources/Models/cube2.lu", "stones_and_rocks_diffuse_base.tga");
+	System::handler->addObject(wall1);
+	this->wall1->getRigidbody()->setActivationState(DISABLE_DEACTIVATION);
+
+	wall2 = new GameObject(System::shaderManager->getForwardShader());
+	wall2->setScale(2, 20, 20);
+	wall2->getRigidbody() = System::getphysices()->addBox(btVector3(24, 6, 0), btVector3(2, 20, 20), 0);
+	wall2->getRigidbody()->setLinearFactor(btVector3(0, 0, 0));
+	this->wall2->getRigidbody()->setFriction(0.5);
+	wall2->getRigidbody()->setCollisionFlags(btCollisionObject::CF_STATIC_OBJECT);
+	System::theModelLoader->loadGO(wall2, "Resources/Models/cube2.lu", "stones_and_rocks_diffuse_base.tga");
+	System::handler->addObject(wall2);
+	this->wall2->getRigidbody()->setActivationState(DISABLE_DEACTIVATION);
+
+
 	
 	nrOfPlayers = 4;
 	player = new Player * [nrOfPlayers];
@@ -178,10 +200,12 @@ void GunGameState::renderImgui()
 
 bool GunGameState::update(float deltaTime)
 {
-	ground->setPosition(ground->getRigidbody()->getWorldTransform().getOrigin().getX(), ground->getRigidbody()->getWorldTransform().getOrigin().getY(), ground->getRigidbody()->getWorldTransform().getOrigin().getZ());
-	ground->getRigidbody()->setLinearFactor(btVector3(0, 0, 0));
+	ground->setPosition(ground->getRigidbody()->getWorldTransform().getOrigin().getX(), ground->getRigidbody()->getWorldTransform().getOrigin().getY() + 2, ground->getRigidbody()->getWorldTransform().getOrigin().getZ());
+	//ground->getRigidbody()->setLinearFactor(btVector3(0, 0, 0));
 	//ground->getRigidbody()->setCollisionFlags(btCollisionObject::CF_STATIC_OBJECT);
-	//this->ground->getRigidbody()->setActivationState(DISABLE_DEACTIVATION);
+
+	wall1->setPosition(wall1->getRigidbody()->getWorldTransform().getOrigin().getX(), wall1->getRigidbody()->getWorldTransform().getOrigin().getY(), wall1->getRigidbody()->getWorldTransform().getOrigin().getZ());
+	wall2->setPosition(wall2->getRigidbody()->getWorldTransform().getOrigin().getX(), wall2->getRigidbody()->getWorldTransform().getOrigin().getY(), wall2->getRigidbody()->getWorldTransform().getOrigin().getZ());
 
 
 	for (int i = 0; i < nrOfPlayers; i++)

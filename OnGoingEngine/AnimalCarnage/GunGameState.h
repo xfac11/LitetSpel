@@ -40,6 +40,8 @@ private:
 	bool checkReset(DirectX::GamePad::State state);
 
 	GameObject* ground;
+	GameObject* wall1;
+	GameObject* wall2;
 
 public:
 	GunGameState();

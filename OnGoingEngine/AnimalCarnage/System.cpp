@@ -628,7 +628,7 @@ void System::run()
 	if (this->hwnd)
 	{
 
-		theGraphicDevice->initialize(WIDTH, HEIGHT ,false , hwnd, false, 0.1f, 500.0f);
+		theGraphicDevice->initialize(WIDTH, HEIGHT ,true , hwnd, false, 0.1f, 500.0f);
 		this->shaderManager = new ShaderManager;
 		this->shaderManager->initialize(HEIGHT, WIDTH, 0.1f, 500.0f);
 		this->initialize();
