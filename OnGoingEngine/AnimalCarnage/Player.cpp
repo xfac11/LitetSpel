@@ -48,6 +48,8 @@ void Player::initialize()
 	System::getDebugDraw()->addPrimitives(CollisionShape);
 	/////////////
 	this->playerObj->getRigidbody()->setActivationState(DISABLE_DEACTIVATION);
+	this->playerObj->getRigidbody()->setFriction(2);
+	this->playerObj->getRigidbody()->setAngularFactor(btVector3(0, 0, 0));
 }
 
 void Player::update(float deltaTime, int id)
@@ -56,11 +58,21 @@ void Player::update(float deltaTime, int id)
 		, this->playerObj->getRigidbody()->getWorldTransform().getOrigin().getY(), this->playerObj->getRigidbody()->getWorldTransform().getOrigin().getZ());
 
 	//this->playerObj->setRotation(0, 1,this->playerObj->getRigidbody()->getWorldTransform().getRotation().getZ(), 3.14 / 2);
+	
+	/*playerObj->setRotation(this->playerObj->getRigidbody()->getWorldTransform().getRotation().getAxis().getX(),
+		this->playerObj->getRigidbody()->getWorldTransform().getRotation().getAxis().getY(),
+		this->playerObj->getRigidbody()->getWorldTransform().getRotation().getAxis().getZ(),
+		this->playerObj->getRigidbody()->getWorldTransform().getRotation().getAngle());*/
 
 	//kolla collision mellan spelar objecten så de inte rör sig i z-led
 	//this->playerObj->getRigidbody()->setLinearVelocity(btVector3(0, 0, 0));
 	this->playerObj->getRigidbody()->setLinearFactor(btVector3(1, 1, 0));
-	//this->playerObj->getRigidbody()->setAngularFactor(btVector3(1, 0, 0));
+	this->playerObj->getRigidbody()->setAngularFactor(btVector3(0, 0, 0));
+	//btVector3 velocity = this->playerObj->getRigidbody()->getLinearVelocity();
+	//this->playerObj->getRigidbody()->setLinearVelocity(btVector3(velocity.getX(), 0, velocity.getZ()));
+
+
+
 	if (hitbox.time == 0)
 	{
 		this->hitbox.hitbox->setPosition(this->getPosition().x, this->getPosition().y, this->getPosition().z);
