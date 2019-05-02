@@ -55,7 +55,17 @@ GunGameState::~GunGameState()
 
 bool GunGameState::initailize()
 {
-
+	//->setLinearFactor(btVector3(0,0,0));
+	ground = new GameObject(System::shaderManager->getForwardShader());
+	ground->setScale(100,2,40);
+	ground->getRigidbody() = System::getphysices()->addBox(btVector3(0, -3, 0), btVector3(100,2,40),1000);
+	ground->getRigidbody()->setLinearFactor(btVector3(1,1,1));
+	this->ground->getRigidbody()->setFriction(3);
+	ground->getRigidbody()->setCollisionFlags(btCollisionObject::CF_STATIC_OBJECT);
+	System::theModelLoader->loadGO(ground, "Resources/Models/cube2.lu", "stones_and_rocks_diffuse_base.tga");
+	System::handler->addObject(ground);
+	this->ground->getRigidbody()->setActivationState(DISABLE_DEACTIVATION);
+	
 	nrOfPlayers = 4;
 	player = new Player * [nrOfPlayers];
 
@@ -168,6 +178,11 @@ void GunGameState::renderImgui()
 
 bool GunGameState::update(float deltaTime)
 {
+	ground->setPosition(ground->getRigidbody()->getWorldTransform().getOrigin().getX(), ground->getRigidbody()->getWorldTransform().getOrigin().getY(), ground->getRigidbody()->getWorldTransform().getOrigin().getZ());
+	ground->getRigidbody()->setLinearFactor(btVector3(0, 0, 0));
+	//ground->getRigidbody()->setCollisionFlags(btCollisionObject::CF_STATIC_OBJECT);
+	//this->ground->getRigidbody()->setActivationState(DISABLE_DEACTIVATION);
+
 
 	for (int i = 0; i < nrOfPlayers; i++)
 	{

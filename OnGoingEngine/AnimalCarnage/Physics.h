@@ -20,7 +20,6 @@ private:
 	std::vector<btCollisionShape*> shapes;
 
 	btStaticPlaneShape* plane;
-	btRigidBody* ground;
 public:
 	Physics();
 	~Physics();
