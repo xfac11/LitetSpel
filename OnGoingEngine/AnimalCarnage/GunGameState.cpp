@@ -63,7 +63,9 @@ bool GunGameState::initailize()
 	{
 		player[i] = new Player();
 		player[i]->initialize();
+		player[i]->setRigidbodyPosition(0, i * 2, 0);
 	}
+	
 	System::handler->initialize();
 	System::handler->setSkyboxTexture("oasisnight");
 	float pos[4] = {
@@ -169,25 +171,31 @@ bool GunGameState::update(float deltaTime)
 
 	for (int i = 0; i < nrOfPlayers; i++)
 	{
-		if (i != 0)
-		{
-			btVector3 min;
-			btVector3 max;
-			player[i]->playerObj->getRigidbody()->getAabb(min, max);
-			DirectX::XMFLOAT3 minTemp(min.getX(), min.getY(), min.getZ());
-			DirectX::XMFLOAT3 maxTemp(max.getX(), max.getY(), max.getZ());
-			if (Intersects(minTemp, maxTemp, player[0]->hitbox.hitbox->getCollisionBox(), player[0]->hitbox.hitbox->getPosition()))
+		for (int j = 0; j < nrOfPlayers; j++) {
+			if (i != j)
 			{
-				this->testColBox = true;
-				player[i]->playerObj->getRigidbody()->applyCentralImpulse(btVector3(200, 0, 0));// , btVector3(1, 0, 0));
-			}
-			else
-			{
-				this->testColBox = false;
+				btVector3 min;
+				btVector3 max;
+				player[i]->playerObj->getRigidbody()->getAabb(min, max);
+				DirectX::XMFLOAT3 minTemp(min.getX(), min.getY(), min.getZ());
+				DirectX::XMFLOAT3 maxTemp(max.getX(), max.getY(), max.getZ());
+				if (Intersects(minTemp, maxTemp, player[j]->hitbox.hitbox->getCollisionBox(), player[j]->hitbox.hitbox->getPosition()))
+				{
+					this->testColBox = true;
+					player[i]->playerObj->getRigidbody()->applyCentralImpulse(btVector3(player[j]->dir * 50, 0, 0));// , btVector3(1, 0, 0));
+				}
+				else
+				{
+					this->testColBox = false;
+				}
 			}
 		}
 		player[i]->update(deltaTime, i);
 		player[i]->updateRumble(deltaTime, i);
+
+		//if (Intersects(minTemp, maxTemp)) {
+
+		//}
 	}
 	
 	if (Intersects(System::handler->getObject(2).getCollisionBox(), System::handler->getObject(2).getPosition(), System::handler->getObject(3).getCollisionBox(), System::handler->getObject(3).getPosition()))
@@ -195,6 +203,8 @@ bool GunGameState::update(float deltaTime)
 
 	}
 	return true;
+
+
 }
 
 void GunGameState::shutDown()

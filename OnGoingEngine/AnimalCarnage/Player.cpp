@@ -77,6 +77,7 @@ void Player::update(float deltaTime, int id)
 	{
 		this->hitbox.hitbox->setPosition(this->getPosition().x, this->getPosition().y, this->getPosition().z);
 	}
+	this->hitbox.hitbox->setPosition(this->hitbox.hitbox->getPosition().x, this->getPosition().y, this->getPosition().z);
 	DirectX::GamePad::State state = System::theGamePad->GetState(id);
 	if (state.IsConnected())
 	{
@@ -94,14 +95,23 @@ void Player::update(float deltaTime, int id)
 		}
 
 		float stickAbsL = abs(state.thumbSticks.leftX);
-		if (stickAbsL > 0.f && grounded){
-			float dir = 500.0f * state.thumbSticks.leftX;// / stickAbsL;
+		if (stickAbsL > 0.f /*&& grounded*/){
+			float dir = 750.0f * state.thumbSticks.leftX;// / stickAbsL;
 			//this->playerObj->getRigidbody()->setLinearVelocity(btVector3(dir, 0, 0));
-			if ((playerObj->getRigidbody()->getLinearVelocity().getX() < 5.0f) && (playerObj->getRigidbody()->getLinearVelocity().getX() > -5.0f)) {
-				playerObj->getRigidbody()->applyForce(btVector3(dir, 0, 0), btVector3(0, 0, 0));
+			
+			playerObj->getRigidbody()->applyForce(btVector3(dir, 0, 0), btVector3(0, 0, 0));
+
+			if (playerObj->getRigidbody()->getLinearVelocity().getX() > 15.0f) {
+				playerObj->getRigidbody()->setLinearVelocity(btVector3(15.0f, playerObj->getRigidbody()->getLinearVelocity().getY(), playerObj->getRigidbody()->getLinearVelocity().getZ()));
+			}
+			if (playerObj->getRigidbody()->getLinearVelocity().getX() < -15.0f) {
+				playerObj->getRigidbody()->setLinearVelocity(btVector3(-15.0f, playerObj->getRigidbody()->getLinearVelocity().getY(), playerObj->getRigidbody()->getLinearVelocity().getZ()));
 			}
 			airSpeed = dir;
-
+			this->playerObj->getRigidbody()->setFriction(1);
+		}
+		else {
+			this->playerObj->getRigidbody()->setFriction(2);
 		}
 		if ((state.buttons.x) && canJump){
 			//this->playerObj->getRigidbody()->setLinearVelocity(btVector3(0,1, 0));
@@ -240,6 +250,11 @@ void Player::setPosition(float x, float y, float z)
 	this->playerObj->setPosition(x, y, z);
 }
 
+void Player::setRigidbodyPosition(float x, float y, float z)
+{
+	this->playerObj->getRigidbody()->getWorldTransform().setOrigin(btVector3(x,y,x));
+}
+
 void Player::setScale(float x, float y, float z)
 {
 	this->playerObj->setScale(x, y, z);
@@ -253,6 +268,11 @@ XMFLOAT3 Player::getPosition()
 AABB Player::getAABB()
 {
 	return this->playerObj->getCollisionBox();
+}
+
+void Player::setGrounded(bool grounded)
+{
+	this->grounded = grounded;
 }
 
 float Player::magnitude(XMFLOAT3 l)
