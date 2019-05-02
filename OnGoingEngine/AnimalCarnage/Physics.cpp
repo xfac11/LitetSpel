@@ -16,16 +16,18 @@ solver(new btSequentialImpulseConstraintSolver)
 
 
 	////set shape for object
-	//plane = new btStaticPlaneShape(btVector3(0, 1, 0), 0);
+	plane = new btStaticPlaneShape(btVector3(0, 1, 0), 0);
 	//set motionshape aka set postion
-	//btMotionState* motion = new btDefaultMotionState(btTransform(btQuaternion(0, 0, 0, 1), btVector3(0, -1, 0)));
-	////body definition check doc
-	//btRigidBody::btRigidBodyConstructionInfo info(0.0, motion, plane);
+	btMotionState* motion = new btDefaultMotionState(btTransform(btQuaternion(0, 0, 0, 1), btVector3(0, -1, 0)));
+	//body definition check doc
+	btRigidBody::btRigidBodyConstructionInfo info(0.0, motion, plane);
 
-	//btRigidBody* body = new btRigidBody(info);
+	btRigidBody* body = new btRigidBody(info);
 
-	//world->addRigidBody(body);
-	//bodies.push_back(body);
+	world->addRigidBody(body);
+	bodies.push_back(body);
+
+	//ground = new btRigidBody();
 }
 
 

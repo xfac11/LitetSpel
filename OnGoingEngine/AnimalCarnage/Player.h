@@ -31,7 +31,6 @@ private:
 	bool grounded; //collision On ground
 	bool canJump;
 	float airSpeed;
-	float facing;
 
 	RumbleProperties theRumble;
 

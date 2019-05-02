@@ -39,8 +39,6 @@ private:
 	//void inPause();
 	bool checkReset(DirectX::GamePad::State state);
 
-	GameObject* ground;
-
 public:
 	GunGameState();
 	~GunGameState();

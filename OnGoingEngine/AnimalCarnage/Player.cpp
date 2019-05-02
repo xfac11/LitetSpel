@@ -12,7 +12,6 @@ Player::Player()
 	inAir = false;
 	dir = 1;
 	this->playerObj = nullptr;
-	facing = 0.0f;
 }
 
 
@@ -26,6 +25,7 @@ Player::~Player()
 void Player::initialize()
 {
 	this->playerObj = new GameObject(System::shaderManager->getForwardShader());
+
 	this->hitbox.hitbox = new GameObject();
 	//this->hitbox.hitbox->setRotation(0, 1, 0, 3.14 / 2);
 	this->hitbox.time = 0;
@@ -51,7 +51,7 @@ void Player::initialize()
 	System::getDebugDraw()->addPrimitives(CollisionShape);
 	/////////////
 	this->playerObj->getRigidbody()->setActivationState(DISABLE_DEACTIVATION);
-	this->playerObj->getRigidbody()->setFriction(0.5);
+	this->playerObj->getRigidbody()->setFriction(2);
 	this->playerObj->getRigidbody()->setAngularFactor(btVector3(0, 0, 0));
 }
 
@@ -117,6 +117,10 @@ void Player::update(float deltaTime, int id)
 				playerObj->getRigidbody()->setLinearVelocity(btVector3(-15.0f, playerObj->getRigidbody()->getLinearVelocity().getY(), playerObj->getRigidbody()->getLinearVelocity().getZ()));
 			}
 			airSpeed = dir;
+			this->playerObj->getRigidbody()->setFriction(1);
+		}
+		else {
+			this->playerObj->getRigidbody()->setFriction(2);
 		}
 
 		//AIR MOVEMENT
@@ -133,6 +137,10 @@ void Player::update(float deltaTime, int id)
 				playerObj->getRigidbody()->setLinearVelocity(btVector3(-15.0f, playerObj->getRigidbody()->getLinearVelocity().getY(), playerObj->getRigidbody()->getLinearVelocity().getZ()));
 			}
 			airSpeed = dir;
+			this->playerObj->getRigidbody()->setFriction(1);
+		}
+		else {
+			this->playerObj->getRigidbody()->setFriction(2);
 		}
 		
 		//JUMP
@@ -206,38 +214,18 @@ void Player::update(float deltaTime, int id)
 			theRumble.rumble.y = 0.3f;
 			theRumble.rumbleTime = 0.1f;
 		}
-
-		//Facing Direction
-		
-		if (dir == 1 && grounded) {
-			facing += 0.5f;
-		}
-		if (dir == -1 && grounded) {
-			facing -= 0.5f;
-		}
-		if (dir == 1 && !grounded) {
-			facing += 0.1f;
-		}
-		if (dir == -1 && !grounded) {
-			facing -= 0.1f;
-		}
 		if (state.thumbSticks.leftX < 0 && dir == 1)
 		{
 			dir = -1;
-			this->playerObj->setRotationRollPitchYaw(this->playerObj->getRotation().x, facing, this->playerObj->getRotation().z);
+			this->playerObj->setRotationRollPitchYaw(this->playerObj->getRotation().x, -3.14 / 2, this->playerObj->getRotation().z);
 		}
 		else if (state.thumbSticks.leftX > 0 && dir == -1)
 		{
 			dir = 1;
-			this->playerObj->setRotationRollPitchYaw(this->playerObj->getRotation().x, facing, this->playerObj->getRotation().z);
+			this->playerObj->setRotationRollPitchYaw(this->playerObj->getRotation().x, 3.14 / 2, this->playerObj->getRotation().z);
 		}
-		if (facing > (3.14 / 2)) {
-			facing = 3.14 / 2;
-		}
-		if (facing < (-3.14 /2)) {
-			facing = -3.14 / 2;
-		}
-		this->playerObj->setRotationRollPitchYaw(this->playerObj->getRotation().x, facing, this->playerObj->getRotation().z);
+		
+		
 	}
 }
 
