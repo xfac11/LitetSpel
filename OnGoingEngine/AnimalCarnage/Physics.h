@@ -19,6 +19,8 @@ private:
 	std::vector<btRigidBody*> bodies;
 	std::vector<btCollisionShape*> shapes;
 
+	btStaticPlaneShape* plane;
+	btRigidBody* ground;
 public:
 	Physics();
 	~Physics();
@@ -28,6 +30,7 @@ public:
 	//void renderSphere(btRigidBody* sphere);
 	//void renderPlane(btRigidBody* plane);
 	//void renderBox(btRigidBody* box);
+	btStaticPlaneShape* getPlaneRigidBody();
 };
 
 #endif // !PHYSICS_H

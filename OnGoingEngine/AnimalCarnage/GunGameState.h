@@ -4,6 +4,7 @@
 #include "Player.h"
 #include <iostream>
 #include <string>
+#include"Geometry.h"
 #include <algorithm>
 #include <DirectXMath.h>
 #include "btBulletCollisionCommon.h"

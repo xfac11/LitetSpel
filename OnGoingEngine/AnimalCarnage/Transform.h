@@ -10,6 +10,7 @@ private:
 	void ApplyTransform();
 	btRigidBody * rigidbody;
 protected:
+	XMMATRIX rotationMatrix;
 	XMFLOAT3 Position = XMFLOAT3(0.0f, 0.0f, 0.0f);
 	XMFLOAT3 Scale = XMFLOAT3(1.0f, 1.0f, 1.0f);
 	XMFLOAT3 Rotation = XMFLOAT3(0.0f, 0.0f, 0.0f);
@@ -32,6 +33,7 @@ public:
 	void setPosition(float x, float y, float z);
 	void setScale(float x, float y, float z);
 	void setRotation(float x, float y, float z, float angle);
+	void setRotationRollPitchYaw(float x, float y, float z);
 
 	~Transform();
 
