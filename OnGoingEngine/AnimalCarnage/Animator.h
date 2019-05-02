@@ -8,17 +8,17 @@ class Animator
 private:
 	AnimatedModel entity;
 
-	Animation currentAnimation;
+	Animation* currentAnimation;
 	float animationTime;
 
 	void incrementAnimationTime(float deltaTime);
 	
 	std::map<std::string, DirectX::XMMATRIX> calculateCurrentAnimationPose();
-	void applyPoseToJoints(std::map<std::string, DirectX::XMMATRIX> currentPos, Joint *joint, DirectX::XMMATRIX parentTransform);
+	void applyPoseToJoints(std::map<std::string, DirectX::XMMATRIX> currentPose, Joint *joint, DirectX::XMMATRIX parentTransform);
 public:
-	Animator();
+	Animator(AnimatedModel entity);
 
-	void doAnimation(Animation animation);
+	void doAnimation(Animation *animation);
 	void update(float deltaTime);
 };
 #endif // !ANIMATOR_H

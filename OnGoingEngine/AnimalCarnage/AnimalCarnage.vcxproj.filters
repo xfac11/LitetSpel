@@ -37,6 +37,9 @@
     <FxCompile Include="SkyPixelShader.hlsl">
       <Filter>Shader</Filter>
     </FxCompile>
+    <FxCompile Include="animatedEntityVertex.hlsl">
+      <Filter>Skeleton</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="InputHandler.cpp" />
