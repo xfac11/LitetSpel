@@ -37,7 +37,7 @@ void Player::initialize()
 	//this->playerObj->getRigidbody()->getWorldTransform().setRotation(btQuaternion(3.14 / 2, 0, 0));
 	this->playerObj->getRigidbody()->setWorldTransform(XMMATRIX_to_btTransform(this->playerObj->getWorld()));
 	this->playerObj->setRotation(0, 1, 0, 3.14 / 2);
-	System::theModelLoader->loadGO(this->playerObj, "Resources/Models/fox_test.lu", "fox_character_diffuse.tga");
+	System::theModelLoader->loadGO(this->playerObj, "Resources/Models/fox_run_final.lu", "fox_character_diffuse.tga");
 	//this->playerObj->setScale(0.4f, 0.2f, 1.0f);
 	System::handler->addObject(this->playerObj);
 	//System::handler->addObject(this->hitbox.hitbox);
