@@ -40,8 +40,8 @@
 using namespace DirectX;
 //using namespace DirectX::SimpleMath;
 
-#define HEIGHT 1080
-#define WIDTH 1920
+#define HEIGHT 1080/2
+#define WIDTH 1920/2
 
 //using Microsoft::WRL::ComPtr;
 
@@ -74,7 +74,7 @@ private:
 
 	//IMGUI VARIABLES
 	//DirectX::XMFLOAT3 camPos;
-	//DirectX::XMFLOAT3 camRot;
+	DirectX::XMFLOAT3 camRot;
 	//bool guiCam;
 	//bool freezeCheck;
 	//DirectX::XMFLOAT3 cullingPos;
@@ -82,15 +82,16 @@ private:
 	//int currentInput; //imgui, controlls input
 
 	bool mouseShow;
-	bool mouseSwitch;
-	bool moveScreen;
+	//bool mouseSwitch;
+	//bool moveScreen;
 
+
+	void mouseMovement(float deltaTime);
 	void initImgui();
 	//void renderImgui();
 	void update(float deltaTime);
 	void render();
 	void resetShaders();
-
 	void reset();
 	static LRESULT CALLBACK  WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
 	HWND InitWindow(HINSTANCE hInstance, float height, float width);

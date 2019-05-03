@@ -56,7 +56,8 @@ PS_OUT PS_main(PS_IN input)
 	//output.TexColor = Tex.Sample(SampSt, input.Tex);//float4(input.ThePoint, 1.0f);//World space position
 
 	//output.TexColor = float4(1.0f, 0.0f, 0.0f, 1.0f);
-	output.TexColor = Tex.Sample(SampSt, input.Tex);
+	//output.TexColor = Tex.Sample(SampSt, input.Tex);
+	output.TexColor = Tex.SampleLevel(SampSt, input.Tex,10);
 	float3 normalColor = Nor.Sample(SampSt, input.Tex).xyz;
 
 	normalColor = normalColor * 2.f - 1.f;

@@ -175,7 +175,7 @@ void GunGameState::renderImgui()
 	ImGui::NewFrame();
 	std::string textUse;
 	ImGui::Begin("Gungame");
-	
+	ImGui::Text("Hold 'V' To move camera with mouse.");
 	btVector3 pos = this->player[0]->playerObj->getRigidbody()->getWorldTransform().getOrigin();
 
 	std::string playerPos = "Player pos: " + std::to_string(pos.getX()) + " " +

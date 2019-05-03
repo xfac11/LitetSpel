@@ -263,8 +263,8 @@ System::System(HINSTANCE hInstance, LPCSTR name, int nCmdShow)
 	//this->cullingPos = { 0,0,0 };
 
 	this->mouseShow = true;
-	this->mouseSwitch = true;
-	this->moveScreen = true;
+	//this->mouseSwitch = true;
+	//this->moveScreen = true;
 
 	static bool raw_input_initialized = false; 
 	if (raw_input_initialized == false)
@@ -367,6 +367,42 @@ bool System::initialize()
 	return true;
 }
 
+void System::mouseMovement(float deltaTime)
+{
+	int mouseX = 0;
+	int mouseY = 0;
+	int sensitivity = 20;
+
+	while (!this->theMouse->EventBufferIsEmpty())
+	{
+		MouseEvent mEvent = theMouse->ReadEvent();
+		if (mEvent.GetType() == MouseEventType::RAW_MOVE)
+		{
+			mouseX = mEvent.GetPosX();
+			mouseY = mEvent.GetPosY();
+		}
+	}
+	//if (moveScreen == false) //
+	//{
+	//	mouseY = 0;
+	//	mouseX = 0;
+	//}
+	if (abs(camRot.x) > 87.f)
+	{
+		mouseY = int(abs(mouseY) * camRot.x / -abs(camRot.x));
+	}
+	this->camRot.x += mouseY * sensitivity* deltaTime;
+	this->camRot.y += mouseX * sensitivity* deltaTime;
+
+	if (abs(this->camRot.y) >= 360)
+		this->camRot.y = 0;
+	if (this->camRot.y > 180)
+		this->camRot.y = -180;
+	if (this->camRot.y < -180)
+		this->camRot.y = 180;
+	theCamera->SetRotation(camRot);
+}
+
 void System::initImgui()
 {
 	IMGUI_CHECKVERSION();
@@ -443,40 +479,7 @@ void System::initImgui()
 
 void System::update(float deltaTime)
 {
-	//int mouseX = 0;
-	//int mouseY = 0;
-	//int sensitivity = 20;
-
-
-	//while (!this->theMouse->EventBufferIsEmpty())
-	//{
-	//	MouseEvent mEvent = theMouse->ReadEvent();
-	//	if (mEvent.GetType() == MouseEventType::RAW_MOVE)
-	//	{
-	//		mouseX = mEvent.GetPosX();
-	//		mouseY = mEvent.GetPosY();
-	//	}
-	//}
-	//if (moveScreen == false) //
-	//{
-	//	mouseY = 0;
-	//	mouseX = 0;
-	//}
-	//if (abs(camRot.x) > 87.f)
-	//{
-	//	mouseY = int(abs(mouseY) * camRot.x / -abs(camRot.x));
-	//}
-	//this->camRot.x += mouseY * sensitivity* deltaTime;
-	//this->camRot.y += mouseX * sensitivity* deltaTime;
-
-	//if (abs(this->camRot.y) >= 360)
-	//	this->camRot.y = 0;
-	//if (this->camRot.y > 180)
-	//	this->camRot.y = -180;
-	//if (this->camRot.y < -180)
-	//	this->camRot.y = 180;
-	//theCamera->SetRotation(camRot);
-
+	
 	if (theKeyboard->KeyIsPressed('R'))
 	{
 		theCamera->rotate(0, 1, 0);
@@ -512,13 +515,19 @@ void System::update(float deltaTime)
 
 	if (theKeyboard->KeyIsPressed('V'))
 	{
-		this->change(this->moveScreen);
+		//this->change(this->moveScreen);
+		this->mouseMovement(deltaTime);
+		//this->mouseShow = false;
 	}
-	if (theKeyboard->KeyIsPressed('N'))
-	{
-		this->change(this->mouseShow);
-		ShowCursor(this->mouseShow);
-	}
+	else
+	//	this->mouseShow = true;
+	//ShowCursor(mouseShow);
+
+	//if (theKeyboard->KeyIsPressed('N'))
+	//{
+	//	this->change(this->mouseShow);
+	//	ShowCursor(this->mouseShow);
+	//}
 
 	if (theMouse->IsLeftDown())
 	{
@@ -543,8 +552,6 @@ void System::update(float deltaTime)
 	System::states[System::currentState]->update(deltaTime);
 	System::soundManager->update();
 }
-
-
 
 void System::render()
 {
