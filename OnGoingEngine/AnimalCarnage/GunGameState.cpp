@@ -100,7 +100,7 @@ bool GunGameState::initailize()
 	}
 	
 	System::handler->initialize();
-	System::handler->setSkyboxTexture("oasisnight");
+	System::handler->setSkyboxTexture("painted_skybox2");
 	float pos[4] = {
 	0,0,0,1.0
 	};
