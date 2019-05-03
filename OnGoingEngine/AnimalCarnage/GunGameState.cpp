@@ -60,6 +60,7 @@ bool GunGameState::initailize()
 	ground->setScale(100,2,20);
 	ground->getRigidbody() = System::getphysices()->addBox(btVector3(0, -3, 0), btVector3(100,2,20),0);
 	ground->getRigidbody()->setLinearFactor(btVector3(0,0,0));
+	//ground->setScale(ground->getRigidbody()->get);
 	this->ground->getRigidbody()->setFriction(3);
 	ground->getRigidbody()->setCollisionFlags(btCollisionObject::CF_STATIC_OBJECT);
 	System::theModelLoader->loadGO(ground, "Resources/Models/cube2.lu", "stones_and_rocks_diffuse_base.tga");
@@ -101,7 +102,7 @@ bool GunGameState::initailize()
 	System::handler->initialize();
 	System::handler->setSkyboxTexture("oasisnight");
 	float pos[4] = {
-	0,0,0,10.0
+	0,0,0,1.0
 	};
 	float dir[4] = {
 		-1.0f,-1.0f,0.0f,1.0f
@@ -209,7 +210,7 @@ void GunGameState::renderImgui()
 
 bool GunGameState::update(float deltaTime)
 {
-	ground->setPosition(ground->getRigidbody()->getWorldTransform().getOrigin().getX(), ground->getRigidbody()->getWorldTransform().getOrigin().getY() + 2, ground->getRigidbody()->getWorldTransform().getOrigin().getZ());
+	ground->setPosition(ground->getRigidbody()->getWorldTransform().getOrigin().getX(), ground->getRigidbody()->getWorldTransform().getOrigin().getY() +1.6, ground->getRigidbody()->getWorldTransform().getOrigin().getZ());
 	//ground->getRigidbody()->setLinearFactor(btVector3(0, 0, 0));
 	//ground->getRigidbody()->setCollisionFlags(btCollisionObject::CF_STATIC_OBJECT);
 

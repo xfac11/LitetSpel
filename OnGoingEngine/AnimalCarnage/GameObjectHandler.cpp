@@ -82,7 +82,7 @@ GameObject & GameObjectHandler::getObject(int id)
 void GameObjectHandler::draw()
 {
 	this->lightsCB.data.nrOfLights = nrOfLights;
-	DirectX::XMMATRIX worldPos = DirectX::XMMatrixTranslation(gameObjects[3]->getPosition().x, gameObjects[3]->getPosition().y, gameObjects[3]->getPosition().z);
+	DirectX::XMMATRIX worldPos = DirectX::XMMatrixTranslation(gameObjects[3]->getPosition().x, gameObjects[3]->getPosition().y+1, gameObjects[3]->getPosition().z);
 	this->lightsCB.data.lights[1].worldLight = worldPos;
 	this->lightsCB.applyChanges(System::getDevice(), System::getDeviceContext());
 	float color[] = {

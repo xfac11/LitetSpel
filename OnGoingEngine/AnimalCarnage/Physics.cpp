@@ -91,7 +91,7 @@ btRigidBody* Physics::addBox(btVector3 Origin, btVector3 size,float mass)
 	btTransform t; //
 	t.setIdentity();
 	t.setOrigin(btVector3(Origin));
-	btBoxShape* box = new btBoxShape(btVector3(size));
+	btBoxShape* box = new btBoxShape(size);
 
 	btVector3 inertia(0, 0, 0);
 	if (mass != 0.0f) {
@@ -101,7 +101,6 @@ btRigidBody* Physics::addBox(btVector3 Origin, btVector3 size,float mass)
 	btRigidBody::btRigidBodyConstructionInfo info(mass, motion, box, inertia);
 
 	btRigidBody* body = new btRigidBody(info);
-
 	this->world->addRigidBody(body);
 	bodies.push_back(body);
 	return body;

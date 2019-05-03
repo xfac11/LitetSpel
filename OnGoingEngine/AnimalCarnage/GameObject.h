@@ -33,6 +33,8 @@ private:
 	Model* *theModel;
 	int cap;
 
+	bool hasLoadedAABB;
+
 	AABB colBox;
 	//ConstantBuffer<WorldMatrix> worldConstBuffer;
 	//Hitbox theHitbox; a model with just the index and vertices and a color. no textures etc

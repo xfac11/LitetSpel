@@ -3,6 +3,7 @@
 
 GameObject::GameObject()
 {
+	this->hasLoadedAABB = false;
 	this->cap=5;
 	this->nrOfModels = 0;
 	this->theModel = new Model*[this->cap];
@@ -15,6 +16,7 @@ GameObject::GameObject()
 
 GameObject::GameObject(Shader * shader)
 {
+	this->hasLoadedAABB = false;
 	this->cap = 5;
 	this->nrOfModels = 0;
 	this->theModel = new Model*[this->cap];
@@ -60,6 +62,7 @@ Model **& GameObject::getTheModelPtr()
 
 void GameObject::setHalfSize(float halfSize[3], float posOffset[3])
 {
+	this->hasLoadedAABB = true;
 	this->colBox.width = halfSize[0];
 	this->colBox.height = halfSize[1];
 	this->colBox.depth = halfSize[2];
@@ -72,60 +75,63 @@ void GameObject::setHalfSize(float halfSize[3], float posOffset[3])
 
 void GameObject::calcAABB(std::vector<Vertex3D> mesh)
 {
-	int minX = 0;
-	int minY = 0;
-	int minZ = 0;
-	int maxX = 0;
-	int maxY = 0;
-	int maxZ = 0;
-	for (int i = 1; i < mesh.size(); i++)
+	if (!this->hasLoadedAABB)
 	{
-		if (mesh.at(i).position.x < mesh.at(minX).position.x)
+		int minX = 0;
+		int minY = 0;
+		int minZ = 0;
+		int maxX = 0;
+		int maxY = 0;
+		int maxZ = 0;
+		for (int i = 1; i < mesh.size(); i++)
 		{
-			minX = i;
-		}
-		if (mesh.at(i).position.y < mesh.at(minY).position.y)
-		{
-			minY = i;
-		}
-		if (mesh.at(i).position.z < mesh.at(minZ).position.z)
-		{
-			minZ = i;
+			if (mesh.at(i).position.x < mesh.at(minX).position.x)
+			{
+				minX = i;
+			}
+			if (mesh.at(i).position.y < mesh.at(minY).position.y)
+			{
+				minY = i;
+			}
+			if (mesh.at(i).position.z < mesh.at(minZ).position.z)
+			{
+				minZ = i;
+			}
+
+			if (mesh.at(i).position.x > mesh.at(maxX).position.x)
+			{
+				maxX = i;
+			}
+			if (mesh.at(i).position.y > mesh.at(maxY).position.y)
+			{
+				maxY = i;
+			}
+			if (mesh.at(i).position.z > mesh.at(maxZ).position.z)
+			{
+				maxZ = i;
+			}
 		}
 
-		if (mesh.at(i).position.x > mesh.at(maxX).position.x)
-		{
-			maxX = i;
-		}
-		if (mesh.at(i).position.y > mesh.at(maxY).position.y)
-		{
-			maxY = i;
-		}
-		if (mesh.at(i).position.z > mesh.at(maxZ).position.z)
-		{
-			maxZ = i;
-		}
+
+		DirectX::XMFLOAT3 max;
+		DirectX::XMFLOAT3 min;
+		max = DirectX::XMFLOAT3(mesh.at(maxX).position.x, mesh.at(maxY).position.y, mesh.at(maxZ).position.z);
+		min = DirectX::XMFLOAT3(mesh.at(minX).position.x, mesh.at(minY).position.y, mesh.at(minZ).position.z);
+		/*this->colBox.Max.x = max.x * this->Scale.x;
+		this->colBox.Max.y = max.y * this->Scale.y;
+		this->colBox.Max.z = max.z * this->Scale.z;
+		this->colBox.Min.x = min.x * this->Scale.x;
+		this->colBox.Min.y = min.y * this->Scale.y;
+		this->colBox.Min.z = min.z * this->Scale.z;*/
+
+
+		this->colBox.width = max.x;
+		this->colBox.height = max.y;
+		this->colBox.depth = max.z;
 	}
-
-
-	DirectX::XMFLOAT3 max;
-	DirectX::XMFLOAT3 min;
-	max = DirectX::XMFLOAT3(mesh.at(maxX).position.x, mesh.at(maxY).position.y, mesh.at(maxZ).position.z);
-	min = DirectX::XMFLOAT3(mesh.at(minX).position.x, mesh.at(minY).position.y, mesh.at(minZ).position.z);
-	/*this->colBox.Max.x = max.x * this->Scale.x;
-	this->colBox.Max.y = max.y * this->Scale.y;
-	this->colBox.Max.z = max.z * this->Scale.z;
-	this->colBox.Min.x = min.x * this->Scale.x;
-	this->colBox.Min.y = min.y * this->Scale.y;
-	this->colBox.Min.z = min.z * this->Scale.z;*/
-
-
-
-	/*this->colBox.width = max.x;
-	this->colBox.height = max.y;
-	this->colBox.depth = max.z;*/
-	this->colBox.Min = min;
-	this->colBox.Max = max;
+	
+	/*this->colBox.Min = min;
+	this->colBox.Max = max;*/
 }
 
 void GameObject::addModel(std::vector<Vertex3D> mesh, DWORD * indices, int numberOfIndices)
