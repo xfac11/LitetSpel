@@ -42,7 +42,7 @@ void GraphicsDevice::presentScene()
 	}
 }
 
-bool GraphicsDevice::initialize(int screenWidth, int screenHeight, bool vsync, HWND hwnd, bool fullscreen, float screenDepth, float screenNear)
+bool GraphicsDevice::initialize(int screenWidth, int screenHeight, bool vsync, HWND hwnd, bool fullscreen, float screenDepth, float screenNear, float fov)
 {
 	HRESULT result;
 
@@ -173,7 +173,7 @@ bool GraphicsDevice::initialize(int screenWidth, int screenHeight, bool vsync, H
 	this->vp.TopLeftY = 0;
 	deviceContext->RSSetViewports(1, &this->vp);
 
-	fieldOfView = 0.45f*DirectX::XM_PI;
+	fieldOfView = fov*(DirectX::XM_PI/180);
 	screenAspect = (float)screenWidth / (float)screenHeight;
 
 
