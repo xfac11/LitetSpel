@@ -11,23 +11,42 @@ bool Primitives::CreateBox(btVector3 size)
 	vertices.resize(8);
 	indecesCounter.resize(24);
 	{
-		vertices[0] = { -size.getX(), -size.getY(), -size.getZ() ,
+		//vertices[0] = { -size.getX(), -size.getY(), -size.getZ() ,
+		//			 1.0f, 0.0f, 0.0f };
+		//vertices[1] = { -size.getX(),  size.getY(), -size.getZ() ,
+		//				 1.0f, 0.0f, 0.0f };
+		//vertices[2] = { size.getX(),  size.getY(), -size.getZ() ,
+		//				 1.0f, 0.0f, 0.0f };
+		//vertices[3] = { size.getX(), -size.getY(), -size.getZ() ,
+		//				 1.0f, 0.0f, 0.0f };
+		//vertices[4] = { -size.getX(), -size.getY(), size.getZ(),
+		//				 0.0f, 0.0f, 1.0f };
+		//vertices[5] = { -size.getX(),  size.getY(), size.getZ() ,
+		//				 0.0f, 0.0f, 1.0f };
+		//vertices[6] = { size.getX(),  size.getY(), size.getZ() ,
+		//				 0.0f, 0.0f, 1.0f };
+		//vertices[7] = { size.getX(), -size.getY(), size.getZ() ,
+		//				 0.0f, 0.0f, 1.0f };
+
+		vertices[0] = { -size.getX(), 0, -size.getZ() ,
 					 1.0f, 0.0f, 0.0f };
-		vertices[1] = { -size.getX(),  size.getY(), -size.getZ() ,
+		vertices[1] = { -size.getX(),2 * size.getY(), -size.getZ() ,
 						 1.0f, 0.0f, 0.0f };
-		vertices[2] = { size.getX(),  size.getY(), -size.getZ() ,
+		vertices[2] = { size.getX(),2 * size.getY(), -size.getZ() ,
 						 1.0f, 0.0f, 0.0f };
-		vertices[3] = { size.getX(), -size.getY(), -size.getZ() ,
+		vertices[3] = { size.getX(),0, -size.getZ() ,
 						 1.0f, 0.0f, 0.0f };
 
-		vertices[4] = { -size.getX(), -size.getY(), size.getZ(),
+		vertices[4] = { -size.getX(), 0, size.getZ(),
 						 0.0f, 0.0f, 1.0f };
-		vertices[5] = { -size.getX(),  size.getY(), size.getZ() ,
+		vertices[5] = { -size.getX(),2 * size.getY(), size.getZ() ,
 						 0.0f, 0.0f, 1.0f };
-		vertices[6] = { size.getX(),  size.getY(), size.getZ() ,
+		vertices[6] = { size.getX(), 2 * size.getY(), size.getZ() ,
 						 0.0f, 0.0f, 1.0f };
-		vertices[7] = { size.getX(), -size.getY(), size.getZ() ,
+		vertices[7] = { size.getX(),0, size.getZ() ,
 						 0.0f, 0.0f, 1.0f };
+
+
 
 		indecesCounter[0] = 0;
 		indecesCounter[1] = 1;
