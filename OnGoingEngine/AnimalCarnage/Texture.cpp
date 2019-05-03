@@ -60,7 +60,7 @@ void Texture::setTexture(std::string fileName)
 }
 ID3D11ShaderResourceView *& Texture::getTexture()
 {
-	return this->textureView;
+	return this->testTexture.GetTexture();
 }
 
 unsigned char * Texture::getTextureCharArray()

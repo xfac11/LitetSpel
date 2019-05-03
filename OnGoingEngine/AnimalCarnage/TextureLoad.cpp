@@ -110,7 +110,7 @@ void TextureLoad::Shutdown()
 	return;
 }
 
-ID3D11ShaderResourceView* TextureLoad::GetTexture()
+ID3D11ShaderResourceView*& TextureLoad::GetTexture()
 {
 	return m_textureView;
 }

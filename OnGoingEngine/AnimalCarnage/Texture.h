@@ -29,6 +29,5 @@ private:
 	TextureLoad testTexture;
 	void cleanUp();
 
-
 };
 #endif // !TEXTURE_H

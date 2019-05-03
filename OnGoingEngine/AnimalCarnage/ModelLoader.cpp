@@ -18,15 +18,12 @@ void ModelLoader::loadGO(GameObject*& object, const char* filePath,std::string t
 	std::vector<Luna::Index> indices;
 	reader.getVertices(0, vertices);
 	reader.getIndices(0, indices);
-
 	//int skltn = (int)reader.getSkeletonCount();
 	//std::vector<Luna::Joint> joints;
 	//std::vector<Luna::Weights> weights;
 	//std::vector<Luna::Animation> anims;
 	//reader.getWeights(0, weights);
 	//reader.getAnimation();
-
-
 	//converting to fit functions and shaders
 	std::vector<Vertex3D> vertices3D;
 	vertices3D.resize(vertices.size());
@@ -40,11 +37,14 @@ void ModelLoader::loadGO(GameObject*& object, const char* filePath,std::string t
 	for (int j = 0; j < indices.size(); j++)
 			dIndices[j] = indices[j].vertIndex;
 
-
+	
 	//object = new GameObject;// *[meshCount];
 	for (int i = 0; i < (int)meshCount; i++)
 	{
+		Luna::Mesh mesh= reader.getMesh(i);
 		//object[i] = new GameObject;
+		if(mesh.hasBoundingBox)
+			object[i].setHalfSize(reader.getBoundingBox(i).halfSize, reader.getBoundingBox(i).pos);
 		object[i].addModel(vertices3D, dIndices, (int)indices.size());
 		object[i].setTexture(texture,i);
 	}

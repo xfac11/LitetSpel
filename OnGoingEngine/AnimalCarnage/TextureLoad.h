@@ -35,7 +35,7 @@ public:
 	bool Initialize(const char*);
 	void Shutdown();
 
-	ID3D11ShaderResourceView* GetTexture();
+	ID3D11ShaderResourceView*& GetTexture();
 
 	bool isTransparent();
 

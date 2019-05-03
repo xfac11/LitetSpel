@@ -43,7 +43,7 @@ void Player::initialize()
 	//System::handler->addObject(this->hitbox.hitbox);
 	Primitives *CollisionShape;
 	CollisionShape = new Primitives();
-	CollisionShape->Initialize(1, btVector3(1, 1, 1));
+	CollisionShape->Initialize(1, btVector3(1,1,1));
 	/*DirectX::XMMatrixTranspose(
 		XMMatrixScaling(Scale.x, Scale.y, Scale.z) *
 		XMMatrixTranslation(Position.x, Position.y, Position.z));*/

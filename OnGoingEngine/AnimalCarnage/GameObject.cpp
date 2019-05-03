@@ -11,7 +11,6 @@ GameObject::GameObject()
 		this->theModel[i] = nullptr;
 	}
 	this->colBox = AABB();
-
 }
 
 GameObject::GameObject(Shader * shader)
@@ -25,10 +24,7 @@ GameObject::GameObject(Shader * shader)
 	}
 	this->colBox = AABB();
 
-	this->CollisionShape = new Primitives();
-	this->CollisionShape->Initialize(1,btVector3(1,1,1));
-	this->CollisionShape->SetWorld(&this->getWorld());
-	System::getDebugDraw()->addPrimitives(this->CollisionShape);
+	
 	/*this->theModel[0] = new Model;
 	this->theModel[0]->setShader(shader);
 	this->nrOfModels++;*/
@@ -60,6 +56,18 @@ Model *& GameObject::getModel(int id)
 Model **& GameObject::getTheModelPtr()
 {
 	return this->theModel;
+}
+
+void GameObject::setHalfSize(float halfSize[3], float posOffset[3])
+{
+	this->colBox.width = halfSize[0];
+	this->colBox.height = halfSize[1];
+	this->colBox.depth = halfSize[2];
+	this->CollisionShape = new Primitives();
+	this->CollisionShape->Initialize(1, btVector3(2*halfSize[0], 2*halfSize[1], 2*halfSize[2]));
+	//DirectX::XMMatrixTranslation(this->Position.x+posOffset[0])
+	this->CollisionShape->SetWorld(&this->getWorld());
+	System::getDebugDraw()->addPrimitives(this->CollisionShape);
 }
 
 void GameObject::calcAABB(std::vector<Vertex3D> mesh)
@@ -113,9 +121,9 @@ void GameObject::calcAABB(std::vector<Vertex3D> mesh)
 
 
 
-	this->colBox.width = max.x;
+	/*this->colBox.width = max.x;
 	this->colBox.height = max.y;
-	this->colBox.depth = max.z;
+	this->colBox.depth = max.z;*/
 	this->colBox.Min = min;
 	this->colBox.Max = max;
 }

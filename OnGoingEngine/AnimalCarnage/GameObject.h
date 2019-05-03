@@ -18,6 +18,8 @@ public:
 	Model*& getModel(int id);
 	Model**& getTheModelPtr();
 
+	void setHalfSize(float halfSize[3], float posOffset[3]);
+
 	void calcAABB(std::vector<Vertex3D> mesh);
 
 	void addModel(std::vector<Vertex3D> mesh, DWORD *indices, int numberOfIndices);
