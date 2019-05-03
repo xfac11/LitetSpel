@@ -25,7 +25,7 @@ public:
 	}
 	void beginScene(float color[4]);
 	void presentScene();
-	bool initialize(int screenWidth, int screenHeight, bool vsync, HWND hwnd, bool fullscreen, float screenDepth, float screenNear);
+	bool initialize(int screenWidth, int screenHeight, bool vsync, HWND hwnd, bool fullscreen, float screenDepth, float screenNear, float fov);
 	void shutDown();
 	DirectX::XMMATRIX getProj();
 	static ID3D11Device*& getDevice();
