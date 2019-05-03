@@ -321,7 +321,7 @@ bool System::initialize()
 	//this->handler->initialize();
 	this->theCamera = new Camera;
 	this->theCamera->SetPosition(0, 6, -15);
-	this->theCamera->SetRotation(30, 0, 0);
+	this->theCamera->SetRotation(15, 0, 0);
 	//this->camPos = { 0,1,-2.f };
 	//this->camRot = { 30.f,0,0 };
 	//this->theForwardShader = new ForwardShader;
