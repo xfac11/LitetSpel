@@ -34,7 +34,7 @@ void Player::initialize()
 	this->hitbox.hitbox->setScale(0.2f, 0.2f, 0.2f);
 	//this->playerObj->getRigidbody() = System::getphysices()->addSphere(0.5f,btVector3(0,0,0),1);
 
-	System::theModelLoader->loadGO(this->playerObj, "Resources/Models/fox_run_final.lu", "fox_character_diffuse.tga");
+	System::theModelLoader->loadGO(this->playerObj, "Resources/Models/fox_character.lu", "fox_character_diffuse.tga");
 	System::handler->addObject(this->playerObj);
 	AABB aabb = playerObj->getCollisionBox();
 	btVector3 size = btVector3(1+aabb.width*2, aabb.height*2,1);
