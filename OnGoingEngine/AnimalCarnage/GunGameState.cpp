@@ -99,6 +99,7 @@ bool GunGameState::initailize()
 	System::theModelLoader->loadGO(tree1, "Resources/Models/tree2.lu", "trees_diffuse.tga");
 	System::handler->addObject(tree1);
 	tree1->setPosition(0, -0.5, 2);
+	tree1->setScale(0.1, 0.1, 0.1);
 	GameObject* tree2 = new GameObject;
 	System::theModelLoader->loadGO(tree2, "Resources/Models/small_stone1.lu", "stones_and_rocks_diffuse_base.tga");
 	System::handler->addObject(tree2);
