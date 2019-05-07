@@ -54,22 +54,16 @@ GunGameState::~GunGameState()
 	delete object[0];
 	delete object[1];
 	delete object[2];
-	delete object[3];
+	//delete object[3];
 }
 
 bool GunGameState::initailize()
 {
-<<<<<<< HEAD
 	this->object[0] = new Objects("Resources/Models/cube2.lu", "stones_and_rocks_diffuse_base.tga", btVector3(0, 8, 0), btVector3(1.f, 1.f, 1.f));
 	this->object[1] = new Objects("Resources/Models/cube2.lu", "stones_and_rocks_diffuse_base.tga", btVector3(-5, 4, 0), btVector3(1.f, 1.f, 1.f));
 	this->object[2] = new Objects("Resources/Models/cube2.lu", "stones_and_rocks_diffuse_base.tga", btVector3(5,4, 0), btVector3(1.f, 1.f, 1.f));
-	this->object[3] = new Objects("Resources/Models/cube2.lu", "stones_and_rocks_diffuse_base.tga", btVector3(3, 2, 0));
-=======
-	this->object[0] = new Objects("Resources/Models/cube2.lu", "stones_and_rocks_diffuse_base.tga", btVector3(0, 8, 0), btVector3(1.5f, 0.8f, 1.f));
-	this->object[1] = new Objects("Resources/Models/cube2.lu", "stones_and_rocks_diffuse_base.tga", btVector3(-5, 4, 0), btVector3(1.f, 1.0f, 2.f));
-	this->object[2] = new Objects("Resources/Models/cube2.lu", "stones_and_rocks_diffuse_base.tga", btVector3(5,4, 0), btVector3(1.5f, 0.8f, 1.f));
 	//this->object[3] = new Objects("Resources/Models/cube2.lu", "stones_and_rocks_diffuse_base.tga", btVector3(3, 2, 0));
->>>>>>> 909d73c3a82610a8c65f975f1afa62a7bb9047fd
+
 	//->setLinearFactor(btVector3(0,0,0));
 	ground = new GameObject(System::shaderManager->getForwardShader());
 	ground->setScale(100,2,25); 
