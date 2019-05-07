@@ -67,7 +67,7 @@ void GameObject::setHalfSize(float halfSize[3], float posOffset[3])
 	this->colBox.height = halfSize[1];
 	this->colBox.depth = halfSize[2];
 	this->CollisionShape = new Primitives();
-	this->CollisionShape->Initialize(1, btVector3(2*halfSize[0], 2*halfSize[1], 2*halfSize[2]));
+	this->CollisionShape->Initialize(1, btVector3(halfSize[0]*2, halfSize[1]*2, halfSize[2]*2));
 	//DirectX::XMMatrixTranslation(this->Position.x+posOffset[0])
 	this->CollisionShape->SetWorld(&this->getWorld());
 	System::getDebugDraw()->addPrimitives(this->CollisionShape);

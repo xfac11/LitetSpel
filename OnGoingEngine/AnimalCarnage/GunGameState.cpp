@@ -87,8 +87,24 @@ bool GunGameState::initailize()
 	System::handler->addObject(wall2);
 	this->wall2->getRigidbody()->setActivationState(DISABLE_DEACTIVATION);
 
-
 	
+	GameObject* tree1 = new GameObject;
+	System::theModelLoader->loadGO(tree1, "Resources/Models/tree2.lu", "trees_diffuse.tga");
+	System::handler->addObject(tree1);
+	tree1->setPosition(0, -0.5, 2);
+	GameObject* tree2 = new GameObject;
+	System::theModelLoader->loadGO(tree2, "Resources/Models/small_stone1.lu", "stones_and_rocks_diffuse_base.tga");
+	System::handler->addObject(tree2);
+	tree2->setPosition(2, 0.5, 2);
+	//tree2->setScale(5, 5, 5);
+	GameObject* tree = new GameObject;
+	System::theModelLoader->loadGO(tree, "Resources/Models/grass2.lu", "grass_diffuse.tga");
+	System::handler->addObject(tree);
+	tree->setPosition(10, -0.5, 1);
+	//tree->setScale(0.8, 0.8, 0.8);
+	//tree->setRotationRollPitchYaw(0,1,0);
+
+
 	nrOfPlayers = 4;
 	player = new Player * [nrOfPlayers];
 
@@ -102,19 +118,20 @@ bool GunGameState::initailize()
 	System::handler->initialize();
 	System::handler->setSkyboxTexture("painted_skybox2");
 	float pos[4] = {
-	0,0,0,1.0
+	0,0.3,0,10.0f
 	};
 	float dir[4] = {
 		-1.0f,-1.0f,0.0f,1.0f
 	};
 	float color[4] = {
-		0.9f , 1.0f, 0.2f , 1.0f
+		1.0f , 1.0f, 1.0f , 1.0f
 	};
 	System::handler->addLight(pos, dir, color);
 	float color2[4] = {
-		-0.7f , -0.7f, -0.7f , 1.0f
+		0.5f , 0.0f, 1.0f , 1.0f
 	};
 	System::handler->addLight(pos, dir, color2);
+	//System::handler->addLight(pos, dir, color2);
 	//player[0]->playerObj->body()->getWorldTransform().setOrigin(btVector3(-2, 2, 0));
 	//player[1]->playerObj->body()->getWorldTransform().setOrigin(btVector3(0, 2, 0));
 	//player[2]->playerObj->body()->getWorldTransform().setOrigin(btVector3(2, 2, 0));

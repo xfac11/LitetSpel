@@ -88,6 +88,8 @@ bool LightShader::initialize()
 		return false;
 	}
 	depthStencilDescL.DepthFunc = D3D11_COMPARISON_LESS;
+	depthStencilDescL.DepthEnable = false;
+	depthStencilDescL.StencilEnable = false;
 
 	result = System::getDevice()->CreateDepthStencilState(&depthStencilDescL, &dpthQuad);
 	if (FAILED(result))
@@ -167,7 +169,7 @@ bool LightShader::initialize()
 	blendStateDescription.RenderTarget[0].BlendOp = D3D11_BLEND_OP_ADD;
 	blendStateDescription.RenderTarget[0].SrcBlendAlpha = D3D11_BLEND_ONE;
 	blendStateDescription.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_ONE;
-	blendStateDescription.RenderTarget[0].BlendOpAlpha = D3D11_BLEND_OP_ADD;
+	blendStateDescription.RenderTarget[0].BlendOpAlpha = D3D11_BLEND_OP_MAX;
 	blendStateDescription.RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
 
 	// Create the blend state using the description.
@@ -198,7 +200,7 @@ bool LightShader::initialize()
 
 void LightShader::setWorld(DirectX::XMMATRIX world)
 {
-	world = XMMatrixTranspose(world);
+	//world = XMMatrixTranspose(world);
 	this->worldCB.data.world = world;
 	this->worldCB.applyChanges(System::getDevice(), System::getDeviceContext());
 }
@@ -222,32 +224,50 @@ void LightShader::setCamPosToMatricesPerFrame(DirectX::XMFLOAT3 campos)
 
 void LightShader::setCBuffers()
 {
-	//this->setConstanbuffer(VERTEX, 0, this->perFrameCB.getBuffer());
+	this->setConstanbuffer(VERTEX, 0, this->perFrameCB.getBuffer());
 	this->setConstanbuffer(PIXEL, 0, this->perFrameCB.getBuffer());
-	//this->setConstanbuffer(VERTEX, 1, this->worldCB.getBuffer());
+	this->setConstanbuffer(VERTEX, 1, this->worldCB.getBuffer());
 }
 
 void LightShader::renderShaderDir(int vertexCount)
 {
+	float blendFactor[4] = { 0.f, 0.f, 0.f, 0.f };
+
 	//System::getDeviceContext()->OMSetDepthStencilState(dpthQuad, 0);
 	//System::getDeviceContext()->PSSetSamplers(0, 1, &sampler);
 	//System::getDeviceContext()->RSSetState(rasState);
-	//System::getDeviceContext()->OMSetBlendState(blendState, blendFactor, 1);
+	System::getDeviceContext()->OMSetBlendState(blendState, blendFactor, 1);
 	this->renderPixels(vertexCount);//shade the pixels
 }
 
-void LightShader::renderShaderPoint(int vertexCount, ID3D11DepthStencilView * view)
+void LightShader::renderShaderPoint(int indexCount, ID3D11DepthStencilView * view)
 {
 	float blendFactor[4] = { 0.f, 0.f, 0.f, 0.f };
 
 	System::getDeviceContext()->OMSetDepthStencilState(depthStencilState, 0);
 	System::getDeviceContext()->ClearDepthStencilView(view, D3D11_CLEAR_STENCIL, 1.0f, 1);
 	System::getDeviceContext()->RSSetState(rasState);
-	this->renderUnmark(vertexCount);//unmark all of the pixels that are in front of the front faces of the light’s geometric volume
+	this->renderUnmark(indexCount);//unmark all of the pixels that are in front of the front faces of the light’s geometric volume
 	System::getDeviceContext()->OMSetBlendState(blendState, blendFactor, 1);
 	System::getDeviceContext()->OMSetDepthStencilState(disDepthStencilState, 1);
 	System::getDeviceContext()->RSSetState(fRasState);
-	this->renderPixels(vertexCount);//shade the pixels
+
+	System::getDeviceContext()->VSSetShader(this->vertexShader, nullptr, 0);
+	System::getDeviceContext()->HSSetShader(nullptr, nullptr, 0);
+	System::getDeviceContext()->DSSetShader(nullptr, nullptr, 0);
+	System::getDeviceContext()->GSSetShader(nullptr, nullptr, 0);
+	System::getDeviceContext()->PSSetShader(this->pixelShader, nullptr, 0);
+	System::getDeviceContext()->IASetInputLayout(this->vertexLayout);
+	System::getDeviceContext()->PSSetSamplers(0, 1, &sampler);
+	System::getDeviceContext()->DrawIndexed(indexCount, 0, 0);
+	//System::getDeviceContext()->Draw(count, 0);
+	System::getDeviceContext()->GSSetShader(nullptr, nullptr, 0);
+}
+
+void LightShader::setTypeOfLight(int type)
+{
+	this->perFrameCB.data.camPos.w = type;
+	this->perFrameCB.applyChanges(System::getDevice(), System::getDeviceContext());
 }
 
 void LightShader::renderUnmark(int count)
@@ -259,8 +279,8 @@ void LightShader::renderUnmark(int count)
 	System::getDeviceContext()->PSSetShader(nullptr, nullptr, 0);
 	System::getDeviceContext()->IASetInputLayout(this->vertexLayout);
 	System::getDeviceContext()->PSSetSamplers(0, 1, &sampler);
-	//deviceContext->DrawIndexed(count, 0, 0);
-	System::getDeviceContext()->Draw(count, 0);
+	System::getDeviceContext()->DrawIndexed(count, 0,0);
+	//System::getDeviceContext()->Draw(count, 0);
 	System::getDeviceContext()->GSSetShader(nullptr, nullptr, 0);
 }
 

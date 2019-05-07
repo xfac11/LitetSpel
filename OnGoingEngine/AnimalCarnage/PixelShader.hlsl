@@ -30,7 +30,7 @@ cbuffer Lights : register(b1)
 float4 CalcLight(AnyLight light,  float3 normal, float3 wPos, float3 LightDirection)
 {
 	//float3 LightDirection = light.direction.xyz;
-	float ambientAmount = 0.1f;
+	float ambientAmount = 0.2f;
 	float4 ambientColor = float4(light.color.xyz, 1.0f)*ambientAmount;
 	float diffuseFactor = max(0,dot(normal, -LightDirection));
 	/*float theShade = diffuseFactor;
@@ -70,24 +70,24 @@ float4 dirLight(float3 normal, AnyLight light, float3 wPos)
 	return CalcLight(light, normal, wPos, light.direction.xyz);
 }
 
-float4 pointLight(int index, float3 normal, float3 wPos)
+float4 pointLight(int indexL, float3 normal, float3 wPos)
 {
-	float4 lightPos= mul(lights[index].worldLight,float4(0.0f, 0.0f, 0.0f, 1.0f));
+	float4 lightPos= mul(lights[indexL].worldLight,float4(0.0f, 0.0f, 0.0f, 1.0f));
 	//lights[index].position = 
 	float3 lightDir = wPos - lightPos.xyz;
 	float distance = length(lightDir);
 
 	lightDir = normalize(lightDir);
 
-	float4 color = CalcLight(lights[index], normal, wPos,lightDir);
+	float4 color = CalcLight(lights[indexL], normal, wPos,lightDir);
 
-	float attenuation = max(0, 1.0f - (distance / lights[index].position.w));// from 3d project
+	float attenuation = max(0, 1.0f - (distance / lights[indexL].position.w));// from 3d project
 
 	float Attenuation = 1.0f +
 		0.2f * distance +
 		1.8f * distance * distance;
 
-	return color / (Attenuation/lights[index].position.w);// color/attenuation in tutorial
+	return color / (Attenuation/lights[indexL].position.w);// color/attenuation in tutorial
 }
 
 Texture2D Tex:register(t0);
@@ -96,6 +96,7 @@ float4 PS_main(VS_OUT input) : SV_Target
 {
 
 	float3 normal = input.NormalWS.xyz;
+	float4 texColor = Tex.Sample(SampSt, input.Tex).xyzw;
 	float4 totalLight = dirLight(normal, lights[0],input.wPosition.xyz);
 
 	for (int i = 1; i < nrOfLights; i++)
@@ -103,7 +104,7 @@ float4 PS_main(VS_OUT input) : SV_Target
 		totalLight += pointLight(i, normal, input.wPosition.xyz);
 	}
 
-	float4 colorT = float4(Tex.Sample(SampSt, input.Tex).xyz *totalLight.xyz, Tex.Sample(SampSt, input.Tex).w);
+	float4 colorT = float4(texColor.xyz *totalLight.xyz, texColor.w);
 
 	return colorT;
 }

@@ -333,6 +333,7 @@
     <ClCompile Include="SelectGui.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="ShaderManager.cpp" />
+    <ClCompile Include="ShadowMapping.cpp" />
     <ClCompile Include="SimpleShaderClass.cpp" />
     <ClCompile Include="Skybox.cpp" />
     <ClCompile Include="Slider.cpp" />
@@ -630,6 +631,7 @@
     <ClInclude Include="SelectGui.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="ShaderManager.h" />
+    <ClInclude Include="ShadowMapping.h" />
     <ClInclude Include="SimpleShaderClass.h" />
     <ClInclude Include="Skybox.h" />
     <ClInclude Include="Slider.h" />

@@ -37,8 +37,16 @@ private:
 	};
 	std::vector<LightVertex> quad;
 	VertexBuffer<LightVertex> vertexBufferQuad;
-	std::vector<LightVertex> sphere;
+
+
+	std::vector<LightVertex> sphereVector;
+	std::vector<DWORD> sphereIndices;
+
+	IndexBuffer indexBufferSphere;
 	VertexBuffer<LightVertex> vertexBufferSphere;
+
+	Transform sphereLights;
+	void generateSphere();
 	struct AnyLight
 	{
 		DirectX::XMMATRIX worldLight;
@@ -53,6 +61,7 @@ private:
 		int nrOfLights;
 		AnyLight lights[16];
 	};
+
 	ModWorld* transModels;
 	ModWorld* opaqueModels;
 	ConstantBuffer<TheLights> lightsCB;

@@ -15,7 +15,9 @@ public:
 	void setCBuffers();
 	void renderShaderDir(int vertexCount);
 	void renderShaderPoint(int vertexCount, ID3D11DepthStencilView* view);
+	void setTypeOfLight(int type);
 private:
+
 	ConstantBuffer<WorldMatrix> worldCB;
 	ConstantBuffer<PerFrameMatrices> perFrameCB;
 

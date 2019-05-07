@@ -112,7 +112,7 @@ bool GraphicsDevice::initialize(int screenWidth, int screenHeight, bool vsync, H
 		descDepth.SampleDesc.Count = 1;
 		descDepth.SampleDesc.Quality = 0;
 		descDepth.Usage = D3D11_USAGE_DEFAULT;
-		descDepth.BindFlags = D3D10_BIND_DEPTH_STENCIL;// | D3D10_BIND_SHADER_RESOURCE;
+		descDepth.BindFlags = D3D11_BIND_DEPTH_STENCIL;// | D3D10_BIND_SHADER_RESOURCE;
 		descDepth.CPUAccessFlags = 0;
 		descDepth.MiscFlags = 0;
 		result = device->CreateTexture2D(&descDepth, NULL, &depthStencilBuffer);
