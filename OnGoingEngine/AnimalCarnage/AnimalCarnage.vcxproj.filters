@@ -669,6 +669,7 @@
       <Filter>Engine</Filter>
     </ClCompile>
     <ClCompile Include="ShadowMapping.cpp" />
+    <ClCompile Include="Objects.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource1.h" />
@@ -1550,6 +1551,7 @@
       <Filter>Engine</Filter>
     </ClInclude>
     <ClInclude Include="ShadowMapping.h" />
+    <ClInclude Include="Objects.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="imgui\.gitkeep" />

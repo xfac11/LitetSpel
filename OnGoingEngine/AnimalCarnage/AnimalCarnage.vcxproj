@@ -92,6 +92,7 @@
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>.;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>BulletSDK\lib;Luna\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
@@ -324,6 +325,7 @@
     <ClCompile Include="ModelLoader.cpp" />
     <ClCompile Include="Mouse.cpp" />
     <ClCompile Include="MouseEvent.cpp" />
+    <ClCompile Include="Objects.cpp" />
     <ClCompile Include="OptionsGui.cpp" />
     <ClCompile Include="Physics.cpp" />
     <ClCompile Include="Player.cpp" />
@@ -621,6 +623,7 @@
     <ClInclude Include="ModelLoader.h" />
     <ClInclude Include="Mouse.h" />
     <ClInclude Include="MouseEvent.h" />
+    <ClInclude Include="Objects.h" />
     <ClInclude Include="OptionsGui.h" />
     <ClInclude Include="Physics.h" />
     <ClInclude Include="Player.h" />

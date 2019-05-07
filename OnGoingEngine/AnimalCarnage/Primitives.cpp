@@ -3,7 +3,7 @@
 
 
 
-bool Primitives::CreateBox(btVector3 size)
+bool Primitives::CreateBox(btVector3 position, btVector3 size)
 {
 	std::vector<VertexObject> vertices;
 	std::vector<DWORD> indecesCounter;
@@ -87,12 +87,12 @@ Primitives::Primitives()
 	this->world = nullptr;
 }
 
-void Primitives::Initialize(int shapes, btVector3 size)
+void Primitives::Initialize(int shapes, btVector3 position, btVector3 size)
 {
 	switch (shapes)
 	{
 	case 1:
-		this->CreateBox(size);
+		this->CreateBox(position,size);
 		break;
 	}
 }

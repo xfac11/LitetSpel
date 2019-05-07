@@ -9,7 +9,7 @@
 #include <DirectXMath.h>
 #include "btBulletCollisionCommon.h"
 #include "btBulletDynamicsCommon.h"
-
+#include "Objects.h"
 class GunGameState : public State
 {
 private:
@@ -42,6 +42,8 @@ private:
 	GameObject* ground;
 	GameObject* wall1;
 	GameObject* wall2;
+
+	Objects * object[3];
 
 public:
 	GunGameState();

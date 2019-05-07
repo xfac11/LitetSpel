@@ -14,14 +14,14 @@ class Primitives
 private:
 	VertexBuffer<VertexObject> vertexBuffer;
 	IndexBuffer indicesbuffer;
-	bool CreateBox(btVector3 size);
+	bool CreateBox(btVector3 position,btVector3 size);
 	UINT indices;
 	XMMATRIX* world;
 public:
 	//functions
 	Primitives();
 	void SetWorld(XMMATRIX* xmWorld) { this->world = xmWorld; }
-	void Initialize(int shapes,btVector3 size);
+	void Initialize(int shapes, btVector3 position,btVector3 size);
 	~Primitives();
 	void Draw(SimpleShader* shader);
 };

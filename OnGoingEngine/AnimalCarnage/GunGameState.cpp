@@ -51,10 +51,17 @@ GunGameState::GunGameState()
 GunGameState::~GunGameState()
 {
 	shutDown();
+	delete object[0];
+	delete object[1];
+	delete object[2];
 }
 
 bool GunGameState::initailize()
 {
+	this->object[0] = new Objects("Resources/Models/cube2.lu", "stones_and_rocks_diffuse_base.tga", btVector3(500, 0, 0));
+	this->object[1] = new Objects("Resources/Models/cube2.lu", "stones_and_rocks_diffuse_base.tga", btVector3(-24, 6, 0));
+	this->object[2] = new Objects("Resources/Models/cube2.lu", "stones_and_rocks_diffuse_base.tga", btVector3(24, 6, 0));
+
 	//->setLinearFactor(btVector3(0,0,0));
 	ground = new GameObject(System::shaderManager->getForwardShader());
 	ground->setScale(100,2,20);
@@ -228,8 +235,8 @@ void GunGameState::renderImgui()
 bool GunGameState::update(float deltaTime)
 {
 	ground->setPosition(ground->getRigidbody()->getWorldTransform().getOrigin().getX(), ground->getRigidbody()->getWorldTransform().getOrigin().getY() +1.6, ground->getRigidbody()->getWorldTransform().getOrigin().getZ());
-	//ground->getRigidbody()->setLinearFactor(btVector3(0, 0, 0));
-	//ground->getRigidbody()->setCollisionFlags(btCollisionObject::CF_STATIC_OBJECT);
+	ground->getRigidbody()->setLinearFactor(btVector3(0, 0, 0));
+	ground->getRigidbody()->setCollisionFlags(btCollisionObject::CF_STATIC_OBJECT);
 
 	wall1->setPosition(wall1->getRigidbody()->getWorldTransform().getOrigin().getX(), wall1->getRigidbody()->getWorldTransform().getOrigin().getY(), wall1->getRigidbody()->getWorldTransform().getOrigin().getZ());
 	wall2->setPosition(wall2->getRigidbody()->getWorldTransform().getOrigin().getX(), wall2->getRigidbody()->getWorldTransform().getOrigin().getY(), wall2->getRigidbody()->getWorldTransform().getOrigin().getZ());
