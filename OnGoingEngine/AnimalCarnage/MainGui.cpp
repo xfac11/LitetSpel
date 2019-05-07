@@ -104,6 +104,15 @@ void MainGui::shutDown()
 	delete this->playButton;
 	delete this->optionsButton;
 	delete this->quitButton;
+
+	this->selectedElement = nullptr;
+
+	this->playButton = nullptr;
+	this->optionsButton = nullptr;
+	this->quitButton = nullptr;
+
+	this->timeSinceChanged = 0.0F;
+	this->changedLastFrame = false;
 }
 
 bool MainGui::update(float deltaTime)

@@ -35,6 +35,9 @@ public:
 	void stopLooped();
 
 	void stopAllSounds();
+
+	float getMasterVolume() const;
+	void setMasterVolume(float volume);
 };
 
 #endif // !SOUND_MANAGER_H

@@ -26,21 +26,18 @@ bool MainMenu::initailize()
 	this->options = new OptionsGui(this);
 	this->rules = new RulesGui(this);
 	this->select = new SelectGui(this);
-	this->main->initialize();
-	this->options->initialize();
-	this->rules->initialize();
-	this->select->initialize();
 
 	this->gui = main;
+	this->gui->initialize();
 
 	return true;
 }
 
 bool MainMenu::render()
 {
-	
 	this->renderImgui();
 	this->gui->render();
+
 	return true;
 }
 
@@ -76,6 +73,8 @@ void MainMenu::shutDown()
 
 void MainMenu::setCurrentMenu(MainMenuGui menu)
 {
+	GuiBase* oldGui = this->gui;
+
 	switch (menu)
 	{
 	case MAIN:
@@ -92,5 +91,11 @@ void MainMenu::setCurrentMenu(MainMenuGui menu)
 		break;
 	}
 
-	this->gui->activateDelay();
+	if (this->gui != oldGui)
+	{
+		oldGui->shutDown();
+
+		this->gui->initialize();
+		this->gui->activateDelay();
+	}
 }

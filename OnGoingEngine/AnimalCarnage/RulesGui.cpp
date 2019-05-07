@@ -104,6 +104,16 @@ void RulesGui::shutDown()
 	delete this->buttonVersus;
 	delete this->buttonFalling;
 	delete this->buttonTagTeam;
+
+	this->selectedElement = nullptr;
+
+	this->buttonGunGame = nullptr;
+	this->buttonVersus = nullptr;
+	this->buttonFalling = nullptr;
+	this->buttonTagTeam = nullptr;
+
+	this->changedLastFrame = false;
+	this->timeSinceChanged = 0.0F;
 }
 
 bool RulesGui::update(float deltaTime)

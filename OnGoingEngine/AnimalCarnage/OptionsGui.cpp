@@ -102,6 +102,8 @@ bool OptionsGui::initialize()
 	this->checkBoxRumble3->setConnectedElements(checkBoxRumble2, checkBoxRumble4, sliderSound, sliderMusic);
 	this->checkBoxRumble4->setConnectedElements(checkBoxRumble3, checkBoxRumble1, sliderSound, sliderMusic);
 
+	this->sliderMusic->setValue(static_cast<int>(System::getSoundManager()->getMasterVolume() * this->sliderMusic->getMaxValue()));
+
 	return true;
 }
 
@@ -113,6 +115,17 @@ void OptionsGui::shutDown()
 	delete this->checkBoxRumble2;
 	delete this->checkBoxRumble3;
 	delete this->checkBoxRumble4;
+
+	this->selectedElement = nullptr;
+
+	this->sliderMusic = nullptr;
+	this->sliderSound = nullptr;
+	this->checkBoxRumble1 = nullptr;
+	this->checkBoxRumble2 = nullptr;
+	this->checkBoxRumble3 = nullptr;
+	this->checkBoxRumble4 = nullptr;
+
+	this->pressedLastFrame = false;
 }
 
 bool OptionsGui::update(float deltaTime)
@@ -149,6 +162,8 @@ bool OptionsGui::update(float deltaTime)
 					{
 						this->sliderMusic->setValue(0);
 					}
+
+					System::getSoundManager()->setMasterVolume(this->sliderMusic->getValue() / static_cast<float>(this->sliderMusic->getMaxValue()));
 				}
 				else if (this->selectedElement == this->sliderSound)
 				{

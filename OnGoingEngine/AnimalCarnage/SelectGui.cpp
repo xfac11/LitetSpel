@@ -100,6 +100,13 @@ void SelectGui::shutDown()
 	delete this->playerSelector2;
 	delete this->playerSelector3;
 	delete this->buttonTest;
+
+	this->selectedElement = nullptr;
+	this->buttonTest = nullptr;
+	this->playerSelector0 = nullptr;
+
+	this->changedLastFrame = false;
+	this->timeSinceChanged = 0.0F;
 }
 
 bool SelectGui::update(float deltaTime)

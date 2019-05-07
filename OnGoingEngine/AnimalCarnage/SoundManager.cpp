@@ -83,7 +83,7 @@ void SoundManager::loadEffect(std::wstring filename, std::string id)
 	{
 		return;
 	}
-
+	
 	bool loaded = false;
 
 	for (int i = 0; i < effects.size(); i++)
@@ -163,5 +163,18 @@ void SoundManager::stopAllSounds()
 		{
 			this->loopInstance->Stop(true);
 		}
+	}
+}
+
+float SoundManager::getMasterVolume() const
+{
+	return this->audioEngine ? this->audioEngine->GetMasterVolume() : 1.0F;
+}
+
+void SoundManager::setMasterVolume(float volume)
+{
+	if (this->audioEngine)
+	{
+		this->audioEngine->SetMasterVolume(volume);
 	}
 }
