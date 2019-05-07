@@ -5,27 +5,16 @@
 #include <vector>
 #include "Audio.h"
 
-#define SOUND_EFFECT_CAP 32
-
-enum Priority
-{
-	LOWEST,
-	LOWER,
-	NORMAL,
-	HIGH,
-	HIGHEST
-};
-
 class SoundManager
 {
 private:
 	struct Effect
 	{
-		int priorty;
 		std::string id;
 		DirectX::SoundEffect* sound;
-	} effects[SOUND_EFFECT_CAP];
+	};
 
+	std::vector<Effect> effects;
 	DirectX::SoundEffect* loopedEffect;
 	std::unique_ptr<DirectX::SoundEffectInstance> loopInstance;
 
@@ -39,7 +28,7 @@ public:
 	void update();
 
 	void playEffect(std::string id);
-	void loadEffect(std::wstring filename, std::string id, Priority prio);
+	void loadEffect(std::wstring filename, std::string id);
 	void unloadEffect(std::string id);
 
 	void playLooped(std::wstring filename);

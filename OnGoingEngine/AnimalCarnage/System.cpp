@@ -330,7 +330,6 @@ bool System::initialize()
 	this->theGamePad = new GamePad;
 	this->theTracker = new GamePad::ButtonStateTracker;
 	this->theModelLoader = new ModelLoader;
-	this->soundManager = new SoundManager();
 	
 	//this->theForwardShader->initialize();
 	//this->obj[0] = new GameObject(shaderManager->getForwardShader());
@@ -479,7 +478,6 @@ void System::initImgui()
 
 void System::update(float deltaTime)
 {
-	
 	if (theKeyboard->KeyIsPressed('R'))
 	{
 		theCamera->rotate(0, 1, 0);
@@ -543,6 +541,15 @@ void System::update(float deltaTime)
 		if (MAINMENU != currentState) {
 			this->currentState = MAINMENU;
 		}
+	}
+
+	if (theKeyboard->KeyIsPressed('M'))
+	{
+		this->soundManager->playLooped(L"Battle_Theme_One_1.0.wav");
+	}
+	if (theKeyboard->KeyIsPressed('N'))
+	{
+		this->soundManager->stopLooped();
 	}
 
 	//theCamera->SetRotation(theMouse->GetPos().y, 0, 0);
@@ -627,7 +634,12 @@ void System::run()
 		this->shaderManager->initialize(HEIGHT, WIDTH, 0.1f, 100.0f);
 		this->initialize();
 		initImgui();
+
 		ShowWindow(this->hwnd, this->nCMDShow);
+
+		//Needs to initialize after ShowWindow, or else it fails!
+		this->soundManager = new SoundManager();
+
 		//graphics->initImgui(this->hwnd);
 		/*Model** model;*/
 		//theModelLoader->loadModel(this->model, "Resources\\Models\\anim_test3.lu"); //Library test //load anim_test4

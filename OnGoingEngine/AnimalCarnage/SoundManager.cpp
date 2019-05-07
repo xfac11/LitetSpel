@@ -1,31 +1,33 @@
 #include "SoundManager.h"
 #include <iostream>
 
-SoundManager::SoundManager()
+SoundManager::SoundManager() : retryAudio(false), loopedEffect(nullptr)
 {
 	DirectX::AUDIO_ENGINE_FLAGS eflags = DirectX::AudioEngine_Default;
 	#ifdef _DEBUG
 	eflags = eflags | DirectX::AudioEngine_Debug;
 	#endif
 
-	this->loopedEffect = nullptr;
-	//this->audioEngine = new DirectX::AudioEngine(eflags);
-	this->retryAudio = false;
-
-	for (int i = 0; i < SOUND_EFFECT_CAP; i++)
+	try
 	{
-		this->effects[i].priorty = 0;
-		this->effects[i].id = "";
-		this->effects[i].sound = nullptr;
+		this->audioEngine = new DirectX::AudioEngine(eflags);
+	}
+	catch (const std::exception&)
+	{
+		this->audioEngine = nullptr;
 	}
 }
 
 SoundManager::~SoundManager()
 {
-	//this->audioEngine->Suspend();
+	if (this->audioEngine)
+	{
+		this->audioEngine->Suspend();
+	}
+
 	delete this->audioEngine;
 
-	for (int i = 0; i < SOUND_EFFECT_CAP; i++)
+	for (int i = 0; i < this->effects.size(); i++)
 	{
 		delete this->effects[i].sound;
 	}
@@ -39,113 +41,108 @@ SoundManager::~SoundManager()
 
 void SoundManager::update()
 {
-	/*if (this->retryAudio)
+	if (this->audioEngine)
 	{
-		this->retryAudio = false;
-
-		if (this->audioEngine->Reset())
+		if (this->retryAudio)
 		{
-			if (this->loopInstance)
+			this->retryAudio = false;
+
+			if (this->audioEngine->Reset())
 			{
-				this->loopInstance->Play(true);
+				if (this->loopInstance)
+				{
+					this->loopInstance->Play(true);
+				}
+			}
+		}
+		else if (!this->audioEngine->Update())
+		{
+			if (this->audioEngine->IsCriticalError())
+			{
+				this->retryAudio = true;
 			}
 		}
 	}
-	else if (!this->audioEngine->Update())
-	{
-		if (this->audioEngine->IsCriticalError())
-		{
-			this->retryAudio = true;
-		}
-	}*/
 }
 
 void SoundManager::playEffect(std::string id)
 {
-	for (int i = 0; i < SOUND_EFFECT_CAP; i++)
+	for (int i = 0; i < effects.size(); i++)
 	{
 		if (this->effects[i].id == id)
 		{
 			this->effects[i].sound->Play();
+			break;
 		}
 	}
 }
 
-void SoundManager::loadEffect(std::wstring filename, std::string id, Priority prio)
+void SoundManager::loadEffect(std::wstring filename, std::string id)
 {
-	if (id == "")
+	if (id == "" || !this->audioEngine)
 	{
 		return;
 	}
 
 	bool loaded = false;
 
-	for (int i = 0; i < SOUND_EFFECT_CAP && !loaded; i++)
+	for (int i = 0; i < effects.size(); i++)
 	{
-		if (this->effects[i].id == "")
+		if (this->effects[i].id == id)
 		{
-			this->effects[i].priorty = prio;
-			this->effects[i].id = id;
+			delete this->effects[i].sound;
 			this->effects[i].sound = new DirectX::SoundEffect(this->audioEngine, (L"Sound/" + filename).c_str());
+			loaded = true;
+
+			break;
 		}
 	}
 
 	if (!loaded)
 	{
-		int lowest = 0;
+		Effect effect;
+		effect.id = id;
+		effect.sound = new DirectX::SoundEffect(this->audioEngine, (L"Sound/" + filename).c_str());
 
-		for (int i = 0; i < SOUND_EFFECT_CAP && !loaded; i++)
-		{
-			if (this->effects[i].priorty < this->effects[lowest].priorty)
-			{
-				lowest = i;
-			}
-		}
-
-		if (this->effects[lowest].priorty <= prio)
-		{
-			delete this->effects[lowest].sound;
-
-			this->effects[lowest].priorty = prio;
-			this->effects[lowest].id = id;
-			this->effects[lowest].sound = new DirectX::SoundEffect(this->audioEngine, (L"Sound/" + filename).c_str());
-		}
-		else
-		{
-			std::cout << "[SOUND_MANAGER] Effect " << filename.c_str() << " was not loaded. List full." << std::endl;
-		}
+		this->effects.push_back(effect);
 	}
 }
 
 void SoundManager::unloadEffect(std::string id)
 {
-	for (int i = 0; i < SOUND_EFFECT_CAP; i++)
+	int index = -1;
+
+	for (int i = 0; i < effects.size() && index == -1; i++)
 	{
 		if (this->effects[i].id == id)
 		{
-			delete this->effects[i].sound;
-
-			this->effects[i].priorty = 0;
-			this->effects[i].id = "";
-			this->effects[i].sound = nullptr;
-			break;
+			index = i;
 		}
+	}
+
+	if (index != -1)
+	{
+		delete this->effects[index].sound;
+		this->effects.erase(this->effects.begin() + index);
 	}
 }
 
 void SoundManager::playLooped(std::wstring filename)
 {
-	if (this->loopedEffect)
+	if (this->audioEngine)
 	{
-		this->loopInstance.reset();
-		delete this->loopedEffect;
+		if (this->loopedEffect)
+		{
+			this->loopInstance.reset();
+			delete this->loopedEffect;
+		}
+
+		//https://github.com/Microsoft/DirectXTK/wiki/SoundEffect <-- Kolla här för att sätta loop-punkter!
+		this->loopedEffect = new DirectX::SoundEffect(this->audioEngine, (L"Sound/" + filename).c_str());
+		this->loopInstance = this->loopedEffect->CreateInstance();
+
+		this->loopInstance->Play(true);
 	}
-
-	//https://github.com/Microsoft/DirectXTK/wiki/SoundEffect <-- Kolla här för att sätta loop punkter!
-	this->loopedEffect = new DirectX::SoundEffect(this->audioEngine, (L"Sound/" + filename).c_str());
-	this->loopInstance = this->loopedEffect->CreateInstance();
-
-	this->loopInstance->Play(true);
 }
 
 void SoundManager::stopLooped()
@@ -158,5 +155,13 @@ void SoundManager::stopLooped()
 
 void SoundManager::stopAllSounds()
 {
-	this->audioEngine->Reset();
+	if (this->audioEngine)
+	{
+		this->audioEngine->Reset();
+
+		if (this->loopedEffect)
+		{
+			this->loopInstance->Stop(true);
+		}
+	}
 }
