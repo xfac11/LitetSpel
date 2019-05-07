@@ -178,9 +178,9 @@ bool GraphicsDevice::initialize(int screenWidth, int screenHeight, bool vsync, H
 
 
 	//move to ColorShader
-	this->projectionMatrix = DirectX::XMMatrixPerspectiveFovLH(fieldOfView, screenAspect, 0.1f, 500.f);
+	this->projectionMatrix = DirectX::XMMatrixPerspectiveFovLH(fieldOfView, screenAspect, 0.01f, 500.f);
 	
-
+	this->orthoMatrix = DirectX::XMMatrixOrthographicLH((float)20, (float)20, screenNear, screenDepth);
 
 	D3D11_RASTERIZER_DESC rasterizerDesc;
 	ZeroMemory(&rasterizerDesc, sizeof(D3D11_RASTERIZER_DESC));

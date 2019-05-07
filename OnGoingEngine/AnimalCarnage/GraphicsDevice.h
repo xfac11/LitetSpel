@@ -58,7 +58,7 @@ private:
 
 	ID3D11RasterizerState* rasterState;
 	DirectX::XMMATRIX projectionMatrix;
-
+	DirectX::XMMATRIX orthoMatrix;
 
 	//particles use this
 	ID3D11BlendState* alphaEnableBlendingState;

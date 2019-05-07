@@ -26,6 +26,7 @@ public:
 	void setSampler();
 	void setSampler(D3D11_TEXTURE_ADDRESS_MODE type, D3D11_FILTER filter, D3D11_COMPARISON_FUNC comFunc);
 
+	void drawOnlyVertex();
 	void draw();
 private:
 	std::vector<Vertex3D> mesh;

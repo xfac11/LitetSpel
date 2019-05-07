@@ -44,7 +44,11 @@ using namespace DirectX;
 #define WIDTH 1920
 
 //using Microsoft::WRL::ComPtr;
-
+struct WindowClient
+{
+	int height;
+	int width;
+};
 enum GameState {
 	MAINMENU,
 	GUNGAME
@@ -58,7 +62,7 @@ private:
 	HWND hwnd;
 	MSG msg;
 	int nCMDShow;
-	
+	static WindowClient theWindow;
 	static std::vector<State*> states;
 	static GameState currentState;
 	static CommonStates* commonStates;
@@ -85,6 +89,7 @@ private:
 	//bool mouseSwitch;
 	//bool moveScreen;
 
+	
 
 	void mouseMovement(float deltaTime);
 	void initImgui();
@@ -96,7 +101,6 @@ private:
 	static LRESULT CALLBACK  WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
 	HWND InitWindow(HINSTANCE hInstance, float height, float width);
 	void change(bool & theSwitch);
-
 	//btCollisionConfiguration* collisionConfig; //Test
 public:
 
@@ -109,7 +113,7 @@ public:
 	WPARAM getMsgWParam();
 	static ID3D11Device*& getDevice();
 	static ID3D11DeviceContext*& getDeviceContext();
-	
+	static WindowClient getWindowArea();
 	static Skybox* skybox;
 
 	static ShaderManager* shaderManager;
