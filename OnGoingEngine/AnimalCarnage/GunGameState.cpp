@@ -54,13 +54,14 @@ GunGameState::~GunGameState()
 	delete object[0];
 	delete object[1];
 	delete object[2];
+	delete object[3];
 }
 
 bool GunGameState::initailize()
 {
-	this->object[0] = new Objects("Resources/Models/cube2.lu", "stones_and_rocks_diffuse_base.tga", btVector3(0, 8, 0), btVector3(1.5f, 0.8f, 1.f));
-	this->object[1] = new Objects("Resources/Models/cube2.lu", "stones_and_rocks_diffuse_base.tga", btVector3(-5, 4, 0), btVector3(1.f, 1.0f, 2.f));
-	this->object[2] = new Objects("Resources/Models/cube2.lu", "stones_and_rocks_diffuse_base.tga", btVector3(5,4, 0), btVector3(1.5f, 0.8f, 1.f));
+	this->object[0] = new Objects("Resources/Models/cube2.lu", "stones_and_rocks_diffuse_base.tga", btVector3(0, 8, 0), btVector3(1.f, 1.f, 1.f));
+	this->object[1] = new Objects("Resources/Models/cube2.lu", "stones_and_rocks_diffuse_base.tga", btVector3(-5, 4, 0), btVector3(1.f, 1.f, 1.f));
+	this->object[2] = new Objects("Resources/Models/cube2.lu", "stones_and_rocks_diffuse_base.tga", btVector3(5,4, 0), btVector3(1.f, 1.f, 1.f));
 	this->object[3] = new Objects("Resources/Models/cube2.lu", "stones_and_rocks_diffuse_base.tga", btVector3(3, 2, 0));
 	//->setLinearFactor(btVector3(0,0,0));
 	ground = new GameObject(System::shaderManager->getForwardShader());
@@ -241,7 +242,7 @@ bool GunGameState::update(float deltaTime)
 
 	wall1->setPosition(wall1->getRigidbody()->getWorldTransform().getOrigin().getX(), wall1->getRigidbody()->getWorldTransform().getOrigin().getY(), wall1->getRigidbody()->getWorldTransform().getOrigin().getZ());
 	wall2->setPosition(wall2->getRigidbody()->getWorldTransform().getOrigin().getX(), wall2->getRigidbody()->getWorldTransform().getOrigin().getY(), wall2->getRigidbody()->getWorldTransform().getOrigin().getZ());
-
+	
 	for (int i = 0; i < nrOfPlayers; i++)
 	{
 		btVector3 min;
@@ -252,15 +253,25 @@ bool GunGameState::update(float deltaTime)
 		for (int j = 0; j < nrOfPlayers; j++) {
 			if (i != j)
 			{
+				//if (Intersects(minTemp, maxTemp, player[j]->playerObj->getCollisionBox(), player[j]->playerObj->getPosition()))
+				//	player[i]->setGrounded(true);
+				//if(player[i]->playerObj->getRigidbody()->checkCollideWith(player[j]->playerObj->getRigidbody()))
+				//	player[i]->setGrounded(true);
+
+				//if(player[i]->playerObj->getRigidbody()->checkCollideWithOverride(player[j]->playerObj->getRigidbody()))
+				//	player[i]->setGrounded(true);
 				if (Intersects(minTemp, maxTemp, player[j]->hitbox.hitbox->getCollisionBox(), player[j]->hitbox.hitbox->getPosition()))
 				{
+				
 					this->testColBox = true;
 					player[i]->playerObj->getRigidbody()->applyCentralImpulse(btVector3(player[j]->dir * 50, 25, 0));// , btVector3(1, 0, 0));
+					//player[i]->setGrounded(true);
 				}
 				else
 				{
 					this->testColBox = false;
 				}
+				
 
 			}
 		}

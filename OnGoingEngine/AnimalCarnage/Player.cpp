@@ -20,7 +20,7 @@ Player::Player()
 Player::~Player()
 {
 	playerObj = nullptr;
-	delete this->hitbox.hitbox;
+	//delete this->hitbox.hitbox;
 }
 
 void Player::initialize()
@@ -30,8 +30,9 @@ void Player::initialize()
 	//this->hitbox.hitbox->setRotation(0, 1, 0, 3.14 / 2);
 	this->hitbox.time = 0;
 	this->hitbox.totalTime = 30;
-	System::theModelLoader->loadGO(this->hitbox.hitbox, "Resources/Models/cube2.lu", "");
+	System::theModelLoader->loadGO(this->hitbox.hitbox, "Resources/Models/cube2.lu", "zz.tga");
 	this->hitbox.hitbox->setScale(0.2f, 0.2f, 0.2f);
+	System::handler->addObject(this->hitbox.hitbox);
 	//this->playerObj->getRigidbody() = System::getphysices()->addSphere(0.5f,btVector3(0,0,0),1);
 
 	System::theModelLoader->loadGO(this->playerObj, "Resources/Models/fox_character.lu", "fox_character_diffuse.tga");
@@ -271,10 +272,6 @@ bool Player::setRumble(bool rumble)
 }
 
 
-
-
-
-
 XMFLOAT3 Player::mul(XMFLOAT3 l, float r)
 {
 	return XMFLOAT3(l.x * r, l.y * r, l.z * r);
@@ -300,7 +297,7 @@ void Player::move(float x, float y, float z)
 
 void Player::move(XMFLOAT3 source) //fix this ALAN
 {
-	//this->move(source);
+	this->playerObj->move(source);
 }
 
 void Player::setPosition(float x, float y, float z)
