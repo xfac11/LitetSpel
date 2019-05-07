@@ -30,7 +30,11 @@ public:
 	btRigidBody* &getRigidbody() { return rigidbody; }
 	void move(XMFLOAT3 Position);
 	void move(float x, float y, float z);
+	void setPosition(btVector3 xyz);
+	void setPosition(XMFLOAT3 xyz);
 	void setPosition(float x, float y, float z);
+	void setScale(btVector3 xyz);
+	void setScale(XMFLOAT3 xyz);
 	void setScale(float x, float y, float z);
 	void setRotation(float x, float y, float z, float angle);
 	void setRotationRollPitchYaw(float x, float y, float z);

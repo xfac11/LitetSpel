@@ -29,8 +29,31 @@ void Transform::move(float x, float y, float z)
 	ApplyTransform();
 }
 
+void Transform::setPosition(btVector3 xyz)
+{
+	Position = XMFLOAT3(xyz.getX(), xyz.getY(), xyz.getZ());
+	ApplyTransform();
+}
+
+void Transform::setPosition(XMFLOAT3 xyz) {
+	Position = xyz;
+	ApplyTransform();
+}
+
 void Transform::setPosition(float x, float y, float z) {
 	Position = XMFLOAT3(x, y, z);
+	ApplyTransform();
+}
+
+void Transform::setScale(btVector3 xyz)
+{
+	Scale = XMFLOAT3(xyz.getX(), xyz.getY(), xyz.getZ());
+	ApplyTransform();
+}
+
+void Transform::setScale(XMFLOAT3 xyz)
+{
+	Scale = xyz;
 	ApplyTransform();
 }
 

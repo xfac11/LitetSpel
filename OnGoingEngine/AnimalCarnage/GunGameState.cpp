@@ -58,14 +58,14 @@ GunGameState::~GunGameState()
 
 bool GunGameState::initailize()
 {
-	this->object[0] = new Objects("Resources/Models/cube2.lu", "stones_and_rocks_diffuse_base.tga", btVector3(500, 0, 0));
-	this->object[1] = new Objects("Resources/Models/cube2.lu", "stones_and_rocks_diffuse_base.tga", btVector3(-24, 6, 0));
-	this->object[2] = new Objects("Resources/Models/cube2.lu", "stones_and_rocks_diffuse_base.tga", btVector3(24, 6, 0));
-
+	this->object[0] = new Objects("Resources/Models/cube2.lu", "stones_and_rocks_diffuse_base.tga", btVector3(0, 8, 0), btVector3(1.5f, 0.8f, 1.f));
+	this->object[1] = new Objects("Resources/Models/cube2.lu", "stones_and_rocks_diffuse_base.tga", btVector3(-5, 4, 0), btVector3(1.f, 1.0f, 2.f));
+	this->object[2] = new Objects("Resources/Models/cube2.lu", "stones_and_rocks_diffuse_base.tga", btVector3(5,4, 0), btVector3(1.5f, 0.8f, 1.f));
+	this->object[3] = new Objects("Resources/Models/cube2.lu", "stones_and_rocks_diffuse_base.tga", btVector3(3, 2, 0));
 	//->setLinearFactor(btVector3(0,0,0));
 	ground = new GameObject(System::shaderManager->getForwardShader());
-	ground->setScale(100,2,20);
-	ground->getRigidbody() = System::getphysices()->addBox(btVector3(0, -3, 0), btVector3(100,2,20),0);
+	ground->setScale(100,2,25); 
+	ground->getRigidbody() = System::getphysices()->addBox(btVector3(0, -3, 5), btVector3(ground->getScale().x, ground->getScale().y, ground->getScale().z),0);
 	ground->getRigidbody()->setLinearFactor(btVector3(0,0,0));
 	//ground->setScale(ground->getRigidbody()->get);
 	this->ground->getRigidbody()->setFriction(3);
@@ -98,13 +98,13 @@ bool GunGameState::initailize()
 	GameObject* tree1 = new GameObject;
 	System::theModelLoader->loadGO(tree1, "Resources/Models/tree2.lu", "trees_diffuse.tga");
 	System::handler->addObject(tree1);
-	tree1->setPosition(0, -0.5, 2);
-	tree1->setScale(0.1, 0.1, 0.1);
+	tree1->setPosition(0, -0.5, 16);
+	tree1->setScale(0.6, 0.6, 0.6);
 	GameObject* tree2 = new GameObject;
 	System::theModelLoader->loadGO(tree2, "Resources/Models/small_stone1.lu", "stones_and_rocks_diffuse_base.tga");
 	System::handler->addObject(tree2);
-	tree2->setPosition(2, 0.5, 2);
-	//tree2->setScale(5, 5, 5);
+	tree2->setPosition(2, 0.5, 0);
+	tree2->setScale(10, 5, 5);
 	GameObject* tree = new GameObject;
 	System::theModelLoader->loadGO(tree, "Resources/Models/grass2.lu", "grass_diffuse.tga");
 	System::handler->addObject(tree);
@@ -264,6 +264,12 @@ bool GunGameState::update(float deltaTime)
 
 			}
 		}
+		//for(int k=0;k<nrOfObjects;k++){}
+
+		//if(Intersect())
+
+
+
 		player[i]->update(deltaTime, i);
 		player[i]->updateRumble(deltaTime, i);
 

@@ -4,9 +4,11 @@
 Objects::Objects(std::string filepath, std::string texture, btVector3 position,btVector3 size,OBJECTSTATE state, OBJECTYPE type) :state(state), type(type)
 {
 	this->ObjectOBJ = new GameObject(System::shaderManager->getForwardShader());
+
 	System::theModelLoader->loadGO(this->ObjectOBJ, filepath.c_str(), texture);
 	System::handler->addObject(this->ObjectOBJ);
-
+	this->ObjectOBJ->setPosition(position);
+	this->ObjectOBJ->setScale(size);
 	this->ObjectOBJ->getRigidbody() = System::getphysices()->addBox(position, size, 0.0f);
 	//this->playerObj->getRigidbody()->getWorldTransform().setRotation(btQuaternion(3.14 / 2, 0, 0));
 	this->ObjectOBJ->getRigidbody()->setWorldTransform(XMMATRIX_to_btTransform(this->ObjectOBJ->getWorld()));
