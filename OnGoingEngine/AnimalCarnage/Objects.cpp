@@ -1,6 +1,6 @@
 #include "Objects.h"
 #include "System.h"
-
+#include <string>
 Objects::Objects(std::string filepath, std::string texture, btVector3 position,btVector3 size,OBJECTSTATE state, OBJECTYPE type) :state(state), type(type)
 {
 	this->ObjectOBJ = new GameObject(System::shaderManager->getForwardShader());
@@ -31,12 +31,34 @@ void Objects::update()
 {
 	this->ObjectOBJ->setPosition(this->ObjectOBJ->getRigidbody()->getWorldTransform().getOrigin().getX()
 		, this->ObjectOBJ->getRigidbody()->getWorldTransform().getOrigin().getY(), this->ObjectOBJ->getRigidbody()->getWorldTransform().getOrigin().getZ());
-	if (state == STATIC) 
+	switch (type)
 	{
-		if (type == STONE)
-		{
+		case PLATFORM:
+			if (state == STATIC){
 
-		}
+			}
+			else if (state == DYNAMIC){
 
+			}
+			break;
+		case STONE:
+			if (state == STATIC){
+
+			}
+			else if (state == DYNAMIC){
+
+			}
+			break;
+		case TREE:
+			if (state == STATIC){
+
+			}
+			else if (state == DYNAMIC){
+
+			}
+			break;
+		default:
+			break;
 	}
+
 }
