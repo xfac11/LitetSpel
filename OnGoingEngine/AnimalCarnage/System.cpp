@@ -22,7 +22,7 @@ Physics* System::physices = nullptr;
 DEBUG_DRAW* System::debugDraw = nullptr;
 Skybox* System::skybox = nullptr;
 SoundManager* System::soundManager = nullptr;
-
+WindowClient System::theWindow = { HEIGHT,WIDTH };
 HWND System::InitWindow(HINSTANCE hInstance, float height, float width)
 {
 	WNDCLASSEX wcex = { 0 };
@@ -486,21 +486,21 @@ void System::update(float deltaTime)
 
 	if (theKeyboard->KeyIsPressed('W'))
 	{
-		theCamera->move(0, 0, 100 * deltaTime);
+		theCamera->move(0, 0, 10 * deltaTime);
 	}
 	else if (theKeyboard->KeyIsPressed('S'))
 	{
-		theCamera->move(0, 0, -100 * deltaTime);
+		theCamera->move(0, 0, -10 * deltaTime);
 	}
 	
 	if (theKeyboard->KeyIsPressed('D'))
 	{
-		theCamera->move(100 * deltaTime, 0, 0);
+		theCamera->move(10 * deltaTime, 0, 0);
 	}
 	else if (theKeyboard->KeyIsPressed('A'))
 	{
 		//this->obj2->move(-1 * deltaTime, 0, 0);
-		theCamera->move(-100 * deltaTime, 0, 0);
+		theCamera->move(-10 * deltaTime, 0, 0);
 	}
 	if (theKeyboard->KeyIsPressed('X'))
 	{
@@ -627,7 +627,8 @@ void System::run()
 
 	if (this->hwnd)
 	{
-		
+		this->theWindow.height = HEIGHT;
+		this->theWindow.width = WIDTH;
 		theGraphicDevice->initialize(WIDTH, HEIGHT ,true , hwnd, false, 0.1f, 500.0f,90.0f);
 
 		this->shaderManager = new ShaderManager;
@@ -694,6 +695,11 @@ ID3D11Device *& System::getDevice()
 ID3D11DeviceContext *& System::getDeviceContext()
 {
 	return theGraphicDevice->getDeviceContext();
+}
+
+WindowClient System::getWindowArea()
+{
+	return theWindow;
 }
 
 SpriteBatch * System::getSpriteBatch()

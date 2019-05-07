@@ -40,6 +40,9 @@
     <FxCompile Include="animatedEntityVertex.hlsl">
       <Filter>Skeleton</Filter>
     </FxCompile>
+    <FxCompile Include="MulVertexShader.hlsl">
+      <Filter>Shader</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="InputHandler.cpp" />

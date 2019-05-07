@@ -3,6 +3,7 @@
 #include"ForwardShader.h"
 #include"DeferredShader.h"
 #include"LightShader.h"
+#include"ShadowMapping.h"
 class ShaderManager
 {
 public:
@@ -13,10 +14,12 @@ public:
 	ForwardShader*& getForwardShader();
 	DeferredShader*& getDefShader();
 	LightShader*& getLightShader();
+	ShadowMapping*& getShadowMapping();
 private:
 	ForwardShader* fShader;
 	DeferredShader* dShader;
 	LightShader* lShader;
+	ShadowMapping* shadowMapping;
 	//Shader* *shaders;
 	//int cap;
 	//int nrOfShaders;
