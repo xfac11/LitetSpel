@@ -6,6 +6,7 @@ GunGameGui::GunGameGui(State* myState) : GuiBase(myState)
 {
 	this->nrOfPlayers = 0;
 	this->playerHealthBars = nullptr;
+	
 }
 
 GunGameGui::~GunGameGui()
@@ -61,6 +62,10 @@ bool GunGameGui::update(float deltaTime)
 	{
 		state->pause(true);
 	}
+	if (System::theKeyboard->KeyIsPressed('P'))
+	{
+		state->pause(false);
+	}
 
 	for (int i = 0; i < 4; i++)
 	{
@@ -68,7 +73,7 @@ bool GunGameGui::update(float deltaTime)
 
 		if (gamepadState.IsConnected())
 		{
-			System::theTracker->Update(gamepadState);
+			//System::theTracker->Update(gamepadState);
 
 			if (System::theTracker->start == DirectX::GamePad::ButtonStateTracker::PRESSED)
 			{

@@ -10,6 +10,8 @@ private:
 	int nrOfPlayers;
 	HealthBar** playerHealthBars;
 
+	//bool pauseSwitch;
+	//void change(bool & theSwitch);
 public:
 	GunGameGui(State* myState);
 	virtual ~GunGameGui();

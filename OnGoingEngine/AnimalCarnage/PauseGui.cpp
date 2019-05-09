@@ -61,6 +61,24 @@ void PauseGui::changeSelected()
 	}
 }
 
+bool PauseGui::checkReset(DirectX::GamePad::State state)
+{
+	bool result = false;
+	//if (state.IsConnected())
+	//{
+		//tracker.Update(state);
+	if (((state.IsLeftTriggerPressed() && state.IsRightTriggerPressed()) ||
+		(state.buttons.leftShoulder && state.buttons.rightShoulder)) &&
+		state.buttons.a && (state.buttons.back || state.buttons.menu))
+	{
+		result = true;
+	}
+	//}
+	return result;
+}
+
+
+
 PauseGui::PauseGui(State * myState) : GuiBase(myState)
 {
 	this->selectedElement = nullptr;
@@ -152,6 +170,18 @@ bool PauseGui::update(float deltaTime)
 		{
 			System::theTracker->Update(gamepadState);
 			this->changeSelected();
+
+			if (checkReset(gamepadState) == true) //L + R + A + Start
+			{
+				state->pause(false);
+				System::setState(MAINMENU);
+			}
+
+			if (System::theTracker->start == DirectX::GamePad::ButtonStateTracker::PRESSED)
+			{
+				state->pause(false);
+			}
+
 
 			if (System::theTracker->a == DirectX::GamePad::ButtonStateTracker::PRESSED)
 			{

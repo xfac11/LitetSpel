@@ -28,22 +28,22 @@
 //	return body;
 //}
 
-bool GunGameState::checkReset(DirectX::GamePad::State state)
-{
-
-	bool result = false;
-	//if (state.IsConnected())
-	//{
-		//tracker.Update(state);
-	if (((state.IsLeftTriggerPressed() && state.IsRightTriggerPressed()) ||
-		(state.buttons.leftShoulder && state.buttons.rightShoulder)) &&
-		state.buttons.a && (state.buttons.back || state.buttons.menu))
-	{
-		result = true;
-	}
-	//}
-	return result;
-}
+//bool GunGameState::checkReset(DirectX::GamePad::State state)
+//{
+//
+//	bool result = false;
+//	//if (state.IsConnected())
+//	//{
+//		//tracker.Update(state);
+//	if (((state.IsLeftTriggerPressed() && state.IsRightTriggerPressed()) ||
+//		(state.buttons.leftShoulder && state.buttons.rightShoulder)) &&
+//		state.buttons.a && (state.buttons.back || state.buttons.menu))
+//	{
+//		result = true;
+//	}
+//	//}
+//	return result;
+//}
 
 GunGameState::GunGameState()
 {

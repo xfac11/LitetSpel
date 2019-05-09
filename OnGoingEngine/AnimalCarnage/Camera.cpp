@@ -91,9 +91,9 @@ void Camera::calcCamera(DirectX::XMFLOAT3 playerOne, DirectX::XMFLOAT3 playerTwo
 	float max = fmaxf(playerOne.x,fmaxf(playerTwo.x, fmaxf(playerThree.x, playerFour.x)));
 
 	float length = max - min;
-	if (length < 2.5f)
+	if (length < 5.5f)
 	{
-		length = 2.5f;
+		length = 5.5f;
 	}
-	this->position = DirectX::XMFLOAT3(0, 0, -length);
+	this->position = DirectX::XMFLOAT3(0, position.y, -length);
 }

@@ -482,7 +482,15 @@ void System::update(float deltaTime)
 	{
 		theCamera->rotate(0, 1, 0);
 	}
-	//this->theCamera->calcCamera(players[0]->getPosition(), players[1]->getPosition(), players[2]->getPosition(), players[3]->getPosition());
+
+	GunGameState* ptr = nullptr;
+	if (ptr = dynamic_cast<GunGameState*>(states[System::currentState]))
+	{
+		this->theCamera->calcCamera(ptr->getPlayer(0)->getPosition(), ptr->getPlayer(1)->getPosition(), ptr->getPlayer(2)->getPosition(), ptr->getPlayer(3)->getPosition());
+		//ptr->getPlayer(0)->getPosition();
+	}
+
+	
 
 	if (theKeyboard->KeyIsPressed('W'))
 	{

@@ -4,6 +4,7 @@
 #include "GuiBase.h"
 #include "GuiElement.h"
 #include "Button.h"
+#include "GamePad.h"
 
 class PauseGui : public GuiBase
 {
@@ -17,6 +18,7 @@ private:
 
 	void changeSelected_Keyboard();
 	void changeSelected();
+	bool checkReset(DirectX::GamePad::State state);
 public:
 	PauseGui(State* myState);
 	virtual ~PauseGui();

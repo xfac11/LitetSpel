@@ -21,11 +21,7 @@ private:
 	GuiBase* pauseGui;
 	bool paused;
 
-	//btDynamicsWorld* world;
-	//btDispatcher* dispatcher;
-	//btBroadphaseInterface* broadphase;
-	//btConstraintSolver* solver;
-	//btCollisionConfiguration* collisionConfig;
+
 
 	////vector for rigid body
 	//std::vector<btRigidBody*> bodies;
@@ -41,8 +37,8 @@ private:
 	//}
 	bool testColBox;
 
-	//void inPause();
-	bool checkReset(DirectX::GamePad::State state);
+
+	//bool checkReset(DirectX::GamePad::State state);
 
 	GameObject* ground;
 	GameObject* wall1;
@@ -66,6 +62,7 @@ public:
 
 	bool controllerIsConnected(int controllerPort);
 
+	
 	//Temporary
 	//box and box
 	//bool collision(DirectX::XMFLOAT2 posOne, DirectX::XMFLOAT2 scaleOne,int playerID, DirectX::XMFLOAT2 posTwo, DirectX::XMFLOAT2 scaleTwo, int itemID);
