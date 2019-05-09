@@ -8,6 +8,7 @@
 #include<DirectXMath.h>
 #include <algorithm>
 #include "Player.h"
+#include "GunGameState.h"
 
 class Physics
 {

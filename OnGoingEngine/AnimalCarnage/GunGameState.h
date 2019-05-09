@@ -62,11 +62,16 @@ public:
 	void shutDown();
 
 	bool controllerIsConnected(int controllerPort);
+
 	bool checkPause() const;
 	int getCameraFocus();
 	bool checkCameraFocus();
 	DirectX::XMFLOAT3 changeCamera(float deltaTime)const;
 	
+
+
+	//btCollisionObjectWrapper getGroundCollisionObject();
+
 	//Temporary
 	//box and box
 	//bool collision(DirectX::XMFLOAT2 posOne, DirectX::XMFLOAT2 scaleOne,int playerID, DirectX::XMFLOAT2 posTwo, DirectX::XMFLOAT2 scaleTwo, int itemID);
