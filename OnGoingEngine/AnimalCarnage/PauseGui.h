@@ -23,6 +23,7 @@ public:
 	PauseGui(State* myState);
 	virtual ~PauseGui();
 
+	//void changeCamera(DirectX::XMFLOAT3 & camera);
 	bool initialize();
 	void shutDown();
 	bool update(float deltaTime);

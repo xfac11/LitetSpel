@@ -20,7 +20,7 @@ private:
 	GuiBase* inGameGui;
 	GuiBase* pauseGui;
 	bool paused;
-
+	int cameraFocus;
 
 
 	////vector for rigid body
@@ -62,7 +62,10 @@ public:
 	void shutDown();
 
 	bool controllerIsConnected(int controllerPort);
-
+	bool checkPause() const;
+	int getCameraFocus();
+	bool checkCameraFocus();
+	DirectX::XMFLOAT3 changeCamera(float deltaTime)const;
 	
 	//Temporary
 	//box and box

@@ -493,9 +493,18 @@ void System::update(float deltaTime)
 		{
 			playerPos.push_back(ptr->getPlayer(i)->getPosition());
 		}
-
-		this->theCamera->calcCamera(playerPos);
-		//ptr->getPlayer(0)->getPosition();
+		if (ptr->checkPause() == false)
+		{
+			//remeber to set rotation
+			this->theCamera->calcCamera(playerPos);
+		}
+		else
+		{
+			if (ptr->checkCameraFocus() == true) //it sets exact position, remember to change z value to appropriate location
+				theCamera->SetPosition(playerPos[ptr->getCameraFocus()]);
+			theCamera->move(ptr->changeCamera(deltaTime));
+	
+		}
 	}
 
 	
