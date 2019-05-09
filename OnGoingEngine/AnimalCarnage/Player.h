@@ -19,11 +19,10 @@ struct Hitbox
 	int time;
 	GameObject* hitbox;
 };
-
 class Player
 {
 private:
-
+	DatForaObject data;
 	//player physics 
 	bool isJumping;
 	bool inAir;

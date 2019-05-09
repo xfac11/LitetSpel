@@ -7,6 +7,7 @@
 #include <string>
 #include<DirectXMath.h>
 #include <algorithm>
+#include "Primitives.h"
 
 class Physics
 {
@@ -17,6 +18,7 @@ private:
 	btConstraintSolver* solver;
 	btCollisionConfiguration* collisionConfig;
 	std::vector<btRigidBody*> bodies;
+
 	std::vector<btCollisionShape*> shapes;
 
 	btStaticPlaneShape* plane;
@@ -26,7 +28,7 @@ public:
 	void Update(float deltaTime);
 	btRigidBody* addSphere(float radius, btVector3 Origin, float mass);
 	btRigidBody* addBox(btVector3 Origin, btVector3 size, float mass);
-
+	btRigidBody* addPlayer(btVector3 Origin, btVector3 size, float mass);
 	static bool callbackFunc(btManifoldPoint& cp, const btCollisionObjectWrapper* obj1, int id1, int index1, const btCollisionObjectWrapper* obj2, int id2, int index2);
 	//void renderSphere(btRigidBody* sphere);
 	//void renderPlane(btRigidBody* plane);

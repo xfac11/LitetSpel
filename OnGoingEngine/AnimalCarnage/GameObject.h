@@ -6,6 +6,7 @@
 #include"Geometry.h"
 #include "btBulletDynamicsCommon.h"
 #include "Primitives.h"
+//#include "Player.h"
 
 class GameObject: public Transform//arv
 {
@@ -29,7 +30,7 @@ public:
 	AABB getCollisionBox();
 	Primitives * CollisionShape;
 	btVector3 positionOffset;
-	
+	/*DatForaObject data;*/
 private:
 	Model* *theModel;
 	int cap;
