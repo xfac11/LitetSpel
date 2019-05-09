@@ -106,12 +106,10 @@ btRigidBody* Physics::addBox(btVector3 Origin, btVector3 size,float mass)
 	body->setCollisionFlags(body->getCollisionFlags() | btCollisionObject::CF_CUSTOM_MATERIAL_CALLBACK);
 	this->world->addRigidBody(body);
 	bodies.push_back(body);
-	body->setUserPointer(bodies[bodies.size() - 1]);
-
 	return body;
 }
 
-btRigidBody* Physics::addPlayer(btVector3 Origin, btVector3 size, float mass)
+btRigidBody* Physics::addPlayer(btVector3 Origin, btVector3 size, float mass, Player *player)
 {
 	//add object set transform
 	btTransform t; //
@@ -130,16 +128,23 @@ btRigidBody* Physics::addPlayer(btVector3 Origin, btVector3 size, float mass)
 	this->world->addRigidBody(body);
 	
 	bodies.push_back(body);
-	body->setUserPointer(bodies[bodies.size() - 1]);
+	body->setUserPointer(player);
 
 	return body;
 }
 
 bool Physics::callbackFunc(btManifoldPoint& cp, const btCollisionObjectWrapper* obj1, int id1, int index1, const btCollisionObjectWrapper* obj2, int id2, int index2)
 {
-	/*if (obj1 != nullptr && obj2 != nullptr) {
-		((DatForaObject*)obj1->getCollisionObject()->getUserPointer())->health = 500;
-	}*/
+	
+	
+	
+	
+	if (obj1->getCollisionObject()->getUserPointer() == ((Player*)obj1->getCollisionObject()->getUserPointer()))
+	{
+		if(((Player*)obj1->getCollisionObject()->getUserPointer()) != nullptr)
+			bool ishit = ((Player*)obj1->getCollisionObject()->getUserPointer())->getHit();
+	
+	}
 	return false;
 }
 
