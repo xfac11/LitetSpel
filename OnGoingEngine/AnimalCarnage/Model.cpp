@@ -120,6 +120,25 @@ void Model::setSampler(D3D11_TEXTURE_ADDRESS_MODE type, D3D11_FILTER filter,D3D1
 	}
 }
 
+void Model::drawOnlyVertex()
+{
+	UINT32 offset = 0;
+	/*System::getDeviceContext()->PSSetShaderResources(0, 1, &this->texture->getTexture());
+	if (this->normalMap != nullptr)
+	{
+		System::getDeviceContext()->PSSetShaderResources(1, 1, &this->normalMap->getTexture());
+	}*/
+	System::getDeviceContext()->IASetVertexBuffers(0, 1, &*this->vertexBuffer.GetAddressOf(), &*vertexBuffer.getStridePtr(), &offset);
+	//	UINT offset = 0;
+		//devcon->IASetVertexBuffers(0, 1, &pVBuffer, &stride, &offset);
+
+		//System::getDeviceContext()->IASetIndexBuffer(indexBuffer.getBuffer(), DXGI_FORMAT_R32_UINT, offset);
+	System::getDeviceContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	//System::getDeviceContext()->PSSetSamplers(0, 1, &this->SamplerState);
+
+	System::getDeviceContext()->Draw(mesh.size(), 0);
+}
+
 void Model::draw()
 {
 	UINT32 offset = 0;

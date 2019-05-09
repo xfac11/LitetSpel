@@ -17,13 +17,23 @@ cbuffer CB_PER_FRAME : register(b0)
 	float4x4 proj;//proj
 	float4 camPos;
 }
+cbuffer world : register(b2)
+{
+	float4x4 world;
+}
 cbuffer Lights : register(b1)
 {
 	int index;
 	int nrOfLights;
 	AnyLight lights[16];
 }
-float4 CalcLight(AnyLight light, float3 normal, float3 wPos, float3 LightDirection, float3 color)
+float2 poissonDisk[4] = {
+	float2(-0.94201624, -0.39906216),
+	float2(0.94558609, -0.76890725),
+	float2(-0.094184101, -0.92938870),
+	float2(0.34495938, 0.29387760)
+};
+float4 CalcLight(AnyLight light, float3 normal, float3 wPos, float3 LightDirection, float3 color, float visibility)
 {
 	//float3 LightDirection = light.direction.xyz;
 	float ambientAmount = 0.2f;
@@ -58,12 +68,12 @@ float4 CalcLight(AnyLight light, float3 normal, float3 wPos, float3 LightDirecti
 			specularColor = float4(light.color.xyz*specularStrength*specularFactor, 1.0f);
 		}
 	}
-	return (ambientColor + diffuseColor/* + specularColor*/);
+	return (ambientColor + diffuseColor* visibility + specularColor* visibility);
 }
 
-float4 dirLight(float3 normal, AnyLight light, float3 wPos, float3 color)
+float4 dirLight(float3 normal, AnyLight light, float3 wPos, float3 color, float visibility)
 {
-	return CalcLight(light, normal, wPos, light.direction.xyz, color);
+	return CalcLight(light, normal, wPos, light.direction.xyz, color, visibility);
 }
 
 float4 pointLight(int index, float3 normal, float3 wPos,float3 colour)
@@ -75,7 +85,7 @@ float4 pointLight(int index, float3 normal, float3 wPos,float3 colour)
 
 	lightDir = normalize(lightDir);
 
-	float4 color = CalcLight(lights[index], normal, wPos, lightDir, colour);
+	float4 color = CalcLight(lights[index], normal, wPos, lightDir, colour,1);
 
 	float attenuation = max(0, 1.0f - (distance / lights[index].position.w));// from 3d project
 
@@ -87,7 +97,7 @@ float4 pointLight(int index, float3 normal, float3 wPos,float3 colour)
 Texture2D NormalTex : register(t0);
 Texture2D Tex : register(t1);
 Texture2D PositionTexture : register(t2);
-//Texture2D BumpNormalTex : register(t3);
+Texture2D ShadowMap : register(t3);
 SamplerState SampSt :register(s0);
 float4 PS_main(VS_OUT input) : SV_Target
 {
@@ -109,7 +119,78 @@ float4 PS_main(VS_OUT input) : SV_Target
 		{
 			if (index == 0)
 			{
-				totalLight = dirLight(normal, lights[0], pos,colorT.xyz);
+
+				//float4 shadowCoord=mul(float4(shadowCoord.xyz, 1.0f), world);
+				float4 shadowCoord = mul(float4(pos.xyz, 1.0f), view);
+				shadowCoord = mul(float4(shadowCoord.xyz, 1.0f), proj);
+				shadowCoord.z = shadowCoord.z / shadowCoord.w;
+				shadowCoord.xy = (0.5f*shadowCoord.xy) + 0.5f;
+				shadowCoord.y = abs(shadowCoord.y - 1);
+
+
+
+				
+				//float2 texShadowCoord;
+				//texShadowCoord.x = shadowCoord.x / shadowCoord.w / 2.0f + 0.5f;
+				//texShadowCoord.y = -shadowCoord.y / shadowCoord.w / 2.0f + 0.5f;
+				//float visibility = 1.0f;
+				//if ((saturate(texShadowCoord.x) == texShadowCoord.x) && (saturate(texShadowCoord.y) == texShadowCoord.y))
+				//{
+				//	float depthValue = ShadowMap.Sample(SampSt, texShadowCoord).r;
+
+				//	float lightDepth = shadowCoord.z / shadowCoord.w;
+				//	lightDepth = lightDepth - 0.001f;
+
+				//	//shadowCoord = (0.5f*shadowCoord) + 0.5f;
+				//	/*shadowCoord -= 1;
+				//	shadowCoord = abs(shadowCoord);*/
+				//	
+				//
+				//	//visibility = 0;
+				//	if (lightDepth < depthValue)
+				//	{
+				//		visibility = 0.5f;
+				//	}
+				//}
+
+
+				
+				float visibility = 1.0;
+				float cosTheta = dot(normalize(normal), normalize(lights[0].direction.xyz));
+				float bias = 0.005*tan(acos(cosTheta));
+				//max(0.05 * (1.0 - dot(normal, lightDir)), 0.015);
+				bias = clamp(bias, 0,1);
+				bias = max(0.05 * (1.0 - dot(normal, lights[0].direction.xyz)), 0.015);
+				for (int i = 0; i < 4; i++)
+				{
+					if (ShadowMap.Sample(SampSt, shadowCoord.xy + poissonDisk[i] / 800.0).x < shadowCoord.z - bias)
+					{
+						visibility -= 0.20f;
+					}
+				}
+				//if (ShadowMap.Sample(SampSt, shadowCoord.xy /*+ (poissonDisk[i] / 700.0)*/).x < shadowCoord.z - bias)
+				//{
+				//	visibility = 0.5f;
+				//}
+				/*int width;
+				int height;
+				int nrOfLevels;
+				ShadowMap.GetDimensions(0, width, height, nrOfLevels);
+				float2 textureSize = float2(width, height);
+				float2 texelSize = 1.0 / textureSize;
+				for (int x = -1; x <= 1; ++x)
+				{
+					for (int y = -1; y <= 1; ++y)
+					{
+						float pcfDepth = ShadowMap.Sample(SampSt, shadowCoord.xy + float2(x, y) * texelSize).r;
+						visibility -= shadowCoord.z - bias > pcfDepth ? 0.1 : 0.0;
+					}
+				}*/
+				//visibility /= 9.0;
+				/*if (shadowCoord.z > 1.0)
+					visibility = 1.0;*/
+				totalLight = dirLight(normal, lights[0], pos,colorT.xyz, visibility);
+
 			}
 			else
 			{

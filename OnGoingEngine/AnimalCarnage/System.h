@@ -74,7 +74,7 @@ private:
 	static SoundManager* soundManager;
 
 	//ForwardShader* theForwardShader;
-	Camera* theCamera;
+	
 
 	//IMGUI VARIABLES
 	//DirectX::XMFLOAT3 camPos;
@@ -119,6 +119,7 @@ public:
 
 	static ShaderManager* shaderManager;
 	static System* fusk;
+	static Camera* theCamera;
 
 	static Keyboard* theKeyboard;
 	static Mouse* theMouse;

@@ -74,7 +74,14 @@ void Camera::Render()
 	//LookAt = DirectX::XMVector3TransformCoord(LookAt, rotationMatrix);
 	//Up = XMVector3TransformCoord(Up, rotationMatrix);
 	//LookAt = DirectX::XMVectorAdd(CamPos, LookAt);
-
+	float dir[4] = {
+		0.0f,-1,0.0f,1.0f
+	};
+	DirectX::XMVECTOR lightDirView = DirectX::XMVectorSet(0,0,0, 0);
+	DirectX::XMVECTOR camPos = DirectX::XMVectorSet(0.0f, 3.0f, -2.0f, 0);
+	DirectX::XMVECTOR up = DirectX::XMVectorSet(0, 1, 0, 0);
+	//DirectX::XMMatrixLookAtLH(CamPos, lightDirView, up);
+	//this->viewMatrix = DirectX::XMMatrixLookAtLH(camPos, lightDirView, up);
 	this->viewMatrix = DirectX::XMMatrixLookAtLH(CamPos, LookAt, Up);
 	//this->viewMatrix = DirectX::XMMatrixLookAtRH(CamPos, LookAt, Up);
 	//this->viewMatrix = DirectX::XMMatrixTranspose(viewMatrix); //moved to shader

@@ -183,9 +183,9 @@ bool LightShader::initialize()
 	D3D11_SAMPLER_DESC desc;
 	ZeroMemory(&desc, sizeof(desc));
 	desc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
-	desc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
-	desc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
-	desc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
+	desc.AddressU = D3D11_TEXTURE_ADDRESS_CLAMP;
+	desc.AddressV = D3D11_TEXTURE_ADDRESS_CLAMP;
+	desc.AddressW = D3D11_TEXTURE_ADDRESS_CLAMP;
 	desc.ComparisonFunc = D3D11_COMPARISON_NEVER;
 	desc.MinLOD = 0;
 	desc.MaxLOD = D3D11_FLOAT32_MAX;
@@ -234,7 +234,7 @@ void LightShader::renderShaderDir(int vertexCount)
 	float blendFactor[4] = { 0.f, 0.f, 0.f, 0.f };
 
 	//System::getDeviceContext()->OMSetDepthStencilState(dpthQuad, 0);
-	//System::getDeviceContext()->PSSetSamplers(0, 1, &sampler);
+	System::getDeviceContext()->PSSetSamplers(0, 1, &sampler);
 	//System::getDeviceContext()->RSSetState(rasState);
 	System::getDeviceContext()->OMSetBlendState(blendState, blendFactor, 1);
 	this->renderPixels(vertexCount);//shade the pixels

@@ -28,15 +28,19 @@ public:
 	bool initialize(int screenWidth, int screenHeight, bool vsync, HWND hwnd, bool fullscreen, float screenDepth, float screenNear, float fov);
 	void shutDown();
 	DirectX::XMMATRIX getProj();
+	DirectX::XMMATRIX getOrtho();
 	static ID3D11Device*& getDevice();
 	static ID3D11DeviceContext*& getDeviceContext();
 
 	void turnOnZ();
 	void turnOffZ();
 	void setRasterState();
-
+	void setRasterBack();
+	void setRasterFront();
 	void setBlendState();
 	void setBackBuffer();
+
+	void setViewPort();
 	void setBackBuffer(ID3D11DepthStencilView*& view);
 
 private:
@@ -57,6 +61,9 @@ private:
 
 
 	ID3D11RasterizerState* rasterState;
+	ID3D11RasterizerState* fRasterState;
+	ID3D11RasterizerState* bRasterState;
+
 	DirectX::XMMATRIX projectionMatrix;
 	DirectX::XMMATRIX orthoMatrix;
 
