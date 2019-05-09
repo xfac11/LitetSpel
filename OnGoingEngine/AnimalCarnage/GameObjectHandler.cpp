@@ -81,14 +81,62 @@ GameObject & GameObjectHandler::getObject(int id)
 
 void GameObjectHandler::draw()
 {
+	System::theGraphicDevice->setRasterFront();
+	System::shaderManager->getShadowMapping()->prepare();//setshader + omsetrendertarget(0,0,depthstencilview
+	DirectX::XMVECTOR lightDirView = DirectX::XMVectorSet(0,0,0, 1);
+	DirectX::XMVECTOR CamPos = DirectX::XMVectorSet(0.0f, 2.0f, 1.0f/*-1*this->lightsCB.data.lights[0].direction[0], -1*this->lightsCB.data.lights[0].direction[1], 1+this->lightsCB.data.lights[0].direction[2]*/, 1);
+	DirectX::XMVECTOR up = DirectX::XMVectorSet(0, 1, 0, 0);
+	
+	// Variables you already know:
+	DirectX::XMVECTOR lightDirectionVector = DirectX::XMVectorSet(this->lightsCB.data.lights[0].direction[0], this->lightsCB.data.lights[0].direction[1], this->lightsCB.data.lights[0].direction[1], 1); // the light direction
+	// Variables you have to define somehow:
+	DirectX::XMVECTOR lookAt = DirectX::XMVectorSet(0,0,0,1); // where the virtual light camera is looking, 
+										   // this doesn't come directly from the light because directional light has
+										   // just direction and not position, so you have to choose it somehow,
+										   // for example as the centre of you scene, for a start ;)
+	//float distance = 10; // how far the virtual light camera is from the lookAt point (again, you have to choose this value)
+
+	//// Then you go:
+	//DirectX::XMVECTOR front, left, up; // basic view matrix orientation vectors
+	//DirectX::XMVECTOR eyePosition; // where the virtual light camera is 
+
+	//front=DirectX::XMVector4Normalize(lightDirectionVector);
+	//eyePosition = lookAt - DirectX::XMVectorScale(front,distance);
+	//D3DXVec3Cross(&right, &UNIT_Y, &front);
+	//D3DXVec3Normalize(&right, &right);
+	//// 'right' can be almost zero if 'front' was almost parallel with UNIT_Y, so check it and fix if needed:
+	//if (D3DXVec3LengthSq(&right) < 0.5f)
+	//	right = Vec3(1, 0, 0);
+	//D3DXVec3Cross(&up, &front, &right);
+
+	//// You can use D3DXMatrixLookAtLH, of fill the matrix manually like this (the function does it also, under the hood):
+	//D3DXMATRIX view;
+	//view._11 = right.x;        view._12 = up.x;    view._13 = front.x;        view._14 = 0;
+	//view._21 = right.y;        view._22 = up.y;    view._23 = front.y;        view._24 = 0;
+	//view._31 = right.z;        view._32 = up.z;    view._33 = front.z;        view._34 = 0;
+	//view._44 = 1.f;
+	//view._41 = -D3DXVec3Dot(&right, &eyePosition);
+	//view._42 = -D3DXVec3Dot(&up, &eyePosition);
+	//view._43 = -D3DXVec3Dot(&front, &eyePosition);
+
+	System::shaderManager->getShadowMapping()->setCBuffers();
+	//DirectX::XMMatrixLookAtLH(CamPos, lightDirView, up);
+	System::shaderManager->getShadowMapping()->setView(DirectX::XMMatrixLookAtLH(CamPos, lightDirView, up));
+	for (int i = 0; i < this->nrOfOpaque; i++)
+	{
+		System::shaderManager->getShadowMapping()->setWorld(*this->opaqueModels[i].worldPtr);
+		this->opaqueModels[i].modelPtr->drawOnlyVertex();
+	}
 	this->lightsCB.data.nrOfLights = nrOfLights;
 	this->lightsCB.applyChanges(System::getDevice(), System::getDeviceContext());
-	DirectX::XMMATRIX worldPos = DirectX::XMMatrixTranslation(gameObjects[6]->getPosition().x, gameObjects[6]->getPosition().y+1, gameObjects[6]->getPosition().z);
+	DirectX::XMMATRIX worldPos = DirectX::XMMatrixTranslation(gameObjects[6]->getPosition().x, gameObjects[6]->getPosition().y+1, gameObjects[6]->getPosition().z-1);
 	this->lightsCB.data.lights[1].worldLight = worldPos;
 	//this->lightsCB.applyChanges(System::getDevice(), System::getDeviceContext());
 	float color[] = {
 		0,0,0,1.0f
 	};
+	System::theGraphicDevice->setViewPort();
+	System::theGraphicDevice->setRasterState();
 	float blendFactor[4] = { 0.f, 0.f, 0.f, 0.f };
 	System::getDeviceContext()->OMSetBlendState(nullptr, blendFactor, 0xffffffff);
 	//System::theGraphicDevice->turnOnZ();
@@ -107,6 +155,9 @@ void GameObjectHandler::draw()
 	//System::shaderManager->getDefShader()->resetCB();
 	System::shaderManager->getLightShader()->setCBuffers();
 	System::shaderManager->getLightShader()->setConstanbuffer(PIXEL, 1, this->lightsCB.getBuffer());
+	//System::getDeviceContext()->OMSetRenderTargets()
+	System::getDeviceContext()->PSSetShaderResources(3, 1, &System::shaderManager->getShadowMapping()->getShadowMap());
+	System::shaderManager->getShadowMapping()->setPSDepthView();//sets the mvp for the depth in lspixelshader
 	System::shaderManager->getLightShader()->setShaders();
 	System::theGraphicDevice->turnOffZ();
 
@@ -136,6 +187,8 @@ void GameObjectHandler::draw()
 	}
 	System::theGraphicDevice->turnOnZ();
 	System::theGraphicDevice->setRasterState();
+	System::getDeviceContext()->PSSetShaderResources(3, 0, nullptr);
+
 	//Light render sphere etc
 	//Skybox
 	System::theGraphicDevice->setBlendState();

@@ -180,7 +180,7 @@ bool GraphicsDevice::initialize(int screenWidth, int screenHeight, bool vsync, H
 	//move to ColorShader
 	this->projectionMatrix = DirectX::XMMatrixPerspectiveFovLH(fieldOfView, screenAspect, 0.01f, 500.f);
 	
-	this->orthoMatrix = DirectX::XMMatrixOrthographicLH((float)20, (float)20, screenNear, screenDepth);
+	this->orthoMatrix = DirectX::XMMatrixOrthographicLH((float)50, (float)50, 1.0f, 7.5f);//for shadowMap;
 
 	D3D11_RASTERIZER_DESC rasterizerDesc;
 	ZeroMemory(&rasterizerDesc, sizeof(D3D11_RASTERIZER_DESC));
@@ -195,6 +195,25 @@ bool GraphicsDevice::initialize(int screenWidth, int screenHeight, bool vsync, H
 		return false;
 	}
 
+	rasterizerDesc.CullMode = D3D11_CULL_MODE::D3D11_CULL_FRONT;
+
+	result = device->CreateRasterizerState(&rasterizerDesc, &fRasterState);
+	if (FAILED(result)) //If error occurred
+	{
+		MessageBox(NULL, "Failed to create rasterizer state.",
+			"D3D11 Initialisation Error", MB_OK);
+		return false;
+	}
+
+	rasterizerDesc.CullMode = D3D11_CULL_MODE::D3D11_CULL_BACK;
+
+	result = device->CreateRasterizerState(&rasterizerDesc, &bRasterState);
+	if (FAILED(result)) //If error occurred
+	{
+		MessageBox(NULL, "Failed to create rasterizer state.",
+			"D3D11 Initialisation Error", MB_OK);
+		return false;
+	}
 	deviceContext->RSSetState(rasterState);
 	// Clear the blend state description.
 	ZeroMemory(&blendStateDescription, sizeof(D3D11_BLEND_DESC));
@@ -272,6 +291,11 @@ DirectX::XMMATRIX GraphicsDevice::getProj()
 	return this->projectionMatrix;
 }
 
+DirectX::XMMATRIX GraphicsDevice::getOrtho()
+{
+	return this->orthoMatrix;
+}
+
 ID3D11Device *& GraphicsDevice::getDevice()
 {
 	return device;
@@ -297,6 +321,16 @@ void GraphicsDevice::setRasterState()
 	deviceContext->RSSetState(rasterState);
 }
 
+void GraphicsDevice::setRasterBack()
+{
+	deviceContext->RSSetState(bRasterState);
+}
+
+void GraphicsDevice::setRasterFront()
+{
+	deviceContext->RSSetState(fRasterState);
+}
+
 void GraphicsDevice::setBlendState()
 {
 	// Turn on the alpha blending.
@@ -306,6 +340,11 @@ void GraphicsDevice::setBlendState()
 void GraphicsDevice::setBackBuffer()
 {
 	deviceContext->OMSetRenderTargets(1, &renderTargetView, this->depthStencilView);
+}
+
+void GraphicsDevice::setViewPort()
+{
+	deviceContext->RSSetViewports(1, &this->vp);
 }
 
 void GraphicsDevice::setBackBuffer(ID3D11DepthStencilView *& view)

@@ -16,6 +16,8 @@ public:
 	void setCamPosToMatricesPerFrame(DirectX::XMFLOAT3 campos);
 	void setCBuffers();
 	void prepare();
+
+	void setPSDepthView();
 	ID3D11ShaderResourceView*& getShadowMap();
 private:
 	
@@ -24,6 +26,8 @@ private:
 	ConstantBuffer<WorldMatrix> worldCB;
 	ConstantBuffer<PerFrameMatrices> perFrameCB;
 
+	D3D11_VIEWPORT vp;
+	ID3D11SamplerState* sampler;
 	ID3D11DepthStencilView* depthStencilView;
 	ID3D11Texture2D* depthTexture;
 	ID3D11ShaderResourceView* depthShaderResource;

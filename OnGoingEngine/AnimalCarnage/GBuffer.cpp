@@ -126,6 +126,7 @@ bool GBuffer::setRenderTargets()
 {
 	ID3D11ShaderResourceView* null[] = { nullptr, nullptr, nullptr,nullptr };
 	System::getDeviceContext()->PSSetShaderResources(0, GBUFFERCAP, null);
+	System::getDeviceContext()->OMSetRenderTargets(0, nullptr, nullptr);
 	System::getDeviceContext()->OMSetRenderTargets(GBUFFERCAP, this->renderTars, depthStencView);
 	//System::getDeviceContext()->RSSetViewports(1, &viewP);
 	return true;//always returns true

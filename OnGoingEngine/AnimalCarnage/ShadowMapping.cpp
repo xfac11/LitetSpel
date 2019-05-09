@@ -84,8 +84,8 @@ bool ShadowMapping::initialize()
 
 	D3D11_TEXTURE2D_DESC depthStencilDesc;
 
-	depthStencilDesc.Width = System::getWindowArea().width;
-	depthStencilDesc.Height = System::getWindowArea().height;
+	depthStencilDesc.Width = 1024/*System::getWindowArea().width*/;
+	depthStencilDesc.Height = 1024/*System::getWindowArea().height*/;
 	depthStencilDesc.MipLevels = 1;
 	depthStencilDesc.ArraySize = 1;
 	depthStencilDesc.Format = DXGI_FORMAT_R32_TYPELESS;
@@ -95,6 +95,13 @@ bool ShadowMapping::initialize()
 	depthStencilDesc.BindFlags = D3D11_BIND_DEPTH_STENCIL | D3D11_BIND_SHADER_RESOURCE;
 	depthStencilDesc.CPUAccessFlags = 0;
 	depthStencilDesc.MiscFlags = 0;
+
+	this->vp.Width = (float)1024;
+	this->vp.Height = (float)1024;
+	this->vp.MinDepth = 0.0f;
+	this->vp.MaxDepth = 1.0f;
+	this->vp.TopLeftX = 0;
+	this->vp.TopLeftY = 0;
 
 	D3D11_DEPTH_STENCIL_VIEW_DESC dsv_desc;
 	dsv_desc.Flags = 0;
@@ -115,6 +122,29 @@ bool ShadowMapping::initialize()
 	if (FAILED(System::getDevice()->CreateShaderResourceView(depthTexture, &sr_desc, &depthShaderResource)))
 		return false;
 
+	D3D11_SAMPLER_DESC desc;
+	float bColor[4] = {
+		1.0f, 1.0f, 1.0f, 1.0f
+	};
+	ZeroMemory(&desc, sizeof(desc));
+	desc.Filter = D3D11_FILTER_COMPARISON_MIN_MAG_LINEAR_MIP_POINT;
+	desc.AddressU = D3D11_TEXTURE_ADDRESS_BORDER;
+	desc.AddressV = D3D11_TEXTURE_ADDRESS_BORDER;
+	desc.AddressW = D3D11_TEXTURE_ADDRESS_BORDER;
+	desc.ComparisonFunc = D3D11_COMPARISON_LESS_EQUAL;
+	desc.BorderColor[0] = bColor[0];
+	desc.BorderColor[1] = bColor[1];
+	desc.BorderColor[2] = bColor[2];
+	desc.BorderColor[3] = bColor[3];
+	desc.MinLOD = 0;
+	desc.MaxLOD = 1;
+	HRESULT hr = System::getDevice()->CreateSamplerState(&desc, &this->sampler);
+	if (FAILED(hr))
+	{
+		//MessageBox(hwnd, "Error compiling shader.  Check shader-error.txt for message.", "error", MB_OK);
+		//deal with error. Log it maybe
+
+	}
 
 	return true;
 }
@@ -156,11 +186,20 @@ void ShadowMapping::setCBuffers()
 
 void ShadowMapping::prepare()
 {
-
+	System::getDeviceContext()->RSSetViewports(1, &this->vp);
 	this->setShaders();
 	System::getDeviceContext()->ClearDepthStencilView(this->depthStencilView, D3D11_CLEAR_DEPTH, 1.0f, 0);
+	ID3D11ShaderResourceView* s = NULL;
+	System::getDeviceContext()->PSSetShaderResources(3, 1, &s);
 	System::getDeviceContext()->OMSetRenderTargets(0, nullptr, this->depthStencilView);
+	System::getDeviceContext()->PSSetSamplers(0, 1, &this->sampler);
 	//System::getDeviceContext().omset
+}
+
+void ShadowMapping::setPSDepthView()
+{
+	this->setConstanbuffer(PIXEL, 0, this->perFrameCB.getBuffer());
+	this->setConstanbuffer(PIXEL, 2, this->worldCB.getBuffer());
 }
 
 ID3D11ShaderResourceView *& ShadowMapping::getShadowMap()
