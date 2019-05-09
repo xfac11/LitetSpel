@@ -1,7 +1,10 @@
+#ifndef  PLAYER_H
+#define PLAYER_H
+
 #include "Bear.h"
 #include "Fox.h"
 #include "GamePad.h"
-#include "Primitives.h"
+//#include "Primitives.h"
 enum CHARACTER{
 	BEAR,FOX
 };
@@ -40,6 +43,8 @@ private:
 	XMFLOAT3 Velocity = XMFLOAT3(0, 0, 0);
 	/*Primitives *CollisionShape;*/
 public:
+	bool getHit()const { return hit; }
+	bool hit = false;
 	Player();
 	~Player();
 
@@ -72,4 +77,7 @@ public:
 
 	GameObject* playerObj;
 };
+
+
+#endif // ! PLAYER_H
 

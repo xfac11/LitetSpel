@@ -67,6 +67,7 @@ void GameObject::setHalfSize(float halfSize[3], float posOffset[3])
 	this->colBox.width = halfSize[0];
 	this->colBox.height = halfSize[1];
 	this->colBox.depth = halfSize[2];
+	//wthis->colBox.positionOffset = btVector3(posOffset[0], posOffset[1], posOffset[2]);
 	this->CollisionShape = new Primitives();
 	this->CollisionShape->Initialize(1,btVector3(posOffset[0], posOffset[1], posOffset[2]), btVector3(halfSize[0]*2, halfSize[1]*2, halfSize[2]*2));
 	positionOffset = btVector3(posOffset[0], posOffset[1], posOffset[2]);

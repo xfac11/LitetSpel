@@ -26,6 +26,8 @@ solver(new btSequentialImpulseConstraintSolver)
 
 	//world->addRigidBody(body);
 	//bodies.push_back(body);
+
+	gContactAddedCallback = callbackFunc;
 }
 
 
@@ -61,6 +63,7 @@ void Physics::Update(float deltaTime)
 
 	//this->world->stepSimulation(1 / 60.f, 10);
 	this->world->stepSimulation(deltaTime);
+
 }
 
 btRigidBody* Physics::addSphere(float radius, btVector3 Origin, float mass)
@@ -99,11 +102,50 @@ btRigidBody* Physics::addBox(btVector3 Origin, btVector3 size,float mass)
 	}
 	btMotionState* motion = new btDefaultMotionState(t);
 	btRigidBody::btRigidBodyConstructionInfo info(mass, motion, box, inertia);
-
 	btRigidBody* body = new btRigidBody(info);
+	body->setCollisionFlags(body->getCollisionFlags() | btCollisionObject::CF_CUSTOM_MATERIAL_CALLBACK);
 	this->world->addRigidBody(body);
 	bodies.push_back(body);
 	return body;
+}
+
+btRigidBody* Physics::addPlayer(btVector3 Origin, btVector3 size, float mass, Player *player)
+{
+	//add object set transform
+	btTransform t; //
+	t.setIdentity();
+	t.setOrigin(btVector3(Origin));
+	btBoxShape* box = new btBoxShape(size);
+
+	btVector3 inertia(0, 0, 0);
+	if (mass != 0.0f) {
+		box->calculateLocalInertia(mass, inertia);
+	}
+	btMotionState* motion = new btDefaultMotionState(t);
+	btRigidBody::btRigidBodyConstructionInfo info(mass, motion, box, inertia);
+	btRigidBody* body = new btRigidBody(info);
+	body->setCollisionFlags(body->getCollisionFlags() | btCollisionObject::CF_CUSTOM_MATERIAL_CALLBACK);
+	this->world->addRigidBody(body);
+	
+	bodies.push_back(body);
+	body->setUserPointer(player);
+
+	return body;
+}
+
+bool Physics::callbackFunc(btManifoldPoint& cp, const btCollisionObjectWrapper* obj1, int id1, int index1, const btCollisionObjectWrapper* obj2, int id2, int index2)
+{
+	
+	
+	
+	
+	if (obj1->getCollisionObject()->getUserPointer() == ((Player*)obj1->getCollisionObject()->getUserPointer()))
+	{
+		if(((Player*)obj1->getCollisionObject()->getUserPointer()) != nullptr)
+			bool ishit = ((Player*)obj1->getCollisionObject()->getUserPointer())->getHit();
+	
+	}
+	return false;
 }
 
 btStaticPlaneShape* Physics::getPlaneRigidBody()

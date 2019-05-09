@@ -4,6 +4,9 @@
 #include "IndexBuffer.h"
 #include "SimpleShaderClass.h"
 #include "Transform.h"
+#include <btBulletDynamicsCommon.h>
+
+
 struct VertexObject
 {
 	float x, y, z;
@@ -24,6 +27,13 @@ public:
 	void Initialize(int shapes, btVector3 position,btVector3 size);
 	~Primitives();
 	void Draw(SimpleShader* shader);
+};
+struct DatForaObject
+{
+	btRigidBody* rigidbody = nullptr;
+	Primitives* primitiv = nullptr;
+	float health = 0;
+	DatForaObject():rigidbody(nullptr), primitiv(nullptr),health(0){}
 };
 
 

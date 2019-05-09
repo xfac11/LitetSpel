@@ -23,6 +23,7 @@ struct AABB {
 	float height;
 	float width;
 	float depth;
+
 	AABB() : Max(1, 1, 1), Min(1, 1, 1) { }
 	AABB(const XMFLOAT3& p, const XMFLOAT3& s) :
 		Max(p), Min(s) { }
