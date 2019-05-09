@@ -141,7 +141,7 @@ bool GunGameState::initailize()
 	//tree->setRotationRollPitchYaw(0,1,0);
 
 
-	nrOfPlayers = 2;
+	nrOfPlayers = 1;
 	player = new Player * [nrOfPlayers];
 
 	for (int i = 0; i < nrOfPlayers; i++)
@@ -268,6 +268,7 @@ void GunGameState::renderImgui()
 
 bool GunGameState::update(float deltaTime)
 {
+	OutputDebugStringA("0\n");
 	if (paused)
 	{
 		this->pauseGui->update(deltaTime);
@@ -322,10 +323,10 @@ bool GunGameState::update(float deltaTime)
 		player[i]->update(deltaTime, i);
 		player[i]->updateRumble(deltaTime, i);
 
-		if (/*System::getphysices()->getPlaneRigidBody()->getPlaneConstant()*/  max.getY() < 1.2f){
-		//	//DirectX::XMFLOAT3 aabbmin, DirectX::XMFLOAT3 aabbMax,const AABB b, XMFLOAT3 posB
-			player[i]->setGrounded(true);
-		}
+		//if (/*System::getphysices()->getPlaneRigidBody()->getPlaneConstant()*/  max.getY() < 1.2f){
+		////	//DirectX::XMFLOAT3 aabbmin, DirectX::XMFLOAT3 aabbMax,const AABB b, XMFLOAT3 posB
+		//	player[i]->setGrounded(true);
+		//}
 	}
 	//System::getphysices()->getPlaneRigidBody()->getpl().getY();
 	if (Intersects(System::handler->getObject(2).getCollisionBox(), System::handler->getObject(2).getPosition(), System::handler->getObject(3).getCollisionBox(), System::handler->getObject(3).getPosition()))
@@ -363,6 +364,11 @@ bool GunGameState::controllerIsConnected(int controllerPort)
 {
 	return System::theGamePad->GetState(controllerPort).IsConnected();
 }
+
+//btCollisionObjectWrapper GunGameState::getGroundCollisionObject()
+//{
+//	//return ground->;
+//}
 
 //bool GunGameState::collision(DirectX::XMFLOAT2 posOne, DirectX::XMFLOAT2 scaleOne,int playerID, DirectX::XMFLOAT2 posTwo, DirectX::XMFLOAT2 scaleTwo, int itemID)
 //{

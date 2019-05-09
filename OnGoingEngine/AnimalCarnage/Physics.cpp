@@ -106,6 +106,7 @@ btRigidBody* Physics::addBox(btVector3 Origin, btVector3 size,float mass)
 	body->setCollisionFlags(body->getCollisionFlags() | btCollisionObject::CF_CUSTOM_MATERIAL_CALLBACK);
 	this->world->addRigidBody(body);
 	bodies.push_back(body);
+
 	return body;
 }
 
@@ -141,9 +142,19 @@ bool Physics::callbackFunc(btManifoldPoint& cp, const btCollisionObjectWrapper* 
 	
 	if (obj1->getCollisionObject()->getUserPointer() == ((Player*)obj1->getCollisionObject()->getUserPointer()))
 	{
-		if(((Player*)obj1->getCollisionObject()->getUserPointer()) != nullptr)
+		if (((Player*)obj1->getCollisionObject()->getUserPointer()) != nullptr) {
 			bool ishit = ((Player*)obj1->getCollisionObject()->getUserPointer())->getHit();
-	
+			
+		}
+		if (((Objects*)obj2->getCollisionObject()->getUserPointer()) != nullptr) {
+			OutputDebugStringA("1\n");
+			if (((Player*)obj2->getCollisionObject()->getUserPointer()) != nullptr) {
+				((Player*)obj2->getCollisionObject()->getUserPointer())->setGrounded(true);
+			}
+		}
+		/*else {
+			((Player*)obj1->getCollisionObject()->getUserPointer())->setGrounded(false);
+		}*/
 	}
 	return false;
 }

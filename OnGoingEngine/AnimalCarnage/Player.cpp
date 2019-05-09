@@ -155,7 +155,7 @@ void Player::update(float deltaTime, int id)
 		//JUMP
 		if ((state.buttons.x) && canJump){
 			//this->playerObj->getRigidbody()->setLinearVelocity(btVector3(0,1, 0));
-			this->playerObj->getRigidbody()->applyImpulse(btVector3(0, 65.0f *deltaTime * 60,0),btVector3(0,0,0));
+			this->playerObj->getRigidbody()->applyImpulse(btVector3(0, 105.0f *deltaTime * 60,0),btVector3(0,0,0));
 			//playerObj->getRigidbody()->applyForce(btVector3(0, 4500.0f, 0), btVector3(0, 0, 0));
 			grounded = false;
 		}

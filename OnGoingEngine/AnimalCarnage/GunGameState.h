@@ -63,7 +63,7 @@ public:
 
 	bool controllerIsConnected(int controllerPort);
 
-	
+	//btCollisionObjectWrapper getGroundCollisionObject();
 	//Temporary
 	//box and box
 	//bool collision(DirectX::XMFLOAT2 posOne, DirectX::XMFLOAT2 scaleOne,int playerID, DirectX::XMFLOAT2 posTwo, DirectX::XMFLOAT2 scaleTwo, int itemID);
