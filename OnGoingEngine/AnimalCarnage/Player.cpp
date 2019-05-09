@@ -35,15 +35,31 @@ void Player::initialize()
 	System::handler->addObject(this->hitbox.hitbox);
 	//this->playerObj->getRigidbody() = System::getphysices()->addSphere(0.5f,btVector3(0,0,0),1);
 
+
+	//load player
+	//AABB aabb = playerObj->getCollisionBox();
+	//btVector3 size = btVector3(1 + aabb.width * 2, aabb.height * 2, 1);
+	//playerObj->CollisionShape->Initialize(1, btVector3(0, 0, 0), size);
+	////DirectX::XMMatrixTranslation(this->Position.x+posOffset[0])
+	//playerObj->CollisionShape->SetWorld(&playerObj->getWorld());
+	//System::getDebugDraw()->addPrimitives(playerObj->CollisionShape);
+
 	System::theModelLoader->loadGO(this->playerObj, "Resources/Models/fox_character.lu", "fox_character_diffuse.tga");
 	System::handler->addObject(this->playerObj);
+
+
 	AABB aabb = playerObj->getCollisionBox();
 	btVector3 size = btVector3(1+aabb.width*2, aabb.height*2,1);
 	this->playerObj->getRigidbody() = System::getphysices()->addBox(btVector3(0, 0, 0), size, 10.0f);
 	//this->playerObj->getRigidbody()->getWorldTransform().setRotation(btQuaternion(3.14 / 2, 0, 0));
 	this->playerObj->getRigidbody()->setWorldTransform(XMMATRIX_to_btTransform(this->playerObj->getWorld()));
 	this->playerObj->setRotationRollPitchYaw(0.f,3.14f/2.f,0.f);
-	//this->playerObj->setScale(0.4f, 0.2f, 1.0f);
+
+
+
+
+
+
 
 	//System::handler->addObject(this->hitbox.hitbox);
 	Primitives *CollisionShape;
