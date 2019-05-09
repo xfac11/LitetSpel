@@ -26,6 +26,8 @@ solver(new btSequentialImpulseConstraintSolver)
 
 	//world->addRigidBody(body);
 	//bodies.push_back(body);
+
+	gContactAddedCallback = callbackFunc;
 }
 
 
@@ -61,6 +63,7 @@ void Physics::Update(float deltaTime)
 
 	//this->world->stepSimulation(1 / 60.f, 10);
 	this->world->stepSimulation(deltaTime);
+
 }
 
 btRigidBody* Physics::addSphere(float radius, btVector3 Origin, float mass)
@@ -99,11 +102,19 @@ btRigidBody* Physics::addBox(btVector3 Origin, btVector3 size,float mass)
 	}
 	btMotionState* motion = new btDefaultMotionState(t);
 	btRigidBody::btRigidBodyConstructionInfo info(mass, motion, box, inertia);
-
 	btRigidBody* body = new btRigidBody(info);
+	body->setCollisionFlags(body->getCollisionFlags() | btCollisionObject::CF_CUSTOM_MATERIAL_CALLBACK);
 	this->world->addRigidBody(body);
 	bodies.push_back(body);
+	body->setUserPointer(bodies[bodies.size() - 1]);
+
 	return body;
+}
+
+bool Physics::callbackFunc(btManifoldPoint& cp, const btCollisionObjectWrapper* obj1, int id1, int index1, const btCollisionObjectWrapper* obj2, int id2, int index2)
+{
+
+	return false;
 }
 
 btStaticPlaneShape* Physics::getPlaneRigidBody()

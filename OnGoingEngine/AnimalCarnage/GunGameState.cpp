@@ -104,7 +104,7 @@ bool GunGameState::initailize()
 
 	wall1 = new GameObject(System::shaderManager->getForwardShader());
 	wall1->setScale(2, 20, 20);
-	wall1->getRigidbody() = System::getphysices()->addBox(btVector3(-24, 6, 0), btVector3(wall1->getScale().x, wall1->getScale().y, wall1->getScale().z), 0);
+	wall1->getRigidbody() = System::getphysices()->addBox(btVector3(-24, 6, 0), btVector3(wall1->getScale().x, wall1->getScale().y, ground->getScale().z), 0);
 	wall1->getRigidbody()->setLinearFactor(btVector3(0, 0, 0));
 	this->wall1->getRigidbody()->setFriction(0.5);
 	wall1->getRigidbody()->setCollisionFlags(btCollisionObject::CF_STATIC_OBJECT);

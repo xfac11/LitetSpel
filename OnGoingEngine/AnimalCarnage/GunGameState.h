@@ -48,7 +48,8 @@ private:
 	GameObject* wall1;
 	GameObject* wall2;
 
-	Objects * object[3];
+	Objects * object[4];
+
 
 public:
 	GunGameState();

@@ -35,7 +35,6 @@ void Player::initialize()
 	System::handler->addObject(this->hitbox.hitbox);
 	//this->playerObj->getRigidbody() = System::getphysices()->addSphere(0.5f,btVector3(0,0,0),1);
 
-
 	//load player
 	//AABB aabb = playerObj->getCollisionBox();
 	//btVector3 size = btVector3(1 + aabb.width * 2, aabb.height * 2, 1);

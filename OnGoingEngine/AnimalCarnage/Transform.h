@@ -16,6 +16,7 @@ protected:
 	XMFLOAT3 Rotation = XMFLOAT3(0.0f, 0.0f, 0.0f);
 	float Angle = 0.0f;
 public:
+
 	//vectors for bullet
 	btVector3 LEFTVECTOR = btVector3(-1.0f, 0.0f, 0.0f);
 	btVector3 RIGHTVECTOR = btVector3(1.0f, 0.0f, 0.0f);

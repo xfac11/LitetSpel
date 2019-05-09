@@ -19,6 +19,7 @@ struct Hitbox
 	int time;
 	GameObject* hitbox;
 };
+
 class Player
 {
 private:
