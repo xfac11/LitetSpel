@@ -141,7 +141,7 @@ bool GunGameState::initailize()
 	//tree->setRotationRollPitchYaw(0,1,0);
 
 
-	nrOfPlayers = 1;
+	nrOfPlayers = 4;
 	player = new Player * [nrOfPlayers];
 
 	for (int i = 0; i < nrOfPlayers; i++)
