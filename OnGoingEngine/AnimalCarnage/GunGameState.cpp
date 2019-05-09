@@ -91,19 +91,20 @@ bool GunGameState::initailize()
 
 	//->setLinearFactor(btVector3(0,0,0));
 	ground = new GameObject(System::shaderManager->getForwardShader());
+	System::theModelLoader->loadGO(ground, "Resources/Models/cube2.lu", "stones_and_rocks_diffuse_base.tga");
+
 	ground->setScale(100,2,25); 
 	ground->getRigidbody() = System::getphysices()->addBox(btVector3(0, -3, 5), btVector3(ground->getScale().x, ground->getScale().y, ground->getScale().z),0);
 	ground->getRigidbody()->setLinearFactor(btVector3(0,0,0));
 	//ground->setScale(ground->getRigidbody()->get);
 	this->ground->getRigidbody()->setFriction(3);
-	ground->getRigidbody()->setCollisionFlags(btCollisionObject::CF_STATIC_OBJECT);
-	System::theModelLoader->loadGO(ground, "Resources/Models/cube2.lu", "stones_and_rocks_diffuse_base.tga");
+	ground->getRigidbody()->setCollisionFlags(btCollisionObject::CF_STATIC_OBJECT);	
 	System::handler->addObject(ground);
 	this->ground->getRigidbody()->setActivationState(DISABLE_DEACTIVATION);
 
 	wall1 = new GameObject(System::shaderManager->getForwardShader());
 	wall1->setScale(2, 20, 20);
-	wall1->getRigidbody() = System::getphysices()->addBox(btVector3(-24, 6, 0), btVector3(2, 20, 20), 0);
+	wall1->getRigidbody() = System::getphysices()->addBox(btVector3(-24, 6, 0), btVector3(wall1->getScale().x, wall1->getScale().y, wall1->getScale().z), 0);
 	wall1->getRigidbody()->setLinearFactor(btVector3(0, 0, 0));
 	this->wall1->getRigidbody()->setFriction(0.5);
 	wall1->getRigidbody()->setCollisionFlags(btCollisionObject::CF_STATIC_OBJECT);
@@ -273,7 +274,7 @@ bool GunGameState::update(float deltaTime)
 		return true;
 	}
 
-	ground->setPosition(ground->getRigidbody()->getWorldTransform().getOrigin().getX(), ground->getRigidbody()->getWorldTransform().getOrigin().getY() +1.6, ground->getRigidbody()->getWorldTransform().getOrigin().getZ());
+	ground->setPosition(ground->getRigidbody()->getWorldTransform().getOrigin().getX(), ground->getRigidbody()->getWorldTransform().getOrigin().getY(), ground->getRigidbody()->getWorldTransform().getOrigin().getZ());
 	ground->getRigidbody()->setLinearFactor(btVector3(0, 0, 0));
 	ground->getRigidbody()->setCollisionFlags(btCollisionObject::CF_STATIC_OBJECT);
 

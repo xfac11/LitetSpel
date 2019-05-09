@@ -8,7 +8,14 @@ Objects::Objects(std::string filepath, std::string texture, btVector3 position,b
 	System::theModelLoader->loadGO(this->ObjectOBJ, filepath.c_str(), texture);
 	System::handler->addObject(this->ObjectOBJ);
 	this->ObjectOBJ->setPosition(position);
-	this->ObjectOBJ->getRigidbody() = System::getphysices()->addBox(position, size, 0.0f);
+
+
+
+	AABB aabb = ObjectOBJ->getCollisionBox();
+	btVector3 sizeOfOBject = btVector3(aabb.width, aabb.height, 1);
+	btVector3 PositionOfOBject = ObjectOBJ->positionOffset;
+
+	this->ObjectOBJ->getRigidbody() = System::getphysices()->addBox(PositionOfOBject, sizeOfOBject, 0.0f);
 	//this->ObjectOBJ->setScale(size);
 	//this->playerObj->getRigidbody()->getWorldTransform().setRotation(btQuaternion(3.14 / 2, 0, 0));
 	this->ObjectOBJ->getRigidbody()->setWorldTransform(XMMATRIX_to_btTransform(this->ObjectOBJ->getWorld()));

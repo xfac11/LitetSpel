@@ -28,6 +28,7 @@ public:
 	void draw();
 	AABB getCollisionBox();
 	Primitives * CollisionShape;
+	btVector3 positionOffset;
 	
 private:
 	Model* *theModel;
