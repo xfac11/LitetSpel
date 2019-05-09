@@ -187,8 +187,8 @@ float4 PS_main(VS_OUT input) : SV_Target
 					}
 				}*/
 				//visibility /= 9.0;
-				/*if (shadowCoord.z > 1.0)
-					visibility = 1.0;*/
+				if (shadowCoord.z > 1.0)
+					visibility = 1.0;
 				totalLight = dirLight(normal, lights[0], pos,colorT.xyz, visibility);
 
 			}
