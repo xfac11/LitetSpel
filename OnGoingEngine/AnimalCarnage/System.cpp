@@ -495,7 +495,7 @@ void System::update(float deltaTime)
 		}
 		if (ptr->checkPause() == false)
 		{
-			//remeber to set rotation
+			//remeber to also set rotation
 			this->theCamera->calcCamera(playerPos);
 		}
 		else
