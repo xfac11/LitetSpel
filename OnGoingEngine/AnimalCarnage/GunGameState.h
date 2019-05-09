@@ -10,11 +10,16 @@
 #include "btBulletCollisionCommon.h"
 #include "btBulletDynamicsCommon.h"
 #include "Objects.h"
+
 class GunGameState : public State
 {
 private:
 	int nrOfPlayers;
 	Player** player;
+
+	GuiBase* inGameGui;
+	GuiBase* pauseGui;
+	bool paused;
 
 	//btDynamicsWorld* world;
 	//btDispatcher* dispatcher;
@@ -48,6 +53,10 @@ private:
 public:
 	GunGameState();
 	~GunGameState();
+
+	void pause(bool paused);
+	int getNrOfPlayers() const;
+	Player* getPlayer(int id) const;
 
 	bool initailize();
 	bool render();

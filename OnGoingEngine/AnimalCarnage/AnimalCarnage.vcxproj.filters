@@ -673,6 +673,8 @@
     </ClCompile>
     <ClCompile Include="ShadowMapping.cpp" />
     <ClCompile Include="Objects.cpp" />
+    <ClCompile Include="GunGameGui.cpp" />
+    <ClCompile Include="PauseGui.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource1.h" />
@@ -1555,6 +1557,8 @@
     </ClInclude>
     <ClInclude Include="ShadowMapping.h" />
     <ClInclude Include="Objects.h" />
+    <ClInclude Include="GunGameGui.h" />
+    <ClInclude Include="PauseGui.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="imgui\.gitkeep" />

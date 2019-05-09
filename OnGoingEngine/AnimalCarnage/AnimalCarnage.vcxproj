@@ -300,6 +300,7 @@
     <ClCompile Include="GraphicsDevice.cpp" />
     <ClCompile Include="GuiBase.cpp" />
     <ClCompile Include="GuiElement.cpp" />
+    <ClCompile Include="GunGameGui.cpp" />
     <ClCompile Include="GunGameState.cpp" />
     <ClCompile Include="HealthBar.cpp" />
     <ClCompile Include="imgui\imgui.cpp" />
@@ -327,6 +328,7 @@
     <ClCompile Include="MouseEvent.cpp" />
     <ClCompile Include="Objects.cpp" />
     <ClCompile Include="OptionsGui.cpp" />
+    <ClCompile Include="PauseGui.cpp" />
     <ClCompile Include="Physics.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PlayerSelector.cpp" />
@@ -599,6 +601,7 @@
     <ClInclude Include="GraphicsDevice.h" />
     <ClInclude Include="GuiBase.h" />
     <ClInclude Include="GuiElement.h" />
+    <ClInclude Include="GunGameGui.h" />
     <ClInclude Include="GunGameState.h" />
     <ClInclude Include="HealthBar.h" />
     <ClInclude Include="imgui\imconfig.h" />
@@ -625,6 +628,7 @@
     <ClInclude Include="MouseEvent.h" />
     <ClInclude Include="Objects.h" />
     <ClInclude Include="OptionsGui.h" />
+    <ClInclude Include="PauseGui.h" />
     <ClInclude Include="Physics.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="PlayerSelector.h" />

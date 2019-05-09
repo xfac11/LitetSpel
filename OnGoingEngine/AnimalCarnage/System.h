@@ -96,7 +96,7 @@ private:
 	//void renderImgui();
 	void update(float deltaTime);
 	void render();
-	void resetShaders();
+	
 	void reset();
 	static LRESULT CALLBACK  WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
 	HWND InitWindow(HINSTANCE hInstance, float height, float width);
@@ -110,6 +110,7 @@ public:
 	bool initialize();
 	void run();
 	void shutDown();
+	void resetShaders();
 	WPARAM getMsgWParam();
 	static ID3D11Device*& getDevice();
 	static ID3D11DeviceContext*& getDeviceContext();

@@ -71,7 +71,7 @@ void MainMenu::shutDown()
 	delete this->select;
 }
 
-void MainMenu::setCurrentMenu(MainMenuGui menu)
+void MainMenu::setCurrentMenu(MainMenuGui menu, bool alwaysActivateDelay)
 {
 	GuiBase* oldGui = this->gui;
 
@@ -96,6 +96,10 @@ void MainMenu::setCurrentMenu(MainMenuGui menu)
 		oldGui->shutDown();
 
 		this->gui->initialize();
+		this->gui->activateDelay();
+	}
+	else if (alwaysActivateDelay)
+	{
 		this->gui->activateDelay();
 	}
 }

@@ -537,11 +537,6 @@ void System::update(float deltaTime)
 			this->currentState = TESTMAP;
 		}*/
 	}
-	if (theKeyboard->KeyIsPressed('B')) {
-		if (MAINMENU != currentState) {
-			this->currentState = MAINMENU;
-		}
-	}
 
 	if (theKeyboard->KeyIsPressed('M'))
 	{
@@ -744,6 +739,10 @@ void System::closeWindow()
 
 void System::setState(GameState state)
 {
-	
 	System::fusk->currentState = state;
+
+	if (state == MAINMENU)
+	{
+		static_cast<MainMenu*>(System::fusk->states[MAINMENU])->setCurrentMenu(MAIN, true);
+	}
 }

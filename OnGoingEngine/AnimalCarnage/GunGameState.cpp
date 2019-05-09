@@ -1,5 +1,7 @@
 #include "GunGameState.h"
-#include"System.h"
+#include "System.h"
+#include "GunGameGui.h"
+#include "PauseGui.h"
 
 //btRigidBody* GunGameState::addSphere(float rad, float x, float y, float z, float mass)
 //{	//add object set transform
@@ -46,6 +48,9 @@ bool GunGameState::checkReset(DirectX::GamePad::State state)
 GunGameState::GunGameState()
 {
 	this->testColBox = false;
+	this->paused = false;
+	this->inGameGui = nullptr;
+	this->pauseGui = nullptr;
 }
 
 GunGameState::~GunGameState()
@@ -55,6 +60,26 @@ GunGameState::~GunGameState()
 	delete object[1];
 	delete object[2];
 	//delete object[3];
+}
+
+void GunGameState::pause(bool paused)
+{
+	this->paused = paused;
+
+	if (paused)
+	{
+		this->pauseGui->activateDelay();
+	}
+}
+
+int GunGameState::getNrOfPlayers() const
+{
+	return this->nrOfPlayers;
+}
+
+Player * GunGameState::getPlayer(int id) const
+{
+	return this->player[id];
 }
 
 bool GunGameState::initailize()
@@ -176,6 +201,12 @@ bool GunGameState::initailize()
 	////add sphere
 	//
 	////addSphere(1.0f, 0, 20, 0, 1.0);
+
+	this->inGameGui = new GunGameGui(this);
+	this->inGameGui->initialize();
+	this->pauseGui = new PauseGui(this);
+	this->pauseGui->initialize();
+
 	return true;
 }
 
@@ -184,15 +215,14 @@ bool GunGameState::render()
 	renderImgui();
 	System::handler->draw();
 
-	//for (int i = 0; i < bodies.size(); i++)
-	//{
-	//	
-	//		renderSphere(bodies[i]);
-	//	
-	//}
-	//world->stepSimulation(1 / 60.0);
+	System::fusk->resetShaders();
+	this->inGameGui->render();
 
-	//this->gui->render();
+	if (paused)
+	{
+		this->pauseGui->render();
+	}
+
 	return true;
 }
 
@@ -237,6 +267,12 @@ void GunGameState::renderImgui()
 
 bool GunGameState::update(float deltaTime)
 {
+	if (paused)
+	{
+		this->pauseGui->update(deltaTime);
+		return true;
+	}
+
 	ground->setPosition(ground->getRigidbody()->getWorldTransform().getOrigin().getX(), ground->getRigidbody()->getWorldTransform().getOrigin().getY() +1.6, ground->getRigidbody()->getWorldTransform().getOrigin().getZ());
 	ground->getRigidbody()->setLinearFactor(btVector3(0, 0, 0));
 	ground->getRigidbody()->setCollisionFlags(btCollisionObject::CF_STATIC_OBJECT);
@@ -295,9 +331,9 @@ bool GunGameState::update(float deltaTime)
 	{
 
 	}
+
+	this->inGameGui->update(deltaTime);
 	return true;
-
-
 }
 
 void GunGameState::shutDown()
@@ -314,6 +350,10 @@ void GunGameState::shutDown()
 	}
 	delete[] player;
 
+	delete this->inGameGui;
+	delete this->pauseGui;
+	this->inGameGui = nullptr;
+	this->pauseGui = nullptr;
 }
 
 

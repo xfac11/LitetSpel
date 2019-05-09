@@ -1,8 +1,8 @@
-#include "MainGui.h"
+#include "PauseGui.h"
 #include "System.h"
-#include "MainMenu.h"
+#include "GunGameState.h"
 
-void MainGui::changeSelected_Keyboard()
+void PauseGui::changeSelected_Keyboard()
 {
 	GuiElement* newSelected = nullptr;
 
@@ -34,10 +34,10 @@ void MainGui::changeSelected_Keyboard()
 	}
 }
 
-void MainGui::changeSelected()
+void PauseGui::changeSelected()
 {
 	GuiElement* newSelected = nullptr;
-	
+
 	if (System::theTracker->dpadUp == DirectX::GamePad::ButtonStateTracker::PRESSED)
 	{
 		newSelected = this->selectedElement->getUp();
@@ -54,64 +54,60 @@ void MainGui::changeSelected()
 	{
 		newSelected = this->selectedElement->getRight();
 	}
-	
+
 	if (newSelected != nullptr)
 	{
 		this->selectedElement = newSelected;
 	}
 }
 
-MainGui::MainGui(State * myState) : GuiBase(myState)
+PauseGui::PauseGui(State * myState) : GuiBase(myState)
 {
 	this->selectedElement = nullptr;
 
-	this->playButton = nullptr;
-	this->optionsButton = nullptr;
-	this->quitButton = nullptr;
+	this->resumeButton = nullptr;
+	this->mainMenuButton = nullptr;
 
 	this->timeSinceChanged = 0.0F;
 	this->changedLastFrame = false;
 }
 
-MainGui::~MainGui()
+PauseGui::~PauseGui()
 {
-	delete this->playButton;
-	delete this->optionsButton;
-	delete this->quitButton;
+	delete this->resumeButton;
+	delete this->mainMenuButton;
 }
 
-bool MainGui::initialize()
+bool PauseGui::initialize()
 {
-	this->playButton = new Button("Start", Vector2(WIDTH / 2 - 300, HEIGHT / 2 - 140));
-	this->optionsButton = new Button("Options", Vector2(WIDTH / 2 - 300, HEIGHT / 2));
-	this->quitButton = new Button("Quit", Vector2(WIDTH / 2 - 300, HEIGHT / 2 + 140));
+	this->resumeButton = new Button("Resume", Vector2(WIDTH / 2 - 300, HEIGHT / 2 - 140));
+	this->mainMenuButton = new Button("Main Menu", Vector2(WIDTH / 2 - 300, HEIGHT / 2));
 
-	this->selectedElement = playButton;
-	this->playButton->setConnectedElements(nullptr, nullptr, quitButton, optionsButton);
-	this->optionsButton->setConnectedElements(nullptr, nullptr, playButton, quitButton);
-	this->quitButton->setConnectedElements(nullptr, nullptr, optionsButton, playButton);
+	this->selectedElement = resumeButton;
+	this->resumeButton->setConnectedElements(nullptr, nullptr, mainMenuButton, mainMenuButton);
+	this->mainMenuButton->setConnectedElements(nullptr, nullptr, resumeButton, resumeButton);
 
 	return true;
 }
 
-void MainGui::shutDown()
+void PauseGui::shutDown()
 {
-	delete this->playButton;
-	delete this->optionsButton;
-	delete this->quitButton;
+	delete this->resumeButton;
+	delete this->mainMenuButton;
 
 	this->selectedElement = nullptr;
 
-	this->playButton = nullptr;
-	this->optionsButton = nullptr;
-	this->quitButton = nullptr;
+	this->resumeButton = nullptr;
+	this->mainMenuButton = nullptr;
 
 	this->timeSinceChanged = 0.0F;
 	this->changedLastFrame = false;
 }
 
-bool MainGui::update(float deltaTime)
+bool PauseGui::update(float deltaTime)
 {
+	GunGameState* state = dynamic_cast<GunGameState*>(this->myState);
+
 	if (this->keyboardDelay <= 0.0F)
 	{
 		if (this->changedLastFrame)
@@ -132,19 +128,14 @@ bool MainGui::update(float deltaTime)
 
 		if (System::theKeyboard->KeyIsPressed('E'))
 		{
-			if (this->selectedElement == this->quitButton)
+			if (this->selectedElement == this->resumeButton)
 			{
-				System::closeWindow();
-			}
-			else if (this->selectedElement == this->playButton)
-			{
-				MainMenu* state = dynamic_cast<MainMenu*>(this->myState);
-				state->setCurrentMenu(SELECT/*RULES*/);
+				state->pause(false);
 			}
 			else
 			{
-				MainMenu* state = dynamic_cast<MainMenu*>(this->myState);
-				state->setCurrentMenu(OPTIONS);
+				state->pause(false);
+				System::setState(MAINMENU);
 			}
 		}
 	}
@@ -164,19 +155,14 @@ bool MainGui::update(float deltaTime)
 
 			if (System::theTracker->a == DirectX::GamePad::ButtonStateTracker::PRESSED)
 			{
-				if (this->selectedElement == this->quitButton)
+				if (this->selectedElement == this->resumeButton)
 				{
-					System::closeWindow();
-				}
-				else if (this->selectedElement == this->playButton)
-				{
-					MainMenu* state = dynamic_cast<MainMenu*>(this->myState);
-					state->setCurrentMenu(SELECT/*RULES*/);
+					state->pause(false);
 				}
 				else
 				{
-					MainMenu* state = dynamic_cast<MainMenu*>(this->myState);
-					state->setCurrentMenu(OPTIONS);
+					state->pause(false);
+					System::setState(MAINMENU);
 				}
 			}
 
@@ -187,13 +173,13 @@ bool MainGui::update(float deltaTime)
 	return true;
 }
 
-bool MainGui::render()
+bool PauseGui::render()
 {
 	System::getSpriteBatch()->Begin(DirectX::SpriteSortMode_Deferred, System::getCommonStates()->NonPremultiplied());
 
-	this->playButton->render(this->playButton == this->selectedElement);
-	this->optionsButton->render(this->optionsButton == this->selectedElement);
-	this->quitButton->render(this->quitButton == this->selectedElement);
+	System::getFontArial()->DrawString(System::getSpriteBatch(), "Game Paused", SimpleMath::Vector2(WIDTH / 2 - SimpleMath::Vector2(System::getFontArial()->MeasureString("Game Paused")).x / 2, HEIGHT / 2 - 300), DirectX::Colors::Black, 0.0f, DirectX::SimpleMath::Vector2::Zero, DirectX::SimpleMath::Vector2::One);
+	this->resumeButton->render(this->selectedElement == resumeButton);
+	this->mainMenuButton->render(this->selectedElement == mainMenuButton);
 
 	System::getSpriteBatch()->End();
 	return true;

@@ -1,27 +1,25 @@
-#ifndef MAIN_GUI_H
-#define MAIN_GUI_H
+#ifndef PAUSE_GUI_H
+#define PAUSE_GUI_H
 
 #include "GuiBase.h"
+#include "GuiElement.h"
 #include "Button.h"
-#include "GamePad.h"
 
-class MainGui : public GuiBase
+class PauseGui : public GuiBase
 {
 private:
 	GuiElement* selectedElement;
-	Button* playButton;
-	Button* optionsButton;
-	Button* quitButton;
+	Button* resumeButton;
+	Button* mainMenuButton;
 
 	float timeSinceChanged;
 	bool changedLastFrame;
 
 	void changeSelected_Keyboard();
 	void changeSelected();
-
 public:
-	MainGui(State* myState);
-	virtual ~MainGui();
+	PauseGui(State* myState);
+	virtual ~PauseGui();
 
 	bool initialize();
 	void shutDown();
@@ -29,6 +27,4 @@ public:
 	bool render();
 };
 
-#endif // !MAIN_GUI_H
-
-
+#endif // !PAUSE_GUI_H

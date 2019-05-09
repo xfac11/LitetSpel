@@ -23,7 +23,7 @@ public:
 	bool update(float deltaTime);
 	void shutDown();
 
-	void setCurrentMenu(MainMenuGui menu);
+	void setCurrentMenu(MainMenuGui menu, bool alwaysActivateDelay = false);
 };
 
 #endif // !MAIN_MENU_H

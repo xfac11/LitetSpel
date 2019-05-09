@@ -66,6 +66,9 @@ SelectGui::SelectGui(State * myState) : GuiBase(myState)
 	this->selectedElement = nullptr;
 	this->buttonTest = nullptr;
 	this->playerSelector0 = nullptr;
+	this->playerSelector1 = nullptr;
+	this->playerSelector2 = nullptr;
+	this->playerSelector3 = nullptr;
 
 	this->changedLastFrame = false;
 	this->timeSinceChanged = 0.0F;
@@ -104,6 +107,9 @@ void SelectGui::shutDown()
 	this->selectedElement = nullptr;
 	this->buttonTest = nullptr;
 	this->playerSelector0 = nullptr;
+	this->playerSelector1 = nullptr;
+	this->playerSelector2 = nullptr;
+	this->playerSelector3 = nullptr;
 
 	this->changedLastFrame = false;
 	this->timeSinceChanged = 0.0F;
@@ -139,7 +145,7 @@ bool SelectGui::update(float deltaTime)
 		else if (System::theKeyboard->KeyIsPressed('Q'))
 		{
 			MainMenu* state = dynamic_cast<MainMenu*>(this->myState);
-			state->setCurrentMenu(RULES);
+			state->setCurrentMenu(MAIN/*RULES*/);
 		}
 	}
 	else
@@ -166,7 +172,7 @@ bool SelectGui::update(float deltaTime)
 			else if (System::theTracker->b == DirectX::GamePad::ButtonStateTracker::PRESSED)
 			{
 				MainMenu* state = dynamic_cast<MainMenu*>(this->myState);
-				state->setCurrentMenu(RULES);
+				state->setCurrentMenu(MAIN/*RULES*/);
 			}
 
 			break;
