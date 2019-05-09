@@ -11,41 +11,44 @@ bool Primitives::CreateBox(btVector3 position, btVector3 size)
 	vertices.resize(8);
 	indecesCounter.resize(24);
 	{
-		//vertices[0] = { -size.getX(), -size.getY(), -size.getZ() ,
-		//			 1.0f, 0.0f, 0.0f };
-		//vertices[1] = { -size.getX(),  size.getY(), -size.getZ() ,
-		//				 1.0f, 0.0f, 0.0f };
-		//vertices[2] = { size.getX(),  size.getY(), -size.getZ() ,
-		//				 1.0f, 0.0f, 0.0f };
-		//vertices[3] = { size.getX(), -size.getY(), -size.getZ() ,
-		//				 1.0f, 0.0f, 0.0f };
-		//vertices[4] = { -size.getX(), -size.getY(), size.getZ(),
-		//				 0.0f, 0.0f, 1.0f };
-		//vertices[5] = { -size.getX(),  size.getY(), size.getZ() ,
-		//				 0.0f, 0.0f, 1.0f };
-		//vertices[6] = { size.getX(),  size.getY(), size.getZ() ,
-		//				 0.0f, 0.0f, 1.0f };
-		//vertices[7] = { size.getX(), -size.getY(), size.getZ() ,
-		//				 0.0f, 0.0f, 1.0f };
-
-		vertices[0] = { -size.getX(), 0, -size.getZ() ,
-					 1.0f, 0.0f, 0.0f };
-		vertices[1] = { -size.getX(),2 * size.getY(), -size.getZ() ,
+		if (position.getX() == 0 && position.getY() == 0 && position.getZ() == 0) {
+			vertices[0] = { -size.getX(), -size.getY(), -size.getZ() ,
 						 1.0f, 0.0f, 0.0f };
-		vertices[2] = { size.getX(),2 * size.getY(), -size.getZ() ,
+			vertices[1] = { -size.getX(),  size.getY(), -size.getZ() ,
+							 1.0f, 0.0f, 0.0f };
+			vertices[2] = { size.getX(),  size.getY(), -size.getZ() ,
+							 1.0f, 0.0f, 0.0f };
+			vertices[3] = { size.getX(), -size.getY(), -size.getZ() ,
+							 1.0f, 0.0f, 0.0f };
+			vertices[4] = { -size.getX(), -size.getY(), size.getZ(),
+							 0.0f, 0.0f, 1.0f };
+			vertices[5] = { -size.getX(),  size.getY(), size.getZ() ,
+							 0.0f, 0.0f, 1.0f };
+			vertices[6] = { size.getX(),  size.getY(), size.getZ() ,
+							 0.0f, 0.0f, 1.0f };
+			vertices[7] = { size.getX(), -size.getY(), size.getZ() ,
+							 0.0f, 0.0f, 1.0f };
+		}
+		//foxens mittpunk är i botten 
+		else {
+			vertices[0] = { -size.getX(), 0, -size.getZ() ,
 						 1.0f, 0.0f, 0.0f };
-		vertices[3] = { size.getX(),0, -size.getZ() ,
-						 1.0f, 0.0f, 0.0f };
+			vertices[1] = { -size.getX(),2 * size.getY(), -size.getZ() ,
+							 1.0f, 0.0f, 0.0f };
+			vertices[2] = { size.getX(),2 * size.getY(), -size.getZ() ,
+							 1.0f, 0.0f, 0.0f };
+			vertices[3] = { size.getX(),0, -size.getZ() ,
+							 1.0f, 0.0f, 0.0f };
 
-		vertices[4] = { -size.getX(), 0, size.getZ(),
-						 0.0f, 0.0f, 1.0f };
-		vertices[5] = { -size.getX(),2 * size.getY(), size.getZ() ,
-						 0.0f, 0.0f, 1.0f };
-		vertices[6] = { size.getX(), 2 * size.getY(), size.getZ() ,
-						 0.0f, 0.0f, 1.0f };
-		vertices[7] = { size.getX(),0, size.getZ() ,
-						 0.0f, 0.0f, 1.0f };
-
+			vertices[4] = { -size.getX(), 0, size.getZ(),
+							 0.0f, 0.0f, 1.0f };
+			vertices[5] = { -size.getX(),2 * size.getY(), size.getZ() ,
+							 0.0f, 0.0f, 1.0f };
+			vertices[6] = { size.getX(), 2 * size.getY(), size.getZ() ,
+							 0.0f, 0.0f, 1.0f };
+			vertices[7] = { size.getX(),0, size.getZ() ,
+							 0.0f, 0.0f, 1.0f };
+		}
 
 
 		indecesCounter[0] = 0;
@@ -76,8 +79,8 @@ bool Primitives::CreateBox(btVector3 position, btVector3 size)
 		indecesCounter[23] = 4;
 	}
 	indices = 24;
-	this->vertexBuffer.initialize(vertices.data(), 8, System::getDevice());
-	this->indicesbuffer.initialize(indecesCounter.data(), indices, System::getDevice());
+	vertexBuffer.initialize(vertices.data(), 8, System::getDevice());
+	indicesbuffer.initialize(indecesCounter.data(), indices, System::getDevice());
 	return true;
 }
 
