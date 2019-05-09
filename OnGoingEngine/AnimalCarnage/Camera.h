@@ -1,5 +1,6 @@
 #ifndef CAMERA_H
 #define CAMERA_H
+#include <vector>
 #include <directxmath.h>
 __declspec(align(16)) class Camera
 {
@@ -33,6 +34,6 @@ public:
 
 	void Render();
 	DirectX::XMMATRIX& GetViewMatrix();
-	void calcCamera(DirectX::XMFLOAT3 playerOne, DirectX::XMFLOAT3 playerTwo, DirectX::XMFLOAT3 playerThree, DirectX::XMFLOAT3 playerFour);
+	void calcCamera(std::vector<DirectX::XMFLOAT3> playerPos);
 };
 #endif

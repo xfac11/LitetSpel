@@ -85,10 +85,19 @@ DirectX::XMMATRIX& Camera::GetViewMatrix()
 	return this->viewMatrix;
 }
 
-void Camera::calcCamera(DirectX::XMFLOAT3 playerOne, DirectX::XMFLOAT3 playerTwo, DirectX::XMFLOAT3 playerThree, DirectX::XMFLOAT3 playerFour)
+void Camera::calcCamera(std::vector<DirectX::XMFLOAT3> playerPos)
 {
-	float min = fminf(playerOne.x, fminf(playerTwo.x, fminf(playerThree.x, playerFour.x)));
-	float max = fmaxf(playerOne.x,fmaxf(playerTwo.x, fmaxf(playerThree.x, playerFour.x)));
+	float min = 10000;
+	float max = 0; 
+
+	for (int i = 0; i < playerPos.size(); i++)
+	{
+		min = fminf(playerPos[i].x, min);
+		max = fmaxf(playerPos[i].x, max);
+	}
+
+	//fminf(playerOne.x, fminf(playerTwo.x, fminf(playerThree.x, playerFour.x)));
+	//fmaxf(playerOne.x, fmaxf(playerTwo.x, fmaxf(playerThree.x, playerFour.x)));
 
 	float length = max - min;
 	if (length < 5.5f)

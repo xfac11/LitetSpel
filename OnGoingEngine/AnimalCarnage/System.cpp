@@ -486,7 +486,13 @@ void System::update(float deltaTime)
 	GunGameState* ptr = nullptr;
 	if (ptr = dynamic_cast<GunGameState*>(states[System::currentState]))
 	{
-		this->theCamera->calcCamera(ptr->getPlayer(0)->getPosition(), ptr->getPlayer(1)->getPosition(), ptr->getPlayer(2)->getPosition(), ptr->getPlayer(3)->getPosition());
+		vector<DirectX::XMFLOAT3> playerPos;
+		for (int i = 0; i< ptr->getNrOfPlayers(); i++)
+		{
+			playerPos.push_back(ptr->getPlayer(i)->getPosition());
+		}
+
+		this->theCamera->calcCamera(playerPos);
 		//ptr->getPlayer(0)->getPosition();
 	}
 
