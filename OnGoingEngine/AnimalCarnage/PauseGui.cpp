@@ -96,6 +96,23 @@ PauseGui::~PauseGui()
 	delete this->mainMenuButton;
 }
 
+//void PauseGui::changeCamera(DirectX::XMFLOAT3 & camera)
+//{
+//
+//
+////	//		//tracker.Update(state);
+//////	if (((state.IsLeftTriggerPressed() && state.IsRightTriggerPressed()) ||
+//////		(state.buttons.leftShoulder && state.buttons.rightShoulder)) &&
+//////		state.buttons.a && (state.buttons.back || state.buttons.menu))
+//////	{
+////	DirectX::GamePad::State state = System::theGamePad->GetState(0);
+////	float dirX = 17.0f * state.thumbSticks.leftX;
+////	float dirY = 17.0f * state.thumbSticks.leftY;
+////
+////	camera.x += dirX;
+////	camera.y += dirY;
+//}
+
 bool PauseGui::initialize()
 {
 	this->resumeButton = new Button("Resume", Vector2(WIDTH / 2 - 300, HEIGHT / 2 - 140));
@@ -177,11 +194,10 @@ bool PauseGui::update(float deltaTime)
 				System::setState(MAINMENU);
 			}
 
-			if (System::theTracker->start == DirectX::GamePad::ButtonStateTracker::PRESSED)
+			if (System::theTracker->start == DirectX::GamePad::ButtonStateTracker::PRESSED) // start
 			{
 				state->pause(false);
 			}
-
 
 			if (System::theTracker->a == DirectX::GamePad::ButtonStateTracker::PRESSED)
 			{
