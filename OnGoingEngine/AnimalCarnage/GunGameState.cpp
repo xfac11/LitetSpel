@@ -51,6 +51,7 @@ GunGameState::GunGameState()
 	this->paused = false;
 	this->inGameGui = nullptr;
 	this->pauseGui = nullptr;
+	this->cameraFocus = 0;
 }
 
 GunGameState::~GunGameState()
@@ -363,6 +364,63 @@ void GunGameState::shutDown()
 bool GunGameState::controllerIsConnected(int controllerPort)
 {
 	return System::theGamePad->GetState(controllerPort).IsConnected();
+}
+
+bool GunGameState::checkPause() const
+{
+	return this->paused;
+}
+
+int GunGameState::getCameraFocus()
+{
+	if (this->cameraFocus < 0)
+		this->cameraFocus = nrOfPlayers-1;
+	else if (this->cameraFocus > nrOfPlayers - 1)
+		this->cameraFocus = 0;
+	return this->cameraFocus;
+}
+
+bool GunGameState::checkCameraFocus()
+{
+	
+	bool result = false;
+	DirectX::GamePad::State state = System::theGamePad->GetState(0);
+//	System::theTracker->a == DirectX::GamePad::ButtonStateTracker::PRESSED
+	if (System::theTracker->leftTrigger == DirectX::GamePad::ButtonStateTracker::PRESSED ||
+		System::theTracker->leftShoulder == DirectX::GamePad::ButtonStateTracker::PRESSED)
+	{
+		this->cameraFocus--;
+		result = true;
+	}
+	else if(System::theTracker->rightTrigger == DirectX::GamePad::ButtonStateTracker::PRESSED || 
+			System::theTracker->rightShoulder == DirectX::GamePad::ButtonStateTracker::PRESSED)
+	{
+		this->cameraFocus++;
+		result = true;
+	}
+	
+
+	return result;
+}
+
+DirectX::XMFLOAT3 GunGameState::changeCamera(float deltaTime)const
+{
+	//during pause
+	DirectX::XMFLOAT3 camera = {0,0,0};
+
+	//		//tracker.Update(state);
+//	if (((state.IsLeftTriggerPressed() && state.IsRightTriggerPressed()) ||
+//		(state.buttons.leftShoulder && state.buttons.rightShoulder)) &&
+//		state.buttons.a && (state.buttons.back || state.buttons.menu))
+//	{
+	DirectX::GamePad::State state = System::theGamePad->GetState(0);
+	float dirX = 7.0f * state.thumbSticks.leftX*deltaTime;
+	float dirY = 7.0f * state.thumbSticks.leftY*deltaTime;
+	float zoom = 3 * (state.buttons.x - state.buttons.y)*deltaTime;
+	camera.x += dirX;
+	camera.y += dirY;
+	camera.z += zoom;
+	return camera;
 }
 
 //btCollisionObjectWrapper GunGameState::getGroundCollisionObject()

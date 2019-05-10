@@ -493,9 +493,18 @@ void System::update(float deltaTime)
 		{
 			playerPos.push_back(ptr->getPlayer(i)->getPosition());
 		}
-
-		this->theCamera->calcCamera(playerPos);
-		//ptr->getPlayer(0)->getPosition();
+		if (ptr->checkPause() == false)
+		{
+			//remeber to also set rotation
+			this->theCamera->calcCamera(playerPos);
+		}
+		else
+		{
+			if (ptr->checkCameraFocus() == true) //it sets exact position, remember to change z value to appropriate location
+				theCamera->SetPosition(playerPos[ptr->getCameraFocus()]);
+			theCamera->move(ptr->changeCamera(deltaTime));
+	
+		}
 	}
 
 	
@@ -556,7 +565,7 @@ void System::update(float deltaTime)
 
 	if (theKeyboard->KeyIsPressed('M'))
 	{
-		this->soundManager->playLooped(L"Battle_Theme_One_1.0.wav");
+		this->soundManager->playLooped(L"Main_Theme_1.0.wav");
 	}
 	if (theKeyboard->KeyIsPressed('N'))
 	{

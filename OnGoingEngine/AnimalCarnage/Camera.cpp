@@ -37,6 +37,12 @@ void Camera::move(float x, float y, float z)
 	this->position = DirectX::XMFLOAT3(this->position.x + x, this->position.y + y, this->position.z + z);
 }
 
+void Camera::move(DirectX::XMFLOAT3 position)
+{
+
+	this->position = DirectX::XMFLOAT3(this->position.x + position.x, this->position.y + position.y, this->position.z + position.z);
+}
+
 void Camera::rotate(float x, float y, float z)
 {
 	if (this->rotation.x + x >= 90)
@@ -94,22 +100,26 @@ DirectX::XMMATRIX& Camera::GetViewMatrix()
 
 void Camera::calcCamera(std::vector<DirectX::XMFLOAT3> playerPos)
 {
-	float min = 10000;
-	float max = 0; 
+	float min = 10000.f;
+	float max = 0.f; 
+	float medX = 0.f;
+	float medY = 0.f;
 
 	for (int i = 0; i < playerPos.size(); i++)
 	{
 		min = fminf(playerPos[i].x, min);
 		max = fmaxf(playerPos[i].x, max);
+		medX += playerPos[i].x;
+		medY += playerPos[i].y;
 	}
 
-	//fminf(playerOne.x, fminf(playerTwo.x, fminf(playerThree.x, playerFour.x)));
-	//fmaxf(playerOne.x, fmaxf(playerTwo.x, fmaxf(playerThree.x, playerFour.x)));
+	medX /= playerPos.size();
+	medY /= playerPos.size();
 
 	float length = max - min;
-	if (length < 5.5f)
-	{
-		length = 5.5f;
-	}
-	this->position = DirectX::XMFLOAT3(0, position.y, -length);
+	if (length < 7.f)
+		length = 7.f;
+	else if (length > 20.f)
+		length = 20.f;
+	this->position = DirectX::XMFLOAT3(medX, medY, -length);
 }
