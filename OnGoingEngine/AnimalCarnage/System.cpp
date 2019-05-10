@@ -565,7 +565,7 @@ void System::update(float deltaTime)
 
 	if (theKeyboard->KeyIsPressed('M'))
 	{
-		this->soundManager->playLooped(L"Battle_Theme_One_1.0.wav");
+		this->soundManager->playLooped(L"Main_Theme_1.0.wav");
 	}
 	if (theKeyboard->KeyIsPressed('N'))
 	{
