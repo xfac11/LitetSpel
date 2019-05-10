@@ -84,9 +84,10 @@ void GameObjectHandler::draw()
 	System::theGraphicDevice->setRasterFront();
 	System::shaderManager->getShadowMapping()->prepare();//setshader + omsetrendertarget(0,0,depthstencilview
 	DirectX::XMVECTOR lightDirView = DirectX::XMVectorSet(0,0,0, 1);
-	DirectX::XMVECTOR CamPos = DirectX::XMVectorSet(0.0f, 2.0f, 1.0f/*-1*this->lightsCB.data.lights[0].direction[0], -1*this->lightsCB.data.lights[0].direction[1], 1+this->lightsCB.data.lights[0].direction[2]*/, 1);
+	DirectX::XMVECTOR CamPos = DirectX::XMVectorSet(0.0f, 2.0f, 1.0f,/*-1*this->lightsCB.data.lights[0].direction[0], -1*this->lightsCB.data.lights[0].direction[1], 1+this->lightsCB.data.lights[0].direction[2],*/ 1);
 	DirectX::XMVECTOR up = DirectX::XMVectorSet(0, 1, 0, 0);
 	
+	//this->lightsCB.data.lights[2].position
 	// Variables you already know:
 	DirectX::XMVECTOR lightDirectionVector = DirectX::XMVectorSet(this->lightsCB.data.lights[0].direction[0], this->lightsCB.data.lights[0].direction[1], this->lightsCB.data.lights[0].direction[1], 1); // the light direction
 	// Variables you have to define somehow:
@@ -129,7 +130,7 @@ void GameObjectHandler::draw()
 	}
 	this->lightsCB.data.nrOfLights = nrOfLights;
 	this->lightsCB.applyChanges(System::getDevice(), System::getDeviceContext());
-	DirectX::XMMATRIX worldPos = DirectX::XMMatrixTranslation(gameObjects[6]->getPosition().x, gameObjects[6]->getPosition().y+1, gameObjects[6]->getPosition().z-1);
+	DirectX::XMMATRIX worldPos = DirectX::XMMatrixTranslation(gameObjects[6]->getPosition().x, gameObjects[6]->getPosition().y+2, gameObjects[6]->getPosition().z);
 	this->lightsCB.data.lights[1].worldLight = worldPos;
 	//this->lightsCB.applyChanges(System::getDevice(), System::getDeviceContext());
 	float color[] = {
@@ -178,7 +179,7 @@ void GameObjectHandler::draw()
 
 	for (int i = 1; i < nrOfLights; i++)
 	{
-		DirectX::XMMATRIX worldSphere= DirectX::XMMatrixTranspose(XMMatrixScaling(this->lightsCB.data.lights[i].position[3], this->lightsCB.data.lights[i].position[3], this->lightsCB.data.lights[i].position[3])*
+		DirectX::XMMATRIX worldSphere= DirectX::XMMatrixTranspose(XMMatrixScaling(this->lightsCB.data.lights[i].position[3]*10, this->lightsCB.data.lights[i].position[3]*10, this->lightsCB.data.lights[i].position[3]*10)*
 			this->lightsCB.data.lights[i].worldLight);
 		this->lightsCB.data.index = i;
 		this->lightsCB.applyChanges(System::getDevice(), System::getDeviceContext());

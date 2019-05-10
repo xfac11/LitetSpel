@@ -37,7 +37,7 @@ float4 CalcLight(AnyLight light, float3 normal, float3 wPos, float3 LightDirecti
 {
 	//float3 LightDirection = light.direction.xyz;
 	float ambientAmount = 0.2f;
-	float4 ambientColor = float4(color.xyz, 1.0f)*ambientAmount;
+	float4 ambientColor = float4(light.color.xyz, 1.0f)*ambientAmount;
 	float diffuseFactor = max(0, dot(normal, -LightDirection));
 	/*float theShade = diffuseFactor;
 		if( theShade < 0.2f)
@@ -56,7 +56,7 @@ float4 CalcLight(AnyLight light, float3 normal, float3 wPos, float3 LightDirecti
 
 	if (diffuseFactor > 0)
 	{
-		float diffuseIntensity = 1.0f;
+		float diffuseIntensity = light.color.w;
 		diffuseColor = float4(light.color.xyz*diffuseIntensity*diffuseFactor, 1.0f);
 		float3 vecToEye = normalize((camPos.xyz - wPos));
 		float3 lightReflect = normalize(reflect(LightDirection, normal));
@@ -64,7 +64,7 @@ float4 CalcLight(AnyLight light, float3 normal, float3 wPos, float3 LightDirecti
 		if (specularFactor > 0)
 		{
 			specularFactor = pow(specularFactor, 32);
-			float specularStrength = 0.5f;
+			float specularStrength = 0.5f;//in material
 			specularColor = float4(light.color.xyz*specularStrength*specularFactor, 1.0f);
 		}
 	}
@@ -160,19 +160,19 @@ float4 PS_main(VS_OUT input) : SV_Target
 				float bias = 0.005*tan(acos(cosTheta));
 				//max(0.05 * (1.0 - dot(normal, lightDir)), 0.015);
 				bias = clamp(bias, 0,1);
-				bias = max(0.05 * (1.0 - dot(normal, lights[0].direction.xyz)), 0.015);
-				for (int i = 0; i < 4; i++)
+				//bias = max(0.05 * (1.0 - dot(normal, lights[0].direction.xyz)), 0.005);
+				/*for (int i = 0; i < 4; i++)
 				{
-					if (ShadowMap.Sample(SampSt, shadowCoord.xy + poissonDisk[i] / 800.0).x < shadowCoord.z - bias)
+					if (ShadowMap.Sample(SampSt, shadowCoord.xy + poissonDisk[i] / 700.0).x < shadowCoord.z - bias)
 					{
 						visibility -= 0.20f;
 					}
-				}
+				}*/
 				//if (ShadowMap.Sample(SampSt, shadowCoord.xy /*+ (poissonDisk[i] / 700.0)*/).x < shadowCoord.z - bias)
 				//{
 				//	visibility = 0.5f;
 				//}
-				/*int width;
+				int width;
 				int height;
 				int nrOfLevels;
 				ShadowMap.GetDimensions(0, width, height, nrOfLevels);
@@ -185,7 +185,7 @@ float4 PS_main(VS_OUT input) : SV_Target
 						float pcfDepth = ShadowMap.Sample(SampSt, shadowCoord.xy + float2(x, y) * texelSize).r;
 						visibility -= shadowCoord.z - bias > pcfDepth ? 0.1 : 0.0;
 					}
-				}*/
+				}
 				//visibility /= 9.0;
 				if (shadowCoord.z > 1.0)
 					visibility = 1.0;

@@ -127,7 +127,7 @@ bool GunGameState::initailize()
 	GameObject* tree1 = new GameObject;
 	System::theModelLoader->loadGO(tree1, "Resources/Models/tree2.lu", "trees_diffuse.tga");
 	System::handler->addObject(tree1);
-	tree1->setPosition(0, -0.5, 16);
+	tree1->setPosition(0, -0.5, 10);
 	tree1->setScale(0.6, 0.6, 0.6);
 	GameObject* tree2 = new GameObject;
 	System::theModelLoader->loadGO(tree2, "Resources/Models/small_stone1.lu", "stones_and_rocks_diffuse_base.tga");
@@ -168,7 +168,12 @@ bool GunGameState::initailize()
 		0.5f , 0.0f, 1.0f , 1.0f
 	};
 	System::handler->addLight(pos, dir, color2);
-	//System::handler->addLight(pos, dir, color2);
+	color2[0] = 0.0f;
+	color2[1] = 1.0f;
+	color2[2] = 1.0f;
+	pos[1] = 5.0f;
+	color2[3] = 10.0f;
+	System::handler->addLight(pos, dir, color2);
 	//player[0]->playerObj->body()->getWorldTransform().setOrigin(btVector3(-2, 2, 0));
 	//player[1]->playerObj->body()->getWorldTransform().setOrigin(btVector3(0, 2, 0));
 	//player[2]->playerObj->body()->getWorldTransform().setOrigin(btVector3(2, 2, 0));
@@ -276,7 +281,7 @@ bool GunGameState::update(float deltaTime)
 		return true;
 	}
 
-	ground->setPosition(ground->getRigidbody()->getWorldTransform().getOrigin().getX(), ground->getRigidbody()->getWorldTransform().getOrigin().getY(), ground->getRigidbody()->getWorldTransform().getOrigin().getZ());
+	ground->setPosition(ground->getRigidbody()->getWorldTransform().getOrigin().getX(), ground->getRigidbody()->getWorldTransform().getOrigin().getY()+1.6f, ground->getRigidbody()->getWorldTransform().getOrigin().getZ());
 	ground->getRigidbody()->setLinearFactor(btVector3(0, 0, 0));
 	ground->getRigidbody()->setCollisionFlags(btCollisionObject::CF_STATIC_OBJECT);
 
