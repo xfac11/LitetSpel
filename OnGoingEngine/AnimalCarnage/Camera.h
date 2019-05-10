@@ -28,7 +28,6 @@ public:
 	void SetRotation(float x, float y, float z);
 	void SetRotation(DirectX::XMFLOAT3 rotation);
 	void move(float x, float y, float z);
-	void move(DirectX::XMFLOAT3 position);
 	void rotate(float x, float y, float z);
 	DirectX::XMFLOAT3 GetPosition();
 	DirectX::XMFLOAT3 GetRotation();
