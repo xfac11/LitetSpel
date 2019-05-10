@@ -115,6 +115,57 @@ void Transform::SetWorldToRigitBody()
 	 this->world = btTransform_to_XMMATRIX(this->rigidbody->getWorldTransform());
 }
 
+void Transform::setPoRGB(float x, float y, float z)
+{
+	btTransform t = this->rigidbody->getWorldTransform();
+	t.setOrigin(btVector3(x, y, z));
+	rigidbody->setWorldTransform(t);
+}
+
+XMFLOAT3 Transform::getPoRGB()
+{
+	this->rigidbody->getWorldTransform();
+	return XMFLOAT3();
+}
+
+void Transform::moveRGB(XMFLOAT3 posion)
+{
+	btTransform t = this->rigidbody->getWorldTransform();
+	btVector3 pos = t.getOrigin();
+	t.setOrigin(btVector3(pos.getX() + posion.x, pos.getY()+ posion.y, pos.getZ() + posion.z));
+	rigidbody->setWorldTransform(t);
+}
+
+XMFLOAT3 normalize(XMFLOAT3 pos)
+{
+	float len = magnitude(pos);
+	if (len != 0.)
+		return XMFLOAT3(pos.x /= len, pos.y /= len, pos.z /= len);
+	else
+		return pos;
+}
+
+float magnitude(XMFLOAT3 pos)
+{
+	return std::sqrtf( (pos.x * pos.x) +( pos.y * pos.y )+ (pos.z * pos.z));
+}
+
+XMFLOAT3 VECTORSUBTRACTION(const XMFLOAT3 other, const XMFLOAT3 other2)
+{
+	return XMFLOAT3(other.x - other2.x, other.y - other2.y, other.z - other2.z);
+}
+
+XMFLOAT3 MULT(const XMFLOAT3 other, const XMFLOAT3 other2)
+{
+	return XMFLOAT3(other.x* other2.x, other.y* other2.y, other.z* other2.z);
+}
+
+XMFLOAT3 MULT(const XMFLOAT3 other, const float other2)
+{
+	return XMFLOAT3(other.x * other2, other.y*other2, other.z * other2);
+}
+
+
 btTransform XMMATRIX_to_btTransform(XMMATRIX const& mat)
 {
 	// convert from XMMATRIX to btTransform (Bullet Physics)

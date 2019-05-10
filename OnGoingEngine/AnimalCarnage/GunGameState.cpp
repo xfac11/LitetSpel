@@ -86,8 +86,8 @@ Player * GunGameState::getPlayer(int id) const
 bool GunGameState::initailize()
 {
 	this->object[0] = new Objects("Resources/Models/cube2.lu", "stones_and_rocks_diffuse_base.tga", btVector3(0, 8, 0), btVector3(1.f, 1.f, 1.f));
-	this->object[1] = new Objects("Resources/Models/cube2.lu", "stones_and_rocks_diffuse_base.tga", btVector3(-5, 4, 0), btVector3(1.f, 1.f, 1.f));
-	this->object[2] = new Objects("Resources/Models/cube2.lu", "stones_and_rocks_diffuse_base.tga", btVector3(5,4, 0), btVector3(1.f, 1.f, 1.f));
+	this->object[1] = new Objects("Resources/Models/cube2.lu", "stones_and_rocks_diffuse_base.tga", btVector3(9, 4, 0), btVector3(1.f, 1.f, 1.f), DYNAMIC);
+	this->object[2] = new Objects("Resources/Models/cube2.lu", "stones_and_rocks_diffuse_base.tga", btVector3(5,4, 0), btVector3(1.f, 1.f, 1.f),DYNAMIC);
 	//this->object[3] = new Objects("Resources/Models/cube2.lu", "stones_and_rocks_diffuse_base.tga", btVector3(3, 2, 0));
 
 	//->setLinearFactor(btVector3(0,0,0));
@@ -274,6 +274,12 @@ void GunGameState::renderImgui()
 
 bool GunGameState::update(float deltaTime)
 {
+
+	for (int i = 0; i < 3; i++)
+	{
+		this->object[i]->update(deltaTime);
+	}
+
 	OutputDebugStringA("0\n");
 	if (paused)
 	{

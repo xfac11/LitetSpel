@@ -1,6 +1,39 @@
 #include "Objects.h"
 #include "System.h"
 #include <string>
+#include <random>
+#include <iostream>
+void Objects::SimplePlatformMovement(float dt)
+{
+	XMFLOAT3 current = ObjectOBJ->getPosition();
+
+	if (move == false) {
+	
+		if (this->ObjectOBJ->getPosition().x > position2.x) {
+			move = true;
+
+		}
+		else {
+			XMFLOAT3 firstVector = MULT(current, firstriktningsVector);
+			XMFLOAT3 Vector = MULT(firstVector, dt);
+
+			ObjectOBJ->moveRGB(Vector);
+		}
+	}
+	if (move) {
+	
+		if (this->ObjectOBJ->getPosition().x <= position1.x)
+		{
+			move = false;
+		}
+		else {
+			XMFLOAT3 firstVector = MULT(current, secondriktningsVector);
+			XMFLOAT3 Vector = MULT(firstVector, dt);
+			ObjectOBJ->moveRGB(Vector);
+		}
+	}
+
+}
 Objects::Objects(std::string filepath, std::string texture, btVector3 position,btVector3 size,OBJECTSTATE state, OBJECTYPE type) :state(state), type(type)
 {
 	this->ObjectOBJ = new GameObject(System::shaderManager->getForwardShader());
@@ -9,8 +42,13 @@ Objects::Objects(std::string filepath, std::string texture, btVector3 position,b
 	System::handler->addObject(this->ObjectOBJ);
 	this->ObjectOBJ->setPosition(position);
 
+	this->position1 = XMFLOAT3(position.getX(), position.getY(), position.getZ());
+	this->position2 = XMFLOAT3(position1.x + 5, position1.y+5, position1.z);
 
+	firstriktningsVector = normalize(VECTORSUBTRACTION(position2,position1));
+	secondriktningsVector = normalize(VECTORSUBTRACTION(position1,position2));
 
+	this->move = true;
 	AABB aabb = ObjectOBJ->getCollisionBox();
 	btVector3 sizeOfOBject = btVector3(aabb.width, aabb.height, 1);
 	btVector3 PositionOfOBject = ObjectOBJ->positionOffset;
@@ -36,10 +74,12 @@ Objects::~Objects()
 {
 }
 
-void Objects::update()
+void Objects::update(float dt)
 {
 	this->ObjectOBJ->setPosition(this->ObjectOBJ->getRigidbody()->getWorldTransform().getOrigin().getX()
 		, this->ObjectOBJ->getRigidbody()->getWorldTransform().getOrigin().getY(), this->ObjectOBJ->getRigidbody()->getWorldTransform().getOrigin().getZ());
+
+	btRigidBody* rgb = this->ObjectOBJ->getRigidbody();
 	switch (type)
 	{
 		case PLATFORM:
@@ -52,10 +92,10 @@ void Objects::update()
 			break;
 		case STONE:
 			if (state == STATIC){
-
+				
 			}
 			else if (state == DYNAMIC){
-
+				this->SimplePlatformMovement(dt);
 			}
 			break;
 		case TREE:
@@ -63,11 +103,16 @@ void Objects::update()
 
 			}
 			else if (state == DYNAMIC){
-
+				
 			}
 			break;
 		default:
 			break;
 	}
 
+}
+
+void Objects::setMovement(bool move)
+{
+	this->move = move;
 }
