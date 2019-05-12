@@ -43,7 +43,7 @@ void Player::initialize()
 	//playerObj->CollisionShape->SetWorld(&playerObj->getWorld());
 	//System::getDebugDraw()->addPrimitives(playerObj->CollisionShape);
 
-	System::theModelLoader->loadGO(this->playerObj, "Resources/Models/fox_character.lu", "fox_character_diffuse.tga");
+	System::theModelLoader->loadGO(this->playerObj, "Resources/Models/fox_character_run.lu", "fox_character_diffuse.tga");
 	System::handler->addObject(this->playerObj);
 
 

@@ -9,11 +9,6 @@ namespace Luna {
 		Writer();
 		~Writer();
 
-		void setMeshName(unsigned int meshID, const char* name);
-		void setVertexCount(unsigned int meshID, unsigned int count);
-		void setIndexCount(unsigned int meshID, unsigned int count);
-		//void setMeshPosition(unsigned int meshID, float x, float y, float z);
-
 		void setVertexPosition(Vertex& vertex, float x, float y, float z);
 		void setVertexNormal(Vertex& vertex, float x, float y, float z);
 		void setVertexUV(Vertex& vertex, float x, float y);
@@ -37,6 +32,8 @@ namespace Luna {
 		void write(std::ofstream& outfile, BoundingBox& boundingBox);
 
 		Scene scene;
+		Skeleton skeleton;
+		Animation animation;
 		std::vector<Mesh> meshes;
 		std::vector<Material> materials;
 		std::vector<BoundingBox> boundingBoxes;

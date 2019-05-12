@@ -20,7 +20,7 @@ void KeyFrame::operator=(const Luna::Keyframe & obj)
 	{
 		for (int j = 0; j < 4; j++)
 		{
-			temp[i][j] = obj.keyframeMatrix[i][j];
+			//temp[i][j] = obj.keyframeMatrix[i][j];
 		}
 	}
 	this->transform = JointTransformation(temp);
