@@ -47,6 +47,7 @@ void ModelLoader::loadGO(GameObject*& object, const char* filePath,std::string t
 			object[i].setHalfSize(reader.getBoundingBox(i).halfSize, reader.getBoundingBox(i).pos);
 		object[i].addModel(vertices3D, dIndices, (int)indices.size());
 		object[i].setTexture(reader.getMaterial(i).diffuseTexPath,i);
+		//reader.getMaterial(i).
 	}
 
 	vertices3D.clear();
