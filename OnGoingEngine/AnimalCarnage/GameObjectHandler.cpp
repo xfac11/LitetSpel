@@ -483,8 +483,8 @@ void GameObjectHandler::generateSphere()
 		sphereIndices.push_back(DWORD(i + 1));
 	}
 
-	this->vertexBufferSphere.initialize(this->sphereVector.data(), this->sphereVector.size(), System::getDevice());
-	this->indexBufferSphere.initialize(this->sphereIndices.data(), this->sphereIndices.size(), System::getDevice());
+	this->vertexBufferSphere.initialize(this->sphereVector.data(), (UINT)this->sphereVector.size(), System::getDevice());
+	this->indexBufferSphere.initialize(this->sphereIndices.data(), (UINT)this->sphereIndices.size(), System::getDevice());
 }
 void GameObjectHandler::expandGameobjects()
 {

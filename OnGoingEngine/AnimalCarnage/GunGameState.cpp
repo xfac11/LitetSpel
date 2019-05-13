@@ -85,14 +85,14 @@ Player * GunGameState::getPlayer(int id) const
 
 bool GunGameState::initailize()
 {
-	this->object[0] = new Objects("Resources/Models/cube2.lu", "stones_and_rocks_diffuse_base.tga", btVector3(0, 8, 0), btVector3(1.f, 1.f, 1.f));
-	this->object[1] = new Objects("Resources/Models/cube2.lu", "stones_and_rocks_diffuse_base.tga", btVector3(9, 4, 0), btVector3(1.f, 1.f, 1.f), DYNAMIC);
-	this->object[2] = new Objects("Resources/Models/cube2.lu", "stones_and_rocks_diffuse_base.tga", btVector3(5,4, 0), btVector3(1.f, 1.f, 1.f),DYNAMIC);
+	this->object[0] = new Objects("Resources/Models/cube2.lu", btVector3(0, 8, 0), btVector3(1.f, 1.f, 1.f));
+	this->object[1] = new Objects("Resources/Models/cube2.lu", btVector3(9, 4, 0), btVector3(1.f, 1.f, 1.f), DYNAMIC);
+	this->object[2] = new Objects("Resources/Models/cube2.lu", btVector3(5,4, 0), btVector3(1.f, 1.f, 1.f),DYNAMIC);
 	//this->object[3] = new Objects("Resources/Models/cube2.lu", "stones_and_rocks_diffuse_base.tga", btVector3(3, 2, 0));
 
 	//->setLinearFactor(btVector3(0,0,0));
 	ground = new GameObject(System::shaderManager->getForwardShader());
-	System::theModelLoader->loadGO(ground, "Resources/Models/cube2.lu", "stones_and_rocks_diffuse_base.tga");
+	System::theModelLoader->loadGO(ground, "Resources/Models/cube2.lu");
 
 	ground->setScale(100,2,25); 
 	ground->getRigidbody() = System::getphysices()->addBox(btVector3(0, -3, 5), btVector3(ground->getScale().x, ground->getScale().y, ground->getScale().z),0);
@@ -109,7 +109,7 @@ bool GunGameState::initailize()
 	wall1->getRigidbody()->setLinearFactor(btVector3(0, 0, 0));
 	this->wall1->getRigidbody()->setFriction(0.5);
 	wall1->getRigidbody()->setCollisionFlags(btCollisionObject::CF_STATIC_OBJECT);
-	System::theModelLoader->loadGO(wall1, "Resources/Models/cube2.lu", "stones_and_rocks_diffuse_base.tga");
+	System::theModelLoader->loadGO(wall1, "Resources/Models/cube2.lu");
 	System::handler->addObject(wall1);
 	this->wall1->getRigidbody()->setActivationState(DISABLE_DEACTIVATION);
 
@@ -119,23 +119,23 @@ bool GunGameState::initailize()
 	wall2->getRigidbody()->setLinearFactor(btVector3(0, 0, 0));
 	this->wall2->getRigidbody()->setFriction(0.5);
 	wall2->getRigidbody()->setCollisionFlags(btCollisionObject::CF_STATIC_OBJECT);
-	System::theModelLoader->loadGO(wall2, "Resources/Models/cube2.lu", "stones_and_rocks_diffuse_base.tga");
+	System::theModelLoader->loadGO(wall2, "Resources/Models/cube2.lu");
 	System::handler->addObject(wall2);
 	this->wall2->getRigidbody()->setActivationState(DISABLE_DEACTIVATION);
 
 	
 	GameObject* tree1 = new GameObject;
-	System::theModelLoader->loadGO(tree1, "Resources/Models/tree2.lu", "trees_diffuse.tga");
+	System::theModelLoader->loadGO(tree1, "Resources/Models/tree2.lu");
 	System::handler->addObject(tree1);
 	tree1->setPosition(0, -0.5, 10);
 	tree1->setScale(0.6, 0.6, 0.6);
 	GameObject* tree2 = new GameObject;
-	System::theModelLoader->loadGO(tree2, "Resources/Models/small_stone1.lu", "stones_and_rocks_diffuse_base.tga");
+	System::theModelLoader->loadGO(tree2, "Resources/Models/small_stone1.lu");
 	System::handler->addObject(tree2);
 	tree2->setPosition(2, 0.5, 0);
 	tree2->setScale(10, 5, 5);
 	GameObject* tree = new GameObject;
-	System::theModelLoader->loadGO(tree, "Resources/Models/grass2.lu", "grass_diffuse.tga");
+	System::theModelLoader->loadGO(tree, "Resources/Models/grass2.lu");
 	System::handler->addObject(tree);
 	tree->setPosition(10, -0.5, 1);
 	//tree->setScale(0.8, 0.8, 0.8);
@@ -155,7 +155,7 @@ bool GunGameState::initailize()
 	System::handler->initialize();
 	System::handler->setSkyboxTexture("painted_skybox2");
 	float pos[4] = {
-	0,0.3,0,10.0f
+	0.f ,0.3f ,0.f,10.f
 	};
 	float dir[4] = {
 		-1.0f,-1.0f,0.0f,1.0f
@@ -275,16 +275,18 @@ void GunGameState::renderImgui()
 bool GunGameState::update(float deltaTime)
 {
 
-	for (int i = 0; i < 3; i++)
-	{
-		this->object[i]->update(deltaTime);
-	}
+
 
 	OutputDebugStringA("0\n");
 	if (paused)
 	{
 		this->pauseGui->update(deltaTime);
 		return true;
+	}
+
+	for (int i = 0; i < 3; i++)
+	{
+		this->object[i]->update(deltaTime);
 	}
 
 	ground->setPosition(ground->getRigidbody()->getWorldTransform().getOrigin().getX(), ground->getRigidbody()->getWorldTransform().getOrigin().getY()+1.6f, ground->getRigidbody()->getWorldTransform().getOrigin().getZ());

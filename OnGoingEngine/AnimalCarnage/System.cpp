@@ -505,6 +505,8 @@ void System::update(float deltaTime)
 			theCamera->move(ptr->changeCamera(deltaTime));
 	
 		}
+		if(ptr->checkPause()==false)
+			physices->Update(deltaTime);
 	}
 
 	
@@ -574,9 +576,9 @@ void System::update(float deltaTime)
 
 	//theCamera->SetRotation(theMouse->GetPos().y, 0, 0);
 	
-	physices->Update(deltaTime);
 
 	System::states[System::currentState]->update(deltaTime);
+	if(System::states[System::currentState])
 	System::soundManager->update();
 }
 

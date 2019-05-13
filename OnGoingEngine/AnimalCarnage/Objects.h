@@ -19,7 +19,7 @@ private:
 	XMFLOAT3 firstriktningsVector;
 	XMFLOAT3 secondriktningsVector;
 public:
-	Objects(std::string filepath, std::string texture  ,btVector3 position, btVector3 size = btVector3(1,1,1),OBJECTSTATE state = STATIC, OBJECTYPE type = STONE);
+	Objects(std::string filepath ,btVector3 position, btVector3 size = btVector3(1,1,1),OBJECTSTATE state = STATIC, OBJECTYPE type = STONE);
 	~Objects();
 	void update(float dt);
 	GameObject* ObjectOBJ;

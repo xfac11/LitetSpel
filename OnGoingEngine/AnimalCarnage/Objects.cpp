@@ -34,11 +34,11 @@ void Objects::SimplePlatformMovement(float dt)
 	}
 
 }
-Objects::Objects(std::string filepath, std::string texture, btVector3 position,btVector3 size,OBJECTSTATE state, OBJECTYPE type) :state(state), type(type)
+Objects::Objects(std::string filepath, btVector3 position,btVector3 size,OBJECTSTATE state, OBJECTYPE type) :state(state), type(type)
 {
 	this->ObjectOBJ = new GameObject(System::shaderManager->getForwardShader());
 
-	System::theModelLoader->loadGO(this->ObjectOBJ, filepath.c_str(), texture);
+	System::theModelLoader->loadGO(this->ObjectOBJ, filepath.c_str());
 	System::handler->addObject(this->ObjectOBJ);
 	this->ObjectOBJ->setPosition(position);
 

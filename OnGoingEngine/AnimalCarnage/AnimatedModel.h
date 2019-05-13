@@ -13,8 +13,6 @@ private:
 	float3 postion
 	float2  uv;
 	float3 normal;
-	float3 tangent;
-	float3 binormal;
 	int3 jointID;
 	float3 weight;
 

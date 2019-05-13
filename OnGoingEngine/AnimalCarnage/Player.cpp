@@ -30,7 +30,7 @@ void Player::initialize()
 	//this->hitbox.hitbox->setRotation(0, 1, 0, 3.14 / 2);
 	this->hitbox.time = 0;
 	this->hitbox.totalTime = 30;
-	System::theModelLoader->loadGO(this->hitbox.hitbox, "Resources/Models/cube2.lu", "zz.tga");
+	System::theModelLoader->loadGO(this->hitbox.hitbox, "Resources/Models/cube2.lu");
 	this->hitbox.hitbox->setScale(0.2f, 0.2f, 0.2f);
 	System::handler->addObject(this->hitbox.hitbox);
 	//this->playerObj->getRigidbody() = System::getphysices()->addSphere(0.5f,btVector3(0,0,0),1);
@@ -43,7 +43,7 @@ void Player::initialize()
 	//playerObj->CollisionShape->SetWorld(&playerObj->getWorld());
 	//System::getDebugDraw()->addPrimitives(playerObj->CollisionShape);
 
-	System::theModelLoader->loadGO(this->playerObj, "Resources/Models/fox_character_run.lu", "fox_character_diffuse.tga");
+	System::theModelLoader->loadGO(this->playerObj, "Resources/Models/fox_character_run.lu");
 	System::handler->addObject(this->playerObj);
 
 
@@ -208,21 +208,6 @@ void Player::update(float deltaTime, int id)
 			theRumble.rumbleTime = 0.4f;
 		}
 
-		//pause
-		if (state.buttons.menu)
-		{
-			//pause
-			theRumble.rumble.x = 0.3f;
-			theRumble.rumbleTime = 0.1f;
-		}
-
-		//exit(debug build)
-		if (state.buttons.back)
-		{
-			//exit game
-			theRumble.rumble.y = 0.3f;
-			theRumble.rumbleTime = 0.1f;
-		}
 
 		//Facing Direction
 		
