@@ -73,6 +73,7 @@ Objects::Objects(std::string filepath, btVector3 position,int id,int friction, b
 
 	this->ObjectOBJ->getRigidbody()->setActivationState(DISABLE_DEACTIVATION);
 	this->ObjectOBJ->getRigidbody()->setFriction(friction);
+	this->ObjectOBJ->getRigidbody()->setRestitution(0);
 	this->ObjectOBJ->getRigidbody()->setAngularFactor(btVector3(0, 0, 0));
 }
 

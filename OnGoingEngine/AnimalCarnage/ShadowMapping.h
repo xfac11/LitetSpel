@@ -19,6 +19,7 @@ public:
 
 	void setPSDepthView();
 	ID3D11ShaderResourceView*& getShadowMap();
+	void setSampler();
 private:
 	
 	ID3D11BlendState* blendState;

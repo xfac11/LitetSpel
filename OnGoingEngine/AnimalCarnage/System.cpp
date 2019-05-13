@@ -661,10 +661,10 @@ void System::run()
 	{
 		this->theWindow.height = HEIGHT;
 		this->theWindow.width = WIDTH;
-		theGraphicDevice->initialize(WIDTH, HEIGHT ,true , hwnd, false, 0.1f, 500.0f,90.0f);
+		theGraphicDevice->initialize(WIDTH, HEIGHT ,true , hwnd, false, 500.0f, 0.1f,90.0f);
 
 		this->shaderManager = new ShaderManager;
-		this->shaderManager->initialize(HEIGHT, WIDTH, 0.1f, 100.0f);
+		this->shaderManager->initialize(HEIGHT, WIDTH, 0.1f, 500.0f);
 		this->initialize();
 		initImgui();
 

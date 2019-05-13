@@ -33,6 +33,7 @@ float2 poissonDisk[4] = {
 	float2(-0.094184101, -0.92938870),
 	float2(0.34495938, 0.29387760)
 };
+
 float4 CalcLight(AnyLight light, float3 normal, float3 wPos, float3 LightDirection, float3 color, float visibility)
 {
 	//float3 LightDirection = light.direction.xyz;
@@ -50,12 +51,13 @@ float4 CalcLight(AnyLight light, float3 normal, float3 wPos, float3 LightDirecti
 			theShade=0.6f;
 		else if( theShade >= 0.8f)
 			theShade=0.8f;
-	diffuseFactor = max(theShade,0);*/
+	diffuseFactor = max(theShade,0);*/ 
 	float4 diffuseColor = float4(0.0f, 0.0f, 0.0f, 0.0f);
 	float4 specularColor = float4(0.0f, 0.0f, 0.0f, 0.0f);
 
 	if (diffuseFactor > 0)
 	{
+		
 		float diffuseIntensity = light.color.w;
 		diffuseColor = float4(light.color.xyz*diffuseIntensity*diffuseFactor, 1.0f);
 		float3 vecToEye = normalize((camPos.xyz - wPos));
@@ -68,7 +70,8 @@ float4 CalcLight(AnyLight light, float3 normal, float3 wPos, float3 LightDirecti
 			specularColor = float4(light.color.xyz*specularStrength*specularFactor, 1.0f);
 		}
 	}
-	return (ambientColor + diffuseColor* visibility + specularColor* visibility);
+
+	return (ambientColor + ((1-visibility)*(diffuseColor + specularColor)));
 }
 
 float4 dirLight(float3 normal, AnyLight light, float3 wPos, float3 color, float visibility)
@@ -85,7 +88,7 @@ float4 pointLight(int index, float3 normal, float3 wPos,float3 colour)
 
 	lightDir = normalize(lightDir);
 
-	float4 color = CalcLight(lights[index], normal, wPos, lightDir, colour,1);
+	float4 color = CalcLight(lights[index], normal, wPos, lightDir, colour,0);
 
 	float attenuation = max(0, 1.0f - (distance / lights[index].position.w));// from 3d project
 
@@ -94,6 +97,7 @@ float4 pointLight(int index, float3 normal, float3 wPos,float3 colour)
 		1.8f * distance * distance;
 	return color / (Attenuation / lights[index].position.w);// color/attenuation in tutorial
 }
+
 Texture2D NormalTex : register(t0);
 Texture2D Tex : register(t1);
 Texture2D PositionTexture : register(t2);
@@ -106,7 +110,7 @@ float4 PS_main(VS_OUT input) : SV_Target
 	//input.TexCoord = float2(input.screenPos.x / screenSize.x,input.screenPos.y / screenSize.y);//screenposition divided by screen size(Send it in)
 	//float2((input.screenPos.x * 0.5) + 0.5, (input.screenPos.y * 0.5) + 0.5);
 	if(index!=0)
-		input.TexCoord = float2(input.screenPos.x / 1920,input.screenPos.y / 1080);
+		input.TexCoord = float2(input.screenPos.x / (1920),input.screenPos.y / (1080));
 	//bumpNormal = BumpNormalTex.Sample(SampSt, input.TexCoord).xyz *2.0f - 1.0f;// back to [-1...1] 
 	//colors = Tex.Sample(SampSt, input.TexCoord).xyz;
 	float4 colorT = Tex.Sample(SampSt, input.TexCoord).xyzw;
@@ -119,10 +123,18 @@ float4 PS_main(VS_OUT input) : SV_Target
 		{
 			if (index == 0)
 			{
+				float4x4 biasMatrix = {
 
+				0.5, 0.0, 0.0, 0.0,
+				0.0, 0.5, 0.0, 0.0,
+				0.0, 0.0, 0.5, 0.0,
+				0.5, 0.5, 0.5, 1.0
+				};
 				//float4 shadowCoord=mul(float4(shadowCoord.xyz, 1.0f), world);
 				float4 shadowCoord = mul(float4(pos.xyz, 1.0f), view);
 				shadowCoord = mul(float4(shadowCoord.xyz, 1.0f), proj);
+				//biasMatrix = transpose(biasMatrix);
+				//shadowCoord = mul(float4(shadowCoord.xyz, 1.0f), biasMatrix);
 				shadowCoord.z = shadowCoord.z / shadowCoord.w;
 				shadowCoord.xy = (0.5f*shadowCoord.xy) + 0.5f;
 				shadowCoord.y = abs(shadowCoord.y - 1);
@@ -155,12 +167,12 @@ float4 PS_main(VS_OUT input) : SV_Target
 
 
 				
-				float visibility = 1.0;
-				float cosTheta = dot(normalize(normal), normalize(lights[0].direction.xyz));
+				float visibility = 0.0;
+				float cosTheta = dot((normal), (lights[0].direction.xyz));
 				float bias = 0.005*tan(acos(cosTheta));
 				//max(0.05 * (1.0 - dot(normal, lightDir)), 0.015);
-				bias = clamp(bias, 0,1);
-				//bias = max(0.05 * (1.0 - dot(normal, lights[0].direction.xyz)), 0.005);
+				bias = clamp(bias, 0,0.05);
+				bias = max(0.037 * (1.0 - dot(normal, lights[0].direction.xyz)), 0.005);
 				/*for (int i = 0; i < 4; i++)
 				{
 					if (ShadowMap.Sample(SampSt, shadowCoord.xy + poissonDisk[i] / 700.0).x < shadowCoord.z - bias)
@@ -183,13 +195,15 @@ float4 PS_main(VS_OUT input) : SV_Target
 					for (int y = -1; y <= 1; ++y)
 					{
 						float pcfDepth = ShadowMap.Sample(SampSt, shadowCoord.xy + float2(x, y) * texelSize).r;
-						visibility -= shadowCoord.z - bias > pcfDepth ? 0.1 : 0.0;
+						visibility += shadowCoord.z - bias > pcfDepth ? 1.0f: 0.0;
 					}
 				}
-				//visibility /= 9.0;
+				visibility /= 9.0;
 				if (shadowCoord.z > 1.0)
-					visibility = 1.0;
-				totalLight = dirLight(normal, lights[0], pos,colorT.xyz, visibility);
+					visibility = 0.0;
+				/*if (visibility > 0.9f)
+					visibility = 0.9f;*/
+				totalLight = dirLight(normal, lights[0], pos, colorT.xyz, visibility);
 
 			}
 			else

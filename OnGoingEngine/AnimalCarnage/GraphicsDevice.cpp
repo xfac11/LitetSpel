@@ -178,14 +178,15 @@ bool GraphicsDevice::initialize(int screenWidth, int screenHeight, bool vsync, H
 
 
 	//move to ColorShader
-	this->projectionMatrix = DirectX::XMMatrixPerspectiveFovLH(fieldOfView, screenAspect, 0.01f, 500.f);
+	this->projectionMatrix = DirectX::XMMatrixPerspectiveFovLH(fieldOfView, screenAspect, screenNear, screenDepth);
 	
-	this->orthoMatrix = DirectX::XMMatrixOrthographicLH((float)50, (float)50, 1.0f, 7.5f);//for shadowMap;
+	this->orthoMatrix = DirectX::XMMatrixOrthographicLH((float)50, (float)50, 5.0f, 40);//for shadowMap;
 
 	D3D11_RASTERIZER_DESC rasterizerDesc;
 	ZeroMemory(&rasterizerDesc, sizeof(D3D11_RASTERIZER_DESC));
 	rasterizerDesc.FillMode = D3D11_FILL_MODE::D3D11_FILL_SOLID;
 	rasterizerDesc.CullMode = D3D11_CULL_MODE::D3D11_CULL_NONE;
+	
 
 	result = device->CreateRasterizerState(&rasterizerDesc, &rasterState);
 	if (FAILED(result)) //If error occurred
@@ -196,7 +197,9 @@ bool GraphicsDevice::initialize(int screenWidth, int screenHeight, bool vsync, H
 	}
 
 	rasterizerDesc.CullMode = D3D11_CULL_MODE::D3D11_CULL_FRONT;
-
+	rasterizerDesc.DepthBias = 0.0f;
+	rasterizerDesc.DepthBiasClamp = 0.0f;
+	rasterizerDesc.SlopeScaledDepthBias = -2.0f;
 	result = device->CreateRasterizerState(&rasterizerDesc, &fRasterState);
 	if (FAILED(result)) //If error occurred
 	{

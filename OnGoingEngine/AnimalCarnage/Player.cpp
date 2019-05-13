@@ -13,6 +13,8 @@ Player::Player()
 	dir = 1;
 	this->playerObj = nullptr;
 	facing = 0.0f;
+	canWallJump = false;
+	wallJumpReset = false;
 }
 
 
@@ -67,6 +69,7 @@ void Player::initialize()
 	/////////////
 	playerObj->getRigidbody()->setActivationState(DISABLE_DEACTIVATION);
 	playerObj->getRigidbody()->setFriction(0.5);
+	playerObj->getRigidbody()->setRestitution(0);
 	playerObj->getRigidbody()->setAngularFactor(btVector3(0, 0, 0));
 
 
@@ -158,13 +161,33 @@ void Player::update(float deltaTime, int id)
 			this->playerObj->getRigidbody()->applyImpulse(btVector3(0, 105.0f *deltaTime * 60,0),btVector3(0,0,0));
 			//playerObj->getRigidbody()->applyForce(btVector3(0, 4500.0f, 0), btVector3(0, 0, 0));
 			grounded = false;
+			canWallJump = false;
 		}
 		if (grounded == true) {
+			wallJumpReset = true;
 			canJump = true;
 		}
 		else if (grounded == false) {
 			canJump = false;
 		}
+		//WALLJUMP
+		if ((state.buttons.x) && canWallJump && !canJump && !grounded && wallJumpReset) {
+			//this->playerObj->getRigidbody()->setLinearVelocity(btVector3(0,1, 0));
+			this->playerObj->getRigidbody()->applyImpulse(btVector3(0, 205.0f *deltaTime * 60, 0), btVector3(0, 0, 0));
+			//this->playerObj->getRigidbody()->setLinearVelocity(btVector3(playerObj->getRigidbody()->getLinearVelocity().getX()*-1, playerObj->getRigidbody()->getLinearVelocity().getY(), playerObj->getRigidbody()->getLinearVelocity().getZ()));
+			//playerObj->getRigidbody()->applyForce(btVector3(0, 4500.0f, 0), btVector3(0, 0, 0));
+			grounded = false;
+			canWallJump = false;
+			wallJumpReset = false;
+
+			float dir = 17.0f * state.thumbSticks.leftX;// / stickAbsL;
+			//this->playerObj->getRigidbody()->setLinearVelocity(btVector3(dir, 0, 0));
+
+			playerObj->getRigidbody()->setLinearVelocity(btVector3(dir, playerObj->getRigidbody()->getLinearVelocity().getY(), playerObj->getRigidbody()->getLinearVelocity().getZ()));
+
+
+		}
+		
 
 
 
@@ -326,6 +349,11 @@ void Player::setGrounded(bool grounded)
 {
 	this->grounded = grounded;
 	//playerObj->getRigidbody()->applyImpulse(btVector3(0, 100.0f, 0), btVector3(0, 0, 0));
+}
+
+void Player::setCanWallJump(bool canWallJump)
+{
+	this->canWallJump = canWallJump;
 }
 
 float Player::magnitude(XMFLOAT3 l)

@@ -234,9 +234,10 @@ void LightShader::renderShaderDir(int vertexCount)
 	float blendFactor[4] = { 0.f, 0.f, 0.f, 0.f };
 
 	//System::getDeviceContext()->OMSetDepthStencilState(dpthQuad, 0);
-	System::getDeviceContext()->PSSetSamplers(0, 1, &sampler);
+	//System::getDeviceContext()->PSSetSamplers(0, 1, &sampler);
 	//System::getDeviceContext()->RSSetState(rasState);
 	System::getDeviceContext()->OMSetBlendState(blendState, blendFactor, 1);
+	System::shaderManager->getShadowMapping()->setSampler();
 	this->renderPixels(vertexCount);//shade the pixels
 }
 
