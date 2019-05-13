@@ -85,7 +85,7 @@ private:
 	//bool collide;
 	//int currentInput; //imgui, controlls input
 
-	bool mouseShow;
+	//bool mouseShow;
 	//bool mouseSwitch;
 	//bool moveScreen;
 
@@ -101,6 +101,7 @@ private:
 	static LRESULT CALLBACK  WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
 	HWND InitWindow(HINSTANCE hInstance, float height, float width);
 	void change(bool & theSwitch);
+	
 	//btCollisionConfiguration* collisionConfig; //Test
 public:
 

@@ -1,6 +1,7 @@
 #ifndef JOINT_H
 #define JOINT_H
 #include <DirectXMath.h>
+#include "Luna/include/Luna/Luna.h"
 #include <string>
 class Joint
 {
@@ -24,9 +25,10 @@ protected:
 	void calcInverseBindTransform(DirectX::XMMATRIX parentBindTransform);
 public:
 	Joint();
+	Joint(char* name, int id, int parentID, float matrix[4][4]);
 	Joint(std::string name, int id, int nrOfChildren, DirectX::XMMATRIX transform);
 	//Joint(const Joint& obj);
-	//void operator=(const Joint& obj);
+	//void operator=(const Luna::Joint& obj);
 
 	void init(std::string name,int id, int nrOf);
 

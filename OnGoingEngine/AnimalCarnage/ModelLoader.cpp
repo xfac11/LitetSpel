@@ -19,12 +19,6 @@ void ModelLoader::loadGO(GameObject*& object, const char* filePath)
 	reader.getVertices(0, vertices);
 	reader.getIndices(0, indices);
 
-	//int skltn = (int)reader.getSkeletonCount();
-	//std::vector<Luna::Joint> joints;
-	//std::vector<Luna::Weights> weights;
-	//std::vector<Luna::Animation> anims;
-	//reader.getWeights(0, weights);
-	//reader.getAnimation();
 	//converting to fit functions and shaders
 	std::vector<Vertex3D> vertices3D;
 	vertices3D.resize(vertices.size());
@@ -49,10 +43,36 @@ void ModelLoader::loadGO(GameObject*& object, const char* filePath)
 		object[i].addModel(vertices3D, dIndices, (int)indices.size());
 		object[i].setTexture(reader.getMaterial(i).diffuseTexPath,i);
 		//reader.getMaterial(i).
+
+		if (mesh.hasSkeleton == true)
+		{
+			Luna::Skeleton skltn;
+			std::vector<Luna::Joint> joints;
+			std::vector<Luna::Weights> weights;
+			Luna::Animation anims;
+			std::vector<Luna::Keyframe> keyframes;
+
+			skltn = reader.getSkeleton();
+			reader.getWeights(0, weights);
+			reader.getJoints(joints);
+			anims = reader.getAnimation();
+			reader.getKeyframes(0, keyframes);
+
+		}
 	}
 
 	vertices3D.clear();
 	delete[]dIndices;
+
+
+
+	
+
+
+		
+		
+		
+	
 }
 //void ModelLoader::loadModel(Model**&model, const char* filePath) //unused?
 //{

@@ -64,6 +64,8 @@ void System::change(bool & theSwitch)
 		theSwitch = true;
 }
 
+
+
 void System::reset()
 {
 	System::getDeviceContext()->VSSetShader(nullptr, nullptr, 0);
@@ -264,7 +266,7 @@ System::System(HINSTANCE hInstance, LPCSTR name, int nCmdShow)
 	//this->freezeCheck = false;
 	//this->cullingPos = { 0,0,0 };
 
-	this->mouseShow = true;
+	//this->mouseShow = true;
 	//this->mouseSwitch = true;
 	//this->moveScreen = true;
 
@@ -501,42 +503,46 @@ void System::update(float deltaTime)
 		else
 		{
 			if (ptr->checkCameraFocus() == true) //it sets exact position, remember to change z value to appropriate location
-				theCamera->SetPosition(playerPos[ptr->getCameraFocus()]);
+				theCamera->SetPosition(playerPos[ptr->getCameraFocus()].x, playerPos[ptr->getCameraFocus()].y,-5.f);
 			theCamera->move(ptr->changeCamera(deltaTime));
-	
+			theCamera->rotate(ptr->rotateCamera(deltaTime));
 		}
-		if(ptr->checkPause()==false)
+		if (ptr->checkPause() == false)
+		{
 			physices->Update(deltaTime);
+			if (theCamera->GetRotation().x != 0 || theCamera->GetRotation().y != 0 || theCamera->GetRotation().z != 0)
+				theCamera->SetRotation(0, 0, 0);
+		}
 	}
 
 	
 
-	if (theKeyboard->KeyIsPressed('W'))
-	{
-		theCamera->move(0, 0, 10 * deltaTime);
-	}
-	else if (theKeyboard->KeyIsPressed('S'))
-	{
-		theCamera->move(0, 0, -10 * deltaTime);
-	}
-	
-	if (theKeyboard->KeyIsPressed('D'))
-	{
-		theCamera->move(10 * deltaTime, 0, 0);
-	}
-	else if (theKeyboard->KeyIsPressed('A'))
-	{
-		//this->obj2->move(-1 * deltaTime, 0, 0);
-		theCamera->move(-10 * deltaTime, 0, 0);
-	}
-	if (theKeyboard->KeyIsPressed('X'))
-	{
-		theCamera->move(0, -1 * deltaTime, 0);
-	}
-	if (theKeyboard->KeyIsPressed('Z'))
-	{
-		theCamera->move(0, 1 * deltaTime, 0);
-	}
+	//if (theKeyboard->KeyIsPressed('W'))
+	//{
+	//	theCamera->move(0, 0, 10 * deltaTime);
+	//}
+	//else if (theKeyboard->KeyIsPressed('S'))
+	//{
+	//	theCamera->move(0, 0, -10 * deltaTime);
+	//}
+	//
+	//if (theKeyboard->KeyIsPressed('D'))
+	//{
+	//	theCamera->move(10 * deltaTime, 0, 0);
+	//}
+	//else if (theKeyboard->KeyIsPressed('A'))
+	//{
+	//	//this->obj2->move(-1 * deltaTime, 0, 0);
+	//	theCamera->move(-10 * deltaTime, 0, 0);
+	//}
+	//if (theKeyboard->KeyIsPressed('X'))
+	//{
+	//	theCamera->move(0, -1 * deltaTime, 0);
+	//}
+	//if (theKeyboard->KeyIsPressed('Z'))
+	//{
+	//	theCamera->move(0, 1 * deltaTime, 0);
+	//}
 
 	if (theKeyboard->KeyIsPressed('V'))
 	{
@@ -544,7 +550,7 @@ void System::update(float deltaTime)
 		this->mouseMovement(deltaTime);
 		//this->mouseShow = false;
 	}
-	else
+	//else
 	//	this->mouseShow = true;
 	//ShowCursor(mouseShow);
 

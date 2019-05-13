@@ -45,8 +45,10 @@ private:
 	GameObject* wall2;
 
 	Objects * object[4];
-
-
+	
+	static GunGameState * shelf;
+	static void Callback(int other_arg, void * this_pointer);
+	static void otherCall();
 public:
 	GunGameState();
 	~GunGameState();
@@ -67,7 +69,7 @@ public:
 	int getCameraFocus();
 	bool checkCameraFocus();
 	DirectX::XMFLOAT3 changeCamera(float deltaTime)const;
-	
+	DirectX::XMFLOAT3 rotateCamera(float deltaTime)const;
 
 
 	//btCollisionObjectWrapper getGroundCollisionObject();

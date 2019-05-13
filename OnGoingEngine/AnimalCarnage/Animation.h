@@ -4,7 +4,10 @@
 class Animation
 {
 private:
-	//keyframes??
+	//skip direct to keyframes??
+	//
+	//float fps
+	//float duration
 	JointAnimation** anims;
 	int nrOfJoints;
 public:

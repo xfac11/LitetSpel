@@ -13,12 +13,14 @@ JointTransformation::JointTransformation()
 {
 	this->position = {};
 	this->rotation = {};
+	this->scale = {};
 }
 
-JointTransformation::JointTransformation(DirectX::XMFLOAT3 position, DirectX::XMVECTOR rotation)
+JointTransformation::JointTransformation(DirectX::XMFLOAT4 position, DirectX::XMVECTOR rotation, DirectX::XMFLOAT3 scale)
 {
-	this->position = position;
+	this->position = DirectX::XMFLOAT3(position.x,position.y, position.z);
 	this->rotation = rotation;
+	this->scale = scale;
 }
 
 JointTransformation::JointTransformation(float matrix[4][4])
@@ -64,6 +66,9 @@ JointTransformation::JointTransformation(float matrix[4][4])
 	this->position.x = matrix[0][3];
 	this->position.y = matrix[1][3];
 	this->position.z = matrix[2][3];
+	this->scale.x = matrix[0][0];
+	this->scale.y = matrix[1][1];
+	this->scale.z = matrix[2][2];
 	
 }
 
@@ -71,6 +76,7 @@ JointTransformation::JointTransformation(const JointTransformation & obj)
 {
 	this->position = obj.position;
 	this->rotation = obj.rotation;
+	this->scale= obj.scale;
 }
 
 JointTransformation::~JointTransformation()
@@ -81,19 +87,24 @@ void JointTransformation::operator=(const JointTransformation & obj)
 {
 	this->position = obj.position;
 	this->rotation = obj.rotation;
+	this->scale = obj.scale;
 }
 
 DirectX::XMMATRIX JointTransformation::getLocalTransform()
 {	
-	DirectX::XMMATRIX matrix = DirectX::XMMatrixTranslation(this->position.x, this->position.y, this->position.z);
+	DirectX::XMMATRIX posMatrix = DirectX::XMMatrixTranslation(this->position.x, this->position.y, this->position.z);
 	DirectX::XMMATRIX quaternionM = DirectX::XMMatrixRotationQuaternion(rotation);
+	DirectX::XMMATRIX scMatrix = DirectX::XMMatrixScaling(scale.x,scale.y,scale.z);
 
-	return DirectX::XMMatrixMultiply(matrix, quaternionM);
+	return DirectX::XMMatrixMultiply(DirectX::XMMatrixMultiply(posMatrix, quaternionM),scMatrix);
 }
 
 JointTransformation JointTransformation::interpolate(JointTransformation frameA, JointTransformation frameB, float progression) //progression is 0 to 1
 {
 	DirectX::XMFLOAT3 pos = this->interpolate(frameA.position, frameB.position, progression);
+	DirectX::XMFLOAT4 pos4 = { pos.x, pos.y, pos.z, 0.f };
 	DirectX::XMVECTOR quaternion = DirectX::XMQuaternionSlerp(frameA.rotation, frameB.rotation, progression);
-	return JointTransformation(pos, quaternion);
+	DirectX::XMFLOAT3 scale = this->interpolate(frameA.scale, frameB.scale, progression);
+	
+	return JointTransformation(pos4, quaternion,scale);
 }

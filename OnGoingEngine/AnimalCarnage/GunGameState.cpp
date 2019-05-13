@@ -3,6 +3,9 @@
 #include "GunGameGui.h"
 #include "PauseGui.h"
 
+GunGameState* GunGameState::shelf = nullptr;
+
+
 //btRigidBody* GunGameState::addSphere(float rad, float x, float y, float z, float mass)
 //{	//add object set transform
 //	btTransform t; //
@@ -44,7 +47,30 @@
 //	//}
 //	return result;
 //}
+void GunGameState::Callback(int other_arg, void * this_pointer) 
+{
+	GunGameState * self = static_cast<GunGameState*>(this_pointer);
+	int lol = 0;
+	bool test = false;
 
+	test = self->checkPause();
+	//test = this->checkPause(); //this does not work!!
+	if (test == true)
+		lol = 500;
+	else
+		lol = 2;
+	shelf = self;
+}
+void GunGameState::otherCall() //jabbas exempel
+{
+	bool test = false; 
+	int lol = 0;
+	test = shelf->checkPause();
+	if (test == true)
+		lol = 500;
+	else
+		lol = 2;
+}
 GunGameState::GunGameState()
 {
 	this->testColBox = false;
@@ -275,8 +301,6 @@ void GunGameState::renderImgui()
 bool GunGameState::update(float deltaTime)
 {
 
-
-
 	OutputDebugStringA("0\n");
 	if (paused)
 	{
@@ -384,7 +408,7 @@ bool GunGameState::checkPause() const
 	return this->paused;
 }
 
-int GunGameState::getCameraFocus()
+int GunGameState::getCameraFocus() //focus on players
 {
 	if (this->cameraFocus < 0)
 		this->cameraFocus = nrOfPlayers-1;
@@ -421,19 +445,27 @@ DirectX::XMFLOAT3 GunGameState::changeCamera(float deltaTime)const
 	//during pause
 	DirectX::XMFLOAT3 camera = {0,0,0};
 
-	//		//tracker.Update(state);
-//	if (((state.IsLeftTriggerPressed() && state.IsRightTriggerPressed()) ||
-//		(state.buttons.leftShoulder && state.buttons.rightShoulder)) &&
-//		state.buttons.a && (state.buttons.back || state.buttons.menu))
-//	{
 	DirectX::GamePad::State state = System::theGamePad->GetState(0);
-	float dirX = 7.0f * state.thumbSticks.leftX*deltaTime;
-	float dirY = 7.0f * state.thumbSticks.leftY*deltaTime;
-	float zoom = 3 * (state.buttons.x - state.buttons.y)*deltaTime;
+	float dirX = 0.2f * state.thumbSticks.leftX * deltaTime;
+	float dirY = 8.f * state.thumbSticks.leftY * deltaTime;
+	float zoom = 0.3f * (state.buttons.y - state.buttons.x)*deltaTime;
 	camera.x += dirX;
 	camera.y += dirY;
 	camera.z += zoom;
 	return camera;
+}
+
+DirectX::XMFLOAT3 GunGameState::rotateCamera(float deltaTime) const
+{
+
+	DirectX::XMFLOAT3 rotation = { 0,0,0 };
+	DirectX::GamePad::State state = System::theGamePad->GetState(0);
+	float rotX = 35.f * state.thumbSticks.rightX*deltaTime;
+	float rotY = 35.f * state.thumbSticks.rightY*deltaTime;
+	rotation.x += -rotY;
+	rotation.y += rotX;
+	//rotation.x
+	return rotation;
 }
 
 //btCollisionObjectWrapper GunGameState::getGroundCollisionObject()
