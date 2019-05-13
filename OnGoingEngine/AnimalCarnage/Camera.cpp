@@ -84,7 +84,7 @@ void Camera::Render()
 		0.0f,-1,0.0f,1.0f
 	};
 	DirectX::XMVECTOR lightDirView = DirectX::XMVectorSet(0,0,0, 0);
-	DirectX::XMVECTOR camPos = DirectX::XMVectorSet(0.0f, 3.0f, -2.0f, 0);
+	DirectX::XMVECTOR camPos = DirectX::XMVectorSet(6.0f, 5.0f, 0.0f, 0);
 	DirectX::XMVECTOR up = DirectX::XMVectorSet(0, 1, 0, 0);
 	//DirectX::XMMatrixLookAtLH(CamPos, lightDirView, up);
 	//this->viewMatrix = DirectX::XMMatrixLookAtLH(camPos, lightDirView, up);

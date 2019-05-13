@@ -127,11 +127,11 @@ bool ShadowMapping::initialize()
 		1.0f, 1.0f, 1.0f, 1.0f
 	};
 	ZeroMemory(&desc, sizeof(desc));
-	desc.Filter = D3D11_FILTER_COMPARISON_MIN_MAG_LINEAR_MIP_POINT;
+	desc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
 	desc.AddressU = D3D11_TEXTURE_ADDRESS_BORDER;
 	desc.AddressV = D3D11_TEXTURE_ADDRESS_BORDER;
 	desc.AddressW = D3D11_TEXTURE_ADDRESS_BORDER;
-	desc.ComparisonFunc = D3D11_COMPARISON_LESS_EQUAL;
+	desc.ComparisonFunc = D3D11_COMPARISON_ALWAYS;
 	desc.BorderColor[0] = bColor[0];
 	desc.BorderColor[1] = bColor[1];
 	desc.BorderColor[2] = bColor[2];
@@ -205,6 +205,11 @@ void ShadowMapping::setPSDepthView()
 ID3D11ShaderResourceView *& ShadowMapping::getShadowMap()
 {
 	return this->depthShaderResource;
+}
+
+void ShadowMapping::setSampler()
+{
+	System::getDeviceContext()->PSSetSamplers(0, 1, &this->sampler);
 }
 
 void ShadowMapping::shutdown()
