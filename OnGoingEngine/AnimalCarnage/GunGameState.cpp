@@ -105,12 +105,12 @@ bool GunGameState::callbackFunc(btManifoldPoint& cp, const btCollisionObjectWrap
 				((Player*)obj2->getCollisionObject()->getUserPointer())->setGrounded(true);
 			}
 		}
-		/*if (i == 2) {
+		if (i == 2) {
 			OutputDebugStringA("1\n");
 			if (((Player*)obj2->getCollisionObject()->getUserPointer()) != nullptr) {
-				((Player*)obj2->getCollisionObject()->getUserPointer())->setGrounded(true);
+				((Player*)obj2->getCollisionObject()->getUserPointer())->setCanWallJump(true);
 			}
-		}*/
+		}
 		/*else {
 			((Player*)obj1->getCollisionObject()->getUserPointer())->setGrounded(false);
 		}*/

@@ -35,6 +35,8 @@ private:
 	bool canJump;
 	float airSpeed;
 	float facing;
+	bool canWallJump;
+	bool wallJumpReset;
 
 	RumbleProperties theRumble;
 
@@ -74,6 +76,7 @@ public:
 	int dir;
 
 	void setGrounded(bool grounded);
+	void setCanWallJump(bool canWallJump);
 
 	GameObject* playerObj;
 };
