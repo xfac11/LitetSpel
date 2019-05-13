@@ -27,7 +27,7 @@ solver(new btSequentialImpulseConstraintSolver)
 	//world->addRigidBody(body);
 	//bodies.push_back(body);
 
-	gContactAddedCallback = callbackFunc;
+	//gContactAddedCallback = callbackFunc;
 }
 
 
@@ -88,7 +88,7 @@ btRigidBody* Physics::addSphere(float radius, btVector3 Origin, float mass)
 	return body;
 }
 
-btRigidBody* Physics::addBox(btVector3 Origin, btVector3 size,float mass)
+btRigidBody* Physics::addBox(btVector3 Origin, btVector3 size,float mass, Objects *objects)
 {
 	//add object set transform
 	btTransform t; //
@@ -106,6 +106,7 @@ btRigidBody* Physics::addBox(btVector3 Origin, btVector3 size,float mass)
 	body->setCollisionFlags(body->getCollisionFlags() | btCollisionObject::CF_CUSTOM_MATERIAL_CALLBACK);
 	this->world->addRigidBody(body);
 	bodies.push_back(body);
+	body->setUserPointer(objects);
 
 	return body;
 }
@@ -134,30 +135,30 @@ btRigidBody* Physics::addPlayer(btVector3 Origin, btVector3 size, float mass, Pl
 	return body;
 }
 
-bool Physics::callbackFunc(btManifoldPoint& cp, const btCollisionObjectWrapper* obj1, int id1, int index1, const btCollisionObjectWrapper* obj2, int id2, int index2)
-{
-	
-	
-	
-	
-	if (obj1->getCollisionObject()->getUserPointer() == ((Player*)obj1->getCollisionObject()->getUserPointer()))
-	{
-		if (((Player*)obj1->getCollisionObject()->getUserPointer()) != nullptr) {
-			bool ishit = ((Player*)obj1->getCollisionObject()->getUserPointer())->getHit();
-			
-		}
-		if (((Objects*)obj2->getCollisionObject()->getUserPointer()) != nullptr) {
-			OutputDebugStringA("1\n");
-			if (((Player*)obj2->getCollisionObject()->getUserPointer()) != nullptr) {
-				((Player*)obj2->getCollisionObject()->getUserPointer())->setGrounded(true);
-			}
-		}
-		/*else {
-			((Player*)obj1->getCollisionObject()->getUserPointer())->setGrounded(false);
-		}*/
-	}
-	return false;
-}
+//bool Physics::callbackFunc(btManifoldPoint& cp, const btCollisionObjectWrapper* obj1, int id1, int index1, const btCollisionObjectWrapper* obj2, int id2, int index2)
+//{
+//	
+//	
+//	
+//	
+//	//if (obj1->getCollisionObject()->getUserPointer() == ((Player*)obj1->getCollisionObject()->getUserPointer()))
+//	//{
+//	//	if (((Player*)obj1->getCollisionObject()->getUserPointer()) != nullptr) {
+//	//		bool ishit = ((Player*)obj1->getCollisionObject()->getUserPointer())->getHit();
+//	//		
+//	//	}
+//	//	if (((Objects*)obj2->getCollisionObject()->getUserPointer()) != nullptr) {
+//	//		OutputDebugStringA("1\n");
+//	//		if (((Player*)obj2->getCollisionObject()->getUserPointer()) != nullptr) {
+//	//			((Player*)obj2->getCollisionObject()->getUserPointer())->setGrounded(true);
+//	//		}
+//	//	}
+//	//	/*else {
+//	//		((Player*)obj1->getCollisionObject()->getUserPointer())->setGrounded(false);
+//	//	}*/
+//	//}
+//	//return false;
+//}
 
 btStaticPlaneShape* Physics::getPlaneRigidBody()
 {

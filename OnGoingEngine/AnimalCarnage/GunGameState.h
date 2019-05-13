@@ -21,7 +21,7 @@ private:
 	GuiBase* pauseGui;
 	bool paused;
 	int cameraFocus;
-
+	int objectId;
 
 	////vector for rigid body
 	//std::vector<btRigidBody*> bodies;
@@ -44,11 +44,13 @@ private:
 	GameObject* wall1;
 	GameObject* wall2;
 
-	Objects * object[4];
-	
-	static GunGameState * shelf;
-	static void Callback(int other_arg, void * this_pointer);
-	static void otherCall();
+	//static GunGameState * shelf;
+	//static void Callback(int other_arg, void * this_pointer);
+	//static void otherCall();
+	Objects * object[10];
+
+	int ObjectId;
+
 public:
 	GunGameState();
 	~GunGameState();
@@ -69,9 +71,11 @@ public:
 	int getCameraFocus();
 	bool checkCameraFocus();
 	DirectX::XMFLOAT3 changeCamera(float deltaTime)const;
+
 	DirectX::XMFLOAT3 rotateCamera(float deltaTime)const;
-
-
+	/*static GunGameState * shelf;*/
+	/*void callback(int other_arg, void * this_pointer);*/
+	static bool callbackFunc(btManifoldPoint& cp, const btCollisionObjectWrapper* obj1, int id1, int index1, const btCollisionObjectWrapper* obj2, int id2, int index2);
 	//btCollisionObjectWrapper getGroundCollisionObject();
 
 	//Temporary

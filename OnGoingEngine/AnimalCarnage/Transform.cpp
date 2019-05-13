@@ -65,8 +65,9 @@ void Transform::setScale(float x, float y, float z) {
 void Transform::setRotation(float x, float y, float z, float angle) {
 	Angle = angle;
 	this->Rotation = XMFLOAT3(x, y, z);
-	ApplyTransform();
 	this->rotationMatrix = DirectX::XMMatrixRotationRollPitchYaw(x, y, z);
+
+	ApplyTransform();
 	//XMVECTOR te;
 	//XMStoreFloat3(&test, te);
 }
@@ -91,8 +92,9 @@ void Transform::ApplyTransform() {
 
 		//if you want to rotate around a certain point
 		this->world = DirectX::XMMatrixTranspose(
+			this->rotationMatrix*
 			XMMatrixScaling(Scale.x, Scale.y, Scale.z) *
-			this->rotationMatrix*//*DirectX::XMMatrixRotationAxis(Axis, Angle) **/
+			//*DirectX::XMMatrixRotationAxis(Axis, Angle) **/
 			XMMatrixTranslation(Position.x, Position.y, Position.z)
 		);
 		//	world = DirectX::XMMatrixTranspose(DirectX::XMMatrixRotationAxis(Axis, Angle));

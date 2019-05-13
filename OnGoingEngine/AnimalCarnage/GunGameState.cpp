@@ -3,7 +3,7 @@
 #include "GunGameGui.h"
 #include "PauseGui.h"
 
-GunGameState* GunGameState::shelf = nullptr;
+//GunGameState* GunGameState::shelf = nullptr;
 
 
 //btRigidBody* GunGameState::addSphere(float rad, float x, float y, float z, float mass)
@@ -47,30 +47,34 @@ GunGameState* GunGameState::shelf = nullptr;
 //	//}
 //	return result;
 //}
-void GunGameState::Callback(int other_arg, void * this_pointer) 
-{
-	GunGameState * self = static_cast<GunGameState*>(this_pointer);
-	int lol = 0;
-	bool test = false;
 
-	test = self->checkPause();
-	//test = this->checkPause(); //this does not work!!
-	if (test == true)
-		lol = 500;
-	else
-		lol = 2;
-	shelf = self;
-}
-void GunGameState::otherCall() //jabbas exempel
-{
-	bool test = false; 
-	int lol = 0;
-	test = shelf->checkPause();
-	if (test == true)
-		lol = 500;
-	else
-		lol = 2;
-}
+//void GunGameState::Callback(int other_arg, void * this_pointer) 
+//{
+//	GunGameState * self = static_cast<GunGameState*>(this_pointer);
+//	int lol = 0;
+//	bool test = false;
+//
+//	test = self->checkPause();
+//	//test = this->checkPause(); //this does not work!!
+//	if (test == true)
+//		lol = 500;
+//	else
+//		lol = 2;
+//	shelf = self;
+//}
+//void GunGameState::otherCall() //jabbas exempel
+//{
+//	bool test = false; 
+//	int lol = 0;
+//	test = shelf->checkPause();
+//	if (test == true)
+//		lol = 500;
+//	else
+//		lol = 2;
+//}
+
+//Objects* GunGameState::object[];
+
 GunGameState::GunGameState()
 {
 	this->testColBox = false;
@@ -78,6 +82,8 @@ GunGameState::GunGameState()
 	this->inGameGui = nullptr;
 	this->pauseGui = nullptr;
 	this->cameraFocus = 0;
+
+	this->objectId = 1;
 }
 
 GunGameState::~GunGameState()
@@ -86,7 +92,60 @@ GunGameState::~GunGameState()
 	delete object[0];
 	delete object[1];
 	delete object[2];
-	//delete object[3];
+	delete object[3];
+	delete object[4];
+	delete object[5];
+}
+
+//void GunGameState::callback(int other_arg, void * this_pointer)
+//{
+//	GunGameState * self = static_cast<GunGameState*>(this_pointer);
+//	int lol = 0;
+//	bool test = false;
+//
+//	test = self->checkPause();
+//	//test = this->checkPause(); //this does not work!!
+//	if (test == true)
+//		lol = 500;
+//	else
+//		lol = 2;
+//	shelf = self;
+//}
+
+bool GunGameState::callbackFunc(btManifoldPoint& cp, const btCollisionObjectWrapper* obj1, int id1, int index1, const btCollisionObjectWrapper* obj2, int id2, int index2)
+{
+
+	if (obj1->getCollisionObject()->getUserPointer() == (Player*)obj1->getCollisionObject()->getUserPointer())
+	{
+		if (((Player*)obj1->getCollisionObject()->getUserPointer()) != nullptr) {
+			bool ishit = ((Player*)obj1->getCollisionObject()->getUserPointer())->getHit();
+		}
+		//object[3]->getId();
+		int i;
+		Objects* pointer = (Objects*)obj1->getCollisionObject()->getUserPointer();
+		i=pointer->getId();
+		/*if (i ) {
+			i = ((Objects*)obj2->getCollisionObject()->getUserPointer())->getId();
+		}*/
+		
+		if (i == 3) {
+			
+			OutputDebugStringA("1\n");
+			if (((Player*)obj2->getCollisionObject()->getUserPointer()) != nullptr) {
+				((Player*)obj2->getCollisionObject()->getUserPointer())->setGrounded(true);
+			}
+		}
+		/*if (i == 2) {
+			OutputDebugStringA("1\n");
+			if (((Player*)obj2->getCollisionObject()->getUserPointer()) != nullptr) {
+				((Player*)obj2->getCollisionObject()->getUserPointer())->setGrounded(true);
+			}
+		}*/
+		/*else {
+			((Player*)obj1->getCollisionObject()->getUserPointer())->setGrounded(false);
+		}*/
+	}
+	return false;
 }
 
 void GunGameState::pause(bool paused)
@@ -111,12 +170,17 @@ Player * GunGameState::getPlayer(int id) const
 
 bool GunGameState::initailize()
 {
-	this->object[0] = new Objects("Resources/Models/cube2.lu", btVector3(0, 8, 0), btVector3(1.f, 1.f, 1.f));
-	this->object[1] = new Objects("Resources/Models/cube2.lu", btVector3(9, 4, 0), btVector3(1.f, 1.f, 1.f), DYNAMIC);
-	this->object[2] = new Objects("Resources/Models/cube2.lu", btVector3(5,4, 0), btVector3(1.f, 1.f, 1.f),DYNAMIC);
+	gContactAddedCallback = callbackFunc;
+
+	this->object[0] = new Objects("Resources/Models/cube2.lu", btVector3(0, 8, 0),3,3, btVector3(5.f, 1.f, 1.f));
+	this->object[1] = new Objects("Resources/Models/cube2.lu", btVector3(9, 4, 0), 3,3, btVector3(5.f, 1.f, 1.f), DYNAMIC);
+	this->object[2] = new Objects("Resources/Models/cube2.lu", btVector3(5,4, 0), 3,3, btVector3(5.f, 1.f, 1.f),DYNAMIC);
+	this->object[3] = new Objects("Resources/Models/cube2.lu", btVector3(16, -2, 0), 3,3, btVector3(100.f, 4.f, 10.f), STATIC);
+	this->object[4] = new Objects("Resources/Models/cube2.lu", btVector3(35, 17, 0), 2,1, btVector3(10.f, 40.f, 10.f), STATIC);
+	this->object[5] = new Objects("Resources/Models/cube2.lu", btVector3(-35, 17, 0), 2,1, btVector3(10.f, 40.f, 10.f), STATIC);
 	//this->object[3] = new Objects("Resources/Models/cube2.lu", "stones_and_rocks_diffuse_base.tga", btVector3(3, 2, 0));
 
-	//->setLinearFactor(btVector3(0,0,0));
+	/*//->setLinearFactor(btVector3(0,0,0));
 	ground = new GameObject(System::shaderManager->getForwardShader());
 	System::theModelLoader->loadGO(ground, "Resources/Models/cube2.lu");
 
@@ -148,7 +212,7 @@ bool GunGameState::initailize()
 	System::theModelLoader->loadGO(wall2, "Resources/Models/cube2.lu");
 	System::handler->addObject(wall2);
 	this->wall2->getRigidbody()->setActivationState(DISABLE_DEACTIVATION);
-
+	*/
 	
 	GameObject* tree1 = new GameObject;
 	System::theModelLoader->loadGO(tree1, "Resources/Models/tree2.lu");
@@ -313,13 +377,13 @@ bool GunGameState::update(float deltaTime)
 		this->object[i]->update(deltaTime);
 	}
 
-	ground->setPosition(ground->getRigidbody()->getWorldTransform().getOrigin().getX(), ground->getRigidbody()->getWorldTransform().getOrigin().getY()+1.6f, ground->getRigidbody()->getWorldTransform().getOrigin().getZ());
+	/*ground->setPosition(ground->getRigidbody()->getWorldTransform().getOrigin().getX(), ground->getRigidbody()->getWorldTransform().getOrigin().getY()+1.6f, ground->getRigidbody()->getWorldTransform().getOrigin().getZ());
 	ground->getRigidbody()->setLinearFactor(btVector3(0, 0, 0));
 	ground->getRigidbody()->setCollisionFlags(btCollisionObject::CF_STATIC_OBJECT);
 
 	wall1->setPosition(wall1->getRigidbody()->getWorldTransform().getOrigin().getX(), wall1->getRigidbody()->getWorldTransform().getOrigin().getY(), wall1->getRigidbody()->getWorldTransform().getOrigin().getZ());
 	wall2->setPosition(wall2->getRigidbody()->getWorldTransform().getOrigin().getX(), wall2->getRigidbody()->getWorldTransform().getOrigin().getY(), wall2->getRigidbody()->getWorldTransform().getOrigin().getZ());
-	
+	*/
 	for (int i = 0; i < nrOfPlayers; i++)
 	{
 		btVector3 min;
