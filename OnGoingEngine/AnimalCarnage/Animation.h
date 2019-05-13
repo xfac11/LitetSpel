@@ -1,15 +1,15 @@
 #ifndef ANIMATION_H
 #define ANIMATION_H
-#include "JointAnimation.h"
+#include "KeyFrame.h"
 class Animation
 {
 private:
-	//skip direct to keyframes??
-	//
-	//float fps
-	//float duration
-	JointAnimation** anims;
-	int nrOfJoints;
+	std::string name;
+	float fps; //rate
+	float duration;
+	KeyFrame** frame;
+	int nrOfKeyFrames;
+
 public:
 	Animation();
 	void operator=(const Animation & obj);

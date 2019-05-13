@@ -5,7 +5,7 @@
 class JointTransformation
 {
 private:
-	//std::string name;
+	
 	DirectX::XMFLOAT3 position; //positon xyz w
 	DirectX::XMVECTOR rotation; //quaternion xyzw
 	DirectX::XMFLOAT3 scale;

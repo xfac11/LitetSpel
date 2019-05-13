@@ -7,6 +7,7 @@
 #include "btBulletDynamicsCommon.h"
 #include "Primitives.h"
 //#include "Player.h"
+#include "joint.h"
 
 class GameObject: public Transform//arv
 {
@@ -18,6 +19,9 @@ public:
 	int getNrOfModels();
 	Model*& getModel(int id);
 	Model**& getTheModelPtr();
+
+
+	//Joint* root;
 
 	void setHalfSize(float halfSize[3], float posOffset[3]);
 

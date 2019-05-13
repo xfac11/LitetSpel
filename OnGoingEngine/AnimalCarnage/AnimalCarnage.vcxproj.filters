@@ -1454,9 +1454,6 @@
     <ClInclude Include="Joint.h">
       <Filter>Skeleton</Filter>
     </ClInclude>
-    <ClInclude Include="JointAnimation.h">
-      <Filter>Skeleton</Filter>
-    </ClInclude>
     <ClInclude Include="JointTransformation.h">
       <Filter>Skeleton</Filter>
     </ClInclude>
