@@ -330,7 +330,7 @@ bool GunGameState::update(float deltaTime)
 				{
 					player[i]->setHitStun(true);
 					this->testColBox = true;
-					player[i]->playerObj->getRigidbody()->applyCentralImpulse(btVector3(player[j]->dir * 100, 75, 0));// , btVector3(1, 0, 0));
+					player[i]->playerObj->getRigidbody()->applyCentralImpulse(btVector3(player[j]->dir * 150, 100, 0));// , btVector3(1, 0, 0));
 					
 					//player[i]->setGrounded(true);
 				}

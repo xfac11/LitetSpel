@@ -33,6 +33,7 @@ private:
 	float jumpDir;
 	bool grounded; //collision On ground
 	bool canJump;
+	bool canPressJump;
 	float airSpeed;
 	float facing;
 	bool canWallJump;

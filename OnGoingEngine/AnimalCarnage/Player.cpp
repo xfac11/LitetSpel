@@ -15,6 +15,7 @@ Player::Player()
 {
 	isJumping = false;
 	canJump = true;
+	canPressJump = true;
 	airTimer = 0.f;
 	airSpeed = 0.f;
 	grounded = true;
@@ -170,7 +171,7 @@ void Player::update(float deltaTime, int id)
 			airSpeed = dir;
 		}
 
-		//AIR MOVEMENT
+		//AIR MOVEMENT && //FAST FALL
 		if (stickAbsL > 0.f && !canJump) {
 			float dir = 400.0f * state.thumbSticks.leftX;// / stickAbsL;
 			//this->playerObj->getRigidbody()->setLinearVelocity(btVector3(dir, 0, 0));
@@ -184,15 +185,28 @@ void Player::update(float deltaTime, int id)
 				playerObj->getRigidbody()->setLinearVelocity(btVector3(-17.0f, playerObj->getRigidbody()->getLinearVelocity().getY(), playerObj->getRigidbody()->getLinearVelocity().getZ()));
 			}
 			airSpeed = dir;
+
+		}
+		if (state.thumbSticks.leftY < 0 && !canJump) {
+			if (state.thumbSticks.leftY < -0.8) {
+				playerObj->getRigidbody()->applyForce(btVector3(0, state.thumbSticks.leftY * 1700.0f, 0), btVector3(0, 0, 0));
+				if (playerObj->getRigidbody()->getLinearVelocity().getY() < -30.0f) {
+					playerObj->getRigidbody()->setLinearVelocity(btVector3(playerObj->getRigidbody()->getLinearVelocity().getX(), -30.0f, playerObj->getRigidbody()->getLinearVelocity().getZ()));
+
+				}	
+			}
+			//playerObj->getRigidbody()->applyForce(btVector3(0, state.thumbSticks.leftY * 700, 0), btVector3(0, 0, 0));
 		}
 		
+
 		//JUMP
-		if ((state.buttons.x) && canJump){
+		if ((state.buttons.x) && canJump && canPressJump){
 			//this->playerObj->getRigidbody()->setLinearVelocity(btVector3(0,1, 0));
-			this->playerObj->getRigidbody()->applyImpulse(btVector3(0, 105.0f *deltaTime * 60,0),btVector3(0,0,0));
+			this->playerObj->getRigidbody()->applyImpulse(btVector3(0, 205.0f *deltaTime * 60,0),btVector3(0,0,0));
 			//playerObj->getRigidbody()->applyForce(btVector3(0, 4500.0f, 0), btVector3(0, 0, 0));
 			grounded = false;
 			canWallJump = false;
+			canPressJump = false;
 		}
 		if (grounded == true) {
 			wallJumpReset = true;
@@ -201,10 +215,12 @@ void Player::update(float deltaTime, int id)
 		else if (grounded == false) {
 			canJump = false;
 		}
+
+
 		//WALLJUMP
-		if ((state.buttons.x) && canWallJump && !canJump && !grounded && wallJumpReset) {
+		if ((state.buttons.x) && canWallJump && !canJump && !grounded && wallJumpReset && canPressJump) {
 			//this->playerObj->getRigidbody()->setLinearVelocity(btVector3(0,1, 0));
-			this->playerObj->getRigidbody()->applyImpulse(btVector3(0, 205.0f *deltaTime * 60, 0), btVector3(0, 0, 0));
+			this->playerObj->getRigidbody()->applyImpulse(btVector3(0, 225.0f *deltaTime * 60, 0), btVector3(0, 0, 0));
 			//this->playerObj->getRigidbody()->setLinearVelocity(btVector3(playerObj->getRigidbody()->getLinearVelocity().getX()*-1, playerObj->getRigidbody()->getLinearVelocity().getY(), playerObj->getRigidbody()->getLinearVelocity().getZ()));
 			//playerObj->getRigidbody()->applyForce(btVector3(0, 4500.0f, 0), btVector3(0, 0, 0));
 			grounded = false;
@@ -219,7 +235,12 @@ void Player::update(float deltaTime, int id)
 
 		}
 		
-
+		if ((state.buttons.x)) {
+			canPressJump = false;
+		}
+		else {
+			canPressJump = true;
+		}
 
 
 		if (hitbox.time > 0 && hitbox.time < hitbox.totalTime)
@@ -295,6 +316,8 @@ void Player::update(float deltaTime, int id)
 		}
 		this->playerObj->setRotationRollPitchYaw(this->playerObj->getRotation().x, facing, this->playerObj->getRotation().z);
 	}
+
+	grounded = false;
 }
 
 bool Player::updateRumble(float dt, int id)
