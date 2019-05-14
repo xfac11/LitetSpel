@@ -176,7 +176,7 @@ bool GunGameState::initailize()
 {
 	gContactAddedCallback = callbackFunc;
 
-	this->object[0] = new Objects("Resources/Models/cube2.lu", btVector3(0, 8, 0),3,3, btVector3(5.f, 1.f, 1.f));
+	this->object[0] = new Objects("Resources/Models/cube2.lu", btVector3(-10, 8, 0),3,3, btVector3(5.f, 1.f, 1.f));
 	this->object[1] = new Objects("Resources/Models/cube2.lu", btVector3(9, 4, 0), 3,3, btVector3(5.f, 1.f, 1.f), DYNAMIC);
 	this->object[2] = new Objects("Resources/Models/cube2.lu", btVector3(5,4, 0), 3,3, btVector3(5.f, 1.f, 1.f),DYNAMIC);
 	this->object[3] = new Objects("Resources/Models/cube2.lu", btVector3(16, -2, 0), 3,3, btVector3(100.f, 4.f, 10.f), STATIC);
@@ -216,7 +216,7 @@ bool GunGameState::initailize()
 	0.f ,0.3f ,0.f,10.f
 	};
 	float dir[4] = {
-		-1.0f,-1.0f,0.0f,1.0f
+		0.1f,-1.0f,0.0f,1.0f
 	};
 	float color[4] = {
 		1.0f , 1.0f, 1.0f , 1.0f

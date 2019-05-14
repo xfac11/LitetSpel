@@ -96,8 +96,8 @@ bool ShadowMapping::initialize()
 	depthStencilDesc.CPUAccessFlags = 0;
 	depthStencilDesc.MiscFlags = 0;
 
-	this->vp.Width = (float)1024;
-	this->vp.Height = (float)1024;
+	this->vp.Width = (float)1024/*System::getWindowArea().width*/;
+	this->vp.Height = (float)1024/*System::getWindowArea().height*/;
 	this->vp.MinDepth = 0.0f;
 	this->vp.MaxDepth = 1.0f;
 	this->vp.TopLeftX = 0;
@@ -192,7 +192,7 @@ void ShadowMapping::prepare()
 	ID3D11ShaderResourceView* s = NULL;
 	System::getDeviceContext()->PSSetShaderResources(3, 1, &s);
 	System::getDeviceContext()->OMSetRenderTargets(0, nullptr, this->depthStencilView);
-	System::getDeviceContext()->PSSetSamplers(0, 1, &this->sampler);
+	//System::getDeviceContext()->PSSetSamplers(0, 1, &this->sampler);
 	//System::getDeviceContext().omset
 }
 
@@ -209,7 +209,7 @@ ID3D11ShaderResourceView *& ShadowMapping::getShadowMap()
 
 void ShadowMapping::setSampler()
 {
-	System::getDeviceContext()->PSSetSamplers(0, 1, &this->sampler);
+	System::getDeviceContext()->PSSetSamplers(1, 1, &this->sampler);
 }
 
 void ShadowMapping::shutdown()

@@ -92,7 +92,7 @@ float4 pointLight(int index, float3 normal, float3 wPos,float3 colour)
 
 	float attenuation = max(0, 1.0f - (distance / lights[index].position.w));// from 3d project
 
-	float Attenuation = 1.0f +
+	float Attenuation = 1.0 +
 		0.2f * distance +
 		1.8f * distance * distance;
 	return color / (Attenuation / lights[index].position.w);// color/attenuation in tutorial
@@ -103,6 +103,20 @@ Texture2D Tex : register(t1);
 Texture2D PositionTexture : register(t2);
 Texture2D ShadowMap : register(t3);
 SamplerState SampSt :register(s0);
+SamplerState ShadowSamp : register(s1);
+//SamplerState ShadowSampler
+//{
+//	// sampler state
+//	Filter = MIN_MAG_MIP_LINEAR;
+//	AddressU = CLAMP;
+//	AddressV = CLAMP;
+//	BorderColor = {
+//		1,1,1,1
+//	};
+//
+//	// sampler comparison state
+//	ComparisonFunc = ALWAYS;
+//};
 float4 PS_main(VS_OUT input) : SV_Target
 {
 
@@ -194,13 +208,14 @@ float4 PS_main(VS_OUT input) : SV_Target
 				{
 					for (int y = -1; y <= 1; ++y)
 					{
-						float pcfDepth = ShadowMap.Sample(SampSt, shadowCoord.xy + float2(x, y) * texelSize).r;
+						float pcfDepth = ShadowMap.Sample(ShadowSamp, shadowCoord.xy + float2(x, y) * texelSize).r;
 						visibility += shadowCoord.z - bias > pcfDepth ? 1.0f: 0.0;
 					}
 				}
 				visibility /= 9.0;
+				//visibility += ShadowMap.SampleCmpLevelZero(ShadowSampler, shadowCoord.xy, shadowCoord.z);
 				if (shadowCoord.z > 1.0)
-					visibility = 0.0;
+					visibility = 0.0f;
 				/*if (visibility > 0.9f)
 					visibility = 0.9f;*/
 				totalLight = dirLight(normal, lights[0], pos, colorT.xyz, visibility);

@@ -82,13 +82,14 @@ GameObject & GameObjectHandler::getObject(int id)
 void GameObjectHandler::draw()
 {
 	
-	System::theGraphicDevice->setRasterFront();
+	//System::theGraphicDevice->setRasterFront();
 	System::theGraphicDevice->setRasterState();
 
 	//System::theGraphicDevice->setRasterFront();
 	System::shaderManager->getShadowMapping()->prepare();//setshader + omsetrendertarget(0,0,depthstencilview
 	DirectX::XMVECTOR lightDirView = DirectX::XMVectorSet(0, 0, 0, 1);
-	DirectX::XMVECTOR CamPos = DirectX::XMVectorSet(15 * (-1 * this->lightsCB.data.lights[0].direction[0]), 15 * (-1 * this->lightsCB.data.lights[0].direction[1]), 15 * (this->lightsCB.data.lights[0].direction[2]), 1);
+	float lightViewLengt = 11.5;
+	DirectX::XMVECTOR CamPos = DirectX::XMVectorSet(lightViewLengt * (-1 * this->lightsCB.data.lights[0].direction[0]), lightViewLengt * (-1 * this->lightsCB.data.lights[0].direction[1]), lightViewLengt * (this->lightsCB.data.lights[0].direction[2]), 1);
 	DirectX::XMVECTOR up = DirectX::XMVectorSet(0, 1, 0, 0);
 
 		//this->lightsCB.data.lights[2].position
@@ -109,8 +110,11 @@ void GameObjectHandler::draw()
 	System::shaderManager->getShadowMapping()->setView(DirectX::XMMatrixLookAtLH(CamPos, lightDirView, up));
 	for (int i = 0; i < this->nrOfOpaque; i++)
 	{
-		System::shaderManager->getShadowMapping()->setWorld(*this->opaqueModels[i].worldPtr);
-		this->opaqueModels[i].modelPtr->drawOnlyVertex();
+		if (i != 3)
+		{
+			System::shaderManager->getShadowMapping()->setWorld(*this->opaqueModels[i].worldPtr);
+			this->opaqueModels[i].modelPtr->drawOnlyVertex();
+		}
 	}
 	this->lightsCB.data.nrOfLights = nrOfLights;
 	this->lightsCB.applyChanges(System::getDevice(), System::getDeviceContext());

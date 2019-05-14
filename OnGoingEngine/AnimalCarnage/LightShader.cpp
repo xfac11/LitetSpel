@@ -169,7 +169,7 @@ bool LightShader::initialize()
 	blendStateDescription.RenderTarget[0].BlendOp = D3D11_BLEND_OP_ADD;
 	blendStateDescription.RenderTarget[0].SrcBlendAlpha = D3D11_BLEND_ONE;
 	blendStateDescription.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_ONE;
-	blendStateDescription.RenderTarget[0].BlendOpAlpha = D3D11_BLEND_OP_MAX;
+	blendStateDescription.RenderTarget[0].BlendOpAlpha = D3D11_BLEND_OP_ADD;
 	blendStateDescription.RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
 
 	// Create the blend state using the description.
@@ -182,11 +182,11 @@ bool LightShader::initialize()
 
 	D3D11_SAMPLER_DESC desc;
 	ZeroMemory(&desc, sizeof(desc));
-	desc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
+	desc.Filter = D3D11_FILTER_MIN_MAG_MIP_POINT;
 	desc.AddressU = D3D11_TEXTURE_ADDRESS_CLAMP;
 	desc.AddressV = D3D11_TEXTURE_ADDRESS_CLAMP;
 	desc.AddressW = D3D11_TEXTURE_ADDRESS_CLAMP;
-	desc.ComparisonFunc = D3D11_COMPARISON_NEVER;
+	desc.ComparisonFunc = D3D11_COMPARISON_ALWAYS;
 	desc.MinLOD = 0;
 	desc.MaxLOD = D3D11_FLOAT32_MAX;
 	HRESULT hr = System::getDevice()->CreateSamplerState(&desc, &this->sampler);
@@ -234,7 +234,7 @@ void LightShader::renderShaderDir(int vertexCount)
 	float blendFactor[4] = { 0.f, 0.f, 0.f, 0.f };
 
 	//System::getDeviceContext()->OMSetDepthStencilState(dpthQuad, 0);
-	//System::getDeviceContext()->PSSetSamplers(0, 1, &sampler);
+	System::getDeviceContext()->PSSetSamplers(0, 1, &sampler);
 	//System::getDeviceContext()->RSSetState(rasState);
 	System::getDeviceContext()->OMSetBlendState(blendState, blendFactor, 1);
 	System::shaderManager->getShadowMapping()->setSampler();

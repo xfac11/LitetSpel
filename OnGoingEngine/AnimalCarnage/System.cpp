@@ -620,7 +620,7 @@ void System::render()
 	shaderManager->getDefShader()->setViewProj(this->theCamera->GetViewMatrix(), this->theGraphicDevice->getProj(), DirectX::XMFLOAT4(this->theCamera->GetPosition().x, this->theCamera->GetPosition().y, this->theCamera->GetPosition().z, 1.0f));
 
 	shaderManager->getLightShader()->setCamPosToMatricesPerFrame(this->theCamera->GetPosition());
-	shaderManager->getLightShader()->setViewProj(this->theCamera->GetViewMatrix(), this->theGraphicDevice->getProj(), DirectX::XMFLOAT4(this->theCamera->GetPosition().x, this->theCamera->GetPosition().y, this->theCamera->GetPosition().z, 1.0f));
+	shaderManager->getLightShader()->setViewProj(this->theCamera->GetViewMatrix(), this->theGraphicDevice->getOrtho(), DirectX::XMFLOAT4(this->theCamera->GetPosition().x, this->theCamera->GetPosition().y, this->theCamera->GetPosition().z, 1.0f));
 
 	shaderManager->getShadowMapping()->setWorld(DirectX::XMMatrixIdentity());
 	shaderManager->getShadowMapping()->setViewProj(this->theCamera->GetViewMatrix(), this->theGraphicDevice->getOrtho(), DirectX::XMFLOAT4(this->theCamera->GetPosition().x, this->theCamera->GetPosition().y, this->theCamera->GetPosition().z, 1.0f));
