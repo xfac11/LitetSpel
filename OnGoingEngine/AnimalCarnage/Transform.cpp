@@ -117,20 +117,20 @@ void Transform::SetWorldToRigitBody()
 	 this->world = btTransform_to_XMMATRIX(this->rigidbody->getWorldTransform());
 }
 
-void Transform::setPoRGB(float x, float y, float z)
+void Transform::SetPosition(float x, float y, float z)
 {
 	btTransform t = this->rigidbody->getWorldTransform();
 	t.setOrigin(btVector3(x, y, z));
 	rigidbody->setWorldTransform(t);
 }
 
-XMFLOAT3 Transform::getPoRGB()
+XMFLOAT3 Transform::GetPosition()
 {
-	this->rigidbody->getWorldTransform();
-	return XMFLOAT3();
+	btTransform t =  this->rigidbody->getWorldTransform();
+	return XMFLOAT3(t.getOrigin().getX(), t.getOrigin().getY(),t.getOrigin().getZ());
 }
 
-void Transform::moveRGB(XMFLOAT3 posion)
+void Transform::Move(XMFLOAT3 posion)
 {
 	btTransform t = this->rigidbody->getWorldTransform();
 	btVector3 pos = t.getOrigin();

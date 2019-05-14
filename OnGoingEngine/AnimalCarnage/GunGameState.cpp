@@ -120,30 +120,36 @@ bool GunGameState::callbackFunc(btManifoldPoint& cp, const btCollisionObjectWrap
 		if (((Player*)obj1->getCollisionObject()->getUserPointer()) != nullptr) {
 			bool ishit = ((Player*)obj1->getCollisionObject()->getUserPointer())->getHit();
 		}
-		//object[3]->getId();
-		int i;
-		Objects* pointer = (Objects*)obj1->getCollisionObject()->getUserPointer();
-		i=pointer->getId();
-		/*if (i ) {
-			i = ((Objects*)obj2->getCollisionObject()->getUserPointer())->getId();
-		}*/
 		
-		if (i == 3) {
-			
+		//wall ground
+		Objects* pointer = (Objects*)obj1->getCollisionObject()->getUserPointer();
+		switch (pointer->getId())
+		{
+		case 3:
 			OutputDebugStringA("1\n");
 			if (((Player*)obj2->getCollisionObject()->getUserPointer()) != nullptr) {
 				((Player*)obj2->getCollisionObject()->getUserPointer())->setGrounded(true);
 			}
-		}
-		if (i == 2) {
+			break;
+		case 2:
 			OutputDebugStringA("1\n");
 			if (((Player*)obj2->getCollisionObject()->getUserPointer()) != nullptr) {
 				((Player*)obj2->getCollisionObject()->getUserPointer())->setCanWallJump(true);
 			}
+			break;
 		}
-		/*else {
-			((Player*)obj1->getCollisionObject()->getUserPointer())->setGrounded(false);
-		}*/
+		//platform
+		switch (pointer->GetType())
+		{
+		case DYNAMIC:
+			//OutputDebugStringA("1\n");
+			//if (((Player*)obj2->getCollisionObject()->getUserPointer()) != nullptr) {
+			//	btTransform& trans = pointer->GetRigidBody()->getWorldTransform();
+			////	((Player*)obj2->getCollisionObject()->getUserPointer())->follow(pointer->ObjectOBJ->GetPosition());
+			//}
+			break;
+		}
+
 	}
 	return false;
 }
@@ -178,42 +184,7 @@ bool GunGameState::initailize()
 	this->object[3] = new Objects("Resources/Models/cube2.lu", btVector3(16, -2, 0), 3,3, btVector3(100.f, 4.f, 10.f), STATIC);
 	this->object[4] = new Objects("Resources/Models/cube2.lu", btVector3(35, 17, 0), 2,1, btVector3(10.f, 40.f, 10.f), STATIC);
 	this->object[5] = new Objects("Resources/Models/cube2.lu", btVector3(-35, 17, 0), 2,1, btVector3(10.f, 40.f, 10.f), STATIC);
-	//this->object[3] = new Objects("Resources/Models/cube2.lu", "stones_and_rocks_diffuse_base.tga", btVector3(3, 2, 0));
 
-	/*//->setLinearFactor(btVector3(0,0,0));
-	ground = new GameObject(System::shaderManager->getForwardShader());
-	System::theModelLoader->loadGO(ground, "Resources/Models/cube2.lu");
-
-	ground->setScale(100,2,25); 
-	ground->getRigidbody() = System::getphysices()->addBox(btVector3(0, -3, 5), btVector3(ground->getScale().x, ground->getScale().y, ground->getScale().z),0);
-	ground->getRigidbody()->setLinearFactor(btVector3(0,0,0));
-	//ground->setScale(ground->getRigidbody()->get);
-	this->ground->getRigidbody()->setFriction(3);
-	ground->getRigidbody()->setCollisionFlags(btCollisionObject::CF_STATIC_OBJECT);	
-	System::handler->addObject(ground);
-	this->ground->getRigidbody()->setActivationState(DISABLE_DEACTIVATION);
-
-	wall1 = new GameObject(System::shaderManager->getForwardShader());
-	wall1->setScale(2, 20, 20);
-	wall1->getRigidbody() = System::getphysices()->addBox(btVector3(-24, 6, 0), btVector3(wall1->getScale().x, wall1->getScale().y, ground->getScale().z), 0);
-	wall1->getRigidbody()->setLinearFactor(btVector3(0, 0, 0));
-	this->wall1->getRigidbody()->setFriction(0.5);
-	wall1->getRigidbody()->setCollisionFlags(btCollisionObject::CF_STATIC_OBJECT);
-	System::theModelLoader->loadGO(wall1, "Resources/Models/cube2.lu");
-	System::handler->addObject(wall1);
-	this->wall1->getRigidbody()->setActivationState(DISABLE_DEACTIVATION);
-
-	wall2 = new GameObject(System::shaderManager->getForwardShader());
-	wall2->setScale(2, 20, 20);
-	wall2->getRigidbody() = System::getphysices()->addBox(btVector3(24, 6, 0), btVector3(2, 20, 20), 0);
-	wall2->getRigidbody()->setLinearFactor(btVector3(0, 0, 0));
-	this->wall2->getRigidbody()->setFriction(0.5);
-	wall2->getRigidbody()->setCollisionFlags(btCollisionObject::CF_STATIC_OBJECT);
-	System::theModelLoader->loadGO(wall2, "Resources/Models/cube2.lu");
-	System::handler->addObject(wall2);
-	this->wall2->getRigidbody()->setActivationState(DISABLE_DEACTIVATION);
-	*/
-	
 	GameObject* tree1 = new GameObject;
 	System::theModelLoader->loadGO(tree1, "Resources/Models/tree2.lu");
 	System::handler->addObject(tree1);
@@ -228,8 +199,7 @@ bool GunGameState::initailize()
 	System::theModelLoader->loadGO(tree, "Resources/Models/grass2.lu");
 	System::handler->addObject(tree);
 	tree->setPosition(10, -0.5, 1);
-	//tree->setScale(0.8, 0.8, 0.8);
-	//tree->setRotationRollPitchYaw(0,1,0);
+
 
 
 	nrOfPlayers = 4;
@@ -264,40 +234,6 @@ bool GunGameState::initailize()
 	pos[1] = 5.0f;
 	color2[3] = 10.0f;
 	System::handler->addLight(pos, dir, color2);
-	//player[0]->playerObj->body()->getWorldTransform().setOrigin(btVector3(-2, 2, 0));
-	//player[1]->playerObj->body()->getWorldTransform().setOrigin(btVector3(0, 2, 0));
-	//player[2]->playerObj->body()->getWorldTransform().setOrigin(btVector3(2, 2, 0));
-	//player[3]->playerObj->body()->getWorldTransform().setOrigin(btVector3(4, 2, 0));
-
-
-	////default values
-	//this->collisionConfig = new btDefaultCollisionConfiguration();
-	//dispatcher = new btCollisionDispatcher(collisionConfig);
-	//this->broadphase = new btDbvtBroadphase();
-	//this->solver = new btSequentialImpulseConstraintSolver();
-
-	//world = new btDiscreteDynamicsWorld(dispatcher, broadphase, solver, collisionConfig);
-	//world->setGravity(btVector3(0, -10, 0));
-
-	////add object set transform
-	//btTransform t; //
-	//t.setIdentity();
-	//t.setOrigin(btVector3(0, 0, 0));
-	////set shape for object
-	//btStaticPlaneShape* plane = new btStaticPlaneShape(btVector3(0, 1, 0), 0);
-	////set motionshape aka set postion
-	//btMotionState* motion = new btDefaultMotionState(t);
-	////body definition check doc
-	//btRigidBody::btRigidBodyConstructionInfo info(0.0, motion, plane);
-
-	//btRigidBody* body = new btRigidBody(info);
-
-	//world->addRigidBody(body);
-	//bodies.push_back(body);
-
-	////add sphere
-	//
-	////addSphere(1.0f, 0, 20, 0, 1.0);
 
 	this->inGameGui = new GunGameGui(this);
 	this->inGameGui->initialize();
@@ -377,13 +313,6 @@ bool GunGameState::update(float deltaTime)
 		this->object[i]->update(deltaTime);
 	}
 
-	/*ground->setPosition(ground->getRigidbody()->getWorldTransform().getOrigin().getX(), ground->getRigidbody()->getWorldTransform().getOrigin().getY()+1.6f, ground->getRigidbody()->getWorldTransform().getOrigin().getZ());
-	ground->getRigidbody()->setLinearFactor(btVector3(0, 0, 0));
-	ground->getRigidbody()->setCollisionFlags(btCollisionObject::CF_STATIC_OBJECT);
-
-	wall1->setPosition(wall1->getRigidbody()->getWorldTransform().getOrigin().getX(), wall1->getRigidbody()->getWorldTransform().getOrigin().getY(), wall1->getRigidbody()->getWorldTransform().getOrigin().getZ());
-	wall2->setPosition(wall2->getRigidbody()->getWorldTransform().getOrigin().getX(), wall2->getRigidbody()->getWorldTransform().getOrigin().getY(), wall2->getRigidbody()->getWorldTransform().getOrigin().getZ());
-	*/
 	for (int i = 0; i < nrOfPlayers; i++)
 	{
 		btVector3 min;
@@ -431,10 +360,10 @@ bool GunGameState::update(float deltaTime)
 		//}
 	}
 	//System::getphysices()->getPlaneRigidBody()->getpl().getY();
-	if (Intersects(System::handler->getObject(2).getCollisionBox(), System::handler->getObject(2).getPosition(), System::handler->getObject(3).getCollisionBox(), System::handler->getObject(3).getPosition()))
-	{
+	//if (Intersects(System::handler->getObject(2).getCollisionBox(), System::handler->getObject(2).getPosition(), System::handler->getObject(3).getCollisionBox(), System::handler->getObject(3).getPosition()))
+	//{
 
-	}
+	//}
 
 	this->inGameGui->update(deltaTime);
 	return true;

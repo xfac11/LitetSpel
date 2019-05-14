@@ -44,9 +44,9 @@ public:
 
 	//Bullet
 	void SetWorldToRigitBody();
-	void setPoRGB(float x, float y, float z);
-	XMFLOAT3 getPoRGB();
-	void moveRGB(XMFLOAT3 posion);
+	void SetPosition(float x, float y, float z);
+	XMFLOAT3 GetPosition();
+	void Move(XMFLOAT3 posion);
 
 };
 //Bullet

@@ -28,5 +28,8 @@ public:
 	btRigidBody * GetRigidBody() { return this->ObjectOBJ->getRigidbody(); };
 	void setMovement(bool move =true);
 	int getId();
+	OBJECTYPE GetType() { return this->type; }
+	OBJECTSTATE GetState() { return this->state; }
+
 };
 

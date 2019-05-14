@@ -17,7 +17,7 @@ void Objects::SimplePlatformMovement(float dt)
 			XMFLOAT3 firstVector = MULT(current, firstriktningsVector);
 			XMFLOAT3 Vector = MULT(firstVector, dt/5);
 
-			ObjectOBJ->moveRGB(Vector);
+			ObjectOBJ->Move(Vector);
 		}
 	}
 	if (move) {
@@ -29,7 +29,7 @@ void Objects::SimplePlatformMovement(float dt)
 		else {
 			XMFLOAT3 firstVector = MULT(current, secondriktningsVector);
 			XMFLOAT3 Vector = MULT(firstVector, dt/5);
-			ObjectOBJ->moveRGB(Vector);
+			ObjectOBJ->Move(Vector);
 		}
 	}
 

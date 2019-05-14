@@ -356,6 +356,20 @@ void Player::setCanWallJump(bool canWallJump)
 	this->canWallJump = canWallJump;
 }
 
+void Player::follow(XMFLOAT3 pos)
+{
+	btRigidBody* rg = this->playerObj->getRigidbody();
+	XMFLOAT3 pos2 = this->playerObj->GetPosition();
+
+	pos2 = VECTORSUBTRACTION(pos, pos2);
+
+	this->playerObj->Move(pos2);
+	/*btTransform trans = rg->getWorldTransform();
+	trans.setOrigin(btVector3(pos2.x,pos2.y,pos2.z));
+	rg->setWorldTransform(trans);*/
+
+}
+
 float Player::magnitude(XMFLOAT3 l)
 {
 	float temp = sqrt((l.x * l.x) + (l.y * l.y) + (l.z * l.z));
