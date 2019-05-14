@@ -233,6 +233,32 @@ bool GunGameState::initailize()
 	color2[3] = 10.0f;
 	System::handler->addLight(pos, dir, color2);
 
+
+	//Cool lights
+	float color3[4] = {
+		0.5f , 1.0f, 0.0f , 2.0f
+	};
+	float pos2[4] = {
+	-14.f ,1.6f ,0.f,5.f
+	};
+	System::handler->addLight(pos2, dir, color3);
+
+	float color4[4] = {
+		1.0f , 0.0f, 0.5f , 15.0f
+	};
+	float pos3[4] = {
+	10.f ,5.6f ,0.f,5.f
+	};
+	System::handler->addLight(pos3, dir, color4);
+
+	float color5[4] = {
+		0.0f , 0.5f, 1.0f , 25.0f
+	};
+	float pos4[4] = {
+	-23.f ,7.6f ,0.f,5.f
+	};
+	System::handler->addLight(pos4, dir, color5);
+
 	this->inGameGui = new GunGameGui(this);
 	this->inGameGui->initialize();
 	this->pauseGui = new PauseGui(this);
@@ -332,6 +358,8 @@ bool GunGameState::update(float deltaTime)
 					this->testColBox = true;
 					player[i]->playerObj->getRigidbody()->applyCentralImpulse(btVector3(player[j]->dir * 150, 100, 0));// , btVector3(1, 0, 0));
 					
+					//TAKE DAMAGE HERE
+
 					//player[i]->setGrounded(true);
 				}
 				else

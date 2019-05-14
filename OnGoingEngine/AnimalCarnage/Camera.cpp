@@ -4,7 +4,7 @@ Camera::Camera()
 {
 	this->position = DirectX::XMFLOAT3(0.f, 1.f, -2.f);
 	this->rotation = DirectX::XMFLOAT3(35.f, 0.f, 0.f);
-
+	this->tempPosZ = this->position.z;
 }
 
 Camera::~Camera()
@@ -138,8 +138,36 @@ DirectX::XMMATRIX& Camera::GetViewMatrix()
 
 void Camera::calcCamera(std::vector<DirectX::XMFLOAT3> playerPos)
 {
+	//float min = 10000.f;
+	//float max = 0.f; 
+	//float medX = 0.f;
+	//float medY = 0.f;
+
+	//for (int i = 0; i < playerPos.size(); i++)
+	//{
+	//	min = fminf(playerPos[i].x, min);
+	//	max = fmaxf(playerPos[i].x, max);
+	//	medX += playerPos[i].x;
+	//	medY += playerPos[i].y;
+	//}
+
+	//medX /= playerPos.size();
+	//medY /= playerPos.size();
+
+	//float length = max - min;
+	//if (length < 7.f)
+	//	length = 7.f;
+	//else if (length > 20.f)
+	//	length = 20.f;
+	//this->position = DirectX::XMFLOAT3(medX, medY, -length);
+
+
 	float min = 10000.f;
-	float max = 0.f; 
+	float max = -10000000000.f; 
+
+	float minY = 10000.f;
+	float maxY = -10000000000.f;
+
 	float medX = 0.f;
 	float medY = 0.f;
 
@@ -147,6 +175,10 @@ void Camera::calcCamera(std::vector<DirectX::XMFLOAT3> playerPos)
 	{
 		min = fminf(playerPos[i].x, min);
 		max = fmaxf(playerPos[i].x, max);
+
+		minY = fminf(playerPos[i].y, minY);
+		maxY = fmaxf(playerPos[i].y, maxY);
+
 		medX += playerPos[i].x;
 		medY += playerPos[i].y;
 	}
@@ -154,10 +186,91 @@ void Camera::calcCamera(std::vector<DirectX::XMFLOAT3> playerPos)
 	medX /= playerPos.size();
 	medY /= playerPos.size();
 
-	float length = max - min;
-	if (length < 7.f)
-		length = 7.f;
-	else if (length > 20.f)
-		length = 20.f;
-	this->position = DirectX::XMFLOAT3(medX, medY, -length);
+
+
+	float length = 0;
+
+	if (min < max)
+		length = (max - min);
+	if (min < max)
+		length = (min - max);
+
+	float lengthY = 0;
+
+	if (minY < maxY)
+		lengthY = (maxY - minY);
+	if (minY < maxY)
+		lengthY = (minY - maxY);
+
+	//Zoom compensation
+	//medY = (medY - length/4);
+
+	if (length > lengthY) {
+		length = lengthY;
+	}
+	length = length * 0.7;
+
+
+	if (length > 20) {
+		length = 20;
+	}
+	if (length < -20) {
+		length = -20;
+	}
+
+	medY = minY;
+	//Zoom compensation
+	medX = medX / fmaxf(1, -length/10);
+	medY = (medY - length/1.2) + (length *0.3);
+
+	float distanceX;
+	float distanceY;
+
+	if (this->position.x < medX) {
+		distanceX = this->position.x - medX;
+		this->position.x -= distanceX / 20;
+	}
+	if (this->position.x > medX) {
+		distanceX = medX - this->position.x;
+		this->position.x += distanceX / 20;
+	}
+
+	if (this->position.y < medY) {
+		distanceY = this->position.y - medY;
+		this->position.y -= distanceY / 20;
+	}
+	if (this->position.y > medY) {
+		distanceY = medY - this->position.y;
+		this->position.y += distanceY / 20;
+	}
+
+
+	//Re-Center when zoomed out
+	/*if (position.y > 0) {
+
+	}
+	if(){}*/
+	
+
+	float distanceZ;
+
+	if (length < this->position.z) {
+		distanceZ = this->position.z - length;
+		this->tempPosZ -= distanceZ / 20;
+	}
+	else if(length > this->position.z) {
+		distanceZ = length - this->position.z;
+		this->tempPosZ += distanceZ / 20;
+	}
+
+	this->position.z = tempPosZ;
+
+	/*if (length < this->position.z) {
+		this->position.z += length /20;
+	}
+	else if (length > this->position.z) {
+		this->position.z -= length / 20;
+	}*/
+
+	//this->position.z = -length;
 }

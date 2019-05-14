@@ -6,6 +6,7 @@ __declspec(align(16)) class Camera
 {
 private:
 	DirectX::XMFLOAT3 position;
+	float tempPosZ;
 	DirectX::XMFLOAT3 rotation;
 	DirectX::XMVECTOR Forward = DirectX::XMVectorSet(0.f, 0.0f, 0.1f, 0.0f);
 	DirectX::XMVECTOR Up = DirectX::XMVectorSet(0, 1.f, 0, 0.0);

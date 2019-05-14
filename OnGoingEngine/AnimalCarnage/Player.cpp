@@ -100,7 +100,6 @@ void Player::update(float deltaTime, int id)
 	if (this->hitStun == true) {
 		hitTime -= 165 * deltaTime;
 		string str = to_string(hitTime) + "\n";
-		//OutputDebugStringA(str.c_str());
 		if (dir = 1) {
 			this->playerObj->setRotationRollPitchYaw(this->playerObj->getRotation().x + (hitTime * 0.007), this->playerObj->getRotation().y, this->playerObj->getRotation().z);
 		}
