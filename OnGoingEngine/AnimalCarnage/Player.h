@@ -37,6 +37,8 @@ private:
 	float facing;
 	bool canWallJump;
 	bool wallJumpReset;
+	bool hitStun;
+	int hitTime;
 
 	RumbleProperties theRumble;
 
@@ -46,6 +48,8 @@ private:
 	/*Primitives *CollisionShape;*/
 public:
 	bool getHit()const { return hit; }
+	bool getHitStun();
+	void setHitStun(bool hitStun);
 	bool hit = false;
 	Player();
 	~Player();

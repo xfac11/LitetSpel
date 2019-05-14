@@ -45,7 +45,7 @@ Objects::Objects(std::string filepath, btVector3 position,int id,int friction, b
 
 	System::theModelLoader->loadGO(this->ObjectOBJ, filepath.c_str());
 	System::handler->addObject(this->ObjectOBJ);
-	this->ObjectOBJ->setPosition(position);
+	this->ObjectOBJ->setPosition(btVector3(position.getX(), position.getY(), position.getZ()));
 	this->ObjectOBJ->setScale(size);
 
 	this->position1 = XMFLOAT3(position.getX(), position.getY(), position.getZ());

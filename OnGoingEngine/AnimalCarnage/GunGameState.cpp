@@ -126,13 +126,11 @@ bool GunGameState::callbackFunc(btManifoldPoint& cp, const btCollisionObjectWrap
 		switch (pointer->getId())
 		{
 		case 3:
-			OutputDebugStringA("1\n");
 			if (((Player*)obj2->getCollisionObject()->getUserPointer()) != nullptr) {
 				((Player*)obj2->getCollisionObject()->getUserPointer())->setGrounded(true);
 			}
 			break;
 		case 2:
-			OutputDebugStringA("1\n");
 			if (((Player*)obj2->getCollisionObject()->getUserPointer()) != nullptr) {
 				((Player*)obj2->getCollisionObject()->getUserPointer())->setCanWallJump(true);
 			}
@@ -300,8 +298,6 @@ void GunGameState::renderImgui()
 
 bool GunGameState::update(float deltaTime)
 {
-
-	OutputDebugStringA("0\n");
 	if (paused)
 	{
 		this->pauseGui->update(deltaTime);
@@ -330,11 +326,12 @@ bool GunGameState::update(float deltaTime)
 
 				//if(player[i]->playerObj->getRigidbody()->checkCollideWithOverride(player[j]->playerObj->getRigidbody()))
 				//	player[i]->setGrounded(true);
-				if (Intersects(minTemp, maxTemp, player[j]->hitbox.hitbox->getCollisionBox(), player[j]->hitbox.hitbox->getPosition()))
+				if (Intersects(minTemp, maxTemp, player[j]->hitbox.hitbox->getCollisionBox(), player[j]->hitbox.hitbox->getPosition()) && !player[i]->getHitStun())
 				{
-				
+					player[i]->setHitStun(true);
 					this->testColBox = true;
-					player[i]->playerObj->getRigidbody()->applyCentralImpulse(btVector3(player[j]->dir * 50, 25, 0));// , btVector3(1, 0, 0));
+					player[i]->playerObj->getRigidbody()->applyCentralImpulse(btVector3(player[j]->dir * 100, 75, 0));// , btVector3(1, 0, 0));
+					
 					//player[i]->setGrounded(true);
 				}
 				else

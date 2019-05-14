@@ -1,6 +1,16 @@
 #include "Player.h"
 #include "System.h"
 
+bool Player::getHitStun()
+{
+	return this->hitStun;
+}
+
+void Player::setHitStun(bool hitStun)
+{
+	this->hitStun = hitStun;
+}
+
 Player::Player()
 {
 	isJumping = false;
@@ -15,6 +25,8 @@ Player::Player()
 	facing = 0.0f;
 	canWallJump = false;
 	wallJumpReset = false;
+	hitStun = false;
+	hitTime = 100;
 }
 
 
@@ -78,9 +90,28 @@ void Player::initialize()
 void Player::update(float deltaTime, int id)
 {
 	
+
 	//Cool rotation
 	this->playerObj->setRotationRollPitchYaw(-(this->playerObj->getRigidbody()->getLinearVelocity().getY() / 20), this->playerObj->getRotation().y, this->playerObj->getRotation().z);
 
+
+	//Hitstun
+	if (this->hitStun == true) {
+		hitTime -= 165 * deltaTime;
+		string str = to_string(hitTime) + "\n";
+		//OutputDebugStringA(str.c_str());
+		if (dir = 1) {
+			this->playerObj->setRotationRollPitchYaw(this->playerObj->getRotation().x + (hitTime * 0.007), this->playerObj->getRotation().y, this->playerObj->getRotation().z);
+		}
+		if (dir = -1) {
+			this->playerObj->setRotationRollPitchYaw(this->playerObj->getRotation().x - (hitTime * 0.007)*2, this->playerObj->getRotation().y, this->playerObj->getRotation().z);
+		}
+
+	}
+	if (hitTime <= 0) {
+		hitTime = 100;
+		hitStun = false;
+	}
 
 	this->playerObj->setPosition(this->playerObj->getRigidbody()->getWorldTransform().getOrigin().getX()
 		, this->playerObj->getRigidbody()->getWorldTransform().getOrigin().getY(), this->playerObj->getRigidbody()->getWorldTransform().getOrigin().getZ());
@@ -107,7 +138,7 @@ void Player::update(float deltaTime, int id)
 	}
 	this->hitbox.hitbox->setPosition(this->hitbox.hitbox->getPosition().x, this->getPosition().y, this->getPosition().z);
 	DirectX::GamePad::State state = System::theGamePad->GetState(id);
-	if (state.IsConnected())
+	if (state.IsConnected() && !hitStun)
 	{
 		System::theTracker->Update(state);
 		//Actions 
