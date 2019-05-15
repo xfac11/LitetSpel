@@ -1,19 +1,31 @@
-#pragma once
-#include "Geometry.h"
-#include"GameObject.h"
-class Animal: public GameObject
-{
-protected:
-	float health;
-	float weight;
-	float speed;
-	AABB body;
-public:
-	Animal();
-	~Animal();
-	float GetHealth()const;
-	void SetDmg(float d);
+#ifndef ANIMAL_H
+#define ANIMAL_H
 
-	AABB GetBody();
+#include "GameObject.h"
+
+enum AnimalType
+{
+	DEFAULT_TYPE,
+	FOX,
+	BEAR
 };
 
+struct AnimalDef
+{
+	int maxHealh;
+	float weight;
+	float speed;
+	const char* modelPath;
+};
+
+class Animal
+{
+private:
+	static AnimalDef fox;
+	static AnimalDef bear;
+
+public:
+	static const AnimalDef& getAnimal(AnimalType type);
+};
+
+#endif // !ANIMAL_H
