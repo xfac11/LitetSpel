@@ -128,6 +128,7 @@ bool GunGameState::callbackFunc(btManifoldPoint& cp, const btCollisionObjectWrap
 		case 3:
 			if (((Player*)obj2->getCollisionObject()->getUserPointer()) != nullptr) {
 				((Player*)obj2->getCollisionObject()->getUserPointer())->setGrounded(true);
+				((Player*)obj2->getCollisionObject()->getUserPointer())->addGroundMovingSpeed(pointer->getMovingSpeed());
 			}
 			break;
 		case 2:

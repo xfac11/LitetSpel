@@ -461,6 +461,11 @@ void Player::setCanWallJump(bool canWallJump)
 	this->canWallJump = canWallJump;
 }
 
+void Player::addGroundMovingSpeed(XMFLOAT3 speed)
+{
+	playerObj->getRigidbody()->setLinearVelocity(btVector3((playerObj->getRigidbody()->getLinearVelocity().getX() + speed.x), playerObj->getRigidbody()->getLinearVelocity().getY() + speed.y, playerObj->getRigidbody()->getLinearVelocity().getZ() + speed.z));
+}
+
 void Player::follow(XMFLOAT3 pos)
 {
 	btRigidBody* rg = this->playerObj->getRigidbody();

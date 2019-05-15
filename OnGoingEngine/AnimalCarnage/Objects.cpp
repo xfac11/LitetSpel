@@ -132,3 +132,8 @@ int Objects::getId()
 {
 	return this->id;
 }
+
+XMFLOAT3 Objects::getMovingSpeed()
+{
+	return XMFLOAT3(this->ObjectOBJ->getRigidbody()->getLinearVelocity().getX(), this->ObjectOBJ->getRigidbody()->getLinearVelocity().getY(), this->ObjectOBJ->getRigidbody()->getLinearVelocity().getZ());
+}
