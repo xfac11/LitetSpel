@@ -1,6 +1,16 @@
 #include "Player.h"
 #include "System.h"
 
+float Player::getJumpHeight() const
+{
+	return Animal::getAnimal(this->type).jumpHeight;
+}
+
+int Player::getStrength() const
+{
+	return Animal::getAnimal(this->type).strength;
+}
+
 float Player::getSpeed() const
 {
 	return Animal::getAnimal(this->type).speed;
