@@ -7,7 +7,9 @@ enum AnimalType
 {
 	DEFAULT_TYPE,
 	FOX,
-	BEAR
+	BEAR,
+	RABBIT,
+	MOOSE
 };
 
 struct AnimalDef
@@ -25,6 +27,8 @@ class Animal
 private:
 	static AnimalDef fox;
 	static AnimalDef bear;
+	static AnimalDef rabbit;
+	static AnimalDef moose;
 
 public:
 	static const AnimalDef& getAnimal(AnimalType type);

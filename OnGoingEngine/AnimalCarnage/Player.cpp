@@ -86,6 +86,7 @@ Player::Player()
 	hitTime = 100;
 	type = DEFAULT_TYPE;
 	health = 100;
+	canPressPunch = true;
 	
 	currentAnimal = 0;
 	ArrayOfAnimals[0] = FOX;
@@ -132,7 +133,7 @@ void Player::initialize(AnimalType type)
 
 	AABB aabb = playerObj->getCollisionBox();
 	btVector3 size = btVector3(1+aabb.width*2, aabb.height*2,1);
-	playerObj->getRigidbody() = System::getphysices()->addPlayer(btVector3(0, 0, 0), size, 10.0f,this);
+	playerObj->getRigidbody() = System::getphysices()->addPlayer(btVector3(0, 0, 0), size, 10.0f * getWeight(),this);
 	//this->playerObj->getRigidbody()->getWorldTransform().setRotation(btQuaternion(3.14 / 2, 0, 0));
 	playerObj->getRigidbody()->setWorldTransform(XMMATRIX_to_btTransform(this->playerObj->getWorld()));
 	this->playerObj->setRotationRollPitchYaw(0.f,3.14f/2.f,0.f);;
@@ -163,7 +164,12 @@ void Player::update(float deltaTime, int id)
 
 	//Cool rotation
 	this->playerObj->setRotationRollPitchYaw(-(this->playerObj->getRigidbody()->getLinearVelocity().getY() / 20), this->playerObj->getRotation().y, this->playerObj->getRotation().z);
-
+	if (this->playerObj->getRotation().x > 0.785398163) {
+		this->playerObj->setRotationRollPitchYaw(0.785398163, this->playerObj->getRotation().y, this->playerObj->getRotation().z);
+	}
+	if (this->playerObj->getRotation().x < -0.785398163) {
+		this->playerObj->setRotationRollPitchYaw(-0.785398163, this->playerObj->getRotation().y, this->playerObj->getRotation().z);
+	}
 
 	//Hitstun
 	if (this->hitStun == true) {
@@ -207,7 +213,7 @@ void Player::update(float deltaTime, int id)
 	}
 	this->hitbox.hitbox->setPosition(this->hitbox.hitbox->getPosition().x, this->getPosition().y, this->getPosition().z);
 	DirectX::GamePad::State state = System::theGamePad->GetState(id);
-	if (state.IsConnected() && !hitStun)
+	if (state.IsConnected() && !hitStun && !(getHealth() == 0 || getHealth() < 0))
 	{
 		System::theTracker->Update(state);
 		//Actions 
@@ -224,33 +230,33 @@ void Player::update(float deltaTime, int id)
 		
 		//GROUND MOVEMENT
 		float stickAbsL = abs(state.thumbSticks.leftX);
-		if (stickAbsL > 0.f && canJump){
-			float dir = 17.0f * state.thumbSticks.leftX;// / stickAbsL;
+		if (stickAbsL > 0.f && canJump  && this->hitbox.time == 0){
+			float dir = 17.0f * state.thumbSticks.leftX  * getSpeed();// / stickAbsL;
 			//this->playerObj->getRigidbody()->setLinearVelocity(btVector3(dir, 0, 0));
 			
 			playerObj->getRigidbody()->setLinearVelocity(btVector3(dir, playerObj->getRigidbody()->getLinearVelocity().getY(), playerObj->getRigidbody()->getLinearVelocity().getZ()));
 
-			if (playerObj->getRigidbody()->getLinearVelocity().getX() > 17.0f) {
-				playerObj->getRigidbody()->setLinearVelocity(btVector3(17.0f, playerObj->getRigidbody()->getLinearVelocity().getY(), playerObj->getRigidbody()->getLinearVelocity().getZ()));
+			if (playerObj->getRigidbody()->getLinearVelocity().getX() > 17.0f * getSpeed()) {
+				playerObj->getRigidbody()->setLinearVelocity(btVector3(17.0f * getSpeed(), playerObj->getRigidbody()->getLinearVelocity().getY(), playerObj->getRigidbody()->getLinearVelocity().getZ()));
 			}
-			if (playerObj->getRigidbody()->getLinearVelocity().getX() < -17.0f) {
-				playerObj->getRigidbody()->setLinearVelocity(btVector3(-17.0f, playerObj->getRigidbody()->getLinearVelocity().getY(), playerObj->getRigidbody()->getLinearVelocity().getZ()));
+			if (playerObj->getRigidbody()->getLinearVelocity().getX() < -17.0f * getSpeed()) {
+				playerObj->getRigidbody()->setLinearVelocity(btVector3(-17.0f * getSpeed(), playerObj->getRigidbody()->getLinearVelocity().getY(), playerObj->getRigidbody()->getLinearVelocity().getZ()));
 			}
 			airSpeed = dir;
 		}
 
 		//AIR MOVEMENT && //FAST FALL
 		if (stickAbsL > 0.f && !canJump) {
-			float dir = 400.0f * state.thumbSticks.leftX;// / stickAbsL;
+			float dir = 400.0f * state.thumbSticks.leftX  * getSpeed() * getWeight();// / stickAbsL;
 			//this->playerObj->getRigidbody()->setLinearVelocity(btVector3(dir, 0, 0));
 
 			playerObj->getRigidbody()->applyForce(btVector3(dir, 0, 0), btVector3(0, 0, 0));
 
-			if (playerObj->getRigidbody()->getLinearVelocity().getX() > 17.0f) {
-				playerObj->getRigidbody()->setLinearVelocity(btVector3(17.0f, playerObj->getRigidbody()->getLinearVelocity().getY(), playerObj->getRigidbody()->getLinearVelocity().getZ()));
+			if (playerObj->getRigidbody()->getLinearVelocity().getX() > 17.0f* getSpeed()) {
+				playerObj->getRigidbody()->setLinearVelocity(btVector3(17.0f* getSpeed(), playerObj->getRigidbody()->getLinearVelocity().getY(), playerObj->getRigidbody()->getLinearVelocity().getZ()));
 			}
-			if (playerObj->getRigidbody()->getLinearVelocity().getX() < -17.0f) {
-				playerObj->getRigidbody()->setLinearVelocity(btVector3(-17.0f, playerObj->getRigidbody()->getLinearVelocity().getY(), playerObj->getRigidbody()->getLinearVelocity().getZ()));
+			if (playerObj->getRigidbody()->getLinearVelocity().getX() < -17.0f* getSpeed()) {
+				playerObj->getRigidbody()->setLinearVelocity(btVector3(-17.0f* getSpeed(), playerObj->getRigidbody()->getLinearVelocity().getY(), playerObj->getRigidbody()->getLinearVelocity().getZ()));
 			}
 			airSpeed = dir;
 
@@ -270,7 +276,7 @@ void Player::update(float deltaTime, int id)
 		//JUMP
 		if ((state.buttons.x) && canJump && canPressJump){
 			//this->playerObj->getRigidbody()->setLinearVelocity(btVector3(0,1, 0));
-			this->playerObj->getRigidbody()->applyImpulse(btVector3(0, 205.0f /**deltaTime * 60*/,0),btVector3(0,0,0));
+			this->playerObj->getRigidbody()->applyImpulse(btVector3(0, 205.0f * getJumpHeight() * getWeight() /**deltaTime * 60*/,0),btVector3(0,0,0));
 			//playerObj->getRigidbody()->applyForce(btVector3(0, 4500.0f, 0), btVector3(0, 0, 0));
 			grounded = false;
 			canWallJump = false;
@@ -288,7 +294,7 @@ void Player::update(float deltaTime, int id)
 		//WALLJUMP
 		if ((state.buttons.x) && canWallJump && !canJump && !grounded && wallJumpReset && canPressJump) {
 			//this->playerObj->getRigidbody()->setLinearVelocity(btVector3(0,1, 0));
-			this->playerObj->getRigidbody()->applyImpulse(btVector3(0, 225.0f /**deltaTime * 60*/, 0), btVector3(0, 0, 0));
+			this->playerObj->getRigidbody()->applyImpulse(btVector3(0, 225.0f * getJumpHeight() * getWeight() /**deltaTime * 60*/, 0), btVector3(0, 0, 0));
 			//this->playerObj->getRigidbody()->setLinearVelocity(btVector3(playerObj->getRigidbody()->getLinearVelocity().getX()*-1, playerObj->getRigidbody()->getLinearVelocity().getY(), playerObj->getRigidbody()->getLinearVelocity().getZ()));
 			//playerObj->getRigidbody()->applyForce(btVector3(0, 4500.0f, 0), btVector3(0, 0, 0));
 			grounded = false;
@@ -310,7 +316,7 @@ void Player::update(float deltaTime, int id)
 			canPressJump = true;
 		}
 
-
+		//PUNCH
 		if (hitbox.time > 0 && hitbox.time < hitbox.totalTime)
 		{
 			hitbox.time += 1 * deltaTime * 60;
@@ -321,7 +327,7 @@ void Player::update(float deltaTime, int id)
 			this->hitbox.time = 0;
 		}
 		float dist = 700;
-		if (state.buttons.y || this->hitbox.time > 0)
+		if ((state.buttons.y && canPressPunch) || this->hitbox.time > 0)
 		{
 
 			/*if (this->hitbox.time > 0 &&state.thumbSticks.leftX < 0)
@@ -332,7 +338,9 @@ void Player::update(float deltaTime, int id)
 			{
 				dist = 700;
 			}*/
-
+			if (grounded) {
+				playerObj->getRigidbody()->setLinearVelocity(btVector3(playerObj->getRigidbody()->getLinearVelocity().getX() / 1.1, playerObj->getRigidbody()->getLinearVelocity().getY(), playerObj->getRigidbody()->getLinearVelocity().getZ() / 2));
+			}
 
 			if (hitbox.time > hitbox.totalTime / 2)
 				this->hitbox.hitbox->move((dir*-dist * deltaTime) / hitbox.totalTime, 0, 0);
@@ -341,6 +349,13 @@ void Player::update(float deltaTime, int id)
 				this->hitbox.hitbox->move((dir*dist * deltaTime) / hitbox.totalTime, 0, 0);
 			}
 			this->hitbox.time++;
+		}
+
+		if ((state.buttons.y)) {
+				canPressPunch = false;
+		}
+		else {
+				canPressPunch = true;
 		}
 
 		if (state.buttons.leftShoulder ||
@@ -383,6 +398,22 @@ void Player::update(float deltaTime, int id)
 			facing = -3.14f / 2.f;
 		}
 		this->playerObj->setRotationRollPitchYaw(this->playerObj->getRotation().x, facing, this->playerObj->getRotation().z);
+	}
+
+	if (getHealth() == 0 || getHealth() < 0) {
+		//this->playerObj->getRigidbody()->setLinearFactor(btVector3(1, 1, 0));
+		//this->playerObj->getRigidbody()->setAngularFactor(btVector3(0, 0, 1));
+
+		//this->playerObj->setRotation(this->playerObj->getRigidbody()->getWorldTransform().getRotation().getX(), this->playerObj->getRotation().y, this->playerObj->getRotation().z, 3.14 / 2);
+		/*this->playerObj->setRotationRollPitchYaw(this->playerObj->getRigidbody()->getWorldTransform().getRotation().getX() *3.14 * 2,
+			this->playerObj->getRigidbody()->getWorldTransform().getRotation().getY() *3.14 * 2,
+			this->playerObj->getRigidbody()->getWorldTransform().getRotation().getZ() *3.14 * 2);*/
+
+
+			//this->playerObj->setRotation(0, 1,this->playerObj->getRigidbody()->getWorldTransform().getRotation().getZ(), 3.14 / 2);
+			//this->playerObj->setRotation(this->playerObj->getRigidbody()->getWorldTransform().getRotation().getX(), this->playerObj->getRotation().y, this->playerObj->getRotation().z, this->playerObj->getRigidbody()->getWorldTransform().getRotation().getAngle());
+
+
 	}
 
 	grounded = false;
