@@ -346,18 +346,11 @@ bool GunGameState::update(float deltaTime)
 		for (int j = 0; j < nrOfPlayers; j++) {
 			if (i != j)
 			{
-				//if (Intersects(minTemp, maxTemp, player[j]->playerObj->getCollisionBox(), player[j]->playerObj->getPosition()))
-				//	player[i]->setGrounded(true);
-				//if(player[i]->playerObj->getRigidbody()->checkCollideWith(player[j]->playerObj->getRigidbody()))
-				//	player[i]->setGrounded(true);
-
-				//if(player[i]->playerObj->getRigidbody()->checkCollideWithOverride(player[j]->playerObj->getRigidbody()))
-				//	player[i]->setGrounded(true);
 				if (Intersects(minTemp, maxTemp, player[j]->hitbox.hitbox->getCollisionBox(), player[j]->hitbox.hitbox->getPosition()) && !player[i]->getHitStun())
 				{
 					player[i]->setHitStun(true);
 					this->testColBox = true;
-					player[i]->playerObj->getRigidbody()->applyCentralImpulse(btVector3(player[j]->dir * 150, 100, 0));// , btVector3(1, 0, 0));
+					player[i]->playerObj->getRigidbody()->applyCentralImpulse(btVector3(player[j]->dir * 150 * player[i]->getWeight(), 150 * player[i]->getWeight(), 0));// , btVector3(1, 0, 0));
 					
 					//TAKE DAMAGE HERE
 					player[i]->takeDamage(player[j]->getStrength());
