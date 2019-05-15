@@ -45,7 +45,7 @@ Objects::Objects(std::string filepath, btVector3 position,int id,int friction, b
 
 	System::theModelLoader->loadGO(this->ObjectOBJ, filepath.c_str());
 	System::handler->addObject(this->ObjectOBJ);
-	this->ObjectOBJ->setPosition(btVector3(position.getX(), position.getY(), position.getZ()));
+	this->ObjectOBJ->setPosition(btVector3(position.getX(), position.getY()+0.57f, position.getZ()));
 	this->ObjectOBJ->setScale(size);
 
 	this->position1 = XMFLOAT3(position.getX(), position.getY(), position.getZ());
@@ -83,8 +83,12 @@ Objects::~Objects()
 
 void Objects::update(float dt)
 {
+	/*this->ObjectOBJ->setPosition(this->ObjectOBJ->getRigidbody()->getWorldTransform().getOrigin().getX()
+		, this->ObjectOBJ->getRigidbody()->getWorldTransform().getOrigin().getY(), this->ObjectOBJ->getRigidbody()->getWorldTransform().getOrigin().getZ());*/
+
 	this->ObjectOBJ->setPosition(this->ObjectOBJ->getRigidbody()->getWorldTransform().getOrigin().getX()
-		, this->ObjectOBJ->getRigidbody()->getWorldTransform().getOrigin().getY(), this->ObjectOBJ->getRigidbody()->getWorldTransform().getOrigin().getZ());
+		, this->ObjectOBJ->getRigidbody()->getWorldTransform().getOrigin().getY() + 0.57f, this->ObjectOBJ->getRigidbody()->getWorldTransform().getOrigin().getZ());
+
 
 	btRigidBody* rgb = this->ObjectOBJ->getRigidbody();
 	switch (type)
