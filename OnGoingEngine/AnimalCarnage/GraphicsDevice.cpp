@@ -61,7 +61,7 @@ bool GraphicsDevice::initialize(int screenWidth, int screenHeight, bool vsync, H
 	swapchainDesc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
 	swapchainDesc.OutputWindow = hwnd;
 	swapchainDesc.SampleDesc.Count = 1;
-	swapchainDesc.Windowed = fullscreen;
+	swapchainDesc.Windowed = !fullscreen;
 
 	
 
