@@ -124,7 +124,7 @@ float4 PS_main(VS_OUT input) : SV_Target
 	//input.TexCoord = float2(input.screenPos.x / screenSize.x,input.screenPos.y / screenSize.y);//screenposition divided by screen size(Send it in)
 	//float2((input.screenPos.x * 0.5) + 0.5, (input.screenPos.y * 0.5) + 0.5);
 	if(index!=0)
-		input.TexCoord = float2(input.screenPos.x / (1920/2),input.screenPos.y / (1080/2));
+		input.TexCoord = float2(input.screenPos.x / (1920),input.screenPos.y / (1080));
 	//bumpNormal = BumpNormalTex.Sample(SampSt, input.TexCoord).xyz *2.0f - 1.0f;// back to [-1...1] 
 	//colors = Tex.Sample(SampSt, input.TexCoord).xyz;
 	float4 colorT = Tex.Sample(SampSt, input.TexCoord).xyzw;

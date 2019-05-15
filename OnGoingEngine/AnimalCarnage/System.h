@@ -40,8 +40,8 @@
 using namespace DirectX;
 //using namespace DirectX::SimpleMath;
 
-#define HEIGHT 1080/2
-#define WIDTH 1920/2
+#define HEIGHT 1080
+#define WIDTH 1920
 
 //using Microsoft::WRL::ComPtr;
 struct WindowClient
