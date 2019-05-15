@@ -48,13 +48,18 @@ bool Player::isDead() const
 
 void Player::changeCharacter()
 {
-	if (!this->isDead() && currentAnimal != 1)
+	if (/*!this->isDead() &&*/ currentAnimal == 3)
 		return;
 	currentAnimal++;
 	const AnimalDef& animal = Animal::getAnimal(ArrayOfAnimals[currentAnimal]);
 	this->type = ArrayOfAnimals[currentAnimal];
 	this->health = animal.maxHealh;
 
+	btVector3 inertia(0, 0, 0);
+	//playerObj->getRigidbody()->getCollisionShape()->calculateLocalInertia(getWeight(), inertia);
+	playerObj->getRigidbody()->setMassProps(10*getWeight(), inertia);
+	//TEMP CHANGE MODEL
+	System::theModelLoader->loadGO(this->playerObj, animal.modelPath);
 }
 
 bool Player::getHitStun()
@@ -91,6 +96,8 @@ Player::Player()
 	currentAnimal = 0;
 	ArrayOfAnimals[0] = FOX;
 	ArrayOfAnimals[1] = BEAR;
+	ArrayOfAnimals[2] = RABBIT;
+	ArrayOfAnimals[3] = MOOSE;
 
 }
 
@@ -160,7 +167,9 @@ void Player::initialize(AnimalType type)
 void Player::update(float deltaTime, int id)
 {
 	//check if player is dead and have any animals left to play
-	changeCharacter();
+	//changeCharacter();
+	string str = to_string(currentAnimal) + "\n";
+	OutputDebugString( str.c_str() );
 
 	//Cool rotation
 	this->playerObj->setRotationRollPitchYaw(-(this->playerObj->getRigidbody()->getLinearVelocity().getY() / 20), this->playerObj->getRotation().y, this->playerObj->getRotation().z);

@@ -42,7 +42,7 @@ private:
 
 	RumbleProperties theRumble;
 	AnimalType type;
-	AnimalType ArrayOfAnimals[2];
+	AnimalType ArrayOfAnimals[4];
 	int currentAnimal;
 	XMFLOAT3 Accleration = XMFLOAT3(0, 0, 0);
 	XMFLOAT3 Velocity = XMFLOAT3(0, 0, 0);

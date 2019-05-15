@@ -352,8 +352,13 @@ bool GunGameState::update(float deltaTime)
 					this->testColBox = true;
 					player[i]->playerObj->getRigidbody()->applyCentralImpulse(btVector3(player[j]->dir * 150 * player[j]->getWeight(), 150 * player[j]->getWeight(), 0));// , btVector3(1, 0, 0));
 					
+					int tempHP = player[i]->getHealth();
 					//TAKE DAMAGE HERE
 					player[i]->takeDamage(player[j]->getStrength());
+
+					if(player[i]->getHealth() <= 0 && tempHP > 0) {
+						player[j]->changeCharacter();
+					}
 
 					//player[i]->setGrounded(true);
 				}
