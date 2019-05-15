@@ -38,7 +38,6 @@ private:
 	bool hitStun;
 	int hitTime;
 	int health;
-	bool canPressPunch;
 
 	RumbleProperties theRumble;
 	AnimalType type;
