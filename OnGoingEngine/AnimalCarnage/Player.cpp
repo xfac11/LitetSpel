@@ -46,6 +46,17 @@ bool Player::isDead() const
 	return this->health <= 0;
 }
 
+void Player::changeCharacter()
+{
+	if (!this->isDead() && currentAnimal != 1)
+		return;
+	currentAnimal++;
+	const AnimalDef& animal = Animal::getAnimal(ArrayOfAnimals[currentAnimal]);
+	this->type = ArrayOfAnimals[currentAnimal];
+	this->health = animal.maxHealh;
+
+}
+
 bool Player::getHitStun()
 {
 	return this->hitStun;
@@ -75,6 +86,11 @@ Player::Player()
 	hitTime = 100;
 	type = DEFAULT_TYPE;
 	health = 100;
+	
+	currentAnimal = 0;
+	ArrayOfAnimals[0] = FOX;
+	ArrayOfAnimals[1] = BEAR;
+
 }
 
 
@@ -142,7 +158,8 @@ void Player::initialize(AnimalType type)
 
 void Player::update(float deltaTime, int id)
 {
-	
+	//check if player is dead and have any animals left to play
+	changeCharacter();
 
 	//Cool rotation
 	this->playerObj->setRotationRollPitchYaw(-(this->playerObj->getRigidbody()->getLinearVelocity().getY() / 20), this->playerObj->getRotation().y, this->playerObj->getRotation().z);

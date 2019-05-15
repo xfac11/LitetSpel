@@ -41,9 +41,11 @@ private:
 
 	RumbleProperties theRumble;
 	AnimalType type;
-
+	AnimalType ArrayOfAnimals[2];
+	int currentAnimal;
 	XMFLOAT3 Accleration = XMFLOAT3(0, 0, 0);
 	XMFLOAT3 Velocity = XMFLOAT3(0, 0, 0);
+
 	/*Primitives *CollisionShape;*/
 public:
 	float getJumpHeight() const;
@@ -55,6 +57,7 @@ public:
 	void takeDamage(int damage);
 	bool isDead() const;
 
+	void changeCharacter();
 	bool getHit()const { return hit; }
 	bool getHitStun();
 	void setHitStun(bool hitStun);
