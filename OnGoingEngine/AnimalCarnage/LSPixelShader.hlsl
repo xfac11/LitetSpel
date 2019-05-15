@@ -124,7 +124,7 @@ float4 PS_main(VS_OUT input) : SV_Target
 	//input.TexCoord = float2(input.screenPos.x / screenSize.x,input.screenPos.y / screenSize.y);//screenposition divided by screen size(Send it in)
 	//float2((input.screenPos.x * 0.5) + 0.5, (input.screenPos.y * 0.5) + 0.5);
 	if(index!=0)
-		input.TexCoord = float2(input.screenPos.x / (1920),input.screenPos.y / (1080));
+		input.TexCoord = float2(input.screenPos.x / (1920/2),input.screenPos.y / (1080/2));
 	//bumpNormal = BumpNormalTex.Sample(SampSt, input.TexCoord).xyz *2.0f - 1.0f;// back to [-1...1] 
 	//colors = Tex.Sample(SampSt, input.TexCoord).xyz;
 	float4 colorT = Tex.Sample(SampSt, input.TexCoord).xyzw;
@@ -182,11 +182,12 @@ float4 PS_main(VS_OUT input) : SV_Target
 
 				
 				float visibility = 0.0;
-				float cosTheta = dot((normal), (lights[0].direction.xyz));
-				float bias = 0.005*tan(acos(cosTheta));
+				//float cosTheta = dot((normal), (lights[0].direction.xyz));
+				//float bias = 0.005*tan(acos(cosTheta));
 				//max(0.05 * (1.0 - dot(normal, lightDir)), 0.015);
-				bias = clamp(bias, 0,0.05);
-				bias = max(0.037 * (1.0 - dot(normal, lights[0].direction.xyz)), 0.005);
+				//bias = clamp(bias, 0,0.05);
+				float bias;
+				bias = max(0.030 * (1.0 - dot(normal, lights[0].direction.xyz)), 0.005);
 				/*for (int i = 0; i < 4; i++)
 				{
 					if (ShadowMap.Sample(SampSt, shadowCoord.xy + poissonDisk[i] / 700.0).x < shadowCoord.z - bias)
@@ -230,7 +231,7 @@ float4 PS_main(VS_OUT input) : SV_Target
 			//float4 colorT = float4(Tex.Sample(SampSt, input.Tex).xyz *totalLight.xyz, Tex.Sample(SampSt, input.Tex).w);
 
 
-			colorT = float4(Tex.Sample(SampSt, input.TexCoord).xyz *totalLight.xyz, 1.0f);
+			colorT = float4(colorT.xyz *totalLight.xyz, 1.0f);
 		}
 	}
 	/*if (index > 0)

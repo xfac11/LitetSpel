@@ -61,7 +61,7 @@ bool GraphicsDevice::initialize(int screenWidth, int screenHeight, bool vsync, H
 	swapchainDesc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
 	swapchainDesc.OutputWindow = hwnd;
 	swapchainDesc.SampleDesc.Count = 1;
-	swapchainDesc.Windowed = TRUE;
+	swapchainDesc.Windowed = fullscreen;
 
 	
 
@@ -180,7 +180,7 @@ bool GraphicsDevice::initialize(int screenWidth, int screenHeight, bool vsync, H
 	//move to ColorShader
 	this->projectionMatrix = DirectX::XMMatrixPerspectiveFovLH(fieldOfView, screenAspect, screenNear, screenDepth);
 	
-	this->orthoMatrix = DirectX::XMMatrixOrthographicLH((float)60, (float)60, 1, 15);//for shadowMap;
+	this->orthoMatrix = DirectX::XMMatrixOrthographicLH((float)60, (float)60, 2, 10);//for shadowMap;
 
 	D3D11_RASTERIZER_DESC rasterizerDesc;
 	ZeroMemory(&rasterizerDesc, sizeof(D3D11_RASTERIZER_DESC));
