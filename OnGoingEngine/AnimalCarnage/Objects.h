@@ -28,6 +28,7 @@ public:
 	btRigidBody * GetRigidBody() { return this->ObjectOBJ->getRigidbody(); };
 	void setMovement(bool move =true);
 	int getId();
+	XMFLOAT3 getMovingSpeed();
 	OBJECTYPE GetType() { return this->type; }
 	OBJECTSTATE GetState() { return this->state; }
 

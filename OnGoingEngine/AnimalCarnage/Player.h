@@ -82,6 +82,7 @@ public:
 
 	void setGrounded(bool grounded);
 	void setCanWallJump(bool canWallJump);
+	void addGroundMovingSpeed(XMFLOAT3 speed);
 	void follow(XMFLOAT3 postion);
 	GameObject* playerObj;
 };
