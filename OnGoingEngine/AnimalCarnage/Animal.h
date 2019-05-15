@@ -15,6 +15,8 @@ struct AnimalDef
 	int maxHealh;
 	float weight;
 	float speed;
+	float jumpHeight;
+	int strength;
 	const char* modelPath;
 };
 

@@ -46,6 +46,8 @@ private:
 	XMFLOAT3 Velocity = XMFLOAT3(0, 0, 0);
 	/*Primitives *CollisionShape;*/
 public:
+	float getJumpHeight() const;
+	int getStrength() const;
 	float getSpeed() const;
 	float getWeight() const;
 	int getMaxHealth() const;

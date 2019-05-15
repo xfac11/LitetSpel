@@ -360,7 +360,7 @@ bool GunGameState::update(float deltaTime)
 					player[i]->playerObj->getRigidbody()->applyCentralImpulse(btVector3(player[j]->dir * 150, 100, 0));// , btVector3(1, 0, 0));
 					
 					//TAKE DAMAGE HERE
-					player[i]->takeDamage(5);
+					player[i]->takeDamage(player[j]->getStrength());
 
 					//player[i]->setGrounded(true);
 				}
