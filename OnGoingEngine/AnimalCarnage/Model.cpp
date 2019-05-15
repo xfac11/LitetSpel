@@ -7,8 +7,9 @@ Model::Model()
 	this->theShader = nullptr;
 	this->texture = new Texture;
 	this->normalMap = new Texture;
+	this->glowMap = new Texture;
 	this->type = Opaque;
-
+	this->hasGlowMap = false;
 	D3D11_SAMPLER_DESC desc;
 	ZeroMemory(&desc, sizeof(desc));
 	desc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
@@ -39,6 +40,10 @@ Model::~Model()
 	if (this->normalMap != nullptr)
 	{
 		delete this->normalMap;
+	}
+	if (this->glowMap != nullptr)
+	{
+		delete this->glowMap;
 	}
 
 }
@@ -71,6 +76,12 @@ void Model::setTexture(std::string file)
 	{
 		this->type = Opaque;
 	}
+}
+
+void Model::setGlowMap(std::string file)
+{
+	this->glowMap->setTexture(file);
+	this->hasGlowMap = true;
 }
 
 void Model::setMesh(std::vector<Vertex3D> aMesh,DWORD* indices, int numberOfIndices)
@@ -146,6 +157,15 @@ void Model::draw()
 	if (this->normalMap != nullptr)
 	{
 		System::getDeviceContext()->PSSetShaderResources(1, 1, &this->normalMap->getTexture());
+	}
+	if (this->hasGlowMap)
+	{
+		System::getDeviceContext()->PSSetShaderResources(2, 1, &this->glowMap->getTexture());
+	}
+	else
+	{
+		ID3D11ShaderResourceView* temp = nullptr;
+		System::getDeviceContext()->PSSetShaderResources(2, 1, &temp);
 	}
 	System::getDeviceContext()->IASetVertexBuffers(0, 1, &*this->vertexBuffer.GetAddressOf(), &*vertexBuffer.getStridePtr(), &offset);
 //	UINT offset = 0;

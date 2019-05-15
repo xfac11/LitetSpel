@@ -158,6 +158,11 @@ void GameObject::setTexture(std::string file, int id)
 	this->theModel[id]->setTexture(file);
 }
 
+void GameObject::setGlowMap(std::string file, int id)
+{
+	this->theModel[id]->setGlowMap(file);
+}
+
 void GameObject::draw()
 {
 	/*ForwardShader* ptr = nullptr;

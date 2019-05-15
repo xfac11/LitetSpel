@@ -22,6 +22,7 @@ public:
 	void setShader(Shader* theShader);
 
 	void setTexture(std::string file);
+	void setGlowMap(std::string file);
 	void setMesh(std::vector<Vertex3D> aMesh,DWORD *indices, int numberOfIndices);
 	void setSampler();
 	void setSampler(D3D11_TEXTURE_ADDRESS_MODE type, D3D11_FILTER filter, D3D11_COMPARISON_FUNC comFunc);
@@ -36,6 +37,8 @@ private:
 	Texture* texture;// 
 	//mask
 	Texture* normalMap;
+	Texture* glowMap;
+	bool hasGlowMap;
 	int vertexCount;
 	
 	//Joint jointHierarchy
