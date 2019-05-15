@@ -124,8 +124,8 @@ bool GBuffer::initialize(int height, int width, float nearPlane, float farPlane)
 
 bool GBuffer::setRenderTargets()
 {
-	ID3D11ShaderResourceView* null[] = { nullptr, nullptr, nullptr,nullptr };
-	System::getDeviceContext()->PSSetShaderResources(0, GBUFFERCAP, null);
+	ID3D11ShaderResourceView* null[] = { nullptr, nullptr, nullptr,nullptr,nullptr };
+	System::getDeviceContext()->PSSetShaderResources(0, GBUFFERCAP+1, null);
 	System::getDeviceContext()->OMSetRenderTargets(0, nullptr, nullptr);
 	System::getDeviceContext()->OMSetRenderTargets(GBUFFERCAP, this->renderTars, depthStencView);
 	//System::getDeviceContext()->RSSetViewports(1, &viewP);
@@ -181,7 +181,8 @@ void GBuffer::setShaderResViews()
 	//ID3D11ShaderResourceView* null2[] = { nullptr, nullptr, nullptr,nullptr };
 	System::getDeviceContext()->OMSetRenderTargets(GBUFFERCAP, null, nullptr);
 	//System::getDeviceContext()->PSSetShaderResources(0, GBUFFERCAP, null2);
-	System::getDeviceContext()->PSSetShaderResources(0, GBUFFERCAP, this->shaderResViews);
+	System::getDeviceContext()->PSSetShaderResources(0, GBUFFERCAP-1, this->shaderResViews);
+	System::getDeviceContext()->PSSetShaderResources(4, 1, &this->shaderResViews[3]);
 }
 
 ID3D11DepthStencilView *& GBuffer::getDepthStcView()

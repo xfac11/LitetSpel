@@ -101,6 +101,7 @@ float4 pointLight(int index, float3 normal, float3 wPos,float3 colour)
 Texture2D NormalTex : register(t0);
 Texture2D Tex : register(t1);
 Texture2D PositionTexture : register(t2);
+Texture2D GlowTexture : register(t4);
 Texture2D ShadowMap : register(t3);
 SamplerState SampSt :register(s0);
 SamplerState ShadowSamp : register(s1);
@@ -129,6 +130,7 @@ float4 PS_main(VS_OUT input) : SV_Target
 	//colors = Tex.Sample(SampSt, input.TexCoord).xyz;
 	float4 colorT = Tex.Sample(SampSt, input.TexCoord).xyzw;
 	float3 pos = PositionTexture.Sample(SampSt, input.TexCoord).xyz;
+	float4 glow = GlowTexture.Sample(SampSt, input.TexCoord).xyzw;
 	float3 normal = NormalTex.Sample(SampSt, input.TexCoord).xyz*2.0f - 1.0f;
 	float4 totalLight;
 	if (length(normal) > 0)
@@ -230,8 +232,13 @@ float4 PS_main(VS_OUT input) : SV_Target
 
 			//float4 colorT = float4(Tex.Sample(SampSt, input.Tex).xyz *totalLight.xyz, Tex.Sample(SampSt, input.Tex).w);
 
-
+			/*if (glow.x != 0 || glow.y != 0 || glow.z != 0)
+			{
+				return saturate(glow+colorT);
+			}*/
 			colorT = float4(colorT.xyz *totalLight.xyz, 1.0f);
+			if (index == 0)
+				colorT.xyz += glow.xyz;
 		}
 	}
 	/*if (index > 0)

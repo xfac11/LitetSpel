@@ -107,7 +107,6 @@ btRigidBody* Physics::addBox(btVector3 Origin, btVector3 size,float mass, Object
 	this->world->addRigidBody(body);
 	bodies.push_back(body);
 	body->setUserPointer(objects);
-
 	return body;
 }
 
