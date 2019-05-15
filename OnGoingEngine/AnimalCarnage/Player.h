@@ -1,13 +1,10 @@
-#ifndef  PLAYER_H
+#ifndef PLAYER_H
 #define PLAYER_H
 
-#include "Bear.h"
-#include "Fox.h"
 #include "GamePad.h"
+#include "GameObject.h"
+#include "Animal.h"
 //#include "Primitives.h"
-enum CHARACTER{
-	BEAR,FOX
-};
 
 struct RumbleProperties
 {
@@ -40,14 +37,22 @@ private:
 	bool wallJumpReset;
 	bool hitStun;
 	int hitTime;
+	int health;
 
 	RumbleProperties theRumble;
-
+	AnimalType type;
 
 	XMFLOAT3 Accleration = XMFLOAT3(0, 0, 0);
 	XMFLOAT3 Velocity = XMFLOAT3(0, 0, 0);
 	/*Primitives *CollisionShape;*/
 public:
+	float getSpeed() const;
+	float getWeight() const;
+	int getMaxHealth() const;
+	int getHealth() const;
+	void takeDamage(int damage);
+	bool isDead() const;
+
 	bool getHit()const { return hit; }
 	bool getHitStun();
 	void setHitStun(bool hitStun);
@@ -55,7 +60,7 @@ public:
 	Player();
 	~Player();
 
-	void initialize();
+	void initialize(AnimalType type);
 	void update(float dt, int id);
 	bool updateRumble(float dt,int id);
 	bool setRumble(bool rumble = true);

@@ -1,32 +1,19 @@
 #include "Animal.h"
+#include "System.h"
 
+// AnimalDef { maxHealh, weight, speed, modelPath };
+AnimalDef Animal::fox = { 100, 10.0F, 1.0F, "Resources/Models/fox_character_run.lu" };
+AnimalDef Animal::bear = { 120, 50.0F, 0.6F, "NOT_MADE" };
 
-
-Animal::Animal():
-	GameObject()
+const AnimalDef& Animal::getAnimal(AnimalType type)
 {
+	switch (type)
+	{
+	case FOX:
+		return Animal::fox;
+	case BEAR:
+		return Animal::bear;
+	}
 
-}
-
-Animal::~Animal()
-{
-}
-
-float Animal::GetHealth() const
-{
-	return this->health;
-}
-
-void Animal::SetDmg(float d)
-{
-	this->health -= d;
-}
-
-AABB Animal::GetBody()
-{
-	//body.position = this->getPosition();
-	////body.width = getWidth();
-	////body.height = getHeight();
-	 AABB body;
-	 return body;
+	return Animal::fox;
 }

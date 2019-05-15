@@ -207,7 +207,7 @@ bool GunGameState::initailize()
 	for (int i = 0; i < nrOfPlayers; i++)
 	{
 		player[i] = new Player();
-		player[i]->initialize();
+		player[i]->initialize(FOX);
 		player[i]->setRigidbodyPosition(0.f, i *10.f, 0.f);
 	}
 	
@@ -360,6 +360,7 @@ bool GunGameState::update(float deltaTime)
 					player[i]->playerObj->getRigidbody()->applyCentralImpulse(btVector3(player[j]->dir * 150, 100, 0));// , btVector3(1, 0, 0));
 					
 					//TAKE DAMAGE HERE
+					player[i]->takeDamage(5);
 
 					//player[i]->setGrounded(true);
 				}

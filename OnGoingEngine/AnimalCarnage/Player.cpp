@@ -1,6 +1,41 @@
 #include "Player.h"
 #include "System.h"
 
+float Player::getSpeed() const
+{
+	return Animal::getAnimal(this->type).speed;
+}
+
+float Player::getWeight() const
+{
+	return Animal::getAnimal(this->type).weight;
+}
+
+int Player::getMaxHealth() const
+{
+	return Animal::getAnimal(this->type).maxHealh;
+}
+
+int Player::getHealth() const
+{
+	return this->health;
+}
+
+void Player::takeDamage(int damage)
+{
+	this->health -= damage;
+	
+	if (this->health < 0)
+	{
+		this->health = 0;
+	}
+}
+
+bool Player::isDead() const
+{
+	return this->health <= 0;
+}
+
 bool Player::getHitStun()
 {
 	return this->hitStun;
@@ -28,6 +63,8 @@ Player::Player()
 	wallJumpReset = false;
 	hitStun = false;
 	hitTime = 100;
+	type = DEFAULT_TYPE;
+	health = 100;
 }
 
 
@@ -38,8 +75,13 @@ Player::~Player()
 	//delete this->hitbox.hitbox;
 }
 
-void Player::initialize()
+void Player::initialize(AnimalType type)
 {
+	//setup health
+	const AnimalDef& animal = Animal::getAnimal(type);
+	this->type = type;
+	this->health = animal.maxHealh;
+
 	this->playerObj = new GameObject(System::shaderManager->getForwardShader());
 	this->hitbox.hitbox = new GameObject();
 	//this->hitbox.hitbox->setRotation(0, 1, 0, 3.14 / 2);
@@ -58,7 +100,7 @@ void Player::initialize()
 	//playerObj->CollisionShape->SetWorld(&playerObj->getWorld());
 	//System::getDebugDraw()->addPrimitives(playerObj->CollisionShape);
 
-	System::theModelLoader->loadGO(this->playerObj, "Resources/Models/fox_character_run.lu");
+	System::theModelLoader->loadGO(this->playerObj, animal.modelPath);
 	System::handler->addObject(this->playerObj);
 
 
