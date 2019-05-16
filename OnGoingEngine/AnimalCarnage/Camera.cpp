@@ -202,13 +202,15 @@ void Camera::calcCamera(std::vector<DirectX::XMFLOAT3> playerPos)
 	if (minY < maxY)
 		lengthY = (minY - maxY);
 
+	lengthY *= 1.2;
+
 	//Zoom compensation
 	//medY = (medY - length/4);
 
 	if (length > lengthY) {
 		length = lengthY;
 	}
-	length = length * 0.7;
+	length *= 0.7;
 
 
 	if (length > 20) {

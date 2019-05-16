@@ -220,7 +220,7 @@ float4 PS_main(VS_OUT input) : SV_Target
 						visibility += shadowCoord.z - bias > pcfDepth ? 1.0f: 0.0;
 					}
 				}
-				visibility /= 9.0;
+				visibility /= 14.0;
 				//visibility += ShadowMap.SampleCmpLevelZero(ShadowSampler, shadowCoord.xy, shadowCoord.z);
 				if (shadowCoord.z > 1.0)
 					visibility = 0.0f;

@@ -180,19 +180,19 @@ bool GunGameState::initailize()
 	this->object[0] = new Objects("Resources/Models/platform1.lu", btVector3(-10, 5, 0),3,3, btVector3(2.04f, 0.1f, 2.f));
 	this->object[1] = new Objects("Resources/Models/cube2.lu", btVector3(9, 4, 0), 3,3, btVector3(5.f, 1.f, 1.f), DYNAMIC);
 	this->object[2] = new Objects("Resources/Models/cube2.lu", btVector3(5,4, 0), 3,3, btVector3(5.f, 1.f, 1.f),DYNAMIC);
-	this->object[3] = new Objects("Resources/Models/cube2.lu", btVector3(16, -2, 0), 3,3, btVector3(100.f, 4.f, 10.f), STATIC);
+	this->object[3] = new Objects("Resources/Models/cube2.lu", btVector3(16, -2, 20), 3,3, btVector3(100.f, 4.f, 50.f), STATIC);
 	this->object[4] = new Objects("Resources/Models/cube2.lu", btVector3(35, 17, 0), 2,1, btVector3(10.f, 40.f, 10.f), STATIC);
 	this->object[5] = new Objects("Resources/Models/cube2.lu", btVector3(-35, 17, 0), 2,1, btVector3(10.f, 40.f, 10.f), STATIC);
 
 	GameObject* tree1 = new GameObject;
 	System::theModelLoader->loadGO(tree1, "Resources/Models/tree1.lu");
 	System::handler->addObject(tree1);
-	tree1->setPosition(20, 0, 10);
-	tree1->setScale(0.5, 0.5, 0.5);
+	tree1->setPosition(10, 0, 2.6);
+	tree1->setScale(1.6, 1.6, 1.6);
 	GameObject* tree2 = new GameObject;
 	System::theModelLoader->loadGO(tree2, "Resources/Models/tree2.lu");
 	System::handler->addObject(tree2);
-	tree2->setPosition(0, -0.5, 10);
+	tree2->setPosition(0, -0.5, 20);
 	tree2->setScale(0.6, 0.6, 0.6);
 	GameObject* smallStone1 = new GameObject;
 	System::theModelLoader->loadGO(smallStone1, "Resources/Models/small_stone1.lu");
@@ -234,7 +234,7 @@ bool GunGameState::initailize()
 		0.1f,-1.0f,0.0f,1.0f
 	};
 	float color[4] = {
-		1.0f , 1.0f, 1.0f , 1.0f
+		1.0f , 1.0f, 0.8f , 1.4f
 	};
 	System::handler->addLight(pos, dir, color);
 	float color2[4] = {
