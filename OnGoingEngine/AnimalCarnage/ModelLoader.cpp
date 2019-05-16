@@ -40,11 +40,12 @@ void ModelLoader::loadGO(GameObject*& object, const char* filePath)
 		Luna::Material mat = reader.getMaterial(i);
 		//object[i] = new GameObject;
 		if(mesh.hasBoundingBox)
-			object[i].setHalfSize(reader.getBoundingBox(i).halfSize, reader.getBoundingBox(i).pos);
-		object[i].addModel(vertices3D, dIndices, (int)indices.size());
-		object[i].setTexture(mat.diffuseTexPath,i);
+			object->setHalfSize(reader.getBoundingBox(i).halfSize, reader.getBoundingBox(i).pos);
+		object->addModel(vertices3D, dIndices, (int)indices.size());
+		object->setTexture(mat.diffuseTexPath,i);
+
 		if (mat.hasGlowMap)
-			object[i].setGlowMap(mat.glowTexPath,i);
+			object->setGlowMap(mat.glowTexPath,i);
 		//reader.getMaterial(i).
 
 		if (mesh.hasSkeleton == true)
