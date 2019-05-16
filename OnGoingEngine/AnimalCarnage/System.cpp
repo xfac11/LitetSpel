@@ -362,6 +362,17 @@ bool System::initialize()
 	System::physices = new Physics();
 	System::debugDraw = new DEBUG_DRAW();
 
+	shaderManager->getLightShader()->setWindow(this->theWindow);
+
+	//Resize
+	/*this->theWindow.width = 1280;
+	this->theWindow.height = 720;
+
+	shaderManager->getDefShader()->gBuffer.resize(this->theWindow.height, this->theWindow.width);
+	theGraphicDevice->resize(this->theWindow.width, this->theWindow.height);
+	shaderManager->getLightShader()->setWindow(this->theWindow);
+	MoveWindow(hwnd, 0, 0, this->theWindow.width, this->theWindow.height, true);*/
+
 	System::states.push_back(new MainMenu());
 	System::states[MAINMENU]->initailize();
 	System::states.push_back(new GunGameState());

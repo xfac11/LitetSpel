@@ -141,6 +141,8 @@
     <ClCompile Include="AnimatedModel.cpp" />
     <ClCompile Include="Animation.cpp" />
     <ClCompile Include="Animator.cpp" />
+    <ClCompile Include="AssetManager.cpp" />
+    <ClCompile Include="AssetManager.h" />
     <ClCompile Include="BulletSDK\include\BulletCollision\BroadphaseCollision\btAxisSweep3.cpp" />
     <ClCompile Include="BulletSDK\include\BulletCollision\BroadphaseCollision\btBroadphaseProxy.cpp" />
     <ClCompile Include="BulletSDK\include\BulletCollision\BroadphaseCollision\btCollisionAlgorithm.cpp" />
