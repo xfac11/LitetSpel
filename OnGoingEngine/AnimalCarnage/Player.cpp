@@ -97,6 +97,7 @@ Player::Player()
 	health = 100;
 	canPressPunch = true;
 	deathTimer = 0;
+	groundTimer = 0;
 	
 	currentAnimal = 0;
 	ArrayOfAnimals[0] = FOX;
@@ -464,7 +465,12 @@ void Player::update(float deltaTime, int id)
 		
 	}
 
-	grounded = false;
+	groundTimer += deltaTime * 1000;
+	if (groundTimer >= 100) {
+		grounded = false;
+		groundTimer = 100;
+	}
+	//grounded = false;
 }
 
 bool Player::updateRumble(float dt, int id)
@@ -549,6 +555,7 @@ AABB Player::getAABB()
 void Player::setGrounded(bool grounded)
 {
 	this->grounded = grounded;
+	this->groundTimer = 0;
 	//playerObj->getRigidbody()->applyImpulse(btVector3(0, 100.0f, 0), btVector3(0, 0, 0));
 }
 
@@ -559,7 +566,7 @@ void Player::setCanWallJump(bool canWallJump)
 
 void Player::addGroundMovingSpeed(XMFLOAT3 speed)
 {
-	playerObj->getRigidbody()->setLinearVelocity(btVector3((playerObj->getRigidbody()->getLinearVelocity().getX() + speed.x), playerObj->getRigidbody()->getLinearVelocity().getY() + speed.y, playerObj->getRigidbody()->getLinearVelocity().getZ() + speed.z));
+	//playerObj->getRigidbody()->setLinearVelocity(btVector3((playerObj->getRigidbody()->getLinearVelocity().getX() + speed.x), playerObj->getRigidbody()->getLinearVelocity().getY() + speed.y, playerObj->getRigidbody()->getLinearVelocity().getZ() + speed.z));
 	//playerObj->getRigidbody()->applyCentralImpulse(btVector3((playerObj->getRigidbody()->getLinearVelocity().getX() + speed.x), playerObj->getRigidbody()->getLinearVelocity().getY() + speed.y, playerObj->getRigidbody()->getLinearVelocity().getZ() + speed.z));
 	//OutputDebugStringA("0\n");
 }

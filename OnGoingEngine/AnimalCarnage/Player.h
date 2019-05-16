@@ -41,6 +41,7 @@ private:
 	int health;
 	bool canPressPunch;
 	int deathTimer;
+	int groundTimer;
 
 	RumbleProperties theRumble;
 	AnimalType type;
@@ -65,6 +66,8 @@ public:
 	bool getHitStun();
 	void setHitStun(bool hitStun);
 	bool hit = false;
+	//void groundedTimer();
+	
 	Player();
 	~Player();
 

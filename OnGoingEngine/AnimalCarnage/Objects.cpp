@@ -17,7 +17,7 @@ void Objects::SimplePlatformMovement(float dt)
 			XMFLOAT3 firstVector = MULT(current, firstriktningsVector);
 			XMFLOAT3 Vector = MULT(firstVector, dt/5);
 
-			ObjectOBJ->Move(Vector);
+			ObjectOBJ->getRigidbody()->setLinearVelocity(btVector3(Vector.x * 50, Vector.y * 50,0));
 		}
 	}
 	if (move) {
@@ -29,7 +29,7 @@ void Objects::SimplePlatformMovement(float dt)
 		else {
 			XMFLOAT3 firstVector = MULT(current, secondriktningsVector);
 			XMFLOAT3 Vector = MULT(firstVector, dt/5);
-			ObjectOBJ->Move(Vector);
+			ObjectOBJ->getRigidbody()->setLinearVelocity(btVector3(Vector.x*50, Vector.y*50, 0));
 		}
 	}
 
@@ -62,11 +62,23 @@ Objects::Objects(std::string filepath, btVector3 position,int id,int friction, b
 
 	AABB aabb = ObjectOBJ->getCollisionBox();
 	btVector3(aabb.width, aabb.height, aabb.width);
-	this->ObjectOBJ->getRigidbody() = System::getphysices()->addBox(btVector3(position),
-		btVector3(size.getX()/2.0f,size.getY()/2.0f,size.getZ()/2.0f), 0.0f,this);
+	if (state == DYNAMIC) {
+		this->ObjectOBJ->getRigidbody() = System::getphysices()->addBox(btVector3(position),
+			btVector3(size.getX() / 2.0f, size.getY() / 2.0f, size.getZ() / 2.0f), 10000000.0f, this);
+		this->ObjectOBJ->getRigidbody()->setGravity(btVector3(0,0,0));
+	}
+	else {
+		this->ObjectOBJ->getRigidbody() = System::getphysices()->addBox(btVector3(position),
+			btVector3(size.getX() / 2.0f, size.getY() / 2.0f, size.getZ() / 2.0f), 0.0f, this);
+	}
 
-	if(state ==STATIC)
-		ObjectOBJ->getRigidbody()->setCollisionFlags(btCollisionObject::CF_STATIC_OBJECT | btCollisionObject::CF_CUSTOM_MATERIAL_CALLBACK);
+	if (state == STATIC) {
+		ObjectOBJ->getRigidbody()->setCollisionFlags(btCollisionObject::CF_KINEMATIC_OBJECT | btCollisionObject::CF_CUSTOM_MATERIAL_CALLBACK);
+	}
+	else {
+		ObjectOBJ->getRigidbody()->setCollisionFlags(btCollisionObject::CF_CUSTOM_MATERIAL_CALLBACK);
+	}
+
 
 	this->ObjectOBJ->getRigidbody()->setActivationState(DISABLE_DEACTIVATION);
 	this->ObjectOBJ->getRigidbody()->setFriction(friction);
