@@ -43,6 +43,7 @@ public:
 	void move(DirectX::XMFLOAT3 position);
 	void rotate(float x, float y, float z);
 	void rotate(DirectX::XMFLOAT3 rotation);
+	void cameraShake(float amount, DirectX::XMFLOAT3 direction);
 	DirectX::XMFLOAT3 GetPosition();
 	DirectX::XMFLOAT3 GetRotation();
 

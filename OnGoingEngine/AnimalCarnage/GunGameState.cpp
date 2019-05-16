@@ -375,6 +375,24 @@ bool GunGameState::update(float deltaTime)
 					int randomNumber = (rand() % 4) + 0;
 					System::getSoundManager()->playEffect(to_string(randomNumber));
 
+					srand(time(0));
+					int randomNumber2 = (rand() % 3) - 1;
+					srand(time(0));
+					int randomNumber3 = (rand() % 3) - 1;
+					srand(time(0));
+					int randomNumber4 = (rand() % 3) - 1;
+
+					if (randomNumber2 == 0 && randomNumber3 == 0 && randomNumber4 == 0) {
+						srand(time(0));
+						int randomNumber2 = (rand() % 3) - 1;
+						srand(time(0));
+						int randomNumber3 = (rand() % 3) - 1;
+						srand(time(0));
+						int randomNumber4 = (rand() % 3) - 1;
+					}
+
+					System::theCamera->cameraShake(0.1,DirectX::XMFLOAT3(player[j]->dir, randomNumber3, randomNumber4));
+
 					if(player[i]->getHealth() <= 0 && tempHP > 0) {
 						player[j]->changeCharacter();
 					}

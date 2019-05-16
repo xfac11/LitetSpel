@@ -103,6 +103,13 @@ void Camera::rotate(DirectX::XMFLOAT3 rotation)
 	this->rotation.z += rotation.z;
 }
 
+void Camera::cameraShake(float amount, DirectX::XMFLOAT3 direction)
+{
+	accelerationX += amount * direction.x;
+	accelerationY += amount * direction.y;
+	accelerationZ += amount * direction.z;
+}
+
 DirectX::XMFLOAT3 Camera::GetPosition()
 {
 	return this->position;
