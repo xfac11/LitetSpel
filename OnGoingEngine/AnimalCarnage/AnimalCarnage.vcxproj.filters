@@ -676,6 +676,12 @@
     <ClCompile Include="PauseGui.cpp">
       <Filter>Menu</Filter>
     </ClCompile>
+    <ClCompile Include="AssetManager.h">
+      <Filter>Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="AssetManager.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource1.h" />
