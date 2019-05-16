@@ -37,6 +37,7 @@
 #include "Physics.h"
 #include "DEBUG_DRAW.h"
 
+#include "AssetManager.h"
 using namespace DirectX;
 //using namespace DirectX::SimpleMath;
 
