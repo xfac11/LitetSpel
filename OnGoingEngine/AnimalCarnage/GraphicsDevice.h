@@ -26,6 +26,7 @@ public:
 	void beginScene(float color[4]);
 	void presentScene();
 	bool initialize(int screenWidth, int screenHeight, bool vsync, HWND hwnd, bool fullscreen, float screenDepth, float screenNear, float fov);
+	bool resize(int screenWidth, int screenHeight);
 	void shutDown();
 	DirectX::XMMATRIX getProj();
 	DirectX::XMMATRIX getOrtho();

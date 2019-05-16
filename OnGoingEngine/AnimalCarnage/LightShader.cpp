@@ -54,6 +54,11 @@ bool LightShader::initialize()
 	{
 		return false;
 	}
+	result = this->windowCB.initialize(System::getDevice());
+	if (FAILED(result))
+	{
+		return false;
+	}
 
 	D3D11_DEPTH_STENCIL_DESC depthStencilDescL;
 	ZeroMemory(&depthStencilDescL, sizeof(depthStencilDescL));
@@ -227,6 +232,7 @@ void LightShader::setCBuffers()
 	this->setConstanbuffer(VERTEX, 0, this->perFrameCB.getBuffer());
 	this->setConstanbuffer(PIXEL, 0, this->perFrameCB.getBuffer());
 	this->setConstanbuffer(VERTEX, 1, this->worldCB.getBuffer());
+	this->setConstanbuffer(PIXEL, 3, this->windowCB.getBuffer());
 }
 
 void LightShader::renderShaderDir(int vertexCount)
@@ -269,6 +275,12 @@ void LightShader::setTypeOfLight(int type)
 {
 	this->perFrameCB.data.camPos.w = type;
 	this->perFrameCB.applyChanges(System::getDevice(), System::getDeviceContext());
+}
+
+void LightShader::setWindow(WindowClient wc)
+{
+	this->windowCB.data = wc;
+	this->windowCB.applyChanges(System::getDevice(), System::getDeviceContext());
 }
 
 void LightShader::renderUnmark(int count)

@@ -185,19 +185,34 @@ bool GunGameState::initailize()
 	this->object[5] = new Objects("Resources/Models/cube2.lu", btVector3(-35, 17, 0), 2,1, btVector3(10.f, 40.f, 10.f), STATIC);
 
 	GameObject* tree1 = new GameObject;
-	System::theModelLoader->loadGO(tree1, "Resources/Models/tree2.lu");
+	System::theModelLoader->loadGO(tree1, "Resources/Models/tree1.lu");
 	System::handler->addObject(tree1);
-	tree1->setPosition(0, -0.5, 10);
-	tree1->setScale(0.6, 0.6, 0.6);
+	tree1->setPosition(20, 0, 10);
+	tree1->setScale(0.5, 0.5, 0.5);
 	GameObject* tree2 = new GameObject;
-	System::theModelLoader->loadGO(tree2, "Resources/Models/small_stone1.lu");
+	System::theModelLoader->loadGO(tree2, "Resources/Models/tree2.lu");
 	System::handler->addObject(tree2);
-	tree2->setPosition(2, 0.5, 0);
-	tree2->setScale(10, 5, 5);
-	GameObject* tree = new GameObject;
-	System::theModelLoader->loadGO(tree, "Resources/Models/grass2.lu");
-	System::handler->addObject(tree);
-	tree->setPosition(10, -0.5, 1);
+	tree2->setPosition(0, -0.5, 10);
+	tree2->setScale(0.6, 0.6, 0.6);
+	GameObject* smallStone1 = new GameObject;
+	System::theModelLoader->loadGO(smallStone1, "Resources/Models/small_stone1.lu");
+	System::handler->addObject(smallStone1);
+	smallStone1->setPosition(4, 0.5, 0);
+	smallStone1->setScale(3, 3, 3);
+	GameObject* grass2 = new GameObject;
+	System::theModelLoader->loadGO(grass2, "Resources/Models/grass2.lu");
+	System::handler->addObject(grass2);
+	grass2->setPosition(10, -0.5, 1);
+	GameObject* tree3 = new GameObject;
+	System::theModelLoader->loadGO(tree3, "Resources/Models/tree3.lu");
+	System::handler->addObject(tree3);
+	tree3->setPosition(-25, 0, 25);
+	tree3->setScale(0.5, 0.5, 0.5);
+	GameObject* tree4 = new GameObject;
+	System::theModelLoader->loadGO(tree4, "Resources/Models/tree4.lu");
+	System::handler->addObject(tree4);
+	tree4->setPosition(30, 0.5, -2);
+	tree4->setScale(0.5, 0.5, 0.5);
 
 
 

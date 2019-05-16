@@ -39,3 +39,8 @@ struct PerFrameMatrices
 	DirectX::XMMATRIX proj;
 	DirectX::XMFLOAT4 camPos;
 };
+struct WindowClient
+{
+	int height;
+	int width;
+};
