@@ -39,7 +39,8 @@ GameObject::~GameObject()
 {
 	for (int i = 0; i < this->nrOfModels; i++)
 	{
-		delete this->theModel[i];
+		if(this->theModel[i]!=nullptr)
+			delete this->theModel[i];
 	}
 	delete[] this->theModel;
 }
