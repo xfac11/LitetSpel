@@ -365,11 +365,15 @@ bool GunGameState::update(float deltaTime)
 				{
 					player[i]->setHitStun(true);
 					this->testColBox = true;
-					player[i]->playerObj->getRigidbody()->applyCentralImpulse(btVector3(player[j]->dir * 150 * player[j]->getWeight(), 150 * player[j]->getWeight(), 0));// , btVector3(1, 0, 0));
+					player[i]->playerObj->getRigidbody()->applyCentralImpulse(btVector3(player[j]->dir * 150 * ((player[j]->getWeight() + 5) /6), 150 * ((player[j]->getWeight() + 5) / 6), 0));// , btVector3(1, 0, 0));
 					
 					int tempHP = player[i]->getHealth();
 					//TAKE DAMAGE HERE
 					player[i]->takeDamage(player[j]->getStrength());
+
+					srand(time(0));
+					int randomNumber = (rand() % 4) + 0;
+					System::getSoundManager()->playEffect(to_string(randomNumber));
 
 					if(player[i]->getHealth() <= 0 && tempHP > 0) {
 						player[j]->changeCharacter();

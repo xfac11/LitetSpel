@@ -5,6 +5,16 @@ Camera::Camera()
 	this->position = DirectX::XMFLOAT3(0.f, 1.f, -2.f);
 	this->rotation = DirectX::XMFLOAT3(35.f, 0.f, 0.f);
 	this->tempPosZ = this->position.z;
+	this->accelerationX = 0;
+	this->accelerationY = 0;
+	this->accelerationZ = 0;
+	this->tempPosX = this->position.x;
+	this->tempPosY = this->position.y;
+	this->tempPosZ = this->position.z;
+
+	this->medianX = this->position.x;
+	this->medianY = this->position.y;
+	this->medianZ = this->position.z;
 }
 
 Camera::~Camera()
@@ -210,7 +220,8 @@ void Camera::calcCamera(std::vector<DirectX::XMFLOAT3> playerPos)
 	if (length > lengthY) {
 		length = lengthY;
 	}
-	length *= 0.7;
+	length *= 0.35;
+	length -= 5;
 
 
 	if (length > 20) {
@@ -228,24 +239,53 @@ void Camera::calcCamera(std::vector<DirectX::XMFLOAT3> playerPos)
 	float distanceX;
 	float distanceY;
 
+	//if (this->position.x < medX) {
+	//	distanceX = this->position.x - medX;
+	//	acceleration.x -= 0.01;
+	//	//this->position.x -= distanceX / 20);
+	//}
+	//if (this->position.x > medX) {
+	//	distanceX = medX - this->position.x;
+	//	acceleration.x += 0.01;
+	//	//this->position.x += distanceX / 20);
+	//}
+
+	//if (this->position.y < medY) {
+	//	distanceY = this->position.y - medY;
+	//	acceleration.y -= 0.01;
+	//	//this->position.y -= distanceY / 20);
+	//}
+	//if (this->position.y > medY) {
+	//	distanceY = medY - this->position.y;
+	//	acceleration.y += 0.01;
+	//	//this->position.y += distanceY / 20);
+	//}
+
 	if (this->position.x < medX) {
 		distanceX = this->position.x - medX;
-		this->position.x -= distanceX / 20;
+		this->accelerationX += 0.0005;
+		//this->position.x -= distanceX / 20);
+		tempPosX -= distanceX / 20;
 	}
 	if (this->position.x > medX) {
 		distanceX = medX - this->position.x;
-		this->position.x += distanceX / 20;
+		this->accelerationX -= 0.0005;
+		//this->position.x += distanceX / 20);
+		tempPosX += distanceX / 20;
 	}
 
 	if (this->position.y < medY) {
 		distanceY = this->position.y - medY;
-		this->position.y -= distanceY / 20;
+		this->accelerationY += 0.0005;
+		//this->position.y -= distanceY / 20);
+		tempPosY -= distanceY / 20;
 	}
 	if (this->position.y > medY) {
 		distanceY = medY - this->position.y;
-		this->position.y += distanceY / 20;
+		this->accelerationY -= 0.0005;
+		//this->position.y += distanceY / 20);
+		tempPosY += distanceY / 20;
 	}
-
 
 	//Re-Center when zoomed out
 	/*if (position.y > 0) {
@@ -259,13 +299,44 @@ void Camera::calcCamera(std::vector<DirectX::XMFLOAT3> playerPos)
 	if (length < this->position.z) {
 		distanceZ = this->position.z - length;
 		this->tempPosZ -= distanceZ / 20;
+		accelerationZ -= 0.0005;
 	}
 	else if(length > this->position.z) {
 		distanceZ = length - this->position.z;
 		this->tempPosZ += distanceZ / 20;
+		accelerationZ += 0.0005;
 	}
 
-	this->position.z = tempPosZ;
+	this->accelerationX /= 1.05;
+	this->accelerationY /= 1.05;
+	this->accelerationZ /= 1.05;
+
+	medianX = tempPosX;
+	medianY = tempPosY;
+	medianZ = tempPosZ;
+	//medianX += this->accelerationX;
+	//medianY += this->accelerationY;
+	//medianZ += this->accelerationZ;
+	/*medianX /= 2;
+	medianY /= 2;
+	medianZ /= 2;*/
+	
+
+	//New funny camera
+	this->position.x += this->accelerationX;
+	this->position.y += this->accelerationY;
+	this->position.z += this->accelerationZ;
+	this->position.x = (this->position.x*15 + medianX)/16;
+	this->position.y = (this->position.y*15 + medianY)/16;
+	this->position.z = (this->position.z*15 + medianZ)/16;
+
+
+	//Daniels stable camera
+	/*this->position.x = medianX;
+	this->position.y = medianY;
+	this->position.z = medianZ;*/
+
+	//this->position.z = tempPosZ;
 
 	/*if (length < this->position.z) {
 		this->position.z += length /20;

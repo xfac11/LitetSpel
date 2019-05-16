@@ -674,15 +674,22 @@ void System::run()
 		this->theWindow.width = WIDTH;
 		theGraphicDevice->initialize(WIDTH, HEIGHT ,true , hwnd, false, 500.0f, 0.1f,90.0f);
 
-		this->shaderManager = new ShaderManager;
-		this->shaderManager->initialize(HEIGHT, WIDTH, 0.1f, 500.0f);
-		this->initialize();
-		initImgui();
-
 		ShowWindow(this->hwnd, this->nCMDShow);
 
 		//Needs to initialize after ShowWindow, or else it fails!
 		this->soundManager = new SoundManager();
+		System::getSoundManager()->loadEffect(L"Getting_Hit_Punch.wav", "0");
+		System::getSoundManager()->loadEffect(L"Getting_Hit_Punch_2.wav", "1");
+		System::getSoundManager()->loadEffect(L"Getting_Hit_Punch_3.wav", "2");
+		System::getSoundManager()->loadEffect(L"Getting_Hit_Punch_4.wav", "3");
+		System::getSoundManager()->loadEffect(L"Wall_Jump_Crash.wav", "4");
+		System::getSoundManager()->loadEffect(L"Swing.wav", "5");
+
+
+		this->shaderManager = new ShaderManager;
+		this->shaderManager->initialize(HEIGHT, WIDTH, 0.1f, 500.0f);
+		this->initialize();
+		initImgui();
 
 		//graphics->initImgui(this->hwnd);
 		/*Model** model;*/

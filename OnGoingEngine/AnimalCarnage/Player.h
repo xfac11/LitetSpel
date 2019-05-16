@@ -35,6 +35,7 @@ private:
 	float facing;
 	bool canWallJump;
 	bool wallJumpReset;
+	bool canDoubleJump;
 	bool hitStun;
 	int hitTime2;
 	int hitTime;
