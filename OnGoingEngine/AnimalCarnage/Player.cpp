@@ -62,7 +62,7 @@ void Player::changeCharacter()
 	//playerObj->getRigidbody()->getCollisionShape()->calculateLocalInertia(getWeight(), inertia);
 	playerObj->getRigidbody()->setMassProps(10*getWeight(), inertia);
 	//TEMP CHANGE MODEL
-	System::theModelLoader->loadGO(this->playerObj, animal.modelPath);
+	//System::theModelLoader->loadGO(this->playerObj, animal.modelPath);
 }
 
 bool Player::getHitStun()
