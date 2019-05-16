@@ -36,19 +36,16 @@
 #include "BulletCollision\CollisionShapes\btBoxShape.h"
 #include "Physics.h"
 #include "DEBUG_DRAW.h"
+#include "Structs.h"
 
 using namespace DirectX;
 //using namespace DirectX::SimpleMath;
 
-#define HEIGHT 1080
-#define WIDTH 1920
+#define HEIGHT 1080/2
+#define WIDTH 1920/2
 
 //using Microsoft::WRL::ComPtr;
-struct WindowClient
-{
-	int height;
-	int width;
-};
+
 enum GameState {
 	MAINMENU,
 	GUNGAME

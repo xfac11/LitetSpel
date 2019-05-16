@@ -122,6 +122,111 @@ bool GBuffer::initialize(int height, int width, float nearPlane, float farPlane)
 	return true;
 }
 
+bool GBuffer::resize(int height, int width)
+{
+	for (int i = 0; i < GBUFFERCAP; i++)
+	{
+		this->texTures[i]->Release();
+		this->shaderResViews[i]->Release();
+		this->renderTars[i]->Release();
+	}
+
+	this->depthBuffer->Release();
+	this->depthStencView->Release();
+
+	HRESULT result;
+	D3D11_TEXTURE2D_DESC texDesc{};
+	D3D11_RENDER_TARGET_VIEW_DESC renTarViewDesc{};
+	D3D11_SHADER_RESOURCE_VIEW_DESC shaderResViewDesc{};
+	D3D11_TEXTURE2D_DESC depthBufferDesc{};
+	D3D11_DEPTH_STENCIL_VIEW_DESC depthStencViewDesc{};
+
+	this->height = height;
+	this->width = width;
+
+	ZeroMemory(&texDesc, sizeof(texDesc));
+	/*float4 Normal : SV_Target0;
+	float4 TexColor : SV_Target1;
+	float4 Pos : SV_Target2;*/
+	texDesc.Width = width;
+	texDesc.Height = height;
+	texDesc.Format = DXGI_FORMAT_R16G16B16A16_FLOAT;
+	texDesc.ArraySize = 1;
+	texDesc.MipLevels = 1;
+	texDesc.CPUAccessFlags = 0;
+	texDesc.BindFlags = D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE;
+	texDesc.Usage = D3D11_USAGE_DEFAULT;
+	texDesc.MiscFlags = 0;
+	texDesc.SampleDesc.Count = 1;
+
+	for (int i = 0; i < GBUFFERCAP; i++)
+	{
+		result = System::getDevice()->CreateTexture2D(&texDesc, NULL, &this->texTures[i]);
+		if (FAILED(result))
+			return false;
+
+	}
+
+	renTarViewDesc.Format = texDesc.Format;
+	renTarViewDesc.Texture2D.MipSlice = 0;
+	renTarViewDesc.ViewDimension = D3D11_RTV_DIMENSION_TEXTURE2D;
+
+	for (int i = 0; i < GBUFFERCAP; i++)
+	{
+		result = System::getDevice()->CreateRenderTargetView(this->texTures[i], &renTarViewDesc, &this->renderTars[i]);
+		if (FAILED(result))
+			return false;
+
+	}
+	shaderResViewDesc.Texture2D.MostDetailedMip = 0;
+	shaderResViewDesc.Texture2D.MipLevels = 1;
+	shaderResViewDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
+	shaderResViewDesc.Format = texDesc.Format;
+
+	for (int i = 0; i < GBUFFERCAP; i++)
+	{
+		result = System::getDevice()->CreateShaderResourceView(this->texTures[i], &shaderResViewDesc, &this->shaderResViews[i]);
+		if (FAILED(result))
+			return false;
+
+	}
+
+	ZeroMemory(&depthBufferDesc, sizeof(depthBufferDesc));
+	depthBufferDesc.Width = width;
+	depthBufferDesc.Height = height;
+	depthBufferDesc.MipLevels = 1;
+	depthBufferDesc.ArraySize = 1;
+	depthBufferDesc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
+	depthBufferDesc.SampleDesc.Count = 1;
+	depthBufferDesc.SampleDesc.Quality = 0;
+	depthBufferDesc.Usage = D3D11_USAGE_DEFAULT;
+	depthBufferDesc.BindFlags = D3D11_BIND_DEPTH_STENCIL;
+	depthBufferDesc.CPUAccessFlags = 0;
+	depthBufferDesc.MiscFlags = 0;
+	result = System::getDevice()->CreateTexture2D(&depthBufferDesc, NULL, &depthBuffer);
+	if (FAILED(result))
+	{
+		return false;
+	}
+
+	ZeroMemory(&depthStencViewDesc, sizeof(depthStencViewDesc));
+
+	depthStencViewDesc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
+	depthStencViewDesc.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2D;
+	depthStencViewDesc.Texture2D.MipSlice = 0;
+
+	result = System::getDevice()->CreateDepthStencilView(depthBuffer, &depthStencViewDesc, &depthStencView);
+	if (FAILED(result))
+	{
+		return false;
+	}
+	
+	viewP.Width = float(width);
+	viewP.Height = float(height);
+
+	return true;
+}
+
 bool GBuffer::setRenderTargets()
 {
 	ID3D11ShaderResourceView* null[] = { nullptr, nullptr, nullptr,nullptr,nullptr };
