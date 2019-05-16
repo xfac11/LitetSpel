@@ -88,7 +88,7 @@ void GameObjectHandler::draw()
 	//System::theGraphicDevice->setRasterFront();
 	System::shaderManager->getShadowMapping()->prepare();//setshader + omsetrendertarget(0,0,depthstencilview
 	DirectX::XMVECTOR lightDirView = DirectX::XMVectorSet(0, 0, 0, 1);
-	float lightViewLengt = 7;
+	float lightViewLengt = 8;
 	DirectX::XMVECTOR CamPos = DirectX::XMVectorSet(lightViewLengt * (-1 * this->lightsCB.data.lights[0].direction[0]), lightViewLengt * (-1 * this->lightsCB.data.lights[0].direction[1]), lightViewLengt * (this->lightsCB.data.lights[0].direction[2]), 1);
 	DirectX::XMVECTOR up = DirectX::XMVectorSet(0, 1, 0, 0);
 
@@ -139,6 +139,11 @@ void GameObjectHandler::draw()
 		this->opaqueModels[i].modelPtr->getShader()->setWorld(*this->opaqueModels[i].worldPtr);
 		this->opaqueModels[i].modelPtr->draw();
 	}
+
+	//glow
+
+
+	//
 	System::shaderManager->getDefShader()->prepForLight();
 	System::theGraphicDevice->setBackBuffer(System::shaderManager->getDefShader()->gBuffer.getDepthStcView());
 	//
