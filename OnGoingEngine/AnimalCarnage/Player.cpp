@@ -446,9 +446,9 @@ void Player::update(float deltaTime, int id)
 
 	if (isDead()) {
 		//this->playerObj->getRigidbody()->setLinearFactor(btVector3(1, 1, 0));
-		this->playerObj->getRigidbody()->setAngularFactor(btVector3(0, 0, 1));
+		//this->playerObj->getRigidbody()->setAngularFactor(btVector3(0, 0, 1));
 
-		this->playerObj->setRotation(this->playerObj->getRigidbody()->getWorldTransform().getRotation().getX()*3.14 * 2, this->playerObj->getRigidbody()->getWorldTransform().getRotation().getY()*3.14 * 2, this->playerObj->getRigidbody()->getWorldTransform().getRotation().getZ()*3.14 * 2, this->playerObj->getRigidbody()->getWorldTransform().getRotation().getW()*3.14 * 2);
+		//this->playerObj->setRotation(this->playerObj->getRigidbody()->getWorldTransform().getRotation().getX()*3.14 * 2, this->playerObj->getRigidbody()->getWorldTransform().getRotation().getY()*3.14 * 2, this->playerObj->getRigidbody()->getWorldTransform().getRotation().getZ()*3.14 * 2, this->playerObj->getRigidbody()->getWorldTransform().getRotation().getW()*3.14 * 2);
 		//this->playerObj->setRotationRollPitchYaw(this->playerObj->getRigidbody()->getWorldTransform().getRotation().getX() *3.14 * 2,
 		//this->playerObj->getRigidbody()->getWorldTransform().getRotation().getY() *3.14 * 2,
 		//this->playerObj->getRigidbody()->getWorldTransform().getRotation().getZ() *3.14 * 2);
