@@ -203,7 +203,6 @@ bool GunGameState::initailize()
 
 	nrOfPlayers = 4;
 	player = new Player * [nrOfPlayers];
-
 	for (int i = 0; i < nrOfPlayers; i++)
 	{
 		player[i] = new Player();

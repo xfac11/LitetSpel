@@ -36,9 +36,11 @@ private:
 	bool canWallJump;
 	bool wallJumpReset;
 	bool hitStun;
+	int hitTime2;
 	int hitTime;
 	int health;
 	bool canPressPunch;
+	int deathTimer;
 
 	RumbleProperties theRumble;
 	AnimalType type;
