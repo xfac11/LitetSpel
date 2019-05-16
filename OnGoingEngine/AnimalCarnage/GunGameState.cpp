@@ -177,9 +177,9 @@ bool GunGameState::initailize()
 {
 	gContactAddedCallback = callbackFunc;
 
-	this->object[0] = new Objects("Resources/Models/platform1.lu", btVector3(-10, 5, 0),3,3, btVector3(2.04f, 0.1f, 2.f));
+	this->object[0] = new Objects("Resources/Models/platform1.lu", btVector3(-10, 5, 0),3,3, btVector3(2.f, 4.0f, 2.f));
 	this->object[1] = new Objects("Resources/Models/cube2.lu", btVector3(9, 4, 0), 3,3, btVector3(5.f, 1.f, 1.f), DYNAMIC);
-	this->object[2] = new Objects("Resources/Models/cube2.lu", btVector3(5,4, 0), 3,3, btVector3(5.f, 1.f, 1.f),DYNAMIC);
+	this->object[2] = new Objects("Resources/Models/platform2.lu", btVector3(5,4, 0), 3,3, btVector3(1.f, 1.f, 1.f),DYNAMIC);
 	this->object[3] = new Objects("Resources/Models/cube2.lu", btVector3(16, -2, 20), 3,3, btVector3(100.f, 4.f, 50.f), STATIC);
 	this->object[4] = new Objects("Resources/Models/cube2.lu", btVector3(35, 17, 0), 2,1, btVector3(10.f, 40.f, 10.f), STATIC);
 	this->object[5] = new Objects("Resources/Models/cube2.lu", btVector3(-35, 17, 0), 2,1, btVector3(10.f, 40.f, 10.f), STATIC);
@@ -244,8 +244,9 @@ bool GunGameState::initailize()
 	color2[0] = 0.0f;
 	color2[1] = 1.0f;
 	color2[2] = 1.0f;
-	pos[1] = 5.0f;
-	color2[3] = 10.0f;
+	pos[0] = -10.0f;
+	pos[1] = 4;
+	color2[3] = 3.0f;
 	System::handler->addLight(pos, dir, color2);
 
 
@@ -254,7 +255,7 @@ bool GunGameState::initailize()
 		0.5f , 1.0f, 0.0f , 2.0f
 	};
 	float pos2[4] = {
-	-14.f ,1.6f ,0.f,5.f
+	-18.f ,2.6f ,0.f,5.f
 	};
 	System::handler->addLight(pos2, dir, color3);
 

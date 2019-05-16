@@ -62,7 +62,7 @@ void Player::changeCharacter()
 	//playerObj->getRigidbody()->getCollisionShape()->calculateLocalInertia(getWeight(), inertia);
 	playerObj->getRigidbody()->setMassProps(10*getWeight(), inertia);
 	//TEMP CHANGE MODEL
-	System::theModelLoader->loadGO(this->playerObj, animal.modelPath);
+	//System::theModelLoader->loadGO(this->playerObj, animal.modelPath);
 }
 
 bool Player::getHitStun()
@@ -446,17 +446,17 @@ void Player::update(float deltaTime, int id)
 
 	if (isDead()) {
 		//this->playerObj->getRigidbody()->setLinearFactor(btVector3(1, 1, 0));
-		//this->playerObj->getRigidbody()->setAngularFactor(btVector3(0, 0, 1));
+		this->playerObj->getRigidbody()->setAngularFactor(btVector3(0, 0, 1));
 
-		//this->playerObj->setRotation(this->playerObj->getRigidbody()->getWorldTransform().getRotation().getX(), this->playerObj->getRotation().y, this->playerObj->getRotation().z, 3.14 / 2);
-		/*this->playerObj->setRotationRollPitchYaw(this->playerObj->getRigidbody()->getWorldTransform().getRotation().getX() *3.14 * 2,
-			this->playerObj->getRigidbody()->getWorldTransform().getRotation().getY() *3.14 * 2,
-			this->playerObj->getRigidbody()->getWorldTransform().getRotation().getZ() *3.14 * 2);*/
+		this->playerObj->setRotation(this->playerObj->getRigidbody()->getWorldTransform().getRotation().getX()*3.14 * 2, this->playerObj->getRigidbody()->getWorldTransform().getRotation().getY()*3.14 * 2, this->playerObj->getRigidbody()->getWorldTransform().getRotation().getZ()*3.14 * 2, this->playerObj->getRigidbody()->getWorldTransform().getRotation().getW()*3.14 * 2);
+		//this->playerObj->setRotationRollPitchYaw(this->playerObj->getRigidbody()->getWorldTransform().getRotation().getX() *3.14 * 2,
+		//this->playerObj->getRigidbody()->getWorldTransform().getRotation().getY() *3.14 * 2,
+		//this->playerObj->getRigidbody()->getWorldTransform().getRotation().getZ() *3.14 * 2);
+		//this->playerObj->getRigidbody()->getWorldTransform().getRotation().getW() *3.14 * 2);
 
-
-			//this->playerObj->setRotation(0, 1,this->playerObj->getRigidbody()->getWorldTransform().getRotation().getZ(), 3.14 / 2);
+			//this->playerObj->setRotation(0, 0,1, this->playerObj->getRigidbody()->getWorldTransform().getRotation().getAngle());
 			//this->playerObj->setRotation(this->playerObj->getRigidbody()->getWorldTransform().getRotation().getX(), this->playerObj->getRotation().y, this->playerObj->getRotation().z, this->playerObj->getRigidbody()->getWorldTransform().getRotation().getAngle());
-		deathTimer += 65 * deltaTime;
+		deathTimer += 60 * deltaTime;
 		if (deathTimer >= 100) {
 			health = getMaxHealth();
 			deathTimer = 0;
