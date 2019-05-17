@@ -25,6 +25,7 @@ public:
 	~Objects();
 	void update(float dt);
 	GameObject* ObjectOBJ;
+	/*GameObject* ObjectOBJPlatform;*/
 	btRigidBody * GetRigidBody() { return this->ObjectOBJ->getRigidbody(); };
 	void setMovement(bool move =true);
 	int getId();

@@ -18,6 +18,10 @@ void Objects::SimplePlatformMovement(float dt)
 			XMFLOAT3 Vector = MULT(firstVector, dt/5);
 
 			ObjectOBJ->getRigidbody()->setLinearVelocity(btVector3(Vector.x * 50, Vector.y * 50,0));
+			/*if (type == PLATFORM && state == DYNAMIC) {
+				ObjectOBJPlatform->getRigidbody()->setLinearVelocity(btVector3(Vector.x * 50, Vector.y * 50, 0));
+			}*/
+
 		}
 	}
 	if (move) {
@@ -30,6 +34,9 @@ void Objects::SimplePlatformMovement(float dt)
 			XMFLOAT3 firstVector = MULT(current, secondriktningsVector);
 			XMFLOAT3 Vector = MULT(firstVector, dt/5);
 			ObjectOBJ->getRigidbody()->setLinearVelocity(btVector3(Vector.x*50, Vector.y*50, 0));
+			/*if (type == PLATFORM && state == DYNAMIC) {
+				ObjectOBJPlatform->getRigidbody()->setLinearVelocity(btVector3(Vector.x * 50, Vector.y * 50, 0));
+			}*/
 		}
 	}
 
@@ -84,6 +91,38 @@ Objects::Objects(std::string filepath, btVector3 position,int id,int friction, b
 		ObjectOBJ->getRigidbody()->setCollisionFlags(btCollisionObject::CF_CUSTOM_MATERIAL_CALLBACK);
 	}
 
+	/*if (type == PLATFORM) {
+		this->ObjectOBJPlatform = new GameObject(System::shaderManager->getForwardShader());
+
+		System::theModelLoader->loadGO(this->ObjectOBJPlatform, filepath.c_str());
+		System::handler->addObject(this->ObjectOBJPlatform);
+		this->ObjectOBJPlatform->setPosition(btVector3(position.getX(), position.getY() + 0.57f, position.getZ()));
+
+		if (size.getX() != 2.04f)
+			this->ObjectOBJPlatform->setScale(size);
+
+			if (state == DYNAMIC) {
+				this->ObjectOBJPlatform->getRigidbody() = System::getphysices()->addBox(btVector3(position),
+					btVector3(ObjectOBJPlatform->getCollisionBox().width * 2 + 0.1, ObjectOBJPlatform->getCollisionBox().height * 2, ObjectOBJPlatform->getCollisionBox().depth * 2), 10000000.0f, this);
+				this->ObjectOBJPlatform->getRigidbody()->setGravity(btVector3(0, 0, 0));
+			}
+			else if (state == STATIC) {
+				this->ObjectOBJPlatform->getRigidbody() = System::getphysices()->addBox(btVector3(position),
+					btVector3(ObjectOBJPlatform->getCollisionBox().width * 2 + 0.1, ObjectOBJPlatform->getCollisionBox().height * 2, ObjectOBJPlatform->getCollisionBox().depth * 2), 10000000.0f, this);
+				this->ObjectOBJPlatform->getRigidbody()->setGravity(btVector3(0, 0, 0));
+				ObjectOBJPlatform->getRigidbody()->setCollisionFlags(btCollisionObject::CF_KINEMATIC_OBJECT);
+			}
+			else {
+				this->ObjectOBJPlatform->getRigidbody() = System::getphysices()->addBox(btVector3(position),
+					btVector3(ObjectOBJPlatform->getCollisionBox().width * 2 + 0.1, ObjectOBJPlatform->getCollisionBox().height * 2, ObjectOBJPlatform->getCollisionBox().depth * 2), 0.0f, this);
+			}
+
+
+		this->ObjectOBJPlatform->getRigidbody()->setActivationState(DISABLE_DEACTIVATION);
+		this->ObjectOBJPlatform->getRigidbody()->setFriction(0);
+		this->ObjectOBJPlatform->getRigidbody()->setRestitution(0);
+		this->ObjectOBJPlatform->getRigidbody()->setAngularFactor(btVector3(0, 0, 0));
+	}*/
 
 	this->ObjectOBJ->getRigidbody()->setActivationState(DISABLE_DEACTIVATION);
 	this->ObjectOBJ->getRigidbody()->setFriction(friction);
@@ -106,11 +145,13 @@ void Objects::update(float dt)
 	switch (type)
 	{
 		case PLATFORM:
+			/*this->ObjectOBJPlatform->setPosition(this->ObjectOBJPlatform->GetPosition().x, this->ObjectOBJPlatform->GetPosition().y + 0.57,
+				this->ObjectOBJPlatform->GetPosition().z);*/
 			if (state == STATIC){
 
 			}
 			else if (state == DYNAMIC){
-
+				this->SimplePlatformMovement(dt);
 			}
 			break;
 		case STONE:
