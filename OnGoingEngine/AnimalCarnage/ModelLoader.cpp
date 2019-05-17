@@ -38,9 +38,6 @@ void ModelLoader::loadGO(GameObject*& object, const char* filePath)
 	for (int i = 0; i < (int)meshCount; i++)
 	{
 		Luna::Mesh mesh= reader.getMesh(i);
-<<<<<<< HEAD
-
-=======
 		Luna::Material mat = reader.getMaterial(i);
 		//object[i] = new GameObject;
 		if(mesh.hasBoundingBox)
@@ -51,7 +48,6 @@ void ModelLoader::loadGO(GameObject*& object, const char* filePath)
 		if (mat.hasGlowMap)
 			object->setGlowMap(mat.glowTexPath,i);
 		//reader.getMaterial(i).
->>>>>>> 1e8d4d93be6649a6dc44b4f129f5c98a29298d92
 
 		if (mesh.hasSkeleton == true)
 		{
@@ -106,8 +102,7 @@ void ModelLoader::loadGO(GameObject*& object, const char* filePath)
 				}
 			}
 			
-			//next step joints setup
-			//next step animation
+
 		}
 		else
 		{

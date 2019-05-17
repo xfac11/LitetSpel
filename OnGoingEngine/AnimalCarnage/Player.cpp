@@ -173,13 +173,12 @@ void Player::initialize(AnimalType type)
 
 void Player::update(float deltaTime, int id)
 {
-<<<<<<< HEAD
+
 
 	//Cool rotation
 	this->playerObj->setRotationRollPitchYaw(-(this->playerObj->getRigidbody()->getLinearVelocity().getY() / 20), this->playerObj->getRotation().y, this->playerObj->getRotation().z);
 	
 	
-=======
 	//check if player is dead and have any animals left to play
 	//changeCharacter();
 	string str = to_string(currentAnimal) + "\n";
@@ -187,13 +186,22 @@ void Player::update(float deltaTime, int id)
 
 	//Cool rotation
 	this->playerObj->setRotationRollPitchYaw(-(this->playerObj->getRigidbody()->getLinearVelocity().getY() / 20), this->playerObj->getRotation().y, this->playerObj->getRotation().z);
+
+	//check if player is dead and have any animals left to play
+	//changeCharacter();
+	string str = to_string(currentAnimal) + "\n";
+	OutputDebugString( str.c_str() );
+
+	//Cool rotation
+	this->playerObj->setRotationRollPitchYaw(-(this->playerObj->getRigidbody()->getLinearVelocity().getY() / 20), this->playerObj->getRotation().y, this->playerObj->getRotation().z);
+
 	if (this->playerObj->getRotation().x > 0.785398163) {
 		this->playerObj->setRotationRollPitchYaw(0.785398163, this->playerObj->getRotation().y, this->playerObj->getRotation().z);
 	}
 	if (this->playerObj->getRotation().x < -0.785398163) {
 		this->playerObj->setRotationRollPitchYaw(-0.785398163, this->playerObj->getRotation().y, this->playerObj->getRotation().z);
 	}
->>>>>>> 1e8d4d93be6649a6dc44b4f129f5c98a29298d92
+
 
 	//Hitstun
 	if (this->hitStun == true) {
@@ -478,10 +486,8 @@ void Player::update(float deltaTime, int id)
 		this->playerObj->setRotationRollPitchYaw(this->playerObj->getRotation().x, facing, this->playerObj->getRotation().z);
 	}
 
-<<<<<<< HEAD
 	grounded = false;
 
-=======
 	if (isDead()) {
 		//this->playerObj->getRigidbody()->setLinearFactor(btVector3(1, 1, 0));
 		//this->playerObj->getRigidbody()->setAngularFactor(btVector3(0, 0, 1));
@@ -509,7 +515,7 @@ void Player::update(float deltaTime, int id)
 		groundTimer = 100;
 	}
 	//grounded = false;
->>>>>>> 1e8d4d93be6649a6dc44b4f129f5c98a29298d92
+
 }
 
 bool Player::updateRumble(float dt, int id)

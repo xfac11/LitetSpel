@@ -187,14 +187,9 @@ bool GunGameState::initailize()
 	GameObject* tree1 = new GameObject;
 	System::theModelLoader->loadGO(tree1, "Resources/Models/tree1.lu");
 	System::handler->addObject(tree1);
-<<<<<<< HEAD
-	tree1->setPosition(0, -0.5, 10);
-	tree1->setScale(0.6f, 1.2f, 0.2f);
-	//tree1->setRotation(50, 50, 50, 90);
-=======
 	tree1->setPosition(10, 0, 2.6);
 	tree1->setScale(1.6, 1.6, 1.6);
->>>>>>> 1e8d4d93be6649a6dc44b4f129f5c98a29298d92
+
 	GameObject* tree2 = new GameObject;
 	System::theModelLoader->loadGO(tree2, "Resources/Models/tree2.lu");
 	System::handler->addObject(tree2);

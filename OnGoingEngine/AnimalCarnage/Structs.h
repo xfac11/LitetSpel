@@ -45,15 +45,15 @@ struct PerFrameMatrices
 	DirectX::XMMATRIX proj;
 	DirectX::XMFLOAT4 camPos;
 };
-<<<<<<< HEAD
+
 struct skinningData
 {
 	bool hasSkeleton = false;
 	DirectX::XMMATRIX  jointTransformations[80];
-=======
+};
 struct WindowClient
 {
 	int height;
 	int width;
->>>>>>> 1e8d4d93be6649a6dc44b4f129f5c98a29298d92
+
 };
