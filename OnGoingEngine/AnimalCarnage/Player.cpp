@@ -178,14 +178,17 @@ void Player::update(float deltaTime, int id)
 	string str = to_string(currentAnimal) + "\n";
 	OutputDebugString( str.c_str() );
 
+
 	//Cool rotation
 	this->playerObj->setRotationRollPitchYaw(-(this->playerObj->getRigidbody()->getLinearVelocity().getY() / 20), this->playerObj->getRotation().y, this->playerObj->getRotation().z);
+
 	if (this->playerObj->getRotation().x > 0.785398163) {
 		this->playerObj->setRotationRollPitchYaw(0.785398163, this->playerObj->getRotation().y, this->playerObj->getRotation().z);
 	}
 	if (this->playerObj->getRotation().x < -0.785398163) {
 		this->playerObj->setRotationRollPitchYaw(-0.785398163, this->playerObj->getRotation().y, this->playerObj->getRotation().z);
 	}
+
 
 	//Hitstun
 	if (this->hitStun == true) {
@@ -470,6 +473,8 @@ void Player::update(float deltaTime, int id)
 		this->playerObj->setRotationRollPitchYaw(this->playerObj->getRotation().x, facing, this->playerObj->getRotation().z);
 	}
 
+	grounded = false;
+
 	if (isDead()) {
 		//this->playerObj->getRigidbody()->setLinearFactor(btVector3(1, 1, 0));
 		//this->playerObj->getRigidbody()->setAngularFactor(btVector3(0, 0, 1));
@@ -497,6 +502,7 @@ void Player::update(float deltaTime, int id)
 		groundTimer = 100;
 	}
 	//grounded = false;
+
 }
 
 bool Player::updateRumble(float dt, int id)

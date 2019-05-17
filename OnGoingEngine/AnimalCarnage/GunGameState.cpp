@@ -189,6 +189,7 @@ bool GunGameState::initailize()
 	System::handler->addObject(tree1);
 	tree1->setPosition(10, 0, 2.6);
 	tree1->setScale(1.6, 1.6, 1.6);
+
 	GameObject* tree2 = new GameObject;
 	System::theModelLoader->loadGO(tree2, "Resources/Models/tree2.lu");
 	System::handler->addObject(tree2);
@@ -286,7 +287,7 @@ bool GunGameState::initailize()
 bool GunGameState::render()
 {
 	renderImgui();
-	System::handler->draw();
+	System::handler->draw(ImGui::GetIO().DeltaTime);
 
 	System::fusk->resetShaders();
 	this->inGameGui->render();

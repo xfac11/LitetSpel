@@ -11,10 +11,6 @@ private:
 	DirectX::XMMATRIX locaBindTransform;
 	DirectX::XMMATRIX inverseBindTransform;
 	DirectX::XMMATRIX animatedTransform;
-	//have int id or pointer list system??
-	//int parent;
-	//int** children;
-	
 
 
 	Joint *parent;
@@ -25,10 +21,11 @@ protected:
 	void calcInverseBindTransform(DirectX::XMMATRIX parentBindTransform);
 public:
 	Joint();
-	Joint(char* name, int id, int parentID, float matrix[4][4]);
+	Joint(char* name, int id, int parentID, float invMatrixDiagonal);
+	Joint(char* name, int id, int parentID, DirectX::XMMATRIX invBindposeMatrix);
 	Joint(std::string name, int id, int nrOfChildren, DirectX::XMMATRIX transform);
 	//Joint(const Joint& obj);
-	//void operator=(const Luna::Joint& obj);
+	void operator=(const Luna::Joint& obj);
 
 	void init(std::string name,int id, int nrOf);
 

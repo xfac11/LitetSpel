@@ -2,6 +2,7 @@
 #include"System.h"
 Model::Model()
 {
+	this->gotSkeleton = false;
 	this->indexBuffer = IndexBuffer();
 	this->SamplerState = nullptr;
 	this->theShader = nullptr;
@@ -56,6 +57,11 @@ void Model::setShader(Shader *theShader)
 int Model::getOpacity()
 {
 	return this->type;
+}
+
+void Model::setGotSkeleton(bool gotSkltn)
+{
+	this->gotSkeleton = gotSkltn;
 }
 
 
@@ -153,6 +159,20 @@ void Model::drawOnlyVertex()
 void Model::draw()
 {
 	UINT32 offset = 0;
+
+	DeferredShader* ptr;
+	if (ptr = dynamic_cast<DeferredShader*>(this->theShader)) //System::shaderManager->getDefShader()))
+	{
+
+		ptr->setSkeleton(this->gotSkeleton);
+	}
+	else
+	{
+		OutputDebugStringA("== FAILED IN SET KEYFRAME to shader!! == ");
+	}
+	
+
+
 	System::getDeviceContext()->PSSetShaderResources(0, 1, &this->texture->getTexture());
 	if (this->normalMap != nullptr)
 	{

@@ -1,28 +1,24 @@
-#include "DeferredShader.h"
+#include "AnimationShader.h"
 #include"System.h"
-
-DeferredShader::DeferredShader() :
-	Shader()
-{
-	this->blendState = nullptr;
-	this->rasState = nullptr;
-}
-
-
-DeferredShader::~DeferredShader()
+void AnimationShader::shutdown()
 {
 	if (this->blendState != nullptr)
 		this->blendState->Release();
 	if (this->rasState != nullptr)
-	{
 		this->rasState->Release();
-	}
+}
+AnimationShader::AnimationShader()
+{
+	this->blendState = nullptr;
+	this->rasState = nullptr;
+}
+AnimationShader::~AnimationShader()
+{
+	this->shutdown();
 }
 
-bool DeferredShader::initialize(int height, int width, float nearPlane, float farPlane)
+bool AnimationShader::initialize()
 {
-	this->gBuffer.initialize(height, width, nearPlane, farPlane);
-
 	D3D11_INPUT_ELEMENT_DESC inputDesc[] = {
 		{
 			"SV_POSITION",		// "semantic" name in shader
@@ -34,15 +30,6 @@ bool DeferredShader::initialize(int height, int width, float nearPlane, float fa
 			0							 // used for INSTANCING (ignore)
 		},
 		{
-			"TEXCOORD",
-			0,
-			DXGI_FORMAT_R32G32_FLOAT, //2 values
-			0,
-			D3D11_APPEND_ALIGNED_ELEMENT,
-			D3D11_INPUT_PER_VERTEX_DATA,
-			0
-		},
-		{
 			"NORMAL",
 			0,				// same slot as previous (same vertexBuffer)
 			DXGI_FORMAT_R32G32B32_FLOAT,
@@ -51,25 +38,7 @@ bool DeferredShader::initialize(int height, int width, float nearPlane, float fa
 			D3D11_INPUT_PER_VERTEX_DATA,
 			0
 			//for normal mapping. tangent binormal
-		},
-		{
-			"TANGENT", //normal maps
-			0,
-			DXGI_FORMAT_R32G32B32_FLOAT,
-			0,
-			D3D11_APPEND_ALIGNED_ELEMENT,
-			D3D11_INPUT_PER_VERTEX_DATA,
-			0
-		},
-		{
-			"BINORMAL", //normal maps
-			0,
-			DXGI_FORMAT_R32G32B32_FLOAT,
-			0,
-			D3D11_APPEND_ALIGNED_ELEMENT,
-			D3D11_INPUT_PER_VERTEX_DATA,
-			0
-		},
+		 },
 		{
 			"JOINTS",
 			0,				// same slot as previous (same vertexBuffer)
@@ -78,8 +47,8 @@ bool DeferredShader::initialize(int height, int width, float nearPlane, float fa
 			D3D11_APPEND_ALIGNED_ELEMENT,							// offset of FIRST element (after POSITION)
 			D3D11_INPUT_PER_VERTEX_DATA,
 			0
-				//for normal mapping. tangent binormal
-		},
+			//for normal mapping. tangent binormal
+		 },
 		{
 			"WEIGHTS",
 			0,				// same slot as previous (same vertexBuffer)
@@ -89,10 +58,10 @@ bool DeferredShader::initialize(int height, int width, float nearPlane, float fa
 			D3D11_INPUT_PER_VERTEX_DATA,
 			0
 			//for normal mapping. tangent binormal
-		}
+		 }
 	};
 	HRESULT result;
-	if (!this->load(L"DRGBVertexShader.hlsl", inputDesc, ARRAYSIZE(inputDesc), L"DRGBPixelShader.hlsl", L"DRGBGeometryShader.hlsl"))
+	if (!this->load(L"animatedEntityVertex.hlsl", inputDesc, ARRAYSIZE(inputDesc)))
 	{
 		return false;
 	}
@@ -114,72 +83,48 @@ bool DeferredShader::initialize(int height, int width, float nearPlane, float fa
 	return true;
 }
 
-void DeferredShader::setWorld(DirectX::XMMATRIX world)
+void AnimationShader::setWorld(DirectX::XMMATRIX world)
 {
 	world = XMMatrixTranspose(world);
 	this->worldCB.data.world = world;
 	this->worldCB.applyChanges(System::getDevice(), System::getDeviceContext());
 }
 
-void DeferredShader::setViewProj(DirectX::XMMATRIX view, DirectX::XMMATRIX proj, DirectX::XMFLOAT4 camPos)
+void AnimationShader::setViewProj(DirectX::XMMATRIX view, DirectX::XMMATRIX proj, DirectX::XMFLOAT4 camPos)
 {
 	view = XMMatrixTranspose(view);
 	proj = XMMatrixTranspose(proj);
 	this->perFrameCB.data.view = view;
 	this->perFrameCB.data.proj = proj;
 	//need to set campos separately to enable check for backface culling
-	this->perFrameCB.data.camPos = camPos; //disable this and run setCamPosTo.. to check backfaceculling
+	this->perFrameCB.data.camPos = camPos; 
 	this->perFrameCB.applyChanges(System::getDevice(), System::getDeviceContext());
 }
 
-void DeferredShader::setSkeleton(bool hasSkeleton)
+void AnimationShader::setJointData(std::vector<KeyFrame> keyframes)
 {
-	this->jointCB.data.hasSkeleton = hasSkeleton;
-	this->jointCB.applyChanges(System::getDevice(), System::getDeviceContext());
-}
-
-void DeferredShader::setJointData(std::vector<DirectX::XMMATRIX> jointTransforms)
-{
-	for (int i = 0; i < jointTransforms.size(); i++)
+	for (int i = 0; i < keyframes.size(); i++)
 	{
-		//this->jointCB.data.hasSkeleton = hasSkeleton;
-		this->jointCB.data.jointTransformations[i] = jointTransforms[i];
+		this->jointCB.data.jointTransformations[i] = keyframes[i].getJointKeyFrames().getLocalTransform();
+
 	}
+	
 	this->jointCB.applyChanges(System::getDevice(), System::getDeviceContext());
 }
 
-void DeferredShader::setCamPosToMatricesPerFrame(DirectX::XMFLOAT3 campos)
+void AnimationShader::setCamPosToMatricesPerFrame(DirectX::XMFLOAT3 campos)
 {
 	XMFLOAT4 cam = { campos.x, campos.y,campos.z,1.f };
 	perFrameCB.data.camPos = cam;
 }
-void DeferredShader::setCBuffers()
+
+void AnimationShader::setCBuffers()
 {
 	this->setConstanbuffer(GEOMETRY, 0, this->perFrameCB.getBuffer());
 	this->setConstanbuffer(VERTEX, 0, this->perFrameCB.getBuffer());
 	this->setConstanbuffer(PIXEL, 0, this->perFrameCB.getBuffer());
 	this->setConstanbuffer(VERTEX, 1, this->worldCB.getBuffer());
 	this->setConstanbuffer(GEOMETRY, 1, this->worldCB.getBuffer());
-	this->setConstanbuffer(VERTEX, 2, this->jointCB.getBuffer());
-}
-
-void DeferredShader::resetCB()
-{
-	this->setConstanbuffer(GEOMETRY, 0, nullptr);
-	this->setConstanbuffer(VERTEX, 0, nullptr);
-	this->setConstanbuffer(PIXEL, 0, nullptr);
-	this->setConstanbuffer(VERTEX, 1, nullptr);
-	this->setConstanbuffer(GEOMETRY, 1, nullptr);
-	this->setConstanbuffer(VERTEX, 2, nullptr);
-}
-
-void DeferredShader::prepGBuffer(float* color)
-{
-	this->gBuffer.setRenderTargets();
-	this->gBuffer.clear(color);
-}
-
-void DeferredShader::prepForLight()
-{
-	this->gBuffer.setShaderResViews();
+	if(this->jointCB.getAddressOfBuffer()!=nullptr)
+		this->setConstanbuffer(VERTEX, 2, this->jointCB.getBuffer());
 }

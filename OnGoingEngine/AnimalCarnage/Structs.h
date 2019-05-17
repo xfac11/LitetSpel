@@ -8,6 +8,8 @@ struct Vertex3D //must be same as Luna::Vertex
 	DirectX::XMFLOAT3 normal; 
 	DirectX::XMFLOAT3 tangent; 
 	DirectX::XMFLOAT3 biNormal;
+	DirectX::XMFLOAT4 Joint;
+	DirectX::XMFLOAT4 Weights;
 
 	void operator=(const Luna::Vertex& obj)
 	{
@@ -18,6 +20,8 @@ struct Vertex3D //must be same as Luna::Vertex
 			normal = { obj.normal[0],obj.normal[1], obj.normal[2] };
 			tangent = { obj.tangent[0],obj.tangent[1],obj.tangent[2] };
 			biNormal= { obj.bitangent[0], obj.bitangent[1],obj.bitangent[2] };
+			Joint = { 0,0,0,0 };
+			Weights = { 0,0,0,0 };
 		}
 		else
 		{
@@ -26,6 +30,8 @@ struct Vertex3D //must be same as Luna::Vertex
 			normal = { 0,0,0 };
 			tangent = { 0,0,0 };
 			biNormal = { 0,0,0 };
+			Joint = { 0,0,0,0 };
+			Weights = { 0,0,0,0 };
 		}
 	}
 };
@@ -39,8 +45,15 @@ struct PerFrameMatrices
 	DirectX::XMMATRIX proj;
 	DirectX::XMFLOAT4 camPos;
 };
+
+struct skinningData
+{
+	bool hasSkeleton = false;
+	DirectX::XMMATRIX  jointTransformations[80];
+};
 struct WindowClient
 {
 	int height;
 	int width;
+
 };

@@ -17,7 +17,7 @@ public:
 	Model();
 	~Model();
 	int getOpacity();
-
+	void setGotSkeleton(bool gotSkltn);
 	Shader* getShader();
 	void setShader(Shader* theShader);
 
@@ -30,6 +30,16 @@ public:
 	void drawOnlyVertex();
 	void draw();
 private:
+
+	//skeleton
+	bool gotSkeleton;
+	
+	//std::vector<Joint> skeleton;
+	//Animation anims;
+	//float timePassed;
+
+
+
 	std::vector<Vertex3D> mesh;
 	VertexBuffer<Vertex3D> vertexBuffer;
 	IndexBuffer indexBuffer;

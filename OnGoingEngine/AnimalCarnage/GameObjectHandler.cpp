@@ -79,7 +79,7 @@ GameObject & GameObjectHandler::getObject(int id)
 	return *this->gameObjects[id];
 }
 
-void GameObjectHandler::draw()
+void GameObjectHandler::draw(float deltaTime)
 {
 	
 	//System::theGraphicDevice->setRasterFront();
@@ -208,6 +208,17 @@ void GameObjectHandler::draw()
 			this->transModels[i].modelPtr->draw();
 		}
 	}
+
+	//enable this to animate also set //mesh.hasSkeleton in modelloader
+	for (int a = 0; a < nrOfObjects; a++)
+	{
+		if (this->gameObjects[a]->haveAnimation() == true)
+		{
+			//this->gameObjects[a]->computeAnimationMatrix(deltaTime); //
+		}
+	}
+	
+
 	/*for (int i = 0; i < this->nrOfOpaque; i++)
 	{
 		this->opaqueModels[i].modelPtr->getShader()->setWorld(*this->opaqueModels[i].worldPtr);

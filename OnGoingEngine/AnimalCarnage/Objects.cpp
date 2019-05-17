@@ -141,6 +141,7 @@ void Objects::update(float dt)
 		this->ObjectOBJ->GetPosition().z);
 
 
+	
 	btRigidBody* rgb = this->ObjectOBJ->getRigidbody();
 	switch (type)
 	{
