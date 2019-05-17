@@ -173,24 +173,11 @@ void Player::initialize(AnimalType type)
 
 void Player::update(float deltaTime, int id)
 {
-
-
-	//Cool rotation
-	this->playerObj->setRotationRollPitchYaw(-(this->playerObj->getRigidbody()->getLinearVelocity().getY() / 20), this->playerObj->getRotation().y, this->playerObj->getRotation().z);
-	
-	
 	//check if player is dead and have any animals left to play
 	//changeCharacter();
 	string str = to_string(currentAnimal) + "\n";
 	OutputDebugString( str.c_str() );
 
-	//Cool rotation
-	this->playerObj->setRotationRollPitchYaw(-(this->playerObj->getRigidbody()->getLinearVelocity().getY() / 20), this->playerObj->getRotation().y, this->playerObj->getRotation().z);
-
-	//check if player is dead and have any animals left to play
-	//changeCharacter();
-	string str = to_string(currentAnimal) + "\n";
-	OutputDebugString( str.c_str() );
 
 	//Cool rotation
 	this->playerObj->setRotationRollPitchYaw(-(this->playerObj->getRigidbody()->getLinearVelocity().getY() / 20), this->playerObj->getRotation().y, this->playerObj->getRotation().z);
