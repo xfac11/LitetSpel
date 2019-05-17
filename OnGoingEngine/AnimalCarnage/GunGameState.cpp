@@ -177,9 +177,9 @@ bool GunGameState::initailize()
 {
 	gContactAddedCallback = callbackFunc;
 
-	this->object[0] = new Objects("Resources/Models/platform1.lu", btVector3(-10, 5, 0),3,3, btVector3(2.f, 4.0f, 2.f));
-	this->object[1] = new Objects("Resources/Models/cube2.lu", btVector3(9, 4, 0), 3,3, btVector3(5.f, 1.f, 1.f), DYNAMIC);
-	this->object[2] = new Objects("Resources/Models/platform2.lu", btVector3(5,4, 0), 3,3, btVector3(1.f, 1.f, 1.f),DYNAMIC);
+	this->object[0] = new Objects("Resources/Models/platform2.lu", btVector3(-10, 5, 0),3,3, btVector3(0.6f, 0.8f, 0.6f), STATIC, PLATFORM);
+	this->object[1] = new Objects("Resources/Models/platform1.lu", btVector3(12, 4, 0), 3,3, btVector3(1.4f, 2.8f, 1.4f), DYNAMIC, PLATFORM);
+	this->object[2] = new Objects("Resources/Models/platform1.lu", btVector3(5,4, 0), 3,3, btVector3(1.4f, 2.8f, 1.4f),DYNAMIC, PLATFORM);
 	this->object[3] = new Objects("Resources/Models/cube2.lu", btVector3(16, -2, 20), 3,3, btVector3(100.f, 4.f, 50.f), STATIC);
 	this->object[4] = new Objects("Resources/Models/cube2.lu", btVector3(35, 17, 0), 2,1, btVector3(10.f, 40.f, 10.f), STATIC);
 	this->object[5] = new Objects("Resources/Models/cube2.lu", btVector3(-35, 17, 0), 2,1, btVector3(10.f, 40.f, 10.f), STATIC);
@@ -365,7 +365,7 @@ bool GunGameState::update(float deltaTime)
 				{
 					player[i]->setHitStun(true);
 					this->testColBox = true;
-					player[i]->playerObj->getRigidbody()->applyCentralImpulse(btVector3(player[j]->dir * 150 * ((player[j]->getWeight() + 5) /6), 150 * ((player[j]->getWeight() + 5) / 6), 0));// , btVector3(1, 0, 0));
+					player[i]->playerObj->getRigidbody()->applyCentralImpulse(btVector3(player[j]->dir * 150 * ((player[j]->getWeight() + 2) /3), 150 * ((player[j]->getWeight() + 2) / 3), 0));// , btVector3(1, 0, 0));
 					
 					int tempHP = player[i]->getHealth();
 					//TAKE DAMAGE HERE

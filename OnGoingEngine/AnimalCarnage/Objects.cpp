@@ -64,12 +64,17 @@ Objects::Objects(std::string filepath, btVector3 position,int id,int friction, b
 	btVector3(aabb.width, aabb.height, aabb.width);
 	if (state == DYNAMIC) {
 		this->ObjectOBJ->getRigidbody() = System::getphysices()->addBox(btVector3(position),
-			btVector3(size.getX() / 2.0f, size.getY() / 2.0f, size.getZ() / 2.0f), 10000000.0f, this);
-		this->ObjectOBJ->getRigidbody()->setGravity(btVector3(0,0,0));
+			btVector3(ObjectOBJ->getCollisionBox().width * 2, ObjectOBJ->getCollisionBox().height * 2, ObjectOBJ->getCollisionBox().depth * 2), 10000000.0f, this);
+		this->ObjectOBJ->getRigidbody()->setGravity(btVector3(0, 0, 0));
+	}
+	else if (state == STATIC) {
+		this->ObjectOBJ->getRigidbody() = System::getphysices()->addBox(btVector3(position),
+			btVector3(ObjectOBJ->getCollisionBox().width * 2, ObjectOBJ->getCollisionBox().height * 2, ObjectOBJ->getCollisionBox().depth * 2), 10000000.0f, this);
+		this->ObjectOBJ->getRigidbody()->setGravity(btVector3(0, 0, 0));
 	}
 	else {
 		this->ObjectOBJ->getRigidbody() = System::getphysices()->addBox(btVector3(position),
-			btVector3(size.getX() / 2.0f, size.getY() / 2.0f, size.getZ() / 2.0f), 0.0f, this);
+			btVector3(ObjectOBJ->getCollisionBox().width * 2, ObjectOBJ->getCollisionBox().height * 2, ObjectOBJ->getCollisionBox().depth * 2), 0.0f, this);
 	}
 
 	if (state == STATIC) {
