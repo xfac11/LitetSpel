@@ -10,7 +10,7 @@ public:
 	void addObject(GameObject*& gameObject);
 	void addObject(char *file);
 	GameObject& getObject(int id);
-	void draw();
+	void draw(float deltaTime);
 	void initialize();
 	void addLight(float pos[4], float dir[4], float color[4]);
 	void setSkyboxTexture(std::string file);

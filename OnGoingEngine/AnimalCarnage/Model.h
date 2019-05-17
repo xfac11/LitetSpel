@@ -17,11 +17,12 @@ public:
 	Model();
 	~Model();
 	int getOpacity();
-
+	void setGotSkeleton(bool gotSkltn);
 	Shader* getShader();
 	void setShader(Shader* theShader);
 
 	void setTexture(std::string file);
+	void setGlowMap(std::string file);
 	void setMesh(std::vector<Vertex3D> aMesh,DWORD *indices, int numberOfIndices);
 	void setSampler();
 	void setSampler(D3D11_TEXTURE_ADDRESS_MODE type, D3D11_FILTER filter, D3D11_COMPARISON_FUNC comFunc);
@@ -29,6 +30,16 @@ public:
 	void drawOnlyVertex();
 	void draw();
 private:
+
+	//skeleton
+	bool gotSkeleton;
+	
+	//std::vector<Joint> skeleton;
+	//Animation anims;
+	//float timePassed;
+
+
+
 	std::vector<Vertex3D> mesh;
 	VertexBuffer<Vertex3D> vertexBuffer;
 	IndexBuffer indexBuffer;
@@ -36,6 +47,8 @@ private:
 	Texture* texture;// 
 	//mask
 	Texture* normalMap;
+	Texture* glowMap;
+	bool hasGlowMap;
 	int vertexCount;
 	
 	//Joint jointHierarchy

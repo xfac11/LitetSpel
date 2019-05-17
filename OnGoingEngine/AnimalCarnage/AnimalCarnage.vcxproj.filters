@@ -152,9 +152,6 @@
     <ClCompile Include="Animal.cpp">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="Bear.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
     <ClCompile Include="BulletSDK\include\BulletCollision\CollisionDispatch\btConvexConcaveCollisionAlgorithm.cpp">
       <Filter>Bullet SDK</Filter>
     </ClCompile>
@@ -679,6 +676,17 @@
     <ClCompile Include="PauseGui.cpp">
       <Filter>Menu</Filter>
     </ClCompile>
+<<<<<<< HEAD
+    <ClCompile Include="AnimationShader.cpp">
+      <Filter>Skeleton</Filter>
+=======
+    <ClCompile Include="AssetManager.h">
+      <Filter>Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="AssetManager.cpp">
+      <Filter>Engine</Filter>
+>>>>>>> 1e8d4d93be6649a6dc44b4f129f5c98a29298d92
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource1.h" />
@@ -841,9 +849,6 @@
     </ClInclude>
     <ClInclude Include="BulletSDK\include\BulletCollision\NarrowPhaseCollision\btConvexCast.h">
       <Filter>Bullet SDK</Filter>
-    </ClInclude>
-    <ClInclude Include="Bear.h">
-      <Filter>Header</Filter>
     </ClInclude>
     <ClInclude Include="Animal.h">
       <Filter>Header</Filter>
@@ -1343,9 +1348,6 @@
     <ClInclude Include="DeferredShader.h">
       <Filter>Shader</Filter>
     </ClInclude>
-    <ClInclude Include="Fox.h">
-      <Filter>Header</Filter>
-    </ClInclude>
     <ClInclude Include="GBuffer.h">
       <Filter>Shader</Filter>
     </ClInclude>
@@ -1563,6 +1565,9 @@
     </ClInclude>
     <ClInclude Include="PauseGui.h">
       <Filter>Menu</Filter>
+    </ClInclude>
+    <ClInclude Include="AnimationShader.h">
+      <Filter>Skeleton</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

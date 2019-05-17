@@ -50,14 +50,19 @@ void GS_main(triangle GSInput input[3], inout TriangleStream<GSOutput> theOutput
 		{
 			//output.Pos = mul(world, input[i].Pos);
 			//output.Pos = mul(view, output.Pos);
-			output.Pos = mul(input[i].Pos, world);
+			output.Pos = mul(float4(input[i].Pos.xyz,1.0f), world);
 			output.Pos = mul(output.Pos, view);
 			output.Pos = mul(output.Pos, proj);
 			//output.Pos = mul(proj, input[i].Pos);
 			//output.Pos = input[i].Pos;
 			output.wPosition = mul(float4(input[i].Pos.xyz, 1.0f), world);
+	
 			output.Tex = input[i].Tex;
 			output.NormalWS = float4(normal, 1.0f);
+			//output.NormalWS = mul(input[i].Normal, world);
+			//output.NormalWS = mul(output.NormalWS, view);
+			//output.NormalWS = mul(output.NormalWS, proj);
+
 			output.TangentWS = input[i].Tangent;
 			output.BinormalWS = input[i].Binormal;
 

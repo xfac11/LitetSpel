@@ -1,13 +1,14 @@
 #pragma once
 #include <d3d11.h>
 #include <directxmath.h>
-const int GBUFFERCAP = 3;
+const int GBUFFERCAP = 4;
 class GBuffer
 {
 public:
 	GBuffer();
 	~GBuffer();
 	bool initialize(int height, int width, float nearPlane, float farPlane);
+	bool resize(int height, int width);
 	bool setRenderTargets();
 	ID3D11RenderTargetView*& getRenView(int id);
 	void shutDown();

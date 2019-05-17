@@ -10,6 +10,7 @@
 #include "btBulletCollisionCommon.h"
 #include "btBulletDynamicsCommon.h"
 #include "Objects.h"
+#include <ctime>
 
 class GunGameState : public State
 {

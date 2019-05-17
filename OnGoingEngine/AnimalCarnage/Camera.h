@@ -11,6 +11,18 @@ private:
 	DirectX::XMVECTOR Up = DirectX::XMVectorSet(0, 1.f, 0, 0.0);
 	//DirectX::XMFLOAT3 lookAt; 
 	DirectX::XMMATRIX viewMatrix;
+	//DirectX::XMFLOAT3 acceleration;
+	float accelerationX;
+	float accelerationY;
+	float accelerationZ;
+
+	float tempPosX;
+	float tempPosY;
+	float tempPosZ;
+
+	float medianX;
+	float medianY;
+	float medianZ;
 public:
 	Camera();
 	~Camera();
@@ -31,6 +43,7 @@ public:
 	void move(DirectX::XMFLOAT3 position);
 	void rotate(float x, float y, float z);
 	void rotate(DirectX::XMFLOAT3 rotation);
+	void cameraShake(float amount, DirectX::XMFLOAT3 direction);
 	DirectX::XMFLOAT3 GetPosition();
 	DirectX::XMFLOAT3 GetRotation();
 

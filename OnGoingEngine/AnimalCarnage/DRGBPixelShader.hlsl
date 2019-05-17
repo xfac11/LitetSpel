@@ -16,6 +16,7 @@ struct PS_OUT
 	float4 Normal : SV_Target0;
 	float4 TexColor : SV_Target1;
 	float4 Pos : SV_Target2;
+	float4 GlowTex : SV_Target3;
 	//float4 BumpNor : SV_Target3;
 	//float3 Tangent : TANGENT; //Normal maps
 	//float3 Binormal : BINORMAL; //Normal maps
@@ -36,6 +37,7 @@ cbuffer world : register(b1)
 
 Texture2D Tex : register(t0);
 Texture2D Nor : register(t1);
+Texture2D Glow : register(t2);
 SamplerState SampSt :register(s0);
 PS_OUT PS_main(PS_IN input)
 {
@@ -43,7 +45,7 @@ PS_OUT PS_main(PS_IN input)
 	PS_OUT output;
 
 
-	float4 textureColor;
+	float4 textureColor = Tex.Sample(SampSt, input.Tex).xyzw;
 	float3 bumpNormal;
 
 	//float3 diffuseAlbedo = Tex.Sample(SampSt, input.Tex).rgb;
@@ -56,10 +58,27 @@ PS_OUT PS_main(PS_IN input)
 	//output.TexColor = Tex.Sample(SampSt, input.Tex);//float4(input.ThePoint, 1.0f);//World space position
 
 	//output.TexColor = float4(1.0f, 0.0f, 0.0f, 1.0f);
-	output.TexColor = Tex.Sample(SampSt, input.Tex);
+	float4 glowMap= Glow.Sample(SampSt, input.Tex);
 	//output.TexColor = Tex.SampleLevel(SampSt, input.Tex,10);
 	float3 normalColor = Nor.Sample(SampSt, input.Tex).xyz;
-
+	//output.TexColor = float4(textureColor.xyz,1);
+	/*if (glowMap.x != 0 || glowMap.y != 0 || glowMap.z != 0)
+	{
+		output.GlowTex = glowMap;
+			
+	}
+	else
+		output.GlowTex = float4(0, 0, 0, 0);*/
+	output.TexColor = float4(textureColor.xyz, 1.0f);
+	/*if (glowMap.x != 0 || glowMap.y != 0 || glowMap.z != 0)
+	{
+		glowMap.w = 1;
+	}
+	else
+	{
+		glowMap.w = 0;
+	}*/
+	output.GlowTex = glowMap;
 	normalColor = normalColor * 2.f - 1.f;
 
 	bumpNormal = (normalColor.x* input.TangentWS) + (normalColor.y*input.BinormalWS) + (normalColor.z*input.NormalWS);

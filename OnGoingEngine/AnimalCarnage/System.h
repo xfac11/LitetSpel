@@ -36,7 +36,9 @@
 #include "BulletCollision\CollisionShapes\btBoxShape.h"
 #include "Physics.h"
 #include "DEBUG_DRAW.h"
+#include "Structs.h"
 
+#include "AssetManager.h"
 using namespace DirectX;
 //using namespace DirectX::SimpleMath;
 
@@ -44,11 +46,7 @@ using namespace DirectX;
 #define WIDTH 1920
 
 //using Microsoft::WRL::ComPtr;
-struct WindowClient
-{
-	int height;
-	int width;
-};
+
 enum GameState {
 	MAINMENU,
 	GUNGAME

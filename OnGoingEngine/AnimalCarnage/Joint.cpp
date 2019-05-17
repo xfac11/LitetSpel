@@ -23,6 +23,20 @@ Joint::Joint()
 	this->locaBindTransform = {};
 }
 
+Joint::Joint(char * name, int id, int parentID, float invMatrixDiagonal)
+{
+	std::string newName(name);
+	this->name = newName;
+	this->id = id;
+
+	DirectX::XMFLOAT4X4 invTemp;
+	invTemp.m[0][0] = invMatrixDiagonal;
+	invTemp.m[1][1] = invMatrixDiagonal;
+	invTemp.m[2][2] = invMatrixDiagonal;
+	invTemp.m[3][3] = invMatrixDiagonal;
+	this->inverseBindTransform = DirectX::XMLoadFloat4x4(&invTemp);
+}
+
 Joint::Joint(std::string name, int id, int nrOfChildren, DirectX::XMMATRIX transform)
 {
 	this->name = name;
@@ -37,6 +51,23 @@ Joint::Joint(std::string name, int id, int nrOfChildren, DirectX::XMMATRIX trans
 	}
 
 	this->locaBindTransform = transform;
+}
+
+void Joint::operator=(const Luna::Joint & obj)
+{
+	std::string theName(obj.jointName);
+	this->name = theName;
+	this->id = obj.jointID;
+	this->parent = nullptr;
+	DirectX::XMFLOAT4X4 invTemp;
+	for (int i = 0; i < 4; i++)
+	{
+		for (int j = 0; j < 4; j++)
+		{
+			invTemp.m[i][j] = obj.invBindposeMatrix[i][j];
+		}
+	}
+	this->inverseBindTransform = DirectX::XMLoadFloat4x4(&invTemp);
 }
 
 void Joint::init(std::string name, int id, int nrOf)

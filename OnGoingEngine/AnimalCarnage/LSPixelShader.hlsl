@@ -21,6 +21,11 @@ cbuffer world : register(b2)
 {
 	float4x4 world;
 }
+cbuffer window : register(b3)
+{
+	int height;
+	int width;
+}
 cbuffer Lights : register(b1)
 {
 	int index;
@@ -92,7 +97,7 @@ float4 pointLight(int index, float3 normal, float3 wPos,float3 colour)
 
 	float attenuation = max(0, 1.0f - (distance / lights[index].position.w));// from 3d project
 
-	float Attenuation = 1.0f +
+	float Attenuation = 1.0 +
 		0.2f * distance +
 		1.8f * distance * distance;
 	return color / (Attenuation / lights[index].position.w);// color/attenuation in tutorial
@@ -101,8 +106,23 @@ float4 pointLight(int index, float3 normal, float3 wPos,float3 colour)
 Texture2D NormalTex : register(t0);
 Texture2D Tex : register(t1);
 Texture2D PositionTexture : register(t2);
+Texture2D GlowTexture : register(t4);
 Texture2D ShadowMap : register(t3);
 SamplerState SampSt :register(s0);
+SamplerState ShadowSamp : register(s1);
+//SamplerState ShadowSampler
+//{
+//	// sampler state
+//	Filter = MIN_MAG_MIP_LINEAR;
+//	AddressU = CLAMP;
+//	AddressV = CLAMP;
+//	BorderColor = {
+//		1,1,1,1
+//	};
+//
+//	// sampler comparison state
+//	ComparisonFunc = ALWAYS;
+//};
 float4 PS_main(VS_OUT input) : SV_Target
 {
 
@@ -110,11 +130,12 @@ float4 PS_main(VS_OUT input) : SV_Target
 	//input.TexCoord = float2(input.screenPos.x / screenSize.x,input.screenPos.y / screenSize.y);//screenposition divided by screen size(Send it in)
 	//float2((input.screenPos.x * 0.5) + 0.5, (input.screenPos.y * 0.5) + 0.5);
 	if(index!=0)
-		input.TexCoord = float2(input.screenPos.x / (1920),input.screenPos.y / (1080));
+		input.TexCoord = float2(input.screenPos.x / (width),input.screenPos.y / (height));
 	//bumpNormal = BumpNormalTex.Sample(SampSt, input.TexCoord).xyz *2.0f - 1.0f;// back to [-1...1] 
 	//colors = Tex.Sample(SampSt, input.TexCoord).xyz;
 	float4 colorT = Tex.Sample(SampSt, input.TexCoord).xyzw;
 	float3 pos = PositionTexture.Sample(SampSt, input.TexCoord).xyz;
+	float4 glow = GlowTexture.Sample(SampSt, input.TexCoord).xyzw;
 	float3 normal = NormalTex.Sample(SampSt, input.TexCoord).xyz*2.0f - 1.0f;
 	float4 totalLight;
 	if (length(normal) > 0)
@@ -168,11 +189,12 @@ float4 PS_main(VS_OUT input) : SV_Target
 
 				
 				float visibility = 0.0;
-				float cosTheta = dot((normal), (lights[0].direction.xyz));
-				float bias = 0.005*tan(acos(cosTheta));
+				//float cosTheta = dot((normal), (lights[0].direction.xyz));
+				//float bias = 0.005*tan(acos(cosTheta));
 				//max(0.05 * (1.0 - dot(normal, lightDir)), 0.015);
-				bias = clamp(bias, 0,0.05);
-				bias = max(0.037 * (1.0 - dot(normal, lights[0].direction.xyz)), 0.005);
+				//bias = clamp(bias, 0,0.05);
+				float bias;
+				bias = max(0.030 * (1.0 - dot(normal, lights[0].direction.xyz)), 0.005);
 				/*for (int i = 0; i < 4; i++)
 				{
 					if (ShadowMap.Sample(SampSt, shadowCoord.xy + poissonDisk[i] / 700.0).x < shadowCoord.z - bias)
@@ -194,13 +216,14 @@ float4 PS_main(VS_OUT input) : SV_Target
 				{
 					for (int y = -1; y <= 1; ++y)
 					{
-						float pcfDepth = ShadowMap.Sample(SampSt, shadowCoord.xy + float2(x, y) * texelSize).r;
+						float pcfDepth = ShadowMap.Sample(ShadowSamp, shadowCoord.xy + float2(x, y) * texelSize).r;
 						visibility += shadowCoord.z - bias > pcfDepth ? 1.0f: 0.0;
 					}
 				}
-				visibility /= 9.0;
+				visibility /= 14.0;
+				//visibility += ShadowMap.SampleCmpLevelZero(ShadowSampler, shadowCoord.xy, shadowCoord.z);
 				if (shadowCoord.z > 1.0)
-					visibility = 0.0;
+					visibility = 0.0f;
 				/*if (visibility > 0.9f)
 					visibility = 0.9f;*/
 				totalLight = dirLight(normal, lights[0], pos, colorT.xyz, visibility);
@@ -214,8 +237,13 @@ float4 PS_main(VS_OUT input) : SV_Target
 
 			//float4 colorT = float4(Tex.Sample(SampSt, input.Tex).xyz *totalLight.xyz, Tex.Sample(SampSt, input.Tex).w);
 
-
-			colorT = float4(Tex.Sample(SampSt, input.TexCoord).xyz *totalLight.xyz, 1.0f);
+			/*if (glow.x != 0 || glow.y != 0 || glow.z != 0)
+			{
+				return saturate(glow+colorT);
+			}*/
+			colorT = float4(colorT.xyz *totalLight.xyz, 1.0f);
+			if (index == 0)
+				colorT.xyz += glow.xyz;
 		}
 	}
 	/*if (index > 0)

@@ -4,7 +4,8 @@
 DeferredShader::DeferredShader() :
 	Shader()
 {
-
+	this->blendState = nullptr;
+	this->rasState = nullptr;
 }
 
 
@@ -41,7 +42,6 @@ bool DeferredShader::initialize(int height, int width, float nearPlane, float fa
 			D3D11_INPUT_PER_VERTEX_DATA,
 			0
 		},
-
 		{
 			"NORMAL",
 			0,				// same slot as previous (same vertexBuffer)
@@ -69,9 +69,27 @@ bool DeferredShader::initialize(int height, int width, float nearPlane, float fa
 			D3D11_APPEND_ALIGNED_ELEMENT,
 			D3D11_INPUT_PER_VERTEX_DATA,
 			0
+		},
+		{
+			"JOINTS",
+			0,				// same slot as previous (same vertexBuffer)
+			DXGI_FORMAT_R32G32B32A32_FLOAT,
+			0,
+			D3D11_APPEND_ALIGNED_ELEMENT,							// offset of FIRST element (after POSITION)
+			D3D11_INPUT_PER_VERTEX_DATA,
+			0
+				//for normal mapping. tangent binormal
+		},
+		{
+			"WEIGHTS",
+			0,				// same slot as previous (same vertexBuffer)
+			DXGI_FORMAT_R32G32B32A32_FLOAT,
+			0,
+			D3D11_APPEND_ALIGNED_ELEMENT,							// offset of FIRST element (after POSITION)
+			D3D11_INPUT_PER_VERTEX_DATA,
+			0
+			//for normal mapping. tangent binormal
 		}
-
-
 	};
 	HRESULT result;
 	if (!this->load(L"DRGBVertexShader.hlsl", inputDesc, ARRAYSIZE(inputDesc), L"DRGBPixelShader.hlsl", L"DRGBGeometryShader.hlsl"))
@@ -84,6 +102,11 @@ bool DeferredShader::initialize(int height, int width, float nearPlane, float fa
 		return false;
 	}
 	result = this->worldCB.initialize(System::getDevice());
+	if (FAILED(result))
+	{
+		return false;
+	}
+	result = this->jointCB.initialize(System::getDevice());
 	if (FAILED(result))
 	{
 		return false;
@@ -105,8 +128,24 @@ void DeferredShader::setViewProj(DirectX::XMMATRIX view, DirectX::XMMATRIX proj,
 	this->perFrameCB.data.view = view;
 	this->perFrameCB.data.proj = proj;
 	//need to set campos separately to enable check for backface culling
-	//this->perFrameCB.data.camPos = camPos; 
+	this->perFrameCB.data.camPos = camPos; //disable this and run setCamPosTo.. to check backfaceculling
 	this->perFrameCB.applyChanges(System::getDevice(), System::getDeviceContext());
+}
+
+void DeferredShader::setSkeleton(bool hasSkeleton)
+{
+	this->jointCB.data.hasSkeleton = hasSkeleton;
+	this->jointCB.applyChanges(System::getDevice(), System::getDeviceContext());
+}
+
+void DeferredShader::setJointData(std::vector<DirectX::XMMATRIX> jointTransforms)
+{
+	for (int i = 0; i < jointTransforms.size(); i++)
+	{
+		//this->jointCB.data.hasSkeleton = hasSkeleton;
+		this->jointCB.data.jointTransformations[i] = jointTransforms[i];
+	}
+	this->jointCB.applyChanges(System::getDevice(), System::getDeviceContext());
 }
 
 void DeferredShader::setCamPosToMatricesPerFrame(DirectX::XMFLOAT3 campos)
@@ -121,6 +160,7 @@ void DeferredShader::setCBuffers()
 	this->setConstanbuffer(PIXEL, 0, this->perFrameCB.getBuffer());
 	this->setConstanbuffer(VERTEX, 1, this->worldCB.getBuffer());
 	this->setConstanbuffer(GEOMETRY, 1, this->worldCB.getBuffer());
+	this->setConstanbuffer(VERTEX, 2, this->jointCB.getBuffer());
 }
 
 void DeferredShader::resetCB()
@@ -130,6 +170,7 @@ void DeferredShader::resetCB()
 	this->setConstanbuffer(PIXEL, 0, nullptr);
 	this->setConstanbuffer(VERTEX, 1, nullptr);
 	this->setConstanbuffer(GEOMETRY, 1, nullptr);
+	this->setConstanbuffer(VERTEX, 2, nullptr);
 }
 
 void DeferredShader::prepGBuffer(float* color)

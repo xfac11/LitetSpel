@@ -15,6 +15,7 @@ public:
 	DeferredShader*& getDefShader();
 	LightShader*& getLightShader();
 	ShadowMapping*& getShadowMapping();
+	
 private:
 	ForwardShader* fShader;
 	DeferredShader* dShader;

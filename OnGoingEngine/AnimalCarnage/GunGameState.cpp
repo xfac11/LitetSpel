@@ -128,6 +128,7 @@ bool GunGameState::callbackFunc(btManifoldPoint& cp, const btCollisionObjectWrap
 		case 3:
 			if (((Player*)obj2->getCollisionObject()->getUserPointer()) != nullptr) {
 				((Player*)obj2->getCollisionObject()->getUserPointer())->setGrounded(true);
+				((Player*)obj2->getCollisionObject()->getUserPointer())->addGroundMovingSpeed(pointer->getMovingSpeed());
 			}
 			break;
 		case 2:
@@ -176,37 +177,57 @@ bool GunGameState::initailize()
 {
 	gContactAddedCallback = callbackFunc;
 
-	this->object[0] = new Objects("Resources/Models/cube2.lu", btVector3(0, 8, 0),3,3, btVector3(5.f, 1.f, 1.f));
-	this->object[1] = new Objects("Resources/Models/cube2.lu", btVector3(9, 4, 0), 3,3, btVector3(5.f, 1.f, 1.f), DYNAMIC);
-	this->object[2] = new Objects("Resources/Models/cube2.lu", btVector3(5,4, 0), 3,3, btVector3(5.f, 1.f, 1.f),DYNAMIC);
-	this->object[3] = new Objects("Resources/Models/cube2.lu", btVector3(16, -2, 0), 3,3, btVector3(100.f, 4.f, 10.f), STATIC);
+	this->object[0] = new Objects("Resources/Models/platform2.lu", btVector3(-10, 5, 0),3,3, btVector3(0.6f, 0.8f, 0.6f), STATIC, PLATFORM);
+	this->object[1] = new Objects("Resources/Models/platform1.lu", btVector3(12, 4, 0), 3,3, btVector3(1.4f, 2.8f, 1.4f), DYNAMIC, PLATFORM);
+	this->object[2] = new Objects("Resources/Models/platform1.lu", btVector3(5,4, 0), 3,3, btVector3(1.4f, 2.8f, 1.4f),DYNAMIC, PLATFORM);
+	this->object[3] = new Objects("Resources/Models/cube2.lu", btVector3(16, -2, 20), 3,3, btVector3(100.f, 4.f, 50.f), STATIC);
 	this->object[4] = new Objects("Resources/Models/cube2.lu", btVector3(35, 17, 0), 2,1, btVector3(10.f, 40.f, 10.f), STATIC);
 	this->object[5] = new Objects("Resources/Models/cube2.lu", btVector3(-35, 17, 0), 2,1, btVector3(10.f, 40.f, 10.f), STATIC);
 
 	GameObject* tree1 = new GameObject;
-	System::theModelLoader->loadGO(tree1, "Resources/Models/tree2.lu");
+	System::theModelLoader->loadGO(tree1, "Resources/Models/tree1.lu");
 	System::handler->addObject(tree1);
+<<<<<<< HEAD
 	tree1->setPosition(0, -0.5, 10);
-	tree1->setScale(0.6, 0.6, 0.6);
+	tree1->setScale(0.6f, 1.2f, 0.2f);
+	//tree1->setRotation(50, 50, 50, 90);
+=======
+	tree1->setPosition(10, 0, 2.6);
+	tree1->setScale(1.6, 1.6, 1.6);
+>>>>>>> 1e8d4d93be6649a6dc44b4f129f5c98a29298d92
 	GameObject* tree2 = new GameObject;
-	System::theModelLoader->loadGO(tree2, "Resources/Models/small_stone1.lu");
+	System::theModelLoader->loadGO(tree2, "Resources/Models/tree2.lu");
 	System::handler->addObject(tree2);
-	tree2->setPosition(2, 0.5, 0);
-	tree2->setScale(10, 5, 5);
-	GameObject* tree = new GameObject;
-	System::theModelLoader->loadGO(tree, "Resources/Models/grass2.lu");
-	System::handler->addObject(tree);
-	tree->setPosition(10, -0.5, 1);
+	tree2->setPosition(0, -0.5, 20);
+	tree2->setScale(0.6, 0.6, 0.6);
+	GameObject* smallStone1 = new GameObject;
+	System::theModelLoader->loadGO(smallStone1, "Resources/Models/small_stone1.lu");
+	System::handler->addObject(smallStone1);
+	smallStone1->setPosition(4, 0.5, 0);
+	smallStone1->setScale(3, 3, 3);
+	GameObject* grass2 = new GameObject;
+	System::theModelLoader->loadGO(grass2, "Resources/Models/grass2.lu");
+	System::handler->addObject(grass2);
+	grass2->setPosition(10, -0.5, 1);
+	GameObject* tree3 = new GameObject;
+	System::theModelLoader->loadGO(tree3, "Resources/Models/tree3.lu");
+	System::handler->addObject(tree3);
+	tree3->setPosition(-25, 0, 25);
+	tree3->setScale(0.5, 0.5, 0.5);
+	GameObject* tree4 = new GameObject;
+	System::theModelLoader->loadGO(tree4, "Resources/Models/tree4.lu");
+	System::handler->addObject(tree4);
+	tree4->setPosition(30, 0.5, -2);
+	tree4->setScale(0.5, 0.5, 0.5);
 
 
 
 	nrOfPlayers = 4;
 	player = new Player * [nrOfPlayers];
-
 	for (int i = 0; i < nrOfPlayers; i++)
 	{
 		player[i] = new Player();
-		player[i]->initialize();
+		player[i]->initialize(FOX);
 		player[i]->setRigidbodyPosition(0.f, i *10.f, 0.f);
 	}
 	
@@ -216,10 +237,10 @@ bool GunGameState::initailize()
 	0.f ,0.3f ,0.f,10.f
 	};
 	float dir[4] = {
-		-1.0f,-1.0f,0.0f,1.0f
+		0.1f,-1.0f,0.0f,1.0f
 	};
 	float color[4] = {
-		1.0f , 1.0f, 1.0f , 1.0f
+		1.0f , 1.0f, 0.8f , 1.4f
 	};
 	System::handler->addLight(pos, dir, color);
 	float color2[4] = {
@@ -229,9 +250,36 @@ bool GunGameState::initailize()
 	color2[0] = 0.0f;
 	color2[1] = 1.0f;
 	color2[2] = 1.0f;
-	pos[1] = 5.0f;
-	color2[3] = 10.0f;
+	pos[0] = -10.0f;
+	pos[1] = 4;
+	color2[3] = 3.0f;
 	System::handler->addLight(pos, dir, color2);
+
+
+	//Cool lights
+	float color3[4] = {
+		0.5f , 1.0f, 0.0f , 2.0f
+	};
+	float pos2[4] = {
+	-18.f ,2.6f ,0.f,5.f
+	};
+	System::handler->addLight(pos2, dir, color3);
+
+	float color4[4] = {
+		1.0f , 0.0f, 0.5f , 15.0f
+	};
+	float pos3[4] = {
+	10.f ,5.6f ,0.f,5.f
+	};
+	System::handler->addLight(pos3, dir, color4);
+
+	float color5[4] = {
+		0.0f , 0.5f, 1.0f , 25.0f
+	};
+	float pos4[4] = {
+	-23.f ,7.6f ,0.f,5.f
+	};
+	System::handler->addLight(pos4, dir, color5);
 
 	this->inGameGui = new GunGameGui(this);
 	this->inGameGui->initialize();
@@ -244,7 +292,7 @@ bool GunGameState::initailize()
 bool GunGameState::render()
 {
 	renderImgui();
-	System::handler->draw();
+	System::handler->draw(ImGui::GetIO().DeltaTime);
 
 	System::fusk->resetShaders();
 	this->inGameGui->render();
@@ -319,19 +367,42 @@ bool GunGameState::update(float deltaTime)
 		for (int j = 0; j < nrOfPlayers; j++) {
 			if (i != j)
 			{
-				//if (Intersects(minTemp, maxTemp, player[j]->playerObj->getCollisionBox(), player[j]->playerObj->getPosition()))
-				//	player[i]->setGrounded(true);
-				//if(player[i]->playerObj->getRigidbody()->checkCollideWith(player[j]->playerObj->getRigidbody()))
-				//	player[i]->setGrounded(true);
-
-				//if(player[i]->playerObj->getRigidbody()->checkCollideWithOverride(player[j]->playerObj->getRigidbody()))
-				//	player[i]->setGrounded(true);
 				if (Intersects(minTemp, maxTemp, player[j]->hitbox.hitbox->getCollisionBox(), player[j]->hitbox.hitbox->getPosition()) && !player[i]->getHitStun())
 				{
 					player[i]->setHitStun(true);
 					this->testColBox = true;
-					player[i]->playerObj->getRigidbody()->applyCentralImpulse(btVector3(player[j]->dir * 150, 100, 0));// , btVector3(1, 0, 0));
+					player[i]->playerObj->getRigidbody()->applyCentralImpulse(btVector3(player[j]->dir * 150 * ((player[j]->getWeight() + 2) /3), 150 * ((player[j]->getWeight() + 2) / 3), 0));// , btVector3(1, 0, 0));
 					
+					int tempHP = player[i]->getHealth();
+					//TAKE DAMAGE HERE
+					player[i]->takeDamage(player[j]->getStrength());
+
+					srand(time(0));
+					int randomNumber = (rand() % 4) + 0;
+					System::getSoundManager()->playEffect(to_string(randomNumber));
+
+					srand(time(0));
+					int randomNumber2 = (rand() % 3) - 1;
+					srand(time(0));
+					int randomNumber3 = (rand() % 3) - 1;
+					srand(time(0));
+					int randomNumber4 = (rand() % 3) - 1;
+
+					if (randomNumber2 == 0 && randomNumber3 == 0 && randomNumber4 == 0) {
+						srand(time(0));
+						int randomNumber2 = (rand() % 3) - 1;
+						srand(time(0));
+						int randomNumber3 = (rand() % 3) - 1;
+						srand(time(0));
+						int randomNumber4 = (rand() % 3) - 1;
+					}
+
+					System::theCamera->cameraShake(0.1,DirectX::XMFLOAT3(player[j]->dir, randomNumber3, randomNumber4));
+
+					if(player[i]->getHealth() <= 0 && tempHP > 0) {
+						player[j]->changeCharacter();
+					}
+
 					//player[i]->setGrounded(true);
 				}
 				else

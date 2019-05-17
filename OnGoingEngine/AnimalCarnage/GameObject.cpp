@@ -12,6 +12,7 @@ GameObject::GameObject()
 		this->theModel[i] = nullptr;
 	}
 	this->colBox = AABB();
+	//this->gotSkeleton = false;
 }
 
 GameObject::GameObject(Shader * shader)
@@ -25,8 +26,7 @@ GameObject::GameObject(Shader * shader)
 		this->theModel[i] = nullptr;
 	}
 	this->colBox = AABB();
-
-	
+	//this->gotSkeleton = false;
 	/*this->theModel[0] = new Model;
 	this->theModel[0]->setShader(shader);
 	this->nrOfModels++;*/
@@ -39,7 +39,8 @@ GameObject::~GameObject()
 {
 	for (int i = 0; i < this->nrOfModels; i++)
 	{
-		delete this->theModel[i];
+		if(this->theModel[i]!=nullptr)
+			delete this->theModel[i];
 	}
 	delete[] this->theModel;
 }
@@ -138,14 +139,16 @@ void GameObject::calcAABB(std::vector<Vertex3D> mesh)
 	this->colBox.Max = max;*/
 }
 
-void GameObject::addModel(std::vector<Vertex3D> mesh, DWORD * indices, int numberOfIndices)
+void GameObject::addModel(std::vector<Vertex3D> mesh, DWORD * indices, int numberOfIndices, bool hasSkeleton)
 {
 	this->theModel[nrOfModels] = new Model;
 	this->theModel[nrOfModels]->setMesh(mesh, indices, numberOfIndices);
 	//if(this->colBox.Max.x == 1.0f)
-		this->calcAABB(mesh);
+	this->calcAABB(mesh);
 	//this->theModel[nrOfModels]->setSampler();
+	this->theModel[nrOfModels]->setGotSkeleton(hasSkeleton);
 	nrOfModels++;
+
 }
 
 void GameObject::setMesh(std::vector<Vertex3D> mesh, DWORD * indices, int numberOfIndices, int id)
@@ -156,6 +159,11 @@ void GameObject::setMesh(std::vector<Vertex3D> mesh, DWORD * indices, int number
 void GameObject::setTexture(std::string file, int id)
 {									
 	this->theModel[id]->setTexture(file);
+}
+
+void GameObject::setGlowMap(std::string file, int id)
+{
+	this->theModel[id]->setGlowMap(file);
 }
 
 void GameObject::draw()
@@ -174,8 +182,10 @@ void GameObject::draw()
 	}*/
 
 
+
 	this->theModel[0]->getShader()->setWorld(this->getWorld());
 	this->theModel[0]->draw();
+
 }
 
 AABB GameObject::getCollisionBox()
@@ -211,4 +221,112 @@ AABB GameObject::getCollisionBox()
 	tempBox.height = this->colBox.height*this->Scale.y;
 	tempBox.depth = this->colBox.depth*this->Scale.z;
 	return tempBox;
+}
+
+bool GameObject::haveAnimation() const
+{
+	bool result = false;
+	if (anims.getName() != "Default")
+	{
+		result = true;
+	}
+	return result;
+}
+
+void GameObject::computeAnimationMatrix(float deltaTime)
+{
+
+	this->timePassed += deltaTime;
+	if (this->timePassed >= anims.getDuration())
+		this->timePassed = fmod(this->timePassed,anims.getDuration());
+
+	int k1 = (int)(this->timePassed* anims.getFPS());
+	int k2 = std::min<int>(k1 + 1, anims.getKeyframes()[0].size());
+
+	float k1_time = k1 / anims.getFPS();
+	float k2_time = k2 / anims.getFPS();
+	float t = (timePassed - k1_time) / (k2_time - k1_time);
+	
+
+	JointTransformation temp; //have this cus it has interpolation
+	std::vector<JointTransformation> pose; 
+	//pose.resize(skeleton.size());//nrOf Joints
+	JointTransformation local1 = temp.interpolate2(anims.getKeyframes()[k1][0].getJointKeyFrames(), anims.getKeyframes()[k2][0].getJointKeyFrames(), t);
+	//JointTransformation test2 = temp.interpolate2(anims.getKeyframes()[k1][0].getJointKeyFrames(), anims.getKeyframes()[k2][0].getJointKeyFrames(), t);
+
+	pose.push_back(local1);
+	//anims.getKeyframes()[0][0].getJointKeyFrames();
+	std::vector<DirectX::XMMATRIX> jointTransforms;
+	jointTransforms.resize(skeleton.size());
+
+	jointTransforms[0] = DirectX::XMMatrixMultiply(pose[0].getLocalTransform(),this->skeleton[0].getInverseBindTransform());
+	for (int joint = 1; joint < skeleton.size(); joint++)
+	{
+
+
+		local1 = temp.interpolate2(anims.getKeyframes()[joint][k1].getJointKeyFrames(), anims.getKeyframes()[joint][k2].getJointKeyFrames(), t);
+		pose.push_back(local1);
+		
+		pose[joint] = JointTransformation(DirectX::XMMatrixMultiply(pose[this->skeleton[joint].getParent()->getID()].getLocalTransform(), local1.getLocalTransform()));
+		jointTransforms[joint] = DirectX::XMMatrixMultiply(pose[joint].getLocalTransform(), this->skeleton[joint].getInverseBindTransform());
+	}
+
+	DeferredShader* ptr;
+	if (ptr = dynamic_cast<DeferredShader*>(System::shaderManager->getDefShader()))
+	{
+		ptr->setJointData(jointTransforms);
+		//ptr->setSkeleton(this->gotSkeleton);
+	}
+	else
+	{
+		OutputDebugStringA("== FAILED IN SET KEYFRAME to shader!! == ");
+	}
+
+}
+
+void GameObject::setNewAnimation(float fps, float duration, std::string name, std::vector<std::vector<Luna::Keyframe>> keyframePack)
+{
+
+	Animation newAnim(fps, duration, name, keyframePack.size(), keyframePack[0].size());
+	newAnim.setKeyframes(keyframePack);
+	this->anims = newAnim;
+
+	//this->gotSkeleton = true;
+
+	//DirectX::XMFLOAT4 pos1 = { 1,6,4,0 };
+	//DirectX::XMFLOAT4 pos2 = { 1,9,6,0 };
+	//DirectX::XMFLOAT4 rot1 = { 0.0507,-0.7052,-0.0507,0.7052 };
+	//DirectX::XMFLOAT4 rot2 = { 0.0691,-0.7037,-0.0691,0.7037 };
+	//DirectX::XMFLOAT4 scl1 = { 10,10,10,0 };
+	//DirectX::XMFLOAT4 scl2 = { 10,10,10 ,0 };
+
+	//JointTransformation temp1(pos1, rot1, scl1);
+	//JointTransformation temp2(pos2, rot2, scl2);
+		
+	// keyframes involved.
+
+	
+	//DeferredShader* ptr;
+	//if (ptr = dynamic_cast<DeferredShader*>(System::shaderManager->getDefShader()))
+	//{
+	//	//ptr->setJointData(jointTransforms, true);
+	//}
+	//else
+	//{
+	//	OutputDebugStringA("== FAILED IN SET KEYFRAME to shader!! == ");
+	//}
+	
+}
+
+void GameObject::setSkeleton(std::vector<Luna::Joint> theJoints)
+{
+
+	this->skeleton.resize(theJoints.size());
+	for (int i = 0; i < theJoints.size(); i++)
+	{
+		this->skeleton[i]=theJoints[i];
+		if (theJoints[i].parentID != -1)
+			this->skeleton[i].setParent(&this->skeleton[theJoints[i].parentID]);
+	}
+	
 }

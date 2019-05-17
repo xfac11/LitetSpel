@@ -1,13 +1,10 @@
-#ifndef  PLAYER_H
+#ifndef PLAYER_H
 #define PLAYER_H
 
-#include "Bear.h"
-#include "Fox.h"
 #include "GamePad.h"
+#include "GameObject.h"
+#include "Animal.h"
 //#include "Primitives.h"
-enum CHARACTER{
-	BEAR,FOX
-};
 
 struct RumbleProperties
 {
@@ -38,24 +35,44 @@ private:
 	float facing;
 	bool canWallJump;
 	bool wallJumpReset;
+	bool canDoubleJump;
 	bool hitStun;
+	int hitTime2;
 	int hitTime;
+	int health;
+	bool canPressPunch;
+	int deathTimer;
+	int groundTimer;
 
 	RumbleProperties theRumble;
-
-
+	AnimalType type;
+	AnimalType ArrayOfAnimals[4];
+	int currentAnimal;
 	XMFLOAT3 Accleration = XMFLOAT3(0, 0, 0);
 	XMFLOAT3 Velocity = XMFLOAT3(0, 0, 0);
+
 	/*Primitives *CollisionShape;*/
 public:
+	float getJumpHeight() const;
+	int getStrength() const;
+	float getSpeed() const;
+	float getWeight() const;
+	int getMaxHealth() const;
+	int getHealth() const;
+	void takeDamage(int damage);
+	bool isDead() const;
+
+	void changeCharacter();
 	bool getHit()const { return hit; }
 	bool getHitStun();
 	void setHitStun(bool hitStun);
 	bool hit = false;
+	//void groundedTimer();
+	
 	Player();
 	~Player();
 
-	void initialize();
+	void initialize(AnimalType type);
 	void update(float dt, int id);
 	bool updateRumble(float dt,int id);
 	bool setRumble(bool rumble = true);
@@ -82,6 +99,7 @@ public:
 
 	void setGrounded(bool grounded);
 	void setCanWallJump(bool canWallJump);
+	void addGroundMovingSpeed(XMFLOAT3 speed);
 	void follow(XMFLOAT3 postion);
 	GameObject* playerObj;
 };

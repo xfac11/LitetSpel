@@ -2,13 +2,15 @@
 #include"System.h"
 Model::Model()
 {
+	this->gotSkeleton = false;
 	this->indexBuffer = IndexBuffer();
 	this->SamplerState = nullptr;
 	this->theShader = nullptr;
 	this->texture = new Texture;
 	this->normalMap = new Texture;
+	this->glowMap = new Texture;
 	this->type = Opaque;
-
+	this->hasGlowMap = false;
 	D3D11_SAMPLER_DESC desc;
 	ZeroMemory(&desc, sizeof(desc));
 	desc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
@@ -40,6 +42,10 @@ Model::~Model()
 	{
 		delete this->normalMap;
 	}
+	if (this->glowMap != nullptr)
+	{
+		delete this->glowMap;
+	}
 
 }
 
@@ -51,6 +57,11 @@ void Model::setShader(Shader *theShader)
 int Model::getOpacity()
 {
 	return this->type;
+}
+
+void Model::setGotSkeleton(bool gotSkltn)
+{
+	this->gotSkeleton = gotSkltn;
 }
 
 
@@ -71,6 +82,12 @@ void Model::setTexture(std::string file)
 	{
 		this->type = Opaque;
 	}
+}
+
+void Model::setGlowMap(std::string file)
+{
+	this->glowMap->setTexture(file);
+	this->hasGlowMap = true;
 }
 
 void Model::setMesh(std::vector<Vertex3D> aMesh,DWORD* indices, int numberOfIndices)
@@ -142,10 +159,33 @@ void Model::drawOnlyVertex()
 void Model::draw()
 {
 	UINT32 offset = 0;
+
+	DeferredShader* ptr;
+	if (ptr = dynamic_cast<DeferredShader*>(this->theShader)) //System::shaderManager->getDefShader()))
+	{
+
+		ptr->setSkeleton(this->gotSkeleton);
+	}
+	else
+	{
+		OutputDebugStringA("== FAILED IN SET KEYFRAME to shader!! == ");
+	}
+	
+
+
 	System::getDeviceContext()->PSSetShaderResources(0, 1, &this->texture->getTexture());
 	if (this->normalMap != nullptr)
 	{
 		System::getDeviceContext()->PSSetShaderResources(1, 1, &this->normalMap->getTexture());
+	}
+	if (this->hasGlowMap)
+	{
+		System::getDeviceContext()->PSSetShaderResources(2, 1, &this->glowMap->getTexture());
+	}
+	else
+	{
+		ID3D11ShaderResourceView* temp = nullptr;
+		System::getDeviceContext()->PSSetShaderResources(2, 1, &temp);
 	}
 	System::getDeviceContext()->IASetVertexBuffers(0, 1, &*this->vertexBuffer.GetAddressOf(), &*vertexBuffer.getStridePtr(), &offset);
 //	UINT offset = 0;

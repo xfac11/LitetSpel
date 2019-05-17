@@ -362,6 +362,17 @@ bool System::initialize()
 	System::physices = new Physics();
 	System::debugDraw = new DEBUG_DRAW();
 
+	shaderManager->getLightShader()->setWindow(this->theWindow);
+
+	//Resize
+	/*this->theWindow.width = 1280;
+	this->theWindow.height = 720;
+
+	shaderManager->getDefShader()->gBuffer.resize(this->theWindow.height, this->theWindow.width);
+	theGraphicDevice->resize(this->theWindow.width, this->theWindow.height);
+	shaderManager->getLightShader()->setWindow(this->theWindow);
+	MoveWindow(hwnd, 0, 0, this->theWindow.width, this->theWindow.height, true);*/
+
 	System::states.push_back(new MainMenu());
 	System::states[MAINMENU]->initailize();
 	System::states.push_back(new GunGameState());
@@ -620,7 +631,7 @@ void System::render()
 	shaderManager->getDefShader()->setViewProj(this->theCamera->GetViewMatrix(), this->theGraphicDevice->getProj(), DirectX::XMFLOAT4(this->theCamera->GetPosition().x, this->theCamera->GetPosition().y, this->theCamera->GetPosition().z, 1.0f));
 
 	shaderManager->getLightShader()->setCamPosToMatricesPerFrame(this->theCamera->GetPosition());
-	shaderManager->getLightShader()->setViewProj(this->theCamera->GetViewMatrix(), this->theGraphicDevice->getProj(), DirectX::XMFLOAT4(this->theCamera->GetPosition().x, this->theCamera->GetPosition().y, this->theCamera->GetPosition().z, 1.0f));
+	shaderManager->getLightShader()->setViewProj(this->theCamera->GetViewMatrix(), this->theGraphicDevice->getOrtho(), DirectX::XMFLOAT4(this->theCamera->GetPosition().x, this->theCamera->GetPosition().y, this->theCamera->GetPosition().z, 1.0f));
 
 	shaderManager->getShadowMapping()->setWorld(DirectX::XMMatrixIdentity());
 	shaderManager->getShadowMapping()->setViewProj(this->theCamera->GetViewMatrix(), this->theGraphicDevice->getOrtho(), DirectX::XMFLOAT4(this->theCamera->GetPosition().x, this->theCamera->GetPosition().y, this->theCamera->GetPosition().z, 1.0f));
@@ -663,15 +674,22 @@ void System::run()
 		this->theWindow.width = WIDTH;
 		theGraphicDevice->initialize(WIDTH, HEIGHT ,true , hwnd, false, 500.0f, 0.1f,90.0f);
 
-		this->shaderManager = new ShaderManager;
-		this->shaderManager->initialize(HEIGHT, WIDTH, 0.1f, 500.0f);
-		this->initialize();
-		initImgui();
-
 		ShowWindow(this->hwnd, this->nCMDShow);
 
 		//Needs to initialize after ShowWindow, or else it fails!
 		this->soundManager = new SoundManager();
+		System::getSoundManager()->loadEffect(L"Getting_Hit_Punch.wav", "0");
+		System::getSoundManager()->loadEffect(L"Getting_Hit_Punch_2.wav", "1");
+		System::getSoundManager()->loadEffect(L"Getting_Hit_Punch_3.wav", "2");
+		System::getSoundManager()->loadEffect(L"Getting_Hit_Punch_4.wav", "3");
+		System::getSoundManager()->loadEffect(L"Wall_Jump_Crash.wav", "4");
+		System::getSoundManager()->loadEffect(L"Swing.wav", "5");
+
+
+		this->shaderManager = new ShaderManager;
+		this->shaderManager->initialize(HEIGHT, WIDTH, 0.1f, 500.0f);
+		this->initialize();
+		initImgui();
 
 		//graphics->initImgui(this->hwnd);
 		/*Model** model;*/

@@ -1,6 +1,7 @@
 #pragma once
 #include "Shader.h"
 #include"Structs.h"
+
 class LightShader :
 	public Shader
 {
@@ -16,11 +17,12 @@ public:
 	void renderShaderDir(int vertexCount);
 	void renderShaderPoint(int vertexCount, ID3D11DepthStencilView* view);
 	void setTypeOfLight(int type);
+	void setWindow(WindowClient wc);
 private:
 
 	ConstantBuffer<WorldMatrix> worldCB;
 	ConstantBuffer<PerFrameMatrices> perFrameCB;
-
+	ConstantBuffer<WindowClient> windowCB;
 
 	ID3D11SamplerState* sampler;
 	ID3D11BlendState* blendState;

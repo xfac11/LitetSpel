@@ -61,7 +61,7 @@ bool GraphicsDevice::initialize(int screenWidth, int screenHeight, bool vsync, H
 	swapchainDesc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
 	swapchainDesc.OutputWindow = hwnd;
 	swapchainDesc.SampleDesc.Count = 1;
-	swapchainDesc.Windowed = TRUE;
+	swapchainDesc.Windowed = !fullscreen;
 
 	
 
@@ -180,7 +180,7 @@ bool GraphicsDevice::initialize(int screenWidth, int screenHeight, bool vsync, H
 	//move to ColorShader
 	this->projectionMatrix = DirectX::XMMatrixPerspectiveFovLH(fieldOfView, screenAspect, screenNear, screenDepth);
 	
-	this->orthoMatrix = DirectX::XMMatrixOrthographicLH((float)50, (float)50, 5.0f, 40);//for shadowMap;
+	this->orthoMatrix = DirectX::XMMatrixOrthographicLH((float)60, (float)60, 2, 10);//for shadowMap;
 
 	D3D11_RASTERIZER_DESC rasterizerDesc;
 	ZeroMemory(&rasterizerDesc, sizeof(D3D11_RASTERIZER_DESC));
@@ -254,6 +254,66 @@ bool GraphicsDevice::initialize(int screenWidth, int screenHeight, bool vsync, H
 	deviceContext->OMSetBlendState(alphaEnableBlendingState, blendFactor, 0xffffffff);
 
 	this->device->QueryInterface(__uuidof(ID3D11Debug), reinterpret_cast<void**>(&debug));
+	return true;
+}
+
+bool GraphicsDevice::resize(int screenWidth, int screenHeight)
+{
+	this->deviceContext->OMSetRenderTargets(0, 0, 0);
+	this->renderTargetView->Release();
+	this->depthStencilView->Release();
+	this->depthStencilBuffer->Release();
+
+	HRESULT result = this->swapChain->ResizeBuffers(1, (UINT)screenWidth, (UINT)screenHeight, DXGI_FORMAT_R8G8B8A8_UNORM, 0);
+	if (FAILED(result))
+	{
+		return false;
+	}
+
+	ID3D11Texture2D* backBufferPtr = nullptr;
+	this->swapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), (LPVOID*)&backBufferPtr);
+	if (FAILED(result))
+	{
+		return false;
+	}
+
+	device->CreateRenderTargetView(backBufferPtr, NULL, &this->renderTargetView);
+	if (FAILED(result))
+	{
+		return false;
+	}
+	backBufferPtr->Release();
+	backBufferPtr = nullptr;
+
+	D3D11_TEXTURE2D_DESC descDepth;
+	descDepth.Width = (UINT)screenWidth;
+	descDepth.Height = (UINT)screenHeight;
+	descDepth.MipLevels = 1;
+	descDepth.ArraySize = 1;
+	descDepth.Format = DXGI_FORMAT_D24_UNORM_S8_UINT; //DXGI_FORMAT_R32_TYPELESS;
+	descDepth.SampleDesc.Count = 1;
+	descDepth.SampleDesc.Quality = 0;
+	descDepth.Usage = D3D11_USAGE_DEFAULT;
+	descDepth.BindFlags = D3D11_BIND_DEPTH_STENCIL;// | D3D10_BIND_SHADER_RESOURCE;
+	descDepth.CPUAccessFlags = 0;
+	descDepth.MiscFlags = 0;
+	result = device->CreateTexture2D(&descDepth, NULL, &depthStencilBuffer);
+	if (FAILED(result))
+	{
+		return false;
+	}
+	result = device->CreateDepthStencilView(depthStencilBuffer, NULL, &depthStencilView); // &depthStencilViewDesc was NULL
+	if (FAILED(result))
+	{
+		// deal with error...
+		return false;
+	}
+	deviceContext->OMSetRenderTargets(1, &renderTargetView, depthStencilView);
+
+	this->vp.Width = (float)screenWidth;
+	this->vp.Height = (float)screenHeight;
+	deviceContext->RSSetViewports(1, &this->vp);
+
 	return true;
 }
 

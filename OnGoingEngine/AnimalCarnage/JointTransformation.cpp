@@ -9,6 +9,16 @@ DirectX::XMFLOAT3 JointTransformation::interpolate(DirectX::XMFLOAT3 start, Dire
 	return interpol;
 }
 
+DirectX::XMFLOAT3 JointTransformation::interpolate2(DirectX::XMFLOAT3 start, DirectX::XMFLOAT3 end, float progression)
+{
+	DirectX::XMFLOAT3 interpol = { 0,0,0 };
+	interpol.x = start.x * (1 - progression) + end.x * progression;
+	interpol.y = start.y * (1 - progression) + end.y * progression;
+	interpol.z = start.z * (1 - progression) + end.z * progression;
+	return interpol;
+}
+
+
 JointTransformation::JointTransformation()
 {
 	this->position = {};
@@ -16,9 +26,17 @@ JointTransformation::JointTransformation()
 	this->scale = {};
 }
 
-JointTransformation::JointTransformation(DirectX::XMFLOAT4 position, DirectX::XMVECTOR rotation, DirectX::XMFLOAT3 scale)
+JointTransformation::JointTransformation(DirectX::XMFLOAT4 position, DirectX::XMFLOAT4 rotation, DirectX::XMFLOAT4 scale)
 {
 	this->position = DirectX::XMFLOAT3(position.x,position.y, position.z);
+	this->rotation = DirectX::XMLoadFloat4(&rotation);
+	
+	this->scale = DirectX::XMFLOAT3(scale.x, scale.y, scale.z);
+}
+
+JointTransformation::JointTransformation(DirectX::XMFLOAT4 position, DirectX::XMVECTOR rotation, DirectX::XMFLOAT3 scale)
+{
+	this->position = DirectX::XMFLOAT3(position.x, position.y, position.z);
 	this->rotation = rotation;
 	this->scale = scale;
 }
@@ -72,6 +90,61 @@ JointTransformation::JointTransformation(float matrix[4][4])
 	
 }
 
+JointTransformation::JointTransformation(DirectX::XMMATRIX transform)
+{
+
+	DirectX::XMFLOAT4X4 matrix;
+	DirectX::XMStoreFloat4x4(&matrix, transform);
+
+	float x, y, z, w;
+	float diagonal = matrix.m[0][0] + matrix.m[1][1] + matrix.m[2][2];
+	if (diagonal > 0)
+	{
+		float w4 = (float)(sqrtf(diagonal + 1.f) * 2.f);
+		w = w4 / 4.f;
+		x = (matrix.m[2][1] - matrix.m[1][2]) / w4;
+		y = (matrix.m[0][2] - matrix.m[2][0]) / w4;
+		z = (matrix.m[1][0] - matrix.m[0][1]) / w4;
+	}
+	else if ((matrix.m[0][0] > matrix.m[1][1]) && (matrix.m[0][0] > matrix.m[2][2]))
+	{
+		float x4 = (float)(sqrtf(1.f + matrix.m[0][0] - matrix.m[1][1] - matrix.m[2][2])*2.f);
+		w = (matrix.m[2][1] - matrix.m[1][2]) / x4;
+		x = x4 / 4.f;
+		y = (matrix.m[1][0] + matrix.m[0][1]) / x4;
+		z = (matrix.m[0][2] + matrix.m[2][0]) / x4;
+	}
+	else if (matrix.m[1][1] > matrix.m[2][2])
+	{
+		float y4 = (float)(sqrt(1.f + matrix.m[1][1] - matrix.m[0][0] - matrix.m[2][2])*2.f);
+		w = (matrix.m[0][2] - matrix.m[2][0]) / y4;
+		x = (matrix.m[1][0] + matrix.m[0][1]) / y4;
+		y = y4 / 4.f;
+		z = (matrix.m[2][1] + matrix.m[1][2]) / y4;
+	}
+	else
+	{
+		float z4 = (float)(sqrt(1.f + matrix.m[2][2] - matrix.m[0][0] - matrix.m[1][1])*2.f);
+		w = (matrix.m[1][0] - matrix.m[0][1]) / z4;
+		x = (matrix.m[0][2] + matrix.m[2][0]) / z4;
+		y = z = (matrix.m[2][1] + matrix.m[1][2]) / z4;
+		z = z4 / 4.f;
+	}
+	this->rotation.m128_f32[0] = x;
+	this->rotation.m128_f32[1] = y;
+	this->rotation.m128_f32[2] = z;
+	this->rotation.m128_f32[3] = w;
+	this->position.x = matrix.m[0][3];
+	this->position.y = matrix.m[1][3];
+	this->position.z = matrix.m[2][3];
+	this->scale.x = matrix.m[0][0];
+	this->scale.y = matrix.m[1][1];
+	this->scale.z = matrix.m[2][2];
+
+
+
+}
+
 JointTransformation::JointTransformation(const JointTransformation & obj)
 {
 	this->position = obj.position;
@@ -107,4 +180,14 @@ JointTransformation JointTransformation::interpolate(JointTransformation frameA,
 	DirectX::XMFLOAT3 scale = this->interpolate(frameA.scale, frameB.scale, progression);
 	
 	return JointTransformation(pos4, quaternion,scale);
+}
+
+JointTransformation JointTransformation::interpolate2(JointTransformation frameA, JointTransformation frameB, float progression)
+{
+	DirectX::XMFLOAT3 pos = this->interpolate2(frameA.position, frameB.position, progression);
+	DirectX::XMFLOAT4 pos4 = { pos.x, pos.y, pos.z, 0.f };
+	DirectX::XMVECTOR quaternion = DirectX::XMQuaternionSlerp(frameA.rotation, frameB.rotation, progression);
+	DirectX::XMFLOAT3 scale = this->interpolate2(frameA.scale, frameB.scale, progression);
+
+	return JointTransformation(pos4, quaternion, scale);
 }

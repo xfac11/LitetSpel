@@ -5,6 +5,7 @@ ShaderManager::ShaderManager()
 	this->fShader = nullptr;
 	this->dShader = nullptr;
 	this->lShader = nullptr;
+	this->shadowMapping = nullptr;
 }
 
 ShaderManager::~ShaderManager()

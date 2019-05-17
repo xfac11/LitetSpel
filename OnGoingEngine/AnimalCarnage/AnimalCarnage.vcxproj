@@ -138,10 +138,36 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Animal.cpp" />
-    <ClCompile Include="AnimatedModel.cpp" />
+    <ClCompile Include="AnimatedModel.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="Animation.cpp" />
-    <ClCompile Include="Animator.cpp" />
+<<<<<<< HEAD
+    <ClCompile Include="AnimationShader.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="Animator.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="Bear.cpp" />
+=======
+    <ClCompile Include="Animator.cpp" />
+    <ClCompile Include="AssetManager.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="AssetManager.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+>>>>>>> 1e8d4d93be6649a6dc44b4f129f5c98a29298d92
     <ClCompile Include="BulletSDK\include\BulletCollision\BroadphaseCollision\btAxisSweep3.cpp" />
     <ClCompile Include="BulletSDK\include\BulletCollision\BroadphaseCollision\btBroadphaseProxy.cpp" />
     <ClCompile Include="BulletSDK\include\BulletCollision\BroadphaseCollision\btCollisionAlgorithm.cpp" />
@@ -360,10 +386,24 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animal.h" />
-    <ClInclude Include="AnimatedModel.h" />
+    <ClInclude Include="AnimatedModel.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="Animation.h" />
-    <ClInclude Include="Animator.h" />
+<<<<<<< HEAD
+    <ClInclude Include="AnimationShader.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="Animator.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="Bear.h" />
+=======
+    <ClInclude Include="Animator.h" />
+>>>>>>> 1e8d4d93be6649a6dc44b4f129f5c98a29298d92
     <ClInclude Include="BulletSDK\include\btBulletCollisionCommon.h" />
     <ClInclude Include="BulletSDK\include\btBulletDynamicsCommon.h" />
     <ClInclude Include="BulletSDK\include\BulletCollision\BroadphaseCollision\btAxisSweep3.h" />
@@ -599,7 +639,6 @@
     <ClInclude Include="DEBUG_DRAW.h" />
     <ClInclude Include="DeferredShader.h" />
     <ClInclude Include="ForwardShader.h" />
-    <ClInclude Include="Fox.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="GameObjectHandler.h" />
     <ClInclude Include="GBuffer.h" />
@@ -678,6 +717,8 @@
       <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">VS_main</EntryPointName>
       <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">VS_main</EntryPointName>
       <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">VS_main</EntryPointName>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </FxCompile>
     <FxCompile Include="DRGBGeometryShader.hlsl">
       <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">GS_main</EntryPointName>
