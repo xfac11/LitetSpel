@@ -54,7 +54,7 @@ void ModelLoader::loadGO(GameObject*& object, const char* filePath)
 			std::vector<std::vector<Luna::Keyframe>> keyframePack; // pack of all joint - keyframes
 
 			skltn = reader.getSkeleton();
-			reader.getWeights(0, weights);
+			reader.getWeights(mesh.id, weights);
 			reader.getJoints(joints);
 			anims = reader.getAnimation();
 			keyframePack.resize(joints.size());
@@ -72,30 +72,44 @@ void ModelLoader::loadGO(GameObject*& object, const char* filePath)
 			
 			object[i].setSkeleton(joints);
 			object[i].setNewAnimation(anims.fps,anims.duration,animName, keyframePack);//change to pack
-			int vertexId = 0;
-			for (int p = 0; p < weights.size() / 3; p++)
-			{
-				for (int v = 0; v < 3; v++)
-				{
-					//int ctrlPointIdx = -1;
-					//if (p >= 0 && p < weights.size() / 3 && v >= 0 && v < 3)
-					//{
-					//	//weigh[vertexId];
-					//}
 
-					//float sumWeights = weights[vertexId].weights[0] + weights[vertexId].weights[1] + weights[vertexId].weights[2] + weights[vertexId].weights[3];
-					vertices3D[vertexId].Joint.x = weights[vertexId].jointIDs[0];
-					vertices3D[vertexId].Joint.y = weights[vertexId].jointIDs[1];
-					vertices3D[vertexId].Joint.z = weights[vertexId].jointIDs[2];
-					vertices3D[vertexId].Joint.w = weights[vertexId].jointIDs[3];
+			for (int i = 0; i < weights.size(); i++) {
+				vertices3D[i].Joint.x = weights[i].jointIDs[0];
+				vertices3D[i].Joint.y = weights[i].jointIDs[1];
+				vertices3D[i].Joint.z = weights[i].jointIDs[2];
+				vertices3D[i].Joint.w = weights[i].jointIDs[3];
 
-					vertices3D[vertexId].Weights.x = weights[vertexId].weights[0];
-					vertices3D[vertexId].Weights.y = weights[vertexId].weights[1];
-					vertices3D[vertexId].Weights.z = weights[vertexId].weights[2];
-					vertices3D[vertexId].Weights.w = weights[vertexId].weights[3];
-					vertexId++;
-				}
+				vertices3D[i].Weights.x = weights[i].weights[0];
+				vertices3D[i].Weights.y = weights[i].weights[1];
+				vertices3D[i].Weights.z = weights[i].weights[2];
+				vertices3D[i].Weights.w = weights[i].weights[3];
+
 			}
+
+			//int vertexId = 0;
+			//for (int p = 0; p < weights.size() / 3; p++)
+			//{
+			//	for (int v = 0; v < 3; v++)
+			//	{
+			//		//int ctrlPointIdx = -1;
+			//		//if (p >= 0 && p < weights.size() / 3 && v >= 0 && v < 3)
+			//		//{
+			//		//	//weigh[vertexId];
+			//		//}
+
+			//		//float sumWeights = weights[vertexId].weights[0] + weights[vertexId].weights[1] + weights[vertexId].weights[2] + weights[vertexId].weights[3];
+			//		vertices3D[vertexId].Joint.x = weights[vertexId].jointIDs[0];
+			//		vertices3D[vertexId].Joint.y = weights[vertexId].jointIDs[1];
+			//		vertices3D[vertexId].Joint.z = weights[vertexId].jointIDs[2];
+			//		vertices3D[vertexId].Joint.w = weights[vertexId].jointIDs[3];
+
+			//		vertices3D[vertexId].Weights.x = weights[vertexId].weights[0];
+			//		vertices3D[vertexId].Weights.y = weights[vertexId].weights[1];
+			//		vertices3D[vertexId].Weights.z = weights[vertexId].weights[2];
+			//		vertices3D[vertexId].Weights.w = weights[vertexId].weights[3];
+			//		vertexId++;
+			//	}
+			//}
 			
 
 		}
