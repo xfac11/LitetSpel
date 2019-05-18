@@ -73,16 +73,16 @@ void ModelLoader::loadGO(GameObject*& object, const char* filePath)
 			object[i].setSkeleton(joints);
 			object[i].setNewAnimation(anims.fps,anims.duration,animName, keyframePack);//change to pack
 
-			for (int i = 0; i < weights.size(); i++) {
-				vertices3D[i].Joint.x = weights[i].jointIDs[0];
-				vertices3D[i].Joint.y = weights[i].jointIDs[1];
-				vertices3D[i].Joint.z = weights[i].jointIDs[2];
-				vertices3D[i].Joint.w = weights[i].jointIDs[3];
+			for (int j = 0; j < weights.size(); j++) {
+				vertices3D[j].Joint.x = weights[j].jointIDs[0];
+				vertices3D[j].Joint.y = weights[j].jointIDs[1];
+				vertices3D[j].Joint.z = weights[j].jointIDs[2];
+				vertices3D[j].Joint.w = weights[j].jointIDs[3];
 
-				vertices3D[i].Weights.x = weights[i].weights[0];
-				vertices3D[i].Weights.y = weights[i].weights[1];
-				vertices3D[i].Weights.z = weights[i].weights[2];
-				vertices3D[i].Weights.w = weights[i].weights[3];
+				vertices3D[j].Weights.x = weights[j].weights[0];
+				vertices3D[j].Weights.y = weights[j].weights[1];
+				vertices3D[j].Weights.z = weights[j].weights[2];
+				vertices3D[j].Weights.w = weights[j].weights[3];
 
 			}
 
