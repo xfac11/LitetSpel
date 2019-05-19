@@ -11,12 +11,14 @@ public:
 	virtual~DeferredShader();
 	bool initialize(int height, int width, float nearPlane, float farPlane);
 	void setWorld(DirectX::XMMATRIX world);
+	void setRepeat(DirectX::XMFLOAT4 repeat);
 	void setViewProj(DirectX::XMMATRIX view, DirectX::XMMATRIX proj, DirectX::XMFLOAT4 camPos);
 	void setSkeleton(bool hasSkeleton);
 	void setJointData(std::vector<DirectX::XMMATRIX> jointTransforms);
 	//uses the rendershader in Shader
 	void setCamPosToMatricesPerFrame(DirectX::XMFLOAT3 campos);
 	void setCBuffers();
+	void resetRenderTargets();
 	void resetCB();
 	void prepGBuffer(float* color);
 	void prepForLight();
@@ -27,5 +29,10 @@ private:
 	ConstantBuffer<WorldMatrix> worldCB;
 	ConstantBuffer<PerFrameMatrices> perFrameCB;
 	ConstantBuffer<skinningData> jointCB;
+	struct Repeat
+	{
+		DirectX::XMFLOAT4 texRepeat;
+	};
+	ConstantBuffer<Repeat> repeat;
 };
 

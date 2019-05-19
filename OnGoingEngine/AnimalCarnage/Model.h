@@ -20,7 +20,8 @@ public:
 	void setGotSkeleton(bool gotSkltn);
 	Shader* getShader();
 	void setShader(Shader* theShader);
-
+	void setRepeat(float x, float y);
+	DirectX::XMFLOAT4 &getRepeat();
 	void setTexture(std::string file);
 	void setGlowMap(std::string file);
 	void setMesh(std::vector<Vertex3D> aMesh,DWORD *indices, int numberOfIndices);
@@ -39,7 +40,7 @@ private:
 	//float timePassed;
 
 
-
+	DirectX::XMFLOAT4 repeatXY;
 	std::vector<Vertex3D> mesh;
 	VertexBuffer<Vertex3D> vertexBuffer;
 	IndexBuffer indexBuffer;

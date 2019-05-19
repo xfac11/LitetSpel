@@ -242,9 +242,10 @@ float4 PS_main(VS_OUT input) : SV_Target
 				return saturate(glow+colorT);
 			}*/
 			colorT = float4(colorT.xyz *totalLight.xyz, 1.0f);
-			if (index == 0)
-				colorT.xyz += glow.xyz;
+			
 		}
+		if (index == 0)
+			colorT.xyz += glow.xyz*1.1f;
 	}
 	/*if (index > 0)
 		return float4(1, 0, 0, 1);*/

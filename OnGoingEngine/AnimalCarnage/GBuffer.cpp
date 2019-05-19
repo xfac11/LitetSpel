@@ -237,6 +237,13 @@ bool GBuffer::setRenderTargets()
 	return true;//always returns true
 }
 
+void GBuffer::reset()
+{
+	ID3D11RenderTargetView* null[] = { nullptr, nullptr, nullptr,nullptr };
+	//ID3D11ShaderResourceView* null2[] = { nullptr, nullptr, nullptr,nullptr };
+	System::getDeviceContext()->OMSetRenderTargets(GBUFFERCAP, null, nullptr);
+}
+
 ID3D11RenderTargetView*& GBuffer::getRenView(int id)
 {
 	return this->renderTars[id];
@@ -295,7 +302,7 @@ ID3D11DepthStencilView *& GBuffer::getDepthStcView()
 	return this->depthStencView;
 }
 
-ID3D11ShaderResourceView* GBuffer::getShadResView(int id)
+ID3D11ShaderResourceView*& GBuffer::getShadResView(int id)
 {
 	return this->shaderResViews[id];
 }

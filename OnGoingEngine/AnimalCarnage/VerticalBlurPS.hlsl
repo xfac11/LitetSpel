@@ -43,15 +43,15 @@ float4 PS_main(PS_IN input) : SV_TARGET
 	color = float4(0.0f, 0.0f, 0.0f, 0.0f);
 
 	// Add the nine vertical pixels to the color by the specific weight of each.
-	color += GlowMap.Sample(SampleType, input.texCoord1) * weight4;
-	color += GlowMap.Sample(SampleType, input.texCoord2) * weight3;
-	color += GlowMap.Sample(SampleType, input.texCoord3) * weight2;
-	color += GlowMap.Sample(SampleType, input.texCoord4) * weight1;
-	color += GlowMap.Sample(SampleType, input.texCoord5) * weight0;
-	color += GlowMap.Sample(SampleType, input.texCoord6) * weight1;
-	color += GlowMap.Sample(SampleType, input.texCoord7) * weight2;
-	color += GlowMap.Sample(SampleType, input.texCoord8) * weight3;
-	color += GlowMap.Sample(SampleType, input.texCoord9) * weight4;
+	color += GlowMap.Sample(SampSt, input.texCoord1) * weight4;
+	color += GlowMap.Sample(SampSt, input.texCoord2) * weight3;
+	color += GlowMap.Sample(SampSt, input.texCoord3) * weight2;
+	color += GlowMap.Sample(SampSt, input.texCoord4) * weight1;
+	color += GlowMap.Sample(SampSt, input.texCoord5) * weight0;
+	color += GlowMap.Sample(SampSt, input.texCoord6) * weight1;
+	color += GlowMap.Sample(SampSt, input.texCoord7) * weight2;
+	color += GlowMap.Sample(SampSt, input.texCoord8) * weight3;
+	color += GlowMap.Sample(SampSt, input.texCoord9) * weight4;
 
 	// Set the alpha channel to one.
 	color.a = 1.0f;
