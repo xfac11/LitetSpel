@@ -4,6 +4,7 @@
 #include "GamePad.h"
 #include "GameObject.h"
 #include "Animal.h"
+#include <ctime>
 //#include "Primitives.h"
 
 struct RumbleProperties
@@ -43,6 +44,9 @@ private:
 	bool canPressPunch;
 	int deathTimer;
 	int groundTimer;
+
+	bool canBeAnimal[4];
+	int nextAnimal;
 
 	RumbleProperties theRumble;
 	AnimalType type;

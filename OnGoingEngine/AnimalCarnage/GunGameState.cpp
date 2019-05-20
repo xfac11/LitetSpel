@@ -392,7 +392,7 @@ bool GunGameState::update(float deltaTime)
 						int randomNumber4 = (rand() % 3) - 1;
 					}
 
-					System::theCamera->cameraShake(0.0,DirectX::XMFLOAT3(player[j]->dir, randomNumber3, randomNumber4));
+					System::theCamera->cameraShake(0.1,DirectX::XMFLOAT3(player[j]->dir, randomNumber3, randomNumber4));
 
 					if(player[i]->getHealth() <= 0 && tempHP > 0) {
 						player[j]->changeCharacter();

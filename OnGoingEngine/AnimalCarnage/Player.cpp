@@ -48,12 +48,13 @@ bool Player::isDead() const
 
 void Player::changeCharacter()
 {
-	if (/*!this->isDead() &&*/ currentAnimal == 3) {
-		
+	if (canBeAnimal[0] == false && canBeAnimal[1] == false && canBeAnimal[2] == false && canBeAnimal[3] == false) {
+		//RESULT SCREEN
 		System::setState(MAINMENU);
 		return;
 	}
-	currentAnimal++;
+	canBeAnimal[nextAnimal] = false;
+	currentAnimal = nextAnimal;
 	const AnimalDef& animal = Animal::getAnimal(ArrayOfAnimals[currentAnimal]);
 	this->type = ArrayOfAnimals[currentAnimal];
 	this->health = animal.maxHealh;
@@ -61,6 +62,33 @@ void Player::changeCharacter()
 	btVector3 inertia(0, 0, 0);
 	//playerObj->getRigidbody()->getCollisionShape()->calculateLocalInertia(getWeight(), inertia);
 	playerObj->getRigidbody()->setMassProps(10*getWeight(), inertia);
+
+	int falseCount = 0;
+	for (int i = 0; i < 4;i++) {
+		if (canBeAnimal[i] == false) {
+			falseCount++;
+		}
+	}
+
+	int randomNumber;
+	bool newAnimalFound = false;
+	while (!newAnimalFound && falseCount < 3) {
+		srand(time(0));
+		randomNumber = (rand() % 4) + 0;
+		if (canBeAnimal[randomNumber] == true) {
+			newAnimalFound = true;
+			nextAnimal = randomNumber;
+		}
+	}
+
+	if (falseCount >= 3) {
+		for (int i = 0; i < 4; i++) {
+			if (canBeAnimal[i] == true) {
+				nextAnimal = i;
+			}
+		}
+	}
+	
 	//TEMP CHANGE MODEL
 	//System::theModelLoader->loadGO(this->playerObj, animal.modelPath);
 }
@@ -99,12 +127,17 @@ Player::Player()
 	canPressPunch = true;
 	deathTimer = 0;
 	groundTimer = 0;
+	nextAnimal = 0;
 	
 	currentAnimal = 0;
 	ArrayOfAnimals[0] = FOX;
 	ArrayOfAnimals[1] = BEAR;
 	ArrayOfAnimals[2] = RABBIT;
 	ArrayOfAnimals[3] = MOOSE;
+
+	for (int i = 0; i < 4; i++) {
+		canBeAnimal[i] = true;
+	}
 
 }
 
@@ -122,6 +155,27 @@ void Player::initialize(AnimalType type)
 	const AnimalDef& animal = Animal::getAnimal(type);
 	this->type = type;
 	this->health = animal.maxHealh;
+
+	if (type == FOX)
+		canBeAnimal[0] = false;
+	if (type == BEAR)
+		canBeAnimal[1] = false;
+	if (type == RABBIT)
+		canBeAnimal[2] = false;
+	if (type == MOOSE)
+		canBeAnimal[3] = false;
+
+	int randomNumber;
+	bool newAnimalFound = false;
+	while (!newAnimalFound) {
+		srand(time(0));
+		randomNumber = (rand() % 4) + 0;
+		if (canBeAnimal[randomNumber] == true) {
+			newAnimalFound = true;
+			nextAnimal = randomNumber;
+		}
+	}
+
 
 	this->playerObj = new GameObject(System::shaderManager->getForwardShader());
 	this->hitbox.hitbox = new GameObject();
@@ -175,7 +229,7 @@ void Player::update(float deltaTime, int id)
 {
 	//check if player is dead and have any animals left to play
 	//changeCharacter();
-	string str = to_string(currentAnimal) + "\n";
+	string str = to_string(nextAnimal) + "\n";
 	OutputDebugString( str.c_str() );
 
 
@@ -279,6 +333,9 @@ void Player::update(float deltaTime, int id)
 			}
 			airSpeed = dir;
 
+		}
+		if(!canJump) {
+			playerObj->getRigidbody()->setLinearVelocity(btVector3(playerObj->getRigidbody()->getLinearVelocity().getX()/1.02f, playerObj->getRigidbody()->getLinearVelocity().getY(), playerObj->getRigidbody()->getLinearVelocity().getZ()));
 		}
 		if (state.thumbSticks.leftY < 0 && !canJump) {
 			if (state.thumbSticks.leftY < -0.8) {
