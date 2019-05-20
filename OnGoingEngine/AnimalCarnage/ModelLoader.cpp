@@ -125,7 +125,7 @@ void ModelLoader::loadGO(GameObject*& object, const char* filePath)
 
 		if(mesh.hasBoundingBox)
 			object[i].setHalfSize(reader.getBoundingBox(i).halfSize, reader.getBoundingBox(i).pos);
-		object[i].addModel(vertices3D, dIndices, (int)indices.size(), mesh.hasSkeleton); //mesh.hasSkeleton
+		object[i].addModel(vertices3D, dIndices, (int)indices.size(), false); //mesh.hasSkeleton
 		object[i].setTexture(reader.getMaterial(i).diffuseTexPath,i);
 		
 		if (mat.hasGlowMap)
