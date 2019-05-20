@@ -177,10 +177,10 @@ bool GunGameState::initailize()
 {
 	gContactAddedCallback = callbackFunc;
 
-	this->object[0] = new Objects("Resources/Models/platform2.lu", btVector3(-10, 5, 0),3,3, btVector3(0.6f, 0.8f, 0.6f), STATIC, PLATFORM);
-	this->object[1] = new Objects("Resources/Models/platform1.lu", btVector3(12, 4, 0), 3,3, btVector3(1.4f, 2.8f, 1.4f), DYNAMIC, PLATFORM);
-	this->object[2] = new Objects("Resources/Models/platform1.lu", btVector3(5,4, 0), 3,3, btVector3(1.4f, 2.8f, 1.4f),DYNAMIC, PLATFORM);
-	this->object[3] = new Objects("Resources/Models/cube2.lu", btVector3(16, -2, 20), 3,3, btVector3(100.f, 4.f, 50.f), STATIC,STONE,100,100);
+	this->object[0] = new Objects("Resources/Models/platform2.lu", btVector3(-10, 5, 0),3,3, btVector3(0.6f, 0.8f, 0.6f), STATIC, PLATFORM,1);
+	this->object[1] = new Objects("Resources/Models/platform1.lu", btVector3(12, 4, 0), 3,3, btVector3(1.4f, 2.8f, 1.4f), DYNAMIC, PLATFORM,1);
+	this->object[2] = new Objects("Resources/Models/platform1.lu", btVector3(5,4, 0), 3,3, btVector3(1.4f, 2.8f, 1.4f),DYNAMIC, PLATFORM,1);
+	this->object[3] = new Objects("Resources/Models/cube2.lu", btVector3(16, -2, 20), 3,3, btVector3(100.f, 4.f, 50.f), STATIC,STONE,-1,100,100);
 	this->object[4] = new Objects("Resources/Models/cube2.lu", btVector3(35, 17, 0), 2,1, btVector3(10.f, 40.f, 10.f), STATIC);
 	this->object[5] = new Objects("Resources/Models/cube2.lu", btVector3(-35, 17, 0), 2,1, btVector3(10.f, 40.f, 10.f), STATIC);
 

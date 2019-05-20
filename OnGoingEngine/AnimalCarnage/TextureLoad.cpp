@@ -20,7 +20,7 @@ TextureLoad::~TextureLoad()
 {
 }
 
-bool TextureLoad::Initialize(const char* filename)
+bool TextureLoad::Initialize(const char* filename, int mipLevels)
 {
 	bool result;
 	int height, width;
@@ -65,7 +65,7 @@ bool TextureLoad::Initialize(const char* filename)
 	srvDesc.Format = textureDesc.Format;
 	srvDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
 	srvDesc.Texture2D.MostDetailedMip = 0;
-	srvDesc.Texture2D.MipLevels = -1;
+	srvDesc.Texture2D.MipLevels = mipLevels;//Miplevels in parameter
 
 	// Create the shader resource view for the texture.
 	hResult = System::getDevice()->CreateShaderResourceView(m_texture, &srvDesc, &m_textureView);

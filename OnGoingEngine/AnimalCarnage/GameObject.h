@@ -27,7 +27,7 @@ public:
 
 	void addModel(std::vector<Vertex3D> mesh, DWORD *indices, int numberOfIndices,  bool hasSkeleton);
 	void setMesh(std::vector<Vertex3D> mesh, DWORD *indices, int numberOfIndices, int id);
-	void setTexture(std::string file, int id);
+	void setTexture(std::string file, int id, int mipLevels=-1);
 	void setGlowMap(std::string file, int id);
 	void draw();
 	AABB getCollisionBox();

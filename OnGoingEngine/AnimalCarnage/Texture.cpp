@@ -12,18 +12,18 @@ Texture::~Texture()
 	cleanUp();
 }
 
-void Texture::setTexture(std::string fileName)
+void Texture::setTexture(std::string fileName, int mipLevels)
 {
 
 	std::string modelTexture = "Resources/Textures/" + fileName;
 	std::string fileTexture = "Textures/" + fileName;
 	//const char *file = fileTexture.c_str();
 
-	if (!testTexture.Initialize(fileTexture.c_str()))
+	if (!testTexture.Initialize(fileTexture.c_str(),mipLevels))
 	{
-		if (!testTexture.Initialize(modelTexture.c_str()))
+		if (!testTexture.Initialize(modelTexture.c_str(),mipLevels))
 		{
-			testTexture.Initialize("Textures/foxTest.tga");
+			testTexture.Initialize("Textures/foxTest.tga", mipLevels);
 		}
 	}
 	/*if (!testTexture.Initialize(gDevice, gDeviceContext, fileName))
@@ -55,8 +55,8 @@ void Texture::setTexture(std::string fileName)
 	texDesc.SampleDesc.Quality = 0;
 	texDesc.Usage = D3D11_USAGE_DEFAULT;
 
-	System::getDevice()->CreateTexture2D(&texDesc, &texInitData, &tex);
-	System::getDevice()->CreateShaderResourceView(tex, NULL, &this->textureView);
+	//System::getDevice()->CreateTexture2D(&texDesc, &texInitData, &tex);
+	//System::getDevice()->CreateShaderResourceView(tex, NULL, &this->textureView);
 }
 ID3D11ShaderResourceView *& Texture::getTexture()
 {

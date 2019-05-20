@@ -162,9 +162,9 @@ void GameObject::setMesh(std::vector<Vertex3D> mesh, DWORD * indices, int number
 	this->theModel[id]->setMesh(mesh, indices, numberOfIndices);
 }
 
-void GameObject::setTexture(std::string file, int id)
+void GameObject::setTexture(std::string file, int id, int mipLevels)
 {									
-	this->theModel[id]->setTexture(file);
+	this->theModel[id]->setTexture(file, mipLevels);
 }
 
 void GameObject::setGlowMap(std::string file, int id)

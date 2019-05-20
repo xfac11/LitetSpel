@@ -81,10 +81,10 @@ Shader * Model::getShader()
 	return this->theShader;
 }
 
-void Model::setTexture(std::string file)
+void Model::setTexture(std::string file, int mipLevels)
 {
 	//texture
-	texture->setTexture(file);
+	texture->setTexture(file, mipLevels);
 	if (texture->isTransparent())
 	{
 		this->type = Transparent;

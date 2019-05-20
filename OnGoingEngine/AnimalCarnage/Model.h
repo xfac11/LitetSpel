@@ -22,7 +22,7 @@ public:
 	void setShader(Shader* theShader);
 	void setRepeat(float x, float y);
 	DirectX::XMFLOAT4 &getRepeat();
-	void setTexture(std::string file);
+	void setTexture(std::string file, int mipLevels=-1);
 	void setGlowMap(std::string file);
 	void setMesh(std::vector<Vertex3D> aMesh,DWORD *indices, int numberOfIndices);
 	void setSampler();

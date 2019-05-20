@@ -32,7 +32,7 @@ public:
 	TextureLoad(const TextureLoad&);
 	~TextureLoad();
 
-	bool Initialize(const char*);
+	bool Initialize(const char*, int mipLevels = -1);
 	void Shutdown();
 
 	ID3D11ShaderResourceView*& GetTexture();

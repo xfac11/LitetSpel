@@ -45,12 +45,12 @@ Objects::Objects()
 {
 	this->id = 1;
 }
-Objects::Objects(std::string filepath, btVector3 position,int id,int friction, btVector3 size, OBJECTSTATE state, OBJECTYPE type, float x, float y) :state(state), type(type)
+Objects::Objects(std::string filepath, btVector3 position,int id,int friction, btVector3 size, OBJECTSTATE state, OBJECTYPE type,int mipLevels, float x, float y) :state(state), type(type)
 {
 	this->id = id;
 	this->ObjectOBJ = new GameObject(System::shaderManager->getForwardShader());
 
-	System::theModelLoader->loadGO(this->ObjectOBJ, filepath.c_str());
+	System::theModelLoader->loadGO(this->ObjectOBJ, filepath.c_str(),mipLevels);
 	System::handler->addObject(this->ObjectOBJ);
 	this->ObjectOBJ->setPosition(btVector3(position.getX(), position.getY()+0.57f, position.getZ()));
 	this->ObjectOBJ->getModel(0)->setRepeat(x, y);//repeated texture

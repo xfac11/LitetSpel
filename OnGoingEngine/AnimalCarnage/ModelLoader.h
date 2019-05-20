@@ -11,7 +11,7 @@ public:
 	ModelLoader();
 	~ModelLoader();
 
-	void loadGO(GameObject*& object, const char* filePath);
+	void loadGO(GameObject*& object, const char* filePath, int mipLevels=-1);
 	//void loadModel(Model **&model, const char* filePath);
 	std::string getPath() const;
 

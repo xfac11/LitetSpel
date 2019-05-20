@@ -9,7 +9,7 @@ ModelLoader::ModelLoader()
 ModelLoader::~ModelLoader()
 {
 }
-void ModelLoader::loadGO(GameObject*& object, const char* filePath)
+void ModelLoader::loadGO(GameObject*& object, const char* filePath, int mipLevels)
 {
 	Luna::Reader reader;
 	reader.readFile(filePath);
@@ -126,7 +126,7 @@ void ModelLoader::loadGO(GameObject*& object, const char* filePath)
 		if(mesh.hasBoundingBox)
 			object[i].setHalfSize(reader.getBoundingBox(i).halfSize, reader.getBoundingBox(i).pos);
 		object[i].addModel(vertices3D, dIndices, (int)indices.size(), false); //mesh.hasSkeleton
-		object[i].setTexture(reader.getMaterial(i).diffuseTexPath,i);
+		object[i].setTexture(reader.getMaterial(i).diffuseTexPath,i,mipLevels);
 		
 		if (mat.hasGlowMap)
 			object->setGlowMap(mat.glowTexPath, i);
