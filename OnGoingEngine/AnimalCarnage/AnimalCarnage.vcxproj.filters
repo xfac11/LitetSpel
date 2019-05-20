@@ -43,6 +43,18 @@
     <FxCompile Include="MulVertexShader.hlsl">
       <Filter>Shader</Filter>
     </FxCompile>
+    <FxCompile Include="HorizontalBlurPS.hlsl">
+      <Filter>Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="HorizontalblurVS.hlsl">
+      <Filter>Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="VerticalBlurPS.hlsl">
+      <Filter>Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="VerticalBlurVS.hlsl">
+      <Filter>Shader</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="InputHandler.cpp" />
@@ -682,6 +694,9 @@
     <ClCompile Include="AssetManager.cpp">
       <Filter>Engine</Filter>
     </ClCompile>
+    <ClCompile Include="AnimationShader.cpp" />
+    <ClCompile Include="VerticalBlur.cpp" />
+    <ClCompile Include="HorizontalBlur.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource1.h" />
@@ -1561,6 +1576,9 @@
     <ClInclude Include="PauseGui.h">
       <Filter>Menu</Filter>
     </ClInclude>
+    <ClInclude Include="AnimationShader.h" />
+    <ClInclude Include="VerticalBlur.h" />
+    <ClInclude Include="HorizontalBlur.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="imgui\.gitkeep" />

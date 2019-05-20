@@ -18,6 +18,10 @@ ShaderManager::~ShaderManager()
 		delete this->lShader;
 	if (this->shadowMapping != nullptr)
 		delete this->shadowMapping;
+	if (this->horBlur != nullptr)
+		delete this->horBlur;
+	if (this->verBlur != nullptr)
+		delete this->verBlur;
 }
 
 void ShaderManager::initialize(int height, int width, float nearPlane, float farPlane)
@@ -30,6 +34,10 @@ void ShaderManager::initialize(int height, int width, float nearPlane, float far
 	this->lShader->initialize();
 	this->shadowMapping = new ShadowMapping;
 	this->shadowMapping->initialize();
+	this->horBlur = new HorizontalBlur;
+	this->horBlur->initialize(height, width);
+	this->verBlur = new VerticalBlur;
+	this->verBlur->initialize(height, width);
 }
 
 ForwardShader *& ShaderManager::getForwardShader()
@@ -50,4 +58,14 @@ LightShader *& ShaderManager::getLightShader()
 ShadowMapping *& ShaderManager::getShadowMapping()
 {
 	return this->shadowMapping;
+}
+
+HorizontalBlur *& ShaderManager::getHorBlur()
+{
+	return this->horBlur;
+}
+
+VerticalBlur *& ShaderManager::getVerBlur()
+{
+	return this->verBlur;
 }

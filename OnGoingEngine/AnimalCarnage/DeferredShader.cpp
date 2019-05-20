@@ -111,6 +111,11 @@ bool DeferredShader::initialize(int height, int width, float nearPlane, float fa
 	{
 		return false;
 	}
+	result = this->repeat.initialize(System::getDevice());
+	if (FAILED(result))
+	{
+		return false;
+	}
 	return true;
 }
 
@@ -119,6 +124,12 @@ void DeferredShader::setWorld(DirectX::XMMATRIX world)
 	world = XMMatrixTranspose(world);
 	this->worldCB.data.world = world;
 	this->worldCB.applyChanges(System::getDevice(), System::getDeviceContext());
+}
+
+void DeferredShader::setRepeat(DirectX::XMFLOAT4 repeat)
+{
+	this->repeat.data.texRepeat = repeat;
+	this->repeat.applyChanges(System::getDevice(), System::getDeviceContext());
 }
 
 void DeferredShader::setViewProj(DirectX::XMMATRIX view, DirectX::XMMATRIX proj, DirectX::XMFLOAT4 camPos)
@@ -161,6 +172,12 @@ void DeferredShader::setCBuffers()
 	this->setConstanbuffer(VERTEX, 1, this->worldCB.getBuffer());
 	this->setConstanbuffer(GEOMETRY, 1, this->worldCB.getBuffer());
 	this->setConstanbuffer(VERTEX, 2, this->jointCB.getBuffer());
+	this->setConstanbuffer(PIXEL, 2, this->repeat.getBuffer());
+}
+
+void DeferredShader::resetRenderTargets()
+{
+	this->gBuffer.reset();
 }
 
 void DeferredShader::resetCB()

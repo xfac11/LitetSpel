@@ -10,12 +10,13 @@ public:
 	bool initialize(int height, int width, float nearPlane, float farPlane);
 	bool resize(int height, int width);
 	bool setRenderTargets();
+	void reset();
 	ID3D11RenderTargetView*& getRenView(int id);
 	void shutDown();
 	void clear(float color[4]);
 	void setShaderResViews();
 	ID3D11DepthStencilView*& getDepthStcView();
-	ID3D11ShaderResourceView* getShadResView(int id);
+	ID3D11ShaderResourceView*& getShadResView(int id);
 	ID3D11Texture2D* getTexture(int id);
 private:
 	ID3D11Texture2D *texTures[GBUFFERCAP];

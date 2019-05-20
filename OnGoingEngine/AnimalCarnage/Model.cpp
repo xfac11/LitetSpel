@@ -27,6 +27,7 @@ Model::Model()
 		//deal with error. Log it maybe
 
 	}
+	this->repeatXY = DirectX::XMFLOAT4(1, 1, 1, 1);
 
 }
 
@@ -52,6 +53,16 @@ Model::~Model()
 void Model::setShader(Shader *theShader)
 {
 	this->theShader = theShader;
+}
+
+void Model::setRepeat(float x, float y)
+{
+	this->repeatXY = DirectX::XMFLOAT4(x, y, 1, 1);
+}
+
+DirectX::XMFLOAT4 & Model::getRepeat()
+{
+	return this->repeatXY;
 }
 
 int Model::getOpacity()

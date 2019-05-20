@@ -34,7 +34,10 @@ cbuffer world : register(b1)
 {
 	float4x4 world;//world
 }
-
+cbuffer texRepeat : register(b2)
+{
+	float4 repeat;//world
+}
 Texture2D Tex : register(t0);
 Texture2D Nor : register(t1);
 Texture2D Glow : register(t2);
@@ -45,7 +48,7 @@ PS_OUT PS_main(PS_IN input)
 	PS_OUT output;
 
 
-	float4 textureColor = Tex.Sample(SampSt, input.Tex).xyzw;
+	float4 textureColor = Tex.Sample(SampSt, input.Tex*repeat).xyzw;
 	float3 bumpNormal;
 
 	//float3 diffuseAlbedo = Tex.Sample(SampSt, input.Tex).rgb;

@@ -136,34 +136,50 @@ void GameObjectHandler::draw(float deltaTime)
 
 	for (int i = 0; i < this->nrOfOpaque; i++)
 	{
-		this->opaqueModels[i].modelPtr->getShader()->setWorld(*this->opaqueModels[i].worldPtr);
-		this->opaqueModels[i].modelPtr->draw();
+		Model* ptr = this->opaqueModels[i].modelPtr;
+		System::shaderManager->getDefShader()->setRepeat(ptr->getRepeat());
+		ptr->getShader()->setWorld(*this->opaqueModels[i].worldPtr);
+		ptr->draw();
 	}
 
+	System::shaderManager->getDefShader()->resetRenderTargets();
 	//glow
 
 
 	//
-	System::shaderManager->getDefShader()->prepForLight();
-	System::theGraphicDevice->setBackBuffer(System::shaderManager->getDefShader()->gBuffer.getDepthStcView());
+	
 	//
 	//System::shaderManager->getDefShader()->resetCB();
-	System::shaderManager->getLightShader()->setCBuffers();
-	System::shaderManager->getLightShader()->setConstanbuffer(PIXEL, 1, this->lightsCB.getBuffer());
+	
 	//System::getDeviceContext()->OMSetRenderTargets()
-	System::getDeviceContext()->PSSetShaderResources(3, 1, &System::shaderManager->getShadowMapping()->getShadowMap());
-	System::shaderManager->getShadowMapping()->setPSDepthView();//sets the mvp for the depth in lspixelshader
-	System::shaderManager->getLightShader()->setShaders();
+	//Glow
 	System::theGraphicDevice->turnOffZ();
 
-	UINT32 offset = 0; 	
-	//this->lightsCB.data.index = 0;
-	//this->lightsCB.applyChanges(System::getDevice(), System::getDeviceContext());
+	UINT32 offset = 0;
 	System::getDeviceContext()->IASetVertexBuffers(0, 1, &*this->vertexBufferQuad.GetAddressOf(), &*vertexBufferQuad.getStridePtr(), &offset);
 	System::getDeviceContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	System::shaderManager->getHorBlur()->setCBuffers();
+	System::shaderManager->getHorBlur()->setShaders();
+	System::shaderManager->getHorBlur()->render(quad.size(), System::shaderManager->getDefShader()->gBuffer.getShadResView(3));
+	System::shaderManager->getVerBlur()->setCBuffers();
+	System::shaderManager->getVerBlur()->setShaders();
+	System::shaderManager->getVerBlur()->render(quad.size(), System::shaderManager->getHorBlur()->getShaderView());
+	//light
+	System::getDeviceContext()->PSSetShaderResources(3, 1, &System::shaderManager->getShadowMapping()->getShadowMap());
+	System::shaderManager->getLightShader()->setShaders();
+	System::shaderManager->getDefShader()->prepForLight();
+	System::theGraphicDevice->setBackBuffer(System::shaderManager->getDefShader()->gBuffer.getDepthStcView());
+	//this->lightsCB.data.index = 0;
+	//this->lightsCB.applyChanges(System::getDevice(), System::getDeviceContext());
+
+	System::getDeviceContext()->PSSetShaderResources(4, 1, &System::shaderManager->getVerBlur()->getShaderView());
+	System::shaderManager->getLightShader()->setCBuffers();
+	System::shaderManager->getLightShader()->setConstanbuffer(PIXEL, 1, this->lightsCB.getBuffer());
 	System::shaderManager->getLightShader()->setTypeOfLight(0);//0 directlight
 	this->lightsCB.data.index = 0;
 	this->lightsCB.applyChanges(System::getDevice(), System::getDeviceContext());
+	System::shaderManager->getShadowMapping()->setPSDepthView();//sets the mvp for the depth in lspixelshader
+
 	System::shaderManager->getLightShader()->renderShaderDir((int)quad.size());//render fullscreen quad with all lights
 	UINT32 offsetS = 0;
 	System::getDeviceContext()->IASetIndexBuffer(indexBufferSphere.getBuffer(), DXGI_FORMAT_R32_UINT, 0);
