@@ -97,7 +97,7 @@ void Model::setTexture(std::string file, int mipLevels)
 
 void Model::setGlowMap(std::string file)
 {
-	this->glowMap->setTexture(file);
+	this->glowMap->setTexture(file,1);
 	this->hasGlowMap = true;
 }
 
