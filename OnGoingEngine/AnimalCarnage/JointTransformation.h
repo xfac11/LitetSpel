@@ -10,8 +10,8 @@ private:
 	DirectX::XMVECTOR rotation; //quaternion xyzw
 	DirectX::XMFLOAT3 scale;
 
-	DirectX::XMFLOAT3 interpolate(DirectX::XMFLOAT3 start, DirectX::XMFLOAT3 end, float progression);
-	DirectX::XMFLOAT3 interpolate2(DirectX::XMFLOAT3 start, DirectX::XMFLOAT3 end, float progression);
+	//DirectX::XMFLOAT3 interpolate(DirectX::XMFLOAT3 start, DirectX::XMFLOAT3 end, float progression);
+	//DirectX::XMFLOAT3 interpolate2(DirectX::XMFLOAT3 start, DirectX::XMFLOAT3 end, float progression);
 public:
 	JointTransformation();
 	JointTransformation(DirectX::XMFLOAT4 position, DirectX::XMFLOAT4 rotation, DirectX::XMFLOAT4 scale); //Pos: xyz, Quaternion: xyzw
@@ -24,7 +24,11 @@ public:
 	void operator=(const JointTransformation& obj);
 	DirectX::XMMATRIX getLocalTransform();
 
-	JointTransformation interpolate(JointTransformation frameA, JointTransformation frameB, float progression);
-	JointTransformation interpolate2(JointTransformation frameA, JointTransformation frameB, float progression);
+
+	DirectX::XMFLOAT3 getPosition()const; //positon xyz w
+	DirectX::XMVECTOR getRotation()const; //quaternion xyzw
+	DirectX::XMFLOAT3 getScale()const;
+	//JointTransformation interpolate(JointTransformation frameA, JointTransformation frameB, float progression);
+	//JointTransformation interpolate2(JointTransformation frameA, JointTransformation frameB, float progression);
 };
 #endif // !JOINTTRANSFORMATION

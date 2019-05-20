@@ -48,12 +48,12 @@ VS_OUT VS_main(VS_IN input)
 
 	if (hasSkeleton == true)
 	{
-		output.Pos = mul(jointTransformations[input.Joint.x], totalLocalPos) * input.Weights.x;
+		output.Pos  = mul(jointTransformations[input.Joint.x], totalLocalPos) * input.Weights.x;
 		output.Pos += mul(jointTransformations[input.Joint.y], totalLocalPos) * input.Weights.y;
 		output.Pos += mul(jointTransformations[input.Joint.z], totalLocalPos) * input.Weights.z;
 		output.Pos += mul(jointTransformations[input.Joint.w], totalLocalPos) * input.Weights.w;
 
-		output.Normal = mul(jointTransformations[input.Joint.x], totalNormal) * input.Weights.x;
+		output.Normal  = mul(jointTransformations[input.Joint.x], totalNormal) * input.Weights.x;
 		output.Normal += mul(jointTransformations[input.Joint.y], totalNormal) * input.Weights.y;
 		output.Normal += mul(jointTransformations[input.Joint.z], totalNormal) * input.Weights.z;
 		output.Normal += mul(jointTransformations[input.Joint.w], totalNormal) * input.Weights.w;
@@ -62,7 +62,7 @@ VS_OUT VS_main(VS_IN input)
 		//output.Pos = mul(proj, mul(view, mul(world, output.Pos)));
 		//output.Normal = mul(mul(view, world), output.Normal);
 	}
-	else
+	else if(hasSkeleton==false)
 	{
 		output.Pos = float4(input.Pos, 1.0f);
 		output.Normal = float4(input.Normal, 1.0f);

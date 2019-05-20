@@ -55,6 +55,8 @@ void GS_main(triangle GSInput input[3], inout TriangleStream<GSOutput> theOutput
 			output.Pos = mul(output.Pos, proj);
 			//output.Pos = mul(proj, input[i].Pos);
 			//output.Pos = input[i].Pos;
+
+			//output.wPosition = mul(float4(output.Pos.xyz, 1.0f), world);
 			output.wPosition = mul(float4(input[i].Pos.xyz, 1.0f), world);
 	
 			output.Tex = input[i].Tex;

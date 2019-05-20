@@ -145,6 +145,17 @@ void Model::drawOnlyVertex()
 	{
 		System::getDeviceContext()->PSSetShaderResources(1, 1, &this->normalMap->getTexture());
 	}*/
+
+	DeferredShader* ptr;
+	if (ptr = dynamic_cast<DeferredShader*>(this->theShader)) //System::shaderManager->getDefShader()))
+	{
+
+		ptr->setSkeleton(this->gotSkeleton);
+	}
+	else
+	{
+		OutputDebugStringA("== FAILED IN SET KEYFRAME to shader!! == ");
+	}
 	System::getDeviceContext()->IASetVertexBuffers(0, 1, &*this->vertexBuffer.GetAddressOf(), &*vertexBuffer.getStridePtr(), &offset);
 	//	UINT offset = 0;
 		//devcon->IASetVertexBuffers(0, 1, &pVBuffer, &stride, &offset);
@@ -159,7 +170,6 @@ void Model::drawOnlyVertex()
 void Model::draw()
 {
 	UINT32 offset = 0;
-
 	DeferredShader* ptr;
 	if (ptr = dynamic_cast<DeferredShader*>(this->theShader)) //System::shaderManager->getDefShader()))
 	{
@@ -168,10 +178,8 @@ void Model::draw()
 	}
 	else
 	{
-		OutputDebugStringA("== FAILED IN SET KEYFRAME to shader!! == ");
+		OutputDebugStringA("== ptr was null == "); //if nullptr then model may be transparent
 	}
-	
-
 
 	System::getDeviceContext()->PSSetShaderResources(0, 1, &this->texture->getTexture());
 	if (this->normalMap != nullptr)

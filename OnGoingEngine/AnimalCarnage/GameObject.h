@@ -39,6 +39,11 @@ public:
 	void computeAnimationMatrix(float deltaTime);
 	void setNewAnimation(float fps, float duration, std::string name, std::vector<std::vector<Luna::Keyframe>> keyframePack);
 	void setSkeleton(std::vector<Luna::Joint> theJoints);
+	
+	DirectX::XMFLOAT3 interpolate1(DirectX::XMFLOAT3 start, DirectX::XMFLOAT3 end, float progression);
+	DirectX::XMFLOAT3 interpolate2(DirectX::XMFLOAT3 start, DirectX::XMFLOAT3 end, float progression);
+	JointTransformation interpolate1(JointTransformation frameA, JointTransformation frameB, float progression);
+	JointTransformation interpolate2(JointTransformation frameA, JointTransformation frameB, float progression);
 private:
 	Model* *theModel;
 	int cap;
@@ -50,6 +55,7 @@ private:
 	std::vector<Joint> skeleton;
 	Animation anims;
 	float timePassed;
+	float prevTimeIncrement;
 	//std::vector<KeyFrame> keyframes;
 	//AnimationShader* animShader;
 

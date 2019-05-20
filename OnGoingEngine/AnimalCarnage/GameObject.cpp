@@ -13,6 +13,9 @@ GameObject::GameObject()
 	}
 	this->colBox = AABB();
 	//this->gotSkeleton = false;
+
+	this->timePassed = 0.f;
+	this->prevTimeIncrement = 0.f;
 }
 
 GameObject::GameObject(Shader * shader)
@@ -26,6 +29,9 @@ GameObject::GameObject(Shader * shader)
 		this->theModel[i] = nullptr;
 	}
 	this->colBox = AABB();
+
+	this->timePassed = 0.f;
+	this->prevTimeIncrement = 0.f;
 	//this->gotSkeleton = false;
 	/*this->theModel[0] = new Model;
 	this->theModel[0]->setShader(shader);
@@ -238,7 +244,7 @@ void GameObject::computeAnimationMatrix(float deltaTime)
 
 	this->timePassed += deltaTime;
 	if (this->timePassed >= anims.getDuration())
-		this->timePassed = fmod(this->timePassed,anims.getDuration());
+		this->timePassed = fmodf(this->timePassed,anims.getDuration());
 
 	int k1 = (int)(this->timePassed* anims.getFPS());
 	int k2 = std::min<int>(k1 + 1, anims.getKeyframes()[0].size());
@@ -247,39 +253,49 @@ void GameObject::computeAnimationMatrix(float deltaTime)
 	float k2_time = k2 / anims.getFPS();
 	float t = (timePassed - k1_time) / (k2_time - k1_time);
 	
-
-	JointTransformation temp; //have this cus it has interpolation
-	std::vector<JointTransformation> pose; 
-	//pose.resize(skeleton.size());//nrOf Joints
-	JointTransformation local1 = temp.interpolate2(anims.getKeyframes()[k1][0].getJointKeyFrames(), anims.getKeyframes()[k2][0].getJointKeyFrames(), t);
-	//JointTransformation test2 = temp.interpolate2(anims.getKeyframes()[k1][0].getJointKeyFrames(), anims.getKeyframes()[k2][0].getJointKeyFrames(), t);
-
-	pose.push_back(local1);
-	//anims.getKeyframes()[0][0].getJointKeyFrames();
-	std::vector<DirectX::XMMATRIX> jointTransforms;
-	jointTransforms.resize(skeleton.size());
-
-	jointTransforms[0] = DirectX::XMMatrixMultiply(pose[0].getLocalTransform(),this->skeleton[0].getInverseBindTransform());
-	for (int joint = 1; joint < skeleton.size(); joint++)
+	if (t > 1 || t < 0)
 	{
+		t = 0;
+	}
 
-
-		local1 = temp.interpolate2(anims.getKeyframes()[joint][k1].getJointKeyFrames(), anims.getKeyframes()[joint][k2].getJointKeyFrames(), t);
-		pose.push_back(local1);
+	if (t != prevTimeIncrement)
+	{
+		prevTimeIncrement = t;
 		
-		pose[joint] = JointTransformation(DirectX::XMMatrixMultiply(pose[this->skeleton[joint].getParent()->getID()].getLocalTransform(), local1.getLocalTransform()));
-		jointTransforms[joint] = DirectX::XMMatrixMultiply(pose[joint].getLocalTransform(), this->skeleton[joint].getInverseBindTransform());
-	}
+		std::vector<JointTransformation> pose;
+		JointTransformation local1 = this->interpolate2(anims.getKeyframes()[0][0].getJointKeyFrames(), anims.getKeyframes()[0][1].getJointKeyFrames(),0.f);
+		//JointTransformation test2 = temp.interpolate2(anims.getKeyframes()[k1][0].getJointKeyFrames(), anims.getKeyframes()[k2][0].getJointKeyFrames(), t);
+		DirectX::XMMATRIX test1 = local1.getLocalTransform();
+		pose.push_back(local1);
+	
 
-	DeferredShader* ptr;
-	if (ptr = dynamic_cast<DeferredShader*>(System::shaderManager->getDefShader()))
-	{
-		ptr->setJointData(jointTransforms);
-		//ptr->setSkeleton(this->gotSkeleton);
-	}
-	else
-	{
-		OutputDebugStringA("== FAILED IN SET KEYFRAME to shader!! == ");
+		std::vector<DirectX::XMMATRIX> jointTransforms;
+		jointTransforms.resize(skeleton.size());
+		DirectX::XMMATRIX test2 = pose[0].getLocalTransform();
+		jointTransforms[0] = DirectX::XMMatrixMultiply(pose[0].getLocalTransform(), this->skeleton[0].getInverseBindTransform());
+		for (int joint = 1; joint < skeleton.size(); joint++)
+		{
+
+
+			local1 = this->interpolate2(anims.getKeyframes()[joint][0].getJointKeyFrames(), anims.getKeyframes()[joint][1].getJointKeyFrames(), 0);
+			pose.push_back(local1);
+
+			pose[joint] = JointTransformation(DirectX::XMMatrixMultiply(pose[this->skeleton[joint].getParent()->getID()].getLocalTransform(), local1.getLocalTransform()));
+			jointTransforms[joint] = DirectX::XMMatrixMultiply(pose[joint].getLocalTransform(), this->skeleton[joint].getInverseBindTransform());
+		}
+
+		DeferredShader* ptr = dynamic_cast<DeferredShader*>(System::shaderManager->getDefShader());
+		if (ptr != nullptr)
+		{
+			ptr->setJointData(jointTransforms);
+
+		}
+		else
+		{
+			int i = 0;
+			i = 1;
+			OutputDebugStringA("== FAILED IN SET KEYFRAME to shader!! == ");
+		}
 	}
 
 }
@@ -329,4 +345,42 @@ void GameObject::setSkeleton(std::vector<Luna::Joint> theJoints)
 			this->skeleton[i].setParent(&this->skeleton[theJoints[i].parentID]);
 	}
 	
+}
+
+DirectX::XMFLOAT3 GameObject::interpolate1(DirectX::XMFLOAT3 start, DirectX::XMFLOAT3 end, float progression)
+{
+	DirectX::XMFLOAT3 interpol = { 0,0,0 };
+	interpol.x = start.x + (end.x - start.x)*progression;
+	interpol.y = start.y + (end.y - start.y)*progression;
+	interpol.z = start.z + (end.z - start.z)*progression;
+	return interpol;
+}
+
+DirectX::XMFLOAT3 GameObject::interpolate2(DirectX::XMFLOAT3 start, DirectX::XMFLOAT3 end, float progression)
+{
+	DirectX::XMFLOAT3 interpol = { 0,0,0 };
+	interpol.x = start.x * (1 - progression) + end.x * progression;
+	interpol.y = start.y * (1 - progression) + end.y * progression;
+	interpol.z = start.z * (1 - progression) + end.z * progression;
+	return interpol;
+}
+
+JointTransformation GameObject::interpolate1(JointTransformation frameA, JointTransformation frameB, float progression)
+{
+	DirectX::XMFLOAT3 pos = this->interpolate1(frameA.getPosition(), frameB.getPosition(), progression);
+	DirectX::XMFLOAT4 pos4 = { pos.x, pos.y, pos.z, 0.f };
+	DirectX::XMVECTOR quaternion = DirectX::XMQuaternionSlerp(frameA.getRotation(), frameB.getRotation(), progression);
+	//DirectX::XMFLOAT3 scale = this->interpolate(frameA.scale, frameB.scale, progression);
+	DirectX::XMFLOAT3 scale = { 1.f,1.f,1.f };
+	return JointTransformation(pos4, quaternion, scale);
+}
+
+JointTransformation GameObject::interpolate2(JointTransformation frameA, JointTransformation frameB, float progression)
+{
+	DirectX::XMFLOAT3 pos = this->interpolate2(frameA.getPosition(), frameB.getPosition(), progression);
+	DirectX::XMFLOAT4 pos4 = { pos.x, pos.y, pos.z, 1.f };
+	DirectX::XMVECTOR quaternion = DirectX::XMQuaternionSlerp(frameA.getRotation(), frameB.getRotation(), progression);
+	DirectX::XMFLOAT3 scale = this->interpolate2(frameA.getScale(), frameB.getScale(), progression);
+
+	return JointTransformation(pos4, quaternion, scale);
 }
