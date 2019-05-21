@@ -82,9 +82,9 @@ MainGui::~MainGui()
 
 bool MainGui::initialize()
 {
-	this->playButton = new Button("Start", Vector2(WIDTH / 2 - 300, HEIGHT / 2 - 140));
-	this->optionsButton = new Button("Options", Vector2(WIDTH / 2 - 300, HEIGHT / 2));
-	this->quitButton = new Button("Quit", Vector2(WIDTH / 2 - 300, HEIGHT / 2 + 140));
+	this->playButton = new Button("Start", Vector2(System::theWindow.width / 2.0F - 300, System::theWindow.height / 2.0F - 140));
+	this->optionsButton = new Button("Options", Vector2(System::theWindow.width / 2.0F - 300, System::theWindow.height / 2.0F));
+	this->quitButton = new Button("Quit", Vector2(System::theWindow.width / 2.0F - 300, System::theWindow.height / 2.0F + 140));
 
 	this->selectedElement = playButton;
 	this->playButton->setConnectedElements(nullptr, nullptr, quitButton, optionsButton);

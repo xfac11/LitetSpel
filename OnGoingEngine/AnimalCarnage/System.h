@@ -40,12 +40,6 @@
 
 #include "AssetManager.h"
 using namespace DirectX;
-//using namespace DirectX::SimpleMath;
-
-#define HEIGHT 1080
-#define WIDTH 1920
-
-//using Microsoft::WRL::ComPtr;
 
 enum GameState {
 	MAINMENU,
@@ -60,7 +54,6 @@ private:
 	HWND hwnd;
 	MSG msg;
 	int nCMDShow;
-	static WindowClient theWindow;
 	static std::vector<State*> states;
 	static GameState currentState;
 	static CommonStates* commonStates;
@@ -116,6 +109,7 @@ public:
 	static WindowClient getWindowArea();
 	static Skybox* skybox;
 
+	static WindowClient theWindow;
 	static ShaderManager* shaderManager;
 	static System* fusk;
 	static Camera* theCamera;
@@ -139,7 +133,7 @@ public:
 	static DEBUG_DRAW* getDebugDraw();
 	static void closeWindow();
 	static void setState(GameState state);
-
+	static void resizeWindow(int width, int height);
 
 };
 #endif

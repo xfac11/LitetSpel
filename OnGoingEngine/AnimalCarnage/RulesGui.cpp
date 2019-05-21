@@ -84,10 +84,10 @@ RulesGui::~RulesGui()
 
 bool RulesGui::initialize()
 {
-	this->buttonGunGame = new Button("Gun Game", Vector2(WIDTH / 2 - 300, HEIGHT / 2 - 210));
-	this->buttonVersus = new Button("Versus", Vector2(WIDTH / 2 - 300, HEIGHT / 2 - 70));
-	this->buttonFalling = new Button("Falling", Vector2(WIDTH / 2 - 300, HEIGHT / 2 + 70));
-	this->buttonTagTeam = new Button("Tag Team", Vector2(WIDTH / 2 - 300, HEIGHT / 2 + 210));
+	this->buttonGunGame = new Button("Gun Game", Vector2(System::theWindow.width / 2.0F - 300, System::theWindow.height / 2.0F - 210));
+	this->buttonVersus = new Button("Versus", Vector2(System::theWindow.width / 2.0F - 300, System::theWindow.height / 2.0F - 70));
+	this->buttonFalling = new Button("Falling", Vector2(System::theWindow.width / 2.0F - 300, System::theWindow.height / 2.0F + 70));
+	this->buttonTagTeam = new Button("Tag Team", Vector2(System::theWindow.width / 2.0F - 300, System::theWindow.height / 2.0F + 210));
 
 	this->selectedElement = buttonGunGame;
 	this->buttonGunGame->setConnectedElements(nullptr, nullptr, buttonTagTeam, buttonVersus);
@@ -214,7 +214,7 @@ bool RulesGui::render()
 	System::getSpriteBatch()->Begin(DirectX::SpriteSortMode_Deferred, System::getCommonStates()->NonPremultiplied());
 
 	Vector2 textWidth = System::getFontArial()->MeasureString("Select Gamemode");
-	System::getFontArial()->DrawString(System::getSpriteBatch(), "Select Gamemode", Vector2(WIDTH / 2, HEIGHT / 2 - 400), DirectX::Colors::Black, 0.0f, textWidth / 2.f, Vector2::One);
+	System::getFontArial()->DrawString(System::getSpriteBatch(), "Select Gamemode", Vector2(System::theWindow.width / 2.0F, System::theWindow.height / 2.0F - 400), DirectX::Colors::Black, 0.0f, textWidth / 2.f, Vector2::One);
 	this->buttonGunGame->render(this->selectedElement == buttonGunGame);
 	this->buttonVersus->render(this->selectedElement == buttonVersus);
 	this->buttonFalling->render(this->selectedElement == buttonFalling);

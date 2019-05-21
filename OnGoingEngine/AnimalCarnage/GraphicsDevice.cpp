@@ -47,8 +47,6 @@ bool GraphicsDevice::initialize(int screenWidth, int screenHeight, bool vsync, H
 	HRESULT result;
 
 	D3D11_BLEND_DESC blendStateDescription;
-	float fieldOfView;
-	float screenAspect;
 
 	vSync_enabled = vsync;
 
@@ -173,12 +171,14 @@ bool GraphicsDevice::initialize(int screenWidth, int screenHeight, bool vsync, H
 	this->vp.TopLeftY = 0;
 	deviceContext->RSSetViewports(1, &this->vp);
 
-	fieldOfView = fov*(DirectX::XM_PI/180);
-	screenAspect = (float)screenWidth / (float)screenHeight;
+	this->screenNear = screenNear;
+	this->screenDepth = screenDepth;
+	this->fieldOfView = fov*(DirectX::XM_PI/180);
+	float screenAspect = (float)screenWidth / (float)screenHeight;
 
 
 	//move to ColorShader
-	this->projectionMatrix = DirectX::XMMatrixPerspectiveFovLH(fieldOfView, screenAspect, screenNear, screenDepth);
+	this->projectionMatrix = DirectX::XMMatrixPerspectiveFovLH(this->fieldOfView, screenAspect, this->screenNear, this->screenDepth);
 	
 	this->orthoMatrix = DirectX::XMMatrixOrthographicLH((float)60, (float)60, 2, 10);//for shadowMap;
 
@@ -310,9 +310,12 @@ bool GraphicsDevice::resize(int screenWidth, int screenHeight)
 	}
 	deviceContext->OMSetRenderTargets(1, &renderTargetView, depthStencilView);
 
-	this->vp.Width = (float)screenWidth;
-	this->vp.Height = (float)screenHeight;
+	this->vp.Width = static_cast<float>(screenWidth);
+	this->vp.Height = static_cast<float>(screenHeight);
 	deviceContext->RSSetViewports(1, &this->vp);
+
+	float screenAspect = screenWidth / static_cast<float>(screenHeight);
+	this->projectionMatrix = DirectX::XMMatrixPerspectiveFovLH(this->fieldOfView, screenAspect, this->screenNear, this->screenDepth);
 
 	return true;
 }
