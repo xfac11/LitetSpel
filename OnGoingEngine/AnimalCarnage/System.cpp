@@ -22,7 +22,7 @@ Physics* System::physices = nullptr;
 DEBUG_DRAW* System::debugDraw = nullptr;
 Skybox* System::skybox = nullptr;
 SoundManager* System::soundManager = nullptr;
-WindowClient System::theWindow = { 1080, 1920 };
+WindowClient System::theWindow = { 1080/2, 1920/2 };
 Camera* System::theCamera = nullptr;
 AssetManager* System::assetMananger = nullptr;
 ParticleManager* System::particleManager = nullptr;
@@ -686,7 +686,7 @@ void System::run()
 
 	if (this->hwnd)
 	{
-		theGraphicDevice->initialize(this->theWindow.width, this->theWindow.height, true, hwnd, true, 500.0f, 0.1f,90.0f);
+		theGraphicDevice->initialize(this->theWindow.width, this->theWindow.height, true, hwnd, false, 500.0f, 0.1f,90.0f);
 
 		ShowWindow(this->hwnd, this->nCMDShow);
 
