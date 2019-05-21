@@ -24,6 +24,7 @@ Skybox* System::skybox = nullptr;
 SoundManager* System::soundManager = nullptr;
 WindowClient System::theWindow = { HEIGHT,WIDTH };
 Camera* System::theCamera = nullptr;
+AssetManager* System::assetMananger = nullptr;
 
 HWND System::InitWindow(HINSTANCE hInstance, float height, float width)
 {
@@ -315,6 +316,7 @@ System::~System()
 	delete System::physices;
 	delete System::debugDraw;
 	delete System::soundManager;
+	delete System::assetMananger;
 }
 
 bool System::initialize()
@@ -361,6 +363,7 @@ bool System::initialize()
 	System::fontArial = new SpriteFont(System::getDevice(), L"./Fonts/arial.spritefont");
 	System::physices = new Physics();
 	System::debugDraw = new DEBUG_DRAW();
+	System::assetMananger = new AssetManager();
 
 	shaderManager->getLightShader()->setWindow(this->theWindow);
 

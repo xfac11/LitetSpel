@@ -11,8 +11,30 @@ ModelLoader::~ModelLoader()
 }
 void ModelLoader::loadGO(GameObject*& object, const char* filePath, int mipLevels)
 {
+	bool modelloaded = false;
 	Luna::Reader reader;
 	reader.readFile(filePath);
+
+	{
+		//check if model is already loaded
+		shared_ptr<Model> m = System::assetMananger->GetModel(filePath);
+		if (m != nullptr)
+		{
+			modelloaded = true;
+			Luna::Material mat1 = reader.getMaterial(0);
+
+			System::assetMananger->LoadTexture(mat1.diffuseTexPath, mat1.diffuseTexPath);
+			shared_ptr<Texture> texture = System::assetMananger->GetTexture(mat1.diffuseTexPath);
+			m->SetTexture(texture);
+			object->addModel(m);
+			object->setHalfSize(reader.getBoundingBox(0).halfSize, reader.getBoundingBox(0).pos);
+			return;
+		}
+
+	}
+
+
+
 
 	unsigned int meshCount = reader.getMeshCount();
 	std::vector<Luna::Vertex> vertices;
@@ -39,11 +61,8 @@ void ModelLoader::loadGO(GameObject*& object, const char* filePath, int mipLevel
 	{
 		Luna::Mesh mesh= reader.getMesh(i);
 		Luna::Material mat = reader.getMaterial(i);
-		//object[i] = new GameObject;
+
 	
-
-		//reader.getMaterial(i).
-
 		if (mesh.hasSkeleton == true)
 		{
 			Luna::Skeleton skltn; //done
@@ -123,13 +142,30 @@ void ModelLoader::loadGO(GameObject*& object, const char* filePath, int mipLevel
 		*/
 		}
 
-		if(mesh.hasBoundingBox)
-			object[i].setHalfSize(reader.getBoundingBox(i).halfSize, reader.getBoundingBox(i).pos);
-		object[i].addModel(vertices3D, dIndices, (int)indices.size(), false); //mesh.hasSkeleton
-		object[i].setTexture(reader.getMaterial(i).diffuseTexPath,i,mipLevels);
+		{
+			//check if model is loaded
+			if (modelloaded)
+				return;
+
+			shared_ptr<Model> model(new Model());
+			shared_ptr<Texture> texture;
+			model->setMesh(vertices3D, dIndices, (int)indices.size());
 		
-		if (mat.hasGlowMap)
-			object->setGlowMap(mat.glowTexPath, i);
+			System::assetMananger->LoadTexture(mat.diffuseTexPath, mat.diffuseTexPath); //load texture
+			texture = System::assetMananger->GetTexture(mat.diffuseTexPath);
+			model->SetTexture(texture); 	//set the texture to the model
+			System::assetMananger->LoadModel(filePath, model); //load model
+			object->addModel(System::assetMananger->GetModel(filePath));
+
+			if (mesh.hasBoundingBox)
+				object[i].setHalfSize(reader.getBoundingBox(i).halfSize, reader.getBoundingBox(i).pos);
+			//object[i].addModel(vertices3D, dIndices, (int)indices.size(), false); //mesh.hasSkeleton
+			//object[i].setTexture(reader.getMaterial(i).diffuseTexPath, i, mipLevels);
+
+			//if (mat.hasGlowMap)
+			//	object->setGlowMap(mat.glowTexPath, i);
+
+		}
 
 	}
 

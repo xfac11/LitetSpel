@@ -5,6 +5,9 @@
 #include"ForwardShader.h"
 #include"Texture.h"
 #include"Structs.h"
+#include <memory>
+#include <iostream>
+using namespace std;
 enum Opacity
 {
 	Opaque,
@@ -23,15 +26,19 @@ public:
 	void setRepeat(float x, float y);
 	DirectX::XMFLOAT4 &getRepeat();
 	void setTexture(std::string file, int mipLevels=-1);
+
 	void setGlowMap(std::string file);
 	void setMesh(std::vector<Vertex3D> aMesh,DWORD *indices, int numberOfIndices);
 	void setSampler();
 	void setSampler(D3D11_TEXTURE_ADDRESS_MODE type, D3D11_FILTER filter, D3D11_COMPARISON_FUNC comFunc);
-
 	void drawOnlyVertex();
 	void draw();
-private:
+	void SetTexture(shared_ptr<Texture>);// { texture = t; }
+public:
 
+
+private:
+	shared_ptr<Texture> texture;// 
 	//skeleton
 	bool gotSkeleton;
 	
@@ -45,7 +52,6 @@ private:
 	VertexBuffer<Vertex3D> vertexBuffer;
 	IndexBuffer indexBuffer;
 	ID3D11SamplerState* SamplerState;
-	Texture* texture;// 
 	//mask
 	Texture* normalMap;
 	Texture* glowMap;

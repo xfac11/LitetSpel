@@ -18,13 +18,13 @@ public:
 	~GameObject();
 
 	int getNrOfModels();
-	Model*& getModel(int id);
-	Model**& getTheModelPtr();
+	shared_ptr<Model>  getModel();
+	//Model**& getTheModelPtr();
 
 	void setHalfSize(float halfSize[3], float posOffset[3]);
 
 	void calcAABB(std::vector<Vertex3D> mesh);
-
+	void addModel(shared_ptr<Model> m);
 	void addModel(std::vector<Vertex3D> mesh, DWORD *indices, int numberOfIndices,  bool hasSkeleton);
 	void setMesh(std::vector<Vertex3D> mesh, DWORD *indices, int numberOfIndices, int id);
 	void setTexture(std::string file, int id, int mipLevels=-1);
@@ -45,7 +45,7 @@ public:
 	JointTransformation interpolate1(JointTransformation frameA, JointTransformation frameB, float progression);
 	JointTransformation interpolate2(JointTransformation frameA, JointTransformation frameB, float progression);
 private:
-	Model* *theModel;
+	shared_ptr<Model> theModel;
 	int cap;
 
 	bool hasLoadedAABB;

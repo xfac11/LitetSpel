@@ -6,7 +6,8 @@ Model::Model()
 	this->indexBuffer = IndexBuffer();
 	this->SamplerState = nullptr;
 	this->theShader = nullptr;
-	this->texture = new Texture;
+	shared_ptr<Texture> t;
+	texture = t;
 	this->normalMap = new Texture;
 	this->glowMap = new Texture;
 	this->type = Opaque;
@@ -35,9 +36,9 @@ Model::~Model()
 {
 	if (this->SamplerState != nullptr)
 		this->SamplerState->Release();
-	if (this->texture != nullptr)
+	if (texture != nullptr)
 	{
-		delete this->texture;
+		 texture  = nullptr;
 	}
 	if (this->normalMap != nullptr)
 	{
@@ -94,6 +95,7 @@ void Model::setTexture(std::string file, int mipLevels)
 		this->type = Opaque;
 	}
 }
+
 
 void Model::setGlowMap(std::string file)
 {
@@ -192,7 +194,7 @@ void Model::draw()
 		OutputDebugStringA("== ptr was null == "); //if nullptr then model may be transparent
 	}
 
-	System::getDeviceContext()->PSSetShaderResources(0, 1, &this->texture->getTexture());
+	System::getDeviceContext()->PSSetShaderResources(0, 1, &texture->getTexture());
 	if (this->normalMap != nullptr)
 	{
 		System::getDeviceContext()->PSSetShaderResources(1, 1, &this->normalMap->getTexture());
@@ -215,4 +217,9 @@ void Model::draw()
 	System::getDeviceContext()->PSSetSamplers(0, 1, &this->SamplerState);
 
 	this->theShader->renderShader((int)mesh.size(),indexBuffer.getBufferSize());
+}
+
+void Model::SetTexture(shared_ptr<Texture> t)
+{
+	this->texture = t;
 }

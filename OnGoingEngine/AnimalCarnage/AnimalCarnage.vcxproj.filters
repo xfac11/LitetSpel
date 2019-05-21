@@ -688,15 +688,10 @@
     <ClCompile Include="PauseGui.cpp">
       <Filter>Menu</Filter>
     </ClCompile>
-    <ClCompile Include="AssetManager.h">
-      <Filter>Engine</Filter>
-    </ClCompile>
-    <ClCompile Include="AssetManager.cpp">
-      <Filter>Engine</Filter>
-    </ClCompile>
     <ClCompile Include="AnimationShader.cpp" />
     <ClCompile Include="VerticalBlur.cpp" />
     <ClCompile Include="HorizontalBlur.cpp" />
+    <ClCompile Include="AssetManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource1.h" />
@@ -1579,6 +1574,7 @@
     <ClInclude Include="AnimationShader.h" />
     <ClInclude Include="VerticalBlur.h" />
     <ClInclude Include="HorizontalBlur.h" />
+    <ClInclude Include="AssetManager.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="imgui\.gitkeep" />

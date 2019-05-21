@@ -128,7 +128,7 @@ public:
 	static GameObjectHandler* handler;
 	static GraphicsDevice* theGraphicDevice;
 
-
+	static AssetManager* assetMananger;
 	static ModelLoader* theModelLoader;
 	static SpriteBatch* getSpriteBatch();
 	static CommonStates* getCommonStates();
