@@ -37,10 +37,13 @@ cbuffer world : register(b1)
 cbuffer texRepeat : register(b2)
 {
 	float4 repeat;//world
+	float4 colorMask;
 }
+
 Texture2D Tex : register(t0);
 Texture2D Nor : register(t1);
 Texture2D Glow : register(t2);
+Texture2D Mask : register(t3);
 SamplerState SampSt :register(s0);
 PS_OUT PS_main(PS_IN input)
 {
@@ -49,6 +52,10 @@ PS_OUT PS_main(PS_IN input)
 
 
 	float4 textureColor = Tex.Sample(SampSt, input.Tex*repeat).xyzw;
+	if (Mask.Sample(SampSt, input.Tex*repeat).w > 0.9f)
+	{
+		textureColor = float4(colorMask.xyz, 1);
+	}
 	float3 bumpNormal;
 
 	//float3 diffuseAlbedo = Tex.Sample(SampSt, input.Tex).rgb;

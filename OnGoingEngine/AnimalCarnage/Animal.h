@@ -20,6 +20,7 @@ struct AnimalDef
 	float jumpHeight;
 	int strength;
 	const char* modelPath;
+	const char* maskPath;
 };
 
 class Animal

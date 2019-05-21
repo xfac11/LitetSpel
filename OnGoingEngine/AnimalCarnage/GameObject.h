@@ -29,6 +29,9 @@ public:
 	void setMesh(std::vector<Vertex3D> mesh, DWORD *indices, int numberOfIndices, int id);
 	void setTexture(std::string file, int id, int mipLevels=-1);
 	void setGlowMap(std::string file, int id);
+	void setMask(std::string file, int id);
+	void setColorMask(DirectX::XMFLOAT4 colorMask);
+	DirectX::XMFLOAT4& getColorMask();
 	void draw();
 	AABB getCollisionBox();
 	Primitives * CollisionShape;
@@ -58,7 +61,7 @@ private:
 	float prevTimeIncrement;
 	//std::vector<KeyFrame> keyframes;
 	//AnimationShader* animShader;
-
+	DirectX::XMFLOAT4 colorMask;
 	AABB colBox;
 	//ConstantBuffer<WorldMatrix> worldConstBuffer;
 	//Hitbox theHitbox; a model with just the index and vertices and a color. no textures etc

@@ -377,7 +377,15 @@ bool System::initialize()
 	System::getSoundManager()->loadEffect(L"Swing.wav", "5");
 
 	shaderManager->getLightShader()->setWindow(this->theWindow);
-
+	D3D11_VIEWPORT vp;
+	ZeroMemory(&vp, sizeof(D3D11_VIEWPORT));
+	vp.Height = System::fusk->theWindow.height;
+	vp.Width = System::fusk->theWindow.width;
+	vp.MinDepth = 0.0f;
+	vp.MaxDepth = 1.0f;
+	vp.TopLeftX = 0;
+	vp.TopLeftY = 0;
+	spriteBatch->SetViewport(vp);
 	System::states.push_back(new MainMenu());
 	System::states[MAINMENU]->initailize();
 	System::states.push_back(new GunGameState());
@@ -640,8 +648,11 @@ void System::render()
 
 	shaderManager->getShadowMapping()->setWorld(DirectX::XMMatrixIdentity());
 	shaderManager->getShadowMapping()->setViewProj(this->theCamera->GetViewMatrix(), this->theGraphicDevice->getOrtho(), DirectX::XMFLOAT4(this->theCamera->GetPosition().x, this->theCamera->GetPosition().y, this->theCamera->GetPosition().z, 1.0f));
-
-
+	/*RECT w;
+	LPRECT s;
+	GetWindowRect(this->hwnd, &w);
+	GetClientRect(this->hwnd, s);*/
+	
 	this->skybox->setViewProj(this->theCamera->GetViewMatrix(), this->theGraphicDevice->getProj());
 	this->skybox->setWorld(camWorld);
 	
@@ -675,7 +686,7 @@ void System::run()
 
 	if (this->hwnd)
 	{
-		theGraphicDevice->initialize(this->theWindow.width, this->theWindow.height, true, hwnd, false, 500.0f, 0.1f,90.0f);
+		theGraphicDevice->initialize(this->theWindow.width, this->theWindow.height, true, hwnd, true, 500.0f, 0.1f,90.0f);
 
 		ShowWindow(this->hwnd, this->nCMDShow);
 
@@ -813,6 +824,6 @@ void System::resizeWindow(int width, int height)
 	vp.MinDepth = 0.0f;
 	vp.MaxDepth = 1.0f;
 	spriteBatch->SetViewport(vp);
-
+	//spriteBatch->Ge
 	MoveWindow(System::fusk->hwnd, 0, 0, System::fusk->theWindow.width, System::fusk->theWindow.height, true);
 }

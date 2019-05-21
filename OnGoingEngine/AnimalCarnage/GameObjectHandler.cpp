@@ -47,6 +47,7 @@ void GameObjectHandler::addObject(GameObject *& gameObject)
 			//gameObject->getModel(i).setShader(Shader);
 			this->transModels[this->nrOfTrans].modelPtr = gameObject->getModel();
 			this->transModels[this->nrOfTrans].worldPtr = &gameObject->getWorld();//&btTransform_to_XMMATRIX(gameObject->body()->getWorldTransform());
+			this->transModels[this->nrOfTrans].selfPtr = gameObject;
 			gameObject->getModel()->setShader(System::shaderManager->getForwardShader());
 			this->nrOfTrans++;
 			/*Model* *ptr = new Model*[4];
@@ -61,6 +62,7 @@ void GameObjectHandler::addObject(GameObject *& gameObject)
 				this->expandOpaqueModels();
 			this->opaqueModels[this->nrOfOpaque].modelPtr = gameObject->getModel();
 			this->opaqueModels[this->nrOfOpaque].worldPtr = &gameObject->getWorld();
+			this->opaqueModels[this->nrOfOpaque].selfPtr = gameObject;
 			gameObject->getModel()->setShader(System::shaderManager->getDefShader());
 			this->nrOfOpaque++;
 		}
@@ -138,6 +140,7 @@ void GameObjectHandler::draw(float deltaTime)
 	{
 		shared_ptr<Model> ptr = this->opaqueModels[i].modelPtr;
 		System::shaderManager->getDefShader()->setRepeat(ptr->getRepeat());
+		System::shaderManager->getDefShader()->setMaskColor(this->opaqueModels[i].selfPtr->getColorMask());
 		ptr->getShader()->setWorld(*this->opaqueModels[i].worldPtr);
 		ptr->draw();
 	}

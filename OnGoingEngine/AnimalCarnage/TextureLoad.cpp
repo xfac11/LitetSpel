@@ -172,7 +172,7 @@ bool TextureLoad::LoadTarga(const char* filename, int& height, int& width)
 	// Check that it is 32 bit and not 24 bit.
 	if (bpp != 32)
 	{
-		//return false;
+		return false;
 	}
 
 	// Calculate the size of the 32 bit image data.

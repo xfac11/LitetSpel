@@ -78,37 +78,30 @@ bool HorizontalBlur::initialize(int height, int width)
 	texDesc.MiscFlags = 0;
 	texDesc.SampleDesc.Count = 1;
 
-	for (int i = 0; i < GBUFFERCAP; i++)
-	{
-		result = System::getDevice()->CreateTexture2D(&texDesc, NULL, &this->texture);
+	result = System::getDevice()->CreateTexture2D(&texDesc, NULL, &this->texture);
 		if (FAILED(result))
 			return false;
-
-	}
 
 	renTarViewDesc.Format = texDesc.Format;
 	renTarViewDesc.Texture2D.MipSlice = 0;
 	renTarViewDesc.ViewDimension = D3D11_RTV_DIMENSION_TEXTURE2D;
 
-	for (int i = 0; i < GBUFFERCAP; i++)
-	{
-		result = System::getDevice()->CreateRenderTargetView(this->texture, &renTarViewDesc, &this->renderTarget);
-		if (FAILED(result))
-			return false;
+	result = System::getDevice()->CreateRenderTargetView(this->texture, &renTarViewDesc, &this->renderTarget);
+	if (FAILED(result))
+		return false;
 
-	}
+	
 	shaderResViewDesc.Texture2D.MostDetailedMip = 0;
 	shaderResViewDesc.Texture2D.MipLevels = 1;
 	shaderResViewDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
 	shaderResViewDesc.Format = texDesc.Format;
 
-	for (int i = 0; i < GBUFFERCAP; i++)
-	{
-		result = System::getDevice()->CreateShaderResourceView(this->texture, &shaderResViewDesc, &this->shaderView);
-		if (FAILED(result))
-			return false;
+	
+	result = System::getDevice()->CreateShaderResourceView(this->texture, &shaderResViewDesc, &this->shaderView);
+	if (FAILED(result))
+		return false;
 
-	}
+	
 
 	//result=System::getDevice()->CreateShaderResourceView(depthBuffer, &shaderResViewDesc, &this->depthSource);
 	if (FAILED(result))
