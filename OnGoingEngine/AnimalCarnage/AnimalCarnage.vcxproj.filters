@@ -698,6 +698,9 @@
     <ClCompile Include="EffectBase.cpp">
       <Filter>Particle</Filter>
     </ClCompile>
+    <ClCompile Include="SimpleEffect.cpp">
+      <Filter>Particle</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource1.h" />
@@ -1585,6 +1588,9 @@
       <Filter>Particle</Filter>
     </ClInclude>
     <ClInclude Include="EffectBase.h">
+      <Filter>Particle</Filter>
+    </ClInclude>
+    <ClInclude Include="SimpleEffect.h">
       <Filter>Particle</Filter>
     </ClInclude>
   </ItemGroup>

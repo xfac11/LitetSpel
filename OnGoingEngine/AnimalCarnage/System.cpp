@@ -25,6 +25,7 @@ SoundManager* System::soundManager = nullptr;
 WindowClient System::theWindow = { 1080, 1920 };
 Camera* System::theCamera = nullptr;
 AssetManager* System::assetMananger = nullptr;
+ParticleManager* System::particleManager = nullptr;
 
 HWND System::InitWindow(HINSTANCE hInstance, float height, float width)
 {
