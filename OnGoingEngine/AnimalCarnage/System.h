@@ -30,6 +30,7 @@
 #include "ShaderManager.h"
 #include "Skybox.h"
 #include "SoundManager.h"
+#include "ParticleManager.h"
 //Test
 #include "btBulletCollisionCommon.h"
 #include "btBulletDynamicsCommon.h"
@@ -39,6 +40,8 @@
 #include "Structs.h"
 
 #include "AssetManager.h"
+
+
 using namespace DirectX;
 
 enum GameState {
@@ -63,6 +66,7 @@ private:
 	static Physics* physices;
 	static DEBUG_DRAW* debugDraw;
 	static SoundManager* soundManager;
+	static ParticleManager* particleManager;
 
 	//ForwardShader* theForwardShader;
 	

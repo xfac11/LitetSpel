@@ -316,6 +316,7 @@ System::~System()
 	delete System::physices;
 	delete System::debugDraw;
 	delete System::soundManager;
+	delete System::particleManager;
 	delete System::assetMananger;
 }
 
@@ -364,6 +365,15 @@ bool System::initialize()
 	System::physices = new Physics();
 	System::debugDraw = new DEBUG_DRAW();
 	System::assetMananger = new AssetManager();
+	System::particleManager = new ParticleManager();
+	System::soundManager = new SoundManager();
+
+	System::getSoundManager()->loadEffect(L"Getting_Hit_Punch.wav", "0");
+	System::getSoundManager()->loadEffect(L"Getting_Hit_Punch_2.wav", "1");
+	System::getSoundManager()->loadEffect(L"Getting_Hit_Punch_3.wav", "2");
+	System::getSoundManager()->loadEffect(L"Getting_Hit_Punch_4.wav", "3");
+	System::getSoundManager()->loadEffect(L"Wall_Jump_Crash.wav", "4");
+	System::getSoundManager()->loadEffect(L"Swing.wav", "5");
 
 	shaderManager->getLightShader()->setWindow(this->theWindow);
 
@@ -667,16 +677,6 @@ void System::run()
 		theGraphicDevice->initialize(this->theWindow.width, this->theWindow.height, true, hwnd, false, 500.0f, 0.1f,90.0f);
 
 		ShowWindow(this->hwnd, this->nCMDShow);
-
-		//Needs to initialize after ShowWindow, or else it fails!
-		this->soundManager = new SoundManager();
-		System::getSoundManager()->loadEffect(L"Getting_Hit_Punch.wav", "0");
-		System::getSoundManager()->loadEffect(L"Getting_Hit_Punch_2.wav", "1");
-		System::getSoundManager()->loadEffect(L"Getting_Hit_Punch_3.wav", "2");
-		System::getSoundManager()->loadEffect(L"Getting_Hit_Punch_4.wav", "3");
-		System::getSoundManager()->loadEffect(L"Wall_Jump_Crash.wav", "4");
-		System::getSoundManager()->loadEffect(L"Swing.wav", "5");
-
 
 		this->shaderManager = new ShaderManager;
 		this->shaderManager->initialize(this->theWindow.height, this->theWindow.width, 0.1f, 500.0f);
