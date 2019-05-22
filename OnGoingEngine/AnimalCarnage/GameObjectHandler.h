@@ -24,6 +24,8 @@ private:
 	int capTrans;
 	int nrOfTrans;
 	int nrOfLights;
+
+	int animTimer;
 	struct ModWorld
 	{
 		DirectX::XMMATRIX* worldPtr;

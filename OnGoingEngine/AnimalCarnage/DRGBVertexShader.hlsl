@@ -58,7 +58,7 @@ VS_OUT VS_main(VS_IN input)
 		output.Normal += mul(jointTransformations[input.Joint.z], totalNormal) * input.Weights.z;
 		output.Normal += mul(jointTransformations[input.Joint.w], totalNormal) * input.Weights.w;
 
-		
+		//output.Normal = float4(input.Normal, 1.0f);
 		//output.Pos = mul(proj, mul(view, mul(world, output.Pos)));
 		//output.Normal = mul(mul(view, world), output.Normal);
 	}

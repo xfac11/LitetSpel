@@ -15,10 +15,11 @@ void KeyFrame::operator=(const Luna::Keyframe & obj)
 {
 	this->timeStamp = obj.timePosition;
 
-
+	DirectX::XMFLOAT4 forcedScale = { 1.f,1.f,1.f,0.f };
 	DirectX::XMFLOAT4 position	= DirectX::XMFLOAT4(obj.translation[0], obj.translation[1], obj.translation[2], obj.translation[3]);
 	DirectX::XMFLOAT4 rotation	= DirectX::XMFLOAT4(obj.rotation[0], obj.rotation[1], obj.rotation[2], obj.rotation[3]);
 	DirectX::XMFLOAT4 scale		= DirectX::XMFLOAT4(obj.scale[0], obj.scale[1], obj.scale[2], obj.scale[3]);
+	//scale = forcedScale;
 
 	this->transform = JointTransformation(position, rotation, scale);
 }

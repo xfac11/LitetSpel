@@ -15,7 +15,7 @@ GameObjectHandler::GameObjectHandler()
 	{
 		this->gameObjects[i] = nullptr;
 	}
-	
+	this->animTimer = 0;
 }
 
 GameObjectHandler::~GameObjectHandler()
@@ -226,12 +226,17 @@ void GameObjectHandler::draw(float deltaTime)
 	}
 
 	//enable this to animate also set //mesh.hasSkeleton in modelloader
-	for (int a = 0; a < nrOfObjects; a++)
-	{
-		if (this->gameObjects[a]->haveAnimation() == true)
+
+	this->animTimer += 60 * deltaTime;
+	if (animTimer >= 60) {
+		for (int a = 0; a < nrOfObjects; a++)
 		{
-			//this->gameObjects[a]->computeAnimationMatrix(deltaTime); //
+			if (this->gameObjects[a]->haveAnimation() == true)
+			{
+				//this->gameObjects[a]->computeAnimationMatrix(deltaTime); //
+			}
 		}
+		animTimer = 0;
 	}
 	
 

@@ -56,6 +56,9 @@ private:
 	Animation anims;
 	float timePassed;
 	float prevTimeIncrement;
+
+	std::vector<DirectX::XMMATRIX> pose_global;
+	std::vector<DirectX::XMMATRIX> matrixPallete; //to pipeline
 	//std::vector<KeyFrame> keyframes;
 	//AnimationShader* animShader;
 
