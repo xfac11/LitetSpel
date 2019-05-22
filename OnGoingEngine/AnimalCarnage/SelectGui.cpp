@@ -161,7 +161,13 @@ bool SelectGui::update(float deltaTime)
 		{
 			System::theTracker->Update(gamepadState);
 			this->changeSelected();
-
+			if (System::theTracker->dpadDown)
+			{
+				if (i == 0)
+				{
+					this->playerSelector0->backGroundColor = DirectX::XMVectorSet(1, 0, 0, 1);
+				}
+			}
 			if (System::theTracker->a == DirectX::GamePad::ButtonStateTracker::PRESSED)
 			{
 				if (this->selectedElement == buttonTest)

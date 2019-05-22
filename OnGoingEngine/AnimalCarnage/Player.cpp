@@ -234,7 +234,7 @@ void Player::initialize(AnimalType type)
 	//System::getDebugDraw()->addPrimitives(playerObj->CollisionShape);
 
 	System::theModelLoader->loadGO(this->playerObj, animal.modelPath);
-	if(animal.maskPath!="empty")
+	if(animal.maskPath!="empty"&&!this->playerObj->getModel()->hasMaskColor())
 		this->playerObj->setMask(animal.maskPath,0);//change to animal.maskPath
 	System::handler->addObject(this->playerObj);
 

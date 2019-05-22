@@ -10,7 +10,7 @@ GameObject::GameObject()
 	this->theModel = m;
 	this->colBox = AABB();
 	//this->gotSkeleton = false;
-
+	this->repeat = DirectX::XMFLOAT4(1, 1, 1, 1);
 	this->timePassed = 0.f;
 	this->prevTimeIncrement = 0.f;
 }
@@ -23,7 +23,7 @@ GameObject::GameObject(Shader * shader)
 	shared_ptr<Model> m;
 	this->theModel = m;
 	this->colBox = AABB();
-
+	this->repeat = DirectX::XMFLOAT4(1, 1, 1, 1);
 	this->timePassed = 0.f;
 	this->prevTimeIncrement = 0.f;
 	//this->gotSkeleton = false;
@@ -181,6 +181,12 @@ void GameObject::setMask(std::string file, int id)
 	this->theModel->setMask(file);
 }
 
+void GameObject::setRepeat(float x, float y)
+{
+	this->repeat.x = x;
+	this->repeat.y = y;
+}
+
 void GameObject::setColorMask(DirectX::XMFLOAT4 colorMask)
 {
 	this->colorMask = colorMask;
@@ -189,6 +195,11 @@ void GameObject::setColorMask(DirectX::XMFLOAT4 colorMask)
 DirectX::XMFLOAT4 & GameObject::getColorMask()
 {
 	return this->colorMask;
+}
+
+DirectX::XMFLOAT4 & GameObject::getRepeat()
+{
+	return this->repeat;
 }
 
 void GameObject::draw()

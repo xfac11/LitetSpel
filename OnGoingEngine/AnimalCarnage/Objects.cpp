@@ -53,7 +53,7 @@ Objects::Objects(std::string filepath, btVector3 position,int id,int friction, b
 	System::theModelLoader->loadGO(this->ObjectOBJ, filepath.c_str(),mipLevels);
 	System::handler->addObject(this->ObjectOBJ);
 	this->ObjectOBJ->setPosition(btVector3(position.getX(), position.getY()+0.57f, position.getZ()));
-	this->ObjectOBJ->getModel()->setRepeat(x, y);//repeated texture
+	this->ObjectOBJ->setRepeat(x, y);//repeated texture
 	this->position1 = XMFLOAT3(position.getX(), position.getY(), position.getZ());
 	this->position2 = XMFLOAT3(position1.x + 5, position1.y+5, position1.z);
 

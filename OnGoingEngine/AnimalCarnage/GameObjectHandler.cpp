@@ -139,7 +139,7 @@ void GameObjectHandler::draw(float deltaTime)
 	for (int i = 0; i < this->nrOfOpaque; i++)
 	{
 		shared_ptr<Model> ptr = this->opaqueModels[i].modelPtr;
-		System::shaderManager->getDefShader()->setRepeat(ptr->getRepeat());
+		System::shaderManager->getDefShader()->setRepeat(this->opaqueModels[i].selfPtr->getRepeat());
 		System::shaderManager->getDefShader()->setMaskColor(this->opaqueModels[i].selfPtr->getColorMask());
 		ptr->getShader()->setWorld(*this->opaqueModels[i].worldPtr);
 		ptr->draw();
