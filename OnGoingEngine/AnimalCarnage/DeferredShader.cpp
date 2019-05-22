@@ -159,6 +159,12 @@ void DeferredShader::setJointData(std::vector<DirectX::XMMATRIX> jointTransforms
 	this->jointCB.applyChanges(System::getDevice(), System::getDeviceContext());
 }
 
+void DeferredShader::setMaskColor(DirectX::XMFLOAT4 color)
+{
+	this->repeat.data.colorMask = color;
+	this->repeat.applyChanges(System::getDevice(), System::getDeviceContext());
+}
+
 void DeferredShader::setCamPosToMatricesPerFrame(DirectX::XMFLOAT3 campos)
 {
 	XMFLOAT4 cam = { campos.x, campos.y,campos.z,1.f };

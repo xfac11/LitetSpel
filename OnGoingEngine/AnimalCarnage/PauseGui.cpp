@@ -115,8 +115,8 @@ PauseGui::~PauseGui()
 
 bool PauseGui::initialize()
 {
-	this->resumeButton = new Button("Resume", Vector2(WIDTH / 2 - 300, HEIGHT / 2 - 140));
-	this->mainMenuButton = new Button("Main Menu", Vector2(WIDTH / 2 - 300, HEIGHT / 2));
+	this->resumeButton = new Button("Resume", Vector2(System::theWindow.width / 2.0F - 300, System::theWindow.height / 2.0F - 140));
+	this->mainMenuButton = new Button("Main Menu", Vector2(System::theWindow.width / 2.0F - 300, System::theWindow.height / 2.0F));
 
 	this->selectedElement = resumeButton;
 	this->resumeButton->setConnectedElements(nullptr, nullptr, mainMenuButton, mainMenuButton);
@@ -223,7 +223,7 @@ bool PauseGui::render()
 {
 	System::getSpriteBatch()->Begin(DirectX::SpriteSortMode_Deferred, System::getCommonStates()->NonPremultiplied());
 
-	System::getFontArial()->DrawString(System::getSpriteBatch(), "Game Paused", SimpleMath::Vector2(WIDTH / 2 - SimpleMath::Vector2(System::getFontArial()->MeasureString("Game Paused")).x / 2, HEIGHT / 2 - 300), DirectX::Colors::Black, 0.0f, DirectX::SimpleMath::Vector2::Zero, DirectX::SimpleMath::Vector2::One);
+	System::getFontArial()->DrawString(System::getSpriteBatch(), "Game Paused", SimpleMath::Vector2(System::theWindow.width / 2.0F - SimpleMath::Vector2(System::getFontArial()->MeasureString("Game Paused")).x / 2, System::theWindow.height / 2.0F - 300), DirectX::Colors::Black, 0.0f, DirectX::SimpleMath::Vector2::Zero, DirectX::SimpleMath::Vector2::One);
 	this->resumeButton->render(this->selectedElement == resumeButton);
 	this->mainMenuButton->render(this->selectedElement == mainMenuButton);
 

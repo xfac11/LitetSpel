@@ -45,6 +45,9 @@ public:
 	void setBackBuffer(ID3D11DepthStencilView*& view);
 
 private:
+	float fieldOfView;
+	float screenNear;
+	float screenDepth;
 
 	bool vSync_enabled;
 	float blendFactor[4] = { 0.f, 0.f, 0.f, 0.f };

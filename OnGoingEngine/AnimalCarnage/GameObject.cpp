@@ -175,6 +175,21 @@ void GameObject::setGlowMap(std::string file, int id)
 	this->theModel->setGlowMap(file);
 }
 
+void GameObject::setMask(std::string file, int id)
+{
+	this->theModel->setMask(file);
+}
+
+void GameObject::setColorMask(DirectX::XMFLOAT4 colorMask)
+{
+	this->colorMask = colorMask;
+}
+
+DirectX::XMFLOAT4 & GameObject::getColorMask()
+{
+	return this->colorMask;
+}
+
 void GameObject::draw()
 {
 	/*ForwardShader* ptr = nullptr;
@@ -339,7 +354,7 @@ void GameObject::setNewAnimation(float fps, float duration, std::string name, st
 
 void GameObject::setSkeleton(std::vector<Luna::Joint> theJoints)
 {
-
+	//this->
 	this->skeleton.resize(theJoints.size());
 	for (int i = 0; i < theJoints.size(); i++)
 	{

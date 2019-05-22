@@ -22,9 +22,10 @@ Physics* System::physices = nullptr;
 DEBUG_DRAW* System::debugDraw = nullptr;
 Skybox* System::skybox = nullptr;
 SoundManager* System::soundManager = nullptr;
-WindowClient System::theWindow = { HEIGHT,WIDTH };
+WindowClient System::theWindow = { 1080/2, 1920/2 };
 Camera* System::theCamera = nullptr;
 AssetManager* System::assetMananger = nullptr;
+ParticleManager* System::particleManager = nullptr;
 
 HWND System::InitWindow(HINSTANCE hInstance, float height, float width)
 {
@@ -258,7 +259,7 @@ System::System(HINSTANCE hInstance, LPCSTR name, int nCmdShow)
 
 	this->hinstance = hInstance;
 	this->applicationName = name;
-	this->hwnd = InitWindow(this->hinstance, HEIGHT, WIDTH); 
+	this->hwnd = InitWindow(this->hinstance, this->theWindow.height, this->theWindow.width);
 	this->nCMDShow = nCmdShow;
 	this->msg = { 0 };
 	this->theGraphicDevice = new GraphicsDevice();
@@ -316,6 +317,7 @@ System::~System()
 	delete System::physices;
 	delete System::debugDraw;
 	delete System::soundManager;
+	delete System::particleManager;
 	delete System::assetMananger;
 }
 
@@ -364,18 +366,26 @@ bool System::initialize()
 	System::physices = new Physics();
 	System::debugDraw = new DEBUG_DRAW();
 	System::assetMananger = new AssetManager();
+	System::particleManager = new ParticleManager();
+	System::soundManager = new SoundManager();
+
+	System::getSoundManager()->loadEffect(L"Getting_Hit_Punch.wav", "0");
+	System::getSoundManager()->loadEffect(L"Getting_Hit_Punch_2.wav", "1");
+	System::getSoundManager()->loadEffect(L"Getting_Hit_Punch_3.wav", "2");
+	System::getSoundManager()->loadEffect(L"Getting_Hit_Punch_4.wav", "3");
+	System::getSoundManager()->loadEffect(L"Wall_Jump_Crash.wav", "4");
+	System::getSoundManager()->loadEffect(L"Swing.wav", "5");
 
 	shaderManager->getLightShader()->setWindow(this->theWindow);
-
-	//Resize
-	/*this->theWindow.width = 1280;
-	this->theWindow.height = 720;
-
-	shaderManager->getDefShader()->gBuffer.resize(this->theWindow.height, this->theWindow.width);
-	theGraphicDevice->resize(this->theWindow.width, this->theWindow.height);
-	shaderManager->getLightShader()->setWindow(this->theWindow);
-	MoveWindow(hwnd, 0, 0, this->theWindow.width, this->theWindow.height, true);*/
-
+	D3D11_VIEWPORT vp;
+	ZeroMemory(&vp, sizeof(D3D11_VIEWPORT));
+	vp.Height = System::fusk->theWindow.height;
+	vp.Width = System::fusk->theWindow.width;
+	vp.MinDepth = 0.0f;
+	vp.MaxDepth = 1.0f;
+	vp.TopLeftX = 0;
+	vp.TopLeftY = 0;
+	spriteBatch->SetViewport(vp);
 	System::states.push_back(new MainMenu());
 	System::states[MAINMENU]->initailize();
 	System::states.push_back(new GunGameState());
@@ -634,12 +644,15 @@ void System::render()
 	shaderManager->getDefShader()->setViewProj(this->theCamera->GetViewMatrix(), this->theGraphicDevice->getProj(), DirectX::XMFLOAT4(this->theCamera->GetPosition().x, this->theCamera->GetPosition().y, this->theCamera->GetPosition().z, 1.0f));
 
 	shaderManager->getLightShader()->setCamPosToMatricesPerFrame(this->theCamera->GetPosition());
-	shaderManager->getLightShader()->setViewProj(this->theCamera->GetViewMatrix(), this->theGraphicDevice->getOrtho(), DirectX::XMFLOAT4(this->theCamera->GetPosition().x, this->theCamera->GetPosition().y, this->theCamera->GetPosition().z, 1.0f));
+	shaderManager->getLightShader()->setViewProj(this->theCamera->GetViewMatrix(), this->theGraphicDevice->getProj(), DirectX::XMFLOAT4(this->theCamera->GetPosition().x, this->theCamera->GetPosition().y, this->theCamera->GetPosition().z, 1.0f));
 
 	shaderManager->getShadowMapping()->setWorld(DirectX::XMMatrixIdentity());
 	shaderManager->getShadowMapping()->setViewProj(this->theCamera->GetViewMatrix(), this->theGraphicDevice->getOrtho(), DirectX::XMFLOAT4(this->theCamera->GetPosition().x, this->theCamera->GetPosition().y, this->theCamera->GetPosition().z, 1.0f));
-
-
+	/*RECT w;
+	LPRECT s;
+	GetWindowRect(this->hwnd, &w);
+	GetClientRect(this->hwnd, s);*/
+	
 	this->skybox->setViewProj(this->theCamera->GetViewMatrix(), this->theGraphicDevice->getProj());
 	this->skybox->setWorld(camWorld);
 	
@@ -673,24 +686,12 @@ void System::run()
 
 	if (this->hwnd)
 	{
-		this->theWindow.height = HEIGHT;
-		this->theWindow.width = WIDTH;
-		theGraphicDevice->initialize(WIDTH, HEIGHT ,true , hwnd, false, 500.0f, 0.1f,90.0f);
+		theGraphicDevice->initialize(this->theWindow.width, this->theWindow.height, true, hwnd, false, 500.0f, 0.1f,90.0f);
 
 		ShowWindow(this->hwnd, this->nCMDShow);
 
-		//Needs to initialize after ShowWindow, or else it fails!
-		this->soundManager = new SoundManager();
-		System::getSoundManager()->loadEffect(L"Getting_Hit_Punch.wav", "0");
-		System::getSoundManager()->loadEffect(L"Getting_Hit_Punch_2.wav", "1");
-		System::getSoundManager()->loadEffect(L"Getting_Hit_Punch_3.wav", "2");
-		System::getSoundManager()->loadEffect(L"Getting_Hit_Punch_4.wav", "3");
-		System::getSoundManager()->loadEffect(L"Wall_Jump_Crash.wav", "4");
-		System::getSoundManager()->loadEffect(L"Swing.wav", "5");
-
-
 		this->shaderManager = new ShaderManager;
-		this->shaderManager->initialize(HEIGHT, WIDTH, 0.1f, 500.0f);
+		this->shaderManager->initialize(this->theWindow.height, this->theWindow.width, 0.1f, 500.0f);
 		this->initialize();
 		initImgui();
 
@@ -803,4 +804,26 @@ void System::setState(GameState state)
 	{
 		static_cast<MainMenu*>(System::fusk->states[MAINMENU])->setCurrentMenu(MAIN, true);
 	}
+}
+
+void System::resizeWindow(int width, int height)
+{
+	System::fusk->theWindow.width = width;
+	System::fusk->theWindow.height = height;
+
+	shaderManager->getDefShader()->gBuffer.resize(System::fusk->theWindow.height, System::fusk->theWindow.width);
+	theGraphicDevice->resize(System::fusk->theWindow.width, System::fusk->theWindow.height);
+	shaderManager->getLightShader()->setWindow(System::fusk->theWindow);
+	shaderManager->getHorBlur()->resize(System::fusk->theWindow.height, System::fusk->theWindow.width);
+	shaderManager->getVerBlur()->resize(System::fusk->theWindow.height, System::fusk->theWindow.width);
+
+	D3D11_VIEWPORT vp;
+	ZeroMemory(&vp, sizeof(D3D11_VIEWPORT));
+	vp.Height = System::fusk->theWindow.height;
+	vp.Width = System::fusk->theWindow.width;
+	vp.MinDepth = 0.0f;
+	vp.MaxDepth = 1.0f;
+	spriteBatch->SetViewport(vp);
+	//spriteBatch->Ge
+	MoveWindow(System::fusk->hwnd, 0, 0, System::fusk->theWindow.width, System::fusk->theWindow.height, true);
 }

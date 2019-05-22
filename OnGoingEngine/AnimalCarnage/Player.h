@@ -66,7 +66,7 @@ public:
 	int getHealth() const;
 	void takeDamage(int damage);
 	bool isDead() const;
-
+	void setColorMask(DirectX::XMFLOAT4 color);
 	void changeCharacter();
 	bool getHit()const { return hit; }
 	bool getHitStun();

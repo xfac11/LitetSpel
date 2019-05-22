@@ -28,6 +28,7 @@ private:
 	{
 		DirectX::XMMATRIX* worldPtr;
 		shared_ptr<Model> modelPtr;
+		GameObject* selfPtr;
 	};
 
 	

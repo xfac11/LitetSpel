@@ -308,6 +308,7 @@
     <ClCompile Include="CheckBox.cpp" />
     <ClCompile Include="DEBUG_DRAW.cpp" />
     <ClCompile Include="DeferredShader.cpp" />
+    <ClCompile Include="EffectBase.cpp" />
     <ClCompile Include="ForwardShader.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GameObjectHandler.cpp" />
@@ -345,6 +346,7 @@
     <ClCompile Include="MouseEvent.cpp" />
     <ClCompile Include="Objects.cpp" />
     <ClCompile Include="OptionsGui.cpp" />
+    <ClCompile Include="ParticleManager.cpp" />
     <ClCompile Include="PauseGui.cpp" />
     <ClCompile Include="Physics.cpp" />
     <ClCompile Include="Player.cpp" />
@@ -355,6 +357,7 @@
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="ShaderManager.cpp" />
     <ClCompile Include="ShadowMapping.cpp" />
+    <ClCompile Include="SimpleEffect.cpp" />
     <ClCompile Include="SimpleShaderClass.cpp" />
     <ClCompile Include="Skybox.cpp" />
     <ClCompile Include="Slider.cpp" />
@@ -620,6 +623,7 @@
     <ClInclude Include="ConstantBuffer.h" />
     <ClInclude Include="DEBUG_DRAW.h" />
     <ClInclude Include="DeferredShader.h" />
+    <ClInclude Include="EffectBase.h" />
     <ClInclude Include="ForwardShader.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="GameObjectHandler.h" />
@@ -655,6 +659,7 @@
     <ClInclude Include="MouseEvent.h" />
     <ClInclude Include="Objects.h" />
     <ClInclude Include="OptionsGui.h" />
+    <ClInclude Include="ParticleManager.h" />
     <ClInclude Include="PauseGui.h" />
     <ClInclude Include="Physics.h" />
     <ClInclude Include="Player.h" />
@@ -666,6 +671,7 @@
     <ClInclude Include="Shader.h" />
     <ClInclude Include="ShaderManager.h" />
     <ClInclude Include="ShadowMapping.h" />
+    <ClInclude Include="SimpleEffect.h" />
     <ClInclude Include="SimpleShaderClass.h" />
     <ClInclude Include="Skybox.h" />
     <ClInclude Include="Slider.h" />

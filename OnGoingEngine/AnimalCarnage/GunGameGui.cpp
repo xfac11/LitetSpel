@@ -29,7 +29,7 @@ bool GunGameGui::initialize()
 	for (int i = 0; i < this->nrOfPlayers; i++)
 	{
 		this->playerHealthBars[i] = new HealthBar(/*state->getPlayer(id)->getHealth(), state->getPlayer(id)->getMaxHealth()*/100, 100, 
-			SimpleMath::Vector2(WIDTH / 2 - ((this->nrOfPlayers * 300) / 2) - (((this->nrOfPlayers - 1) * 50) / 2) + i * 350.0F, HEIGHT - 150.0F));
+			SimpleMath::Vector2(System::theWindow.width / 2 - ((this->nrOfPlayers * 300) / 2) - (((this->nrOfPlayers - 1) * 50) / 2) + i * 350.0F, System::theWindow.height - 150.0F));
 	}
 
 	return true;
@@ -92,7 +92,7 @@ bool GunGameGui::render()
 
 	for (int i = 0; i < this->nrOfPlayers; i++)
 	{
-		System::getFontArial()->DrawString(System::getSpriteBatch(), ("Player " + std::to_string(i + 1)).c_str(), SimpleMath::Vector2(WIDTH / 2 - ((this->nrOfPlayers * 300) / 2) - (((this->nrOfPlayers - 1) * 50) / 2) + i * 350.0F, HEIGHT - 210.0F), Colors::Black, 0.0f, DirectX::SimpleMath::Vector2::Zero, DirectX::SimpleMath::Vector2::One / 2);
+		System::getFontArial()->DrawString(System::getSpriteBatch(), ("Player " + std::to_string(i + 1)).c_str(), SimpleMath::Vector2(System::theWindow.width / 2.0F - ((this->nrOfPlayers * 300) / 2) - (((this->nrOfPlayers - 1) * 50) / 2) + i * 350.0F, System::theWindow.height - 210.0F), Colors::Black, 0.0f, DirectX::SimpleMath::Vector2::Zero, DirectX::SimpleMath::Vector2::One / 2);
 		this->playerHealthBars[i]->render(false);
 	}
 

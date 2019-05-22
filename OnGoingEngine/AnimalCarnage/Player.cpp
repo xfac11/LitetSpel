@@ -46,6 +46,11 @@ bool Player::isDead() const
 	return this->health <= 0;
 }
 
+void Player::setColorMask(DirectX::XMFLOAT4 color)
+{
+	this->playerObj->setColorMask(color);
+}
+
 void Player::changeCharacter()
 {
 	if (canBeAnimal[0] == false && canBeAnimal[1] == false && canBeAnimal[2] == false && canBeAnimal[3] == false) {
@@ -108,7 +113,7 @@ void Player::changeCharacter()
 		}
 	}*/
 	
-	//TEMP CHANGE MODEL
+	//TEMP CHANGE MODEL //ASSETMANAGER?
 	//System::theModelLoader->loadGO(this->playerObj, animal.modelPath);
 }
 
@@ -229,6 +234,8 @@ void Player::initialize(AnimalType type)
 	//System::getDebugDraw()->addPrimitives(playerObj->CollisionShape);
 
 	System::theModelLoader->loadGO(this->playerObj, animal.modelPath);
+	if(animal.maskPath!="empty")
+		this->playerObj->setMask(animal.maskPath,0);//change to animal.maskPath
 	System::handler->addObject(this->playerObj);
 
 

@@ -18,7 +18,7 @@ private:
 	static Texture arrowLeft;
 	static Texture arrowRight;
 	static Texture playerFox;
-
+	static Texture backGroundPLayer;
 	Players currentPlayer;
 
 public:
