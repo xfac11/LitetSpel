@@ -141,14 +141,15 @@ void GameObject::calcAABB(std::vector<Vertex3D> mesh)
 	this->colBox.Max = max;*/
 }
 
-void GameObject::addModel(shared_ptr<Model> m)
+void GameObject::addModel(shared_ptr<Model> m, bool hasSkeleton)
 {
 	this->theModel = m;
+	this->theModel->setGotSkeleton(hasSkeleton);
 	nrOfModels++;
 }
 
 void GameObject::addModel(std::vector<Vertex3D> mesh, DWORD * indices, int numberOfIndices, bool hasSkeleton)
-{
+{ //not using this???
 	shared_ptr<Model> m;
 	this->theModel = m;
 	this->theModel->setMesh(mesh, indices, numberOfIndices);
@@ -264,6 +265,7 @@ void GameObject::computeAnimationMatrix(float deltaTime)
 	if (this->timePassed >= anims.getDuration())
 		this->timePassed = fmodf(this->timePassed,anims.getDuration());
 
+	
 	int k1 = (int)(this->timePassed* anims.getFPS());
 	int k2 = std::min<int>(k1 + 1, anims.getKeyframes()[0].size());
 
@@ -271,47 +273,43 @@ void GameObject::computeAnimationMatrix(float deltaTime)
 	float k2_time = k2 / anims.getFPS();
 	float t = (timePassed - k1_time) / (k2_time - k1_time);
 	
-	if (t > 1 || t < 0)
-	{
-		t = 0;
-	}
 
 	if (t != prevTimeIncrement)
 	{
 		prevTimeIncrement = t;
 		
-		std::vector<JointTransformation> pose;
-		JointTransformation local1 = this->interpolate2(anims.getKeyframes()[0][0].getJointKeyFrames(), anims.getKeyframes()[0][1].getJointKeyFrames(),0.f);
-		//JointTransformation test2 = temp.interpolate2(anims.getKeyframes()[k1][0].getJointKeyFrames(), anims.getKeyframes()[k2][0].getJointKeyFrames(), t);
-		DirectX::XMMATRIX test1 = local1.getLocalTransform();
-		pose.push_back(local1);
-	
+		//std::vector<DirectX::XMMATRIX> pose_global;
+		//std::vector<DirectX::XMMATRIX> matrixPallete;//into pipeline
+		JointTransformation local;
+		JointTransformation local_root = this->interpolate2(anims.getKeyframes()[0][k1].getJointKeyFrames(), anims.getKeyframes()[0][k2].getJointKeyFrames(),t);
+		//pose_global.push_back(local_root.getLocalTransform());
+		
+		pose_global[0] = local_root.getLocalTransform();
 
-		std::vector<DirectX::XMMATRIX> jointTransforms;
-		jointTransforms.resize(skeleton.size());
-		DirectX::XMMATRIX test2 = pose[0].getLocalTransform();
-		jointTransforms[0] = DirectX::XMMatrixMultiply(pose[0].getLocalTransform(), this->skeleton[0].getInverseBindTransform());
+		//matrixPallete.resize(skeleton.size());
+		pose_global[0] = DirectX::XMMatrixTranspose(pose_global[0]);
+		matrixPallete[0] = DirectX::XMMatrixMultiplyTranspose(pose_global[0], DirectX::XMMatrixTranspose(this->skeleton[0].getInverseBindTransform()));
 		for (int joint = 1; joint < skeleton.size(); joint++)
 		{
+			
 
+			local = this->interpolate2(anims.getKeyframes()[joint][k1].getJointKeyFrames(), anims.getKeyframes()[joint][k2].getJointKeyFrames(), t);
+			//pose_global.push_back(local.getLocalTransform());
+			//pose_global[joint] = local_root.getLocalTransform();
 
-			local1 = this->interpolate2(anims.getKeyframes()[joint][0].getJointKeyFrames(), anims.getKeyframes()[joint][1].getJointKeyFrames(), 0);
-			pose.push_back(local1);
-
-			pose[joint] = JointTransformation(DirectX::XMMatrixMultiply(pose[this->skeleton[joint].getParent()->getID()].getLocalTransform(), local1.getLocalTransform()));
-			jointTransforms[joint] = DirectX::XMMatrixMultiply(pose[joint].getLocalTransform(), this->skeleton[joint].getInverseBindTransform());
+			pose_global[joint] = DirectX::XMMatrixMultiply(pose_global[this->skeleton[joint].getParent()->getID()], DirectX::XMMatrixTranspose(local.getLocalTransform()));
+			matrixPallete[joint] = DirectX::XMMatrixMultiplyTranspose(pose_global[joint], DirectX::XMMatrixTranspose(this->skeleton[joint].getInverseBindTransform()));
 		}
 
 		DeferredShader* ptr = dynamic_cast<DeferredShader*>(System::shaderManager->getDefShader());
 		if (ptr != nullptr)
 		{
-			ptr->setJointData(jointTransforms);
-
+			ptr->setJointData(matrixPallete);
+			//pose_global.clear();
+			//matrixPallete.clear();
 		}
 		else
 		{
-			int i = 0;
-			i = 1;
 			OutputDebugStringA("== FAILED IN SET KEYFRAME to shader!! == ");
 		}
 	}
@@ -325,21 +323,10 @@ void GameObject::setNewAnimation(float fps, float duration, std::string name, st
 	newAnim.setKeyframes(keyframePack);
 	this->anims = newAnim;
 
+
 	//this->gotSkeleton = true;
 
-	//DirectX::XMFLOAT4 pos1 = { 1,6,4,0 };
-	//DirectX::XMFLOAT4 pos2 = { 1,9,6,0 };
-	//DirectX::XMFLOAT4 rot1 = { 0.0507,-0.7052,-0.0507,0.7052 };
-	//DirectX::XMFLOAT4 rot2 = { 0.0691,-0.7037,-0.0691,0.7037 };
-	//DirectX::XMFLOAT4 scl1 = { 10,10,10,0 };
-	//DirectX::XMFLOAT4 scl2 = { 10,10,10 ,0 };
 
-	//JointTransformation temp1(pos1, rot1, scl1);
-	//JointTransformation temp2(pos2, rot2, scl2);
-		
-	// keyframes involved.
-
-	
 	//DeferredShader* ptr;
 	//if (ptr = dynamic_cast<DeferredShader*>(System::shaderManager->getDefShader()))
 	//{
@@ -362,6 +349,9 @@ void GameObject::setSkeleton(std::vector<Luna::Joint> theJoints)
 		if (theJoints[i].parentID != -1)
 			this->skeleton[i].setParent(&this->skeleton[theJoints[i].parentID]);
 	}
+
+	this->pose_global.resize(skeleton.size());
+	this->matrixPallete.resize(skeleton.size());
 	
 }
 
@@ -386,10 +376,10 @@ DirectX::XMFLOAT3 GameObject::interpolate2(DirectX::XMFLOAT3 start, DirectX::XMF
 JointTransformation GameObject::interpolate1(JointTransformation frameA, JointTransformation frameB, float progression)
 {
 	DirectX::XMFLOAT3 pos = this->interpolate1(frameA.getPosition(), frameB.getPosition(), progression);
-	DirectX::XMFLOAT4 pos4 = { pos.x, pos.y, pos.z, 0.f };
+	DirectX::XMFLOAT4 pos4 = { pos.x, pos.y, pos.z, 1.f };
 	DirectX::XMVECTOR quaternion = DirectX::XMQuaternionSlerp(frameA.getRotation(), frameB.getRotation(), progression);
 	//DirectX::XMFLOAT3 scale = this->interpolate(frameA.scale, frameB.scale, progression);
-	DirectX::XMFLOAT3 scale = { 1.f,1.f,1.f };
+	DirectX::XMFLOAT3 scale = { 10.f,10.f,10.f };
 	return JointTransformation(pos4, quaternion, scale);
 }
 

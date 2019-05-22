@@ -165,49 +165,51 @@ void JointTransformation::operator=(const JointTransformation & obj)
 
 DirectX::XMMATRIX JointTransformation::getLocalTransform()
 {
-	DirectX::XMMATRIX posMatrix = DirectX::XMMatrixTranslation(this->position.x, this->position.y, this->position.z);
-	//posMatrix = DirectX::XMMatrixTranspose(posMatrix);
-	//this->rotation = DirectX::XMQuaternionNormalize(this->rotation);
-	DirectX::XMMATRIX quaternionM = DirectX::XMMatrixRotationQuaternion(this->rotation);
-	//DirectX::XMMATRIX quaternionM = DirectX::XMMatrixRotationQuaternion(DirectX::XMQuaternionNormalize(this->rotation));
-	//quaternionM = DirectX::XMMatrixTranspose(quaternionM);
-	//DirectX::XMMATRIX quaternionM = DirectX::XMMatrixRotationRollPitchYaw(this->rotation.m128_f32[0], this->rotation.m128_f32[1], this->rotation.m128_f32[2]);
-	//DirectX::XMMATRIX quaternionM = DirectX::XMMatrixRotationRollPitchYawFromVector(rotation);
-	DirectX::XMMATRIX scMatrix = DirectX::XMMatrixScaling(this->scale.x,this->scale.y,this->scale.z);
-	//scMatrix = DirectX::XMMatrixTranspose(scMatrix);
-	//DirectX::XMQuaternionRotationAxis()
-	
-	//testing affine
-	DirectX::XMVECTOR P = DirectX::XMLoadFloat3(&this->position);
-	DirectX::XMVECTOR Q = this->rotation;
-	DirectX::XMVECTOR S = DirectX::XMLoadFloat3(&this->scale);
-	DirectX::XMVECTOR zero = DirectX::XMVectorSet(0.f, 0.f, 0.f, 1.0f);
-	DirectX::XMMATRIX affine= DirectX::XMMatrixAffineTransformation(S, zero, Q, P);
-	//DirectX::XMMATRIX affine= DirectX::XMMatrixMultiply(DirectX::XMMatrixMultiply(scMatrix, quaternionM), posMatrix);
-	//return DirectX::XMMatrixTranspose(posMatrix* quaternionM* scMatrix);
-	//return posMatrix * quaternionM * scMatrix; 
-	//return posMatrix *scMatrix * quaternionM;
-	//return quaternionM * posMatrix*scMatrix ;
-	//return quaternionM * scMatrix * posMatrix; 
-	//return scMatrix * posMatrix * quaternionM; 
+	//DirectX::XMMATRIX posMatrix = DirectX::XMMatrixTranslation(this->position.x, this->position.y, this->position.z);
+	//DirectX::XMMATRIX quaternionM = DirectX::XMMatrixRotationQuaternion(this->rotation);
+	//DirectX::XMMATRIX scMatrix = DirectX::XMMatrixScaling(this->scale.x,this->scale.y,this->scale.z);
 
-	DirectX::XMMATRIX vec = DirectX::XMMatrixSet(
-		1, 0, 0, 0,
-		0, 1, 0, 0,
-		0, 0, 1, 0,
-		0, 0, 0, 1);
+	//testing affine matrix
+	DirectX::XMVECTOR translationP	= DirectX::XMLoadFloat3(&this->position);
+	DirectX::XMVECTOR rotationQ		= this->rotation;
+	DirectX::XMVECTOR scaleS		= DirectX::XMLoadFloat3(&this->scale);
+	DirectX::XMVECTOR origin		= DirectX::XMVectorSet(0.f, 0.f, 0.f, 1.0f);
+	DirectX::XMMATRIX affine		= DirectX::XMMatrixAffineTransformation(scaleS, origin, rotationQ, translationP);
 
-	DirectX::XMMATRIX mat = DirectX::XMMatrixSet(
-		-2.38524478e-15, -1.43107975, 9.89707088, 0,
-		-1.38777878e-16, 9.89707088, 1.43107975, 0,
-		-10.0000000, 1.38777878e-16, -2.22044605e-15, 0,
-		-1.71419868e-16, 8.52951431, -4.23891354, 1.00000000);
-	
-	return scMatrix * quaternionM *posMatrix; //closest
-	//return mat;
-											  
-	//return DirectX::XMMatrixMultiply(DirectX::XMMatrixMultiply(scMatrix, quaternionM ), posMatrix);
+	return affine;									  
 }
+
+//DirectX::XMMATRIX JointTransformation::quatToMat(DirectX::XMVECTOR q)
+//{
+//	double sqw = q.m128_f32[3] * q.m128_f32[3];
+//	double sqx = q.m128_f32[0] * q.m128_f32[0];
+//	double sqy = q.m128_f32[1] * q.m128_f32[1];
+//	double sqz = q.m128_f32[2] * q.m128_f32[2];
+//
+//	// invs (inverse square length) is only required if quaternion is not already normalised
+//	double invs = 1 / (sqx + sqy + sqz + sqw);
+//	DirectX::XMFLOAT4X4 mat;
+//	mat.m[0][0] = (sqx - sqy - sqz + sqw)*invs; // since sqw + sqx + sqy + sqz =1/invs*invs
+//	mat.m[1][1] = (-sqx + sqy - sqz + sqw)*invs;
+//	mat.m[2][2] = (-sqx - sqy + sqz + sqw)*invs;
+//
+//	double tmp1 = q.m128_f32[0] * q.m128_f32[1];
+//	double tmp2 = q.m128_f32[2] * q.m128_f32[3];
+//	mat.m[1][0] = 2.0 * (tmp1 + tmp2)*invs;
+//	mat.m[0][1] = 2.0 * (tmp1 - tmp2)*invs;
+//
+//	tmp1 = q.m128_f32[0] * q.m128_f32[2];
+//	tmp2 = q.m128_f32[1] * q.m128_f32[3];
+//	mat.m[2][0] = 2.0 * (tmp1 - tmp2)*invs;
+//	mat.m[0][2] = 2.0 * (tmp1 + tmp2)*invs;
+//	tmp1 = q.m128_f32[1] * q.m128_f32[2];
+//	tmp2 = q.m128_f32[0] * q.m128_f32[3];
+//	mat.m[2][1] = 2.0 * (tmp1 + tmp2)*invs;
+//	mat.m[1][2]= 2.0 * (tmp1 - tmp2)*invs;
+//
+//	
+//	return DirectX::XMLoadFloat4x4(&mat);
+//}
 
 DirectX::XMFLOAT3 JointTransformation::getPosition() const
 {
@@ -223,6 +225,21 @@ DirectX::XMFLOAT3 JointTransformation::getScale() const
 {
 	return this->scale;
 }
+
+//float JointTransformation::getPitch(DirectX::XMVECTOR Quaternion)
+//{
+//	return atan2(2 * (Quaternion.m128_f32[1]* Quaternion.m128_f32[2] + Quaternion.m128_f32[3] * Quaternion.m128_f32[0]), Quaternion.m128_f32[3] * Quaternion.m128_f32[3] - Quaternion.m128_f32[0] * Quaternion.m128_f32[0] - Quaternion.m128_f32[1] * Quaternion.m128_f32[1] + Quaternion.m128_f32[2] * Quaternion.m128_f32[2]);
+//}
+//
+//float JointTransformation::getYaw(DirectX::XMVECTOR Quaternion)
+//{
+//	return asin(-2 * (Quaternion.m128_f32[0] * Quaternion.m128_f32[2] - Quaternion.m128_f32[3] * Quaternion.m128_f32[1]));
+//}
+//
+//float JointTransformation::getRoll(DirectX::XMVECTOR Quaternion)
+//{
+//	return atan2(2 * (Quaternion.m128_f32[0] *Quaternion.m128_f32[1] + Quaternion.m128_f32[3] * Quaternion.m128_f32[2]), Quaternion.m128_f32[3] * Quaternion.m128_f32[3] + Quaternion.m128_f32[0] * Quaternion.m128_f32[0] - Quaternion.m128_f32[1] * Quaternion.m128_f32[1] - Quaternion.m128_f32[2] * Quaternion.m128_f32[2]);
+//}
 
 //JointTransformation JointTransformation::interpolate(JointTransformation frameA, JointTransformation frameB, float progression) //progression is 0 to 1
 //{

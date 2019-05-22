@@ -24,10 +24,19 @@ public:
 	void operator=(const JointTransformation& obj);
 	DirectX::XMMATRIX getLocalTransform();
 
-
+	//DirectX::XMMATRIX quatToMat(DirectX::XMVECTOR quaternion);
 	DirectX::XMFLOAT3 getPosition()const; //positon xyz w
 	DirectX::XMVECTOR getRotation()const; //quaternion xyzw
 	DirectX::XMFLOAT3 getScale()const;
+
+
+
+
+	/*float getPitch(DirectX::XMVECTOR Quaternion);
+	float getYaw(DirectX::XMVECTOR Quaternion);
+	float getRoll(DirectX::XMVECTOR Quaternion);
+	
+*/
 	//JointTransformation interpolate(JointTransformation frameA, JointTransformation frameB, float progression);
 	//JointTransformation interpolate2(JointTransformation frameA, JointTransformation frameB, float progression);
 };

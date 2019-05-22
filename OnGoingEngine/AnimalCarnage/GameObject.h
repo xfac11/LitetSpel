@@ -24,7 +24,7 @@ public:
 	void setHalfSize(float halfSize[3], float posOffset[3]);
 
 	void calcAABB(std::vector<Vertex3D> mesh);
-	void addModel(shared_ptr<Model> m);
+	void addModel(shared_ptr<Model> m, bool hasSkeleton);
 	void addModel(std::vector<Vertex3D> mesh, DWORD *indices, int numberOfIndices,  bool hasSkeleton);
 	void setMesh(std::vector<Vertex3D> mesh, DWORD *indices, int numberOfIndices, int id);
 	void setTexture(std::string file, int id, int mipLevels=-1);
@@ -59,6 +59,9 @@ private:
 	Animation anims;
 	float timePassed;
 	float prevTimeIncrement;
+
+	std::vector<DirectX::XMMATRIX> pose_global;
+	std::vector<DirectX::XMMATRIX> matrixPallete; //to pipeline
 	//std::vector<KeyFrame> keyframes;
 	//AnimationShader* animShader;
 	DirectX::XMFLOAT4 colorMask;
