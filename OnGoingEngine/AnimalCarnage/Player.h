@@ -46,6 +46,7 @@ private:
 	int groundTimer;
 
 	bool canBeAnimal[4];
+	int randomNumberArray[4] = {0,1,2,3};
 	int nextAnimal;
 
 	RumbleProperties theRumble;
