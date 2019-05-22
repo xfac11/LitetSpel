@@ -8,6 +8,7 @@ public:
 	VerticalBlur();
 	virtual ~VerticalBlur();
 	bool initialize(int height, int width);
+	bool resize(int height, int width);
 	void render(int vertexCount,ID3D11ShaderResourceView* shaderView);
 	void setWorld(DirectX::XMMATRIX world);
 	void setCBuffers();

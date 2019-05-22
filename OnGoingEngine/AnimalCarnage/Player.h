@@ -46,6 +46,7 @@ private:
 	int groundTimer;
 
 	bool canBeAnimal[4];
+	int randomNumberArray[4] = {0,1,2,3};
 	int nextAnimal;
 
 	RumbleProperties theRumble;
@@ -65,7 +66,7 @@ public:
 	int getHealth() const;
 	void takeDamage(int damage);
 	bool isDead() const;
-
+	void setColorMask(DirectX::XMFLOAT4 color);
 	void changeCharacter();
 	bool getHit()const { return hit; }
 	bool getHitStun();

@@ -87,12 +87,12 @@ OptionsGui::~OptionsGui()
 
 bool OptionsGui::initialize()
 {
-	this->sliderMusic = new Slider(100, 100, 5, SimpleMath::Vector2(WIDTH / 2 - 610 / 2, HEIGHT / 2 - 200));
-	this->sliderSound = new Slider(100, 100, 5, SimpleMath::Vector2(WIDTH / 2 - 610 / 2, HEIGHT / 2 - 100));
-	this->checkBoxRumble1 = new CheckBox(true, SimpleMath::Vector2(WIDTH / 2 - 350, HEIGHT / 2 + 100));
-	this->checkBoxRumble2 = new CheckBox(true, SimpleMath::Vector2(WIDTH / 2 - 150, HEIGHT / 2 + 100));
-	this->checkBoxRumble3 = new CheckBox(true, SimpleMath::Vector2(WIDTH / 2 + 50, HEIGHT / 2 + 100));
-	this->checkBoxRumble4 = new CheckBox(true, SimpleMath::Vector2(WIDTH / 2 + 250, HEIGHT / 2 + 100));
+	this->sliderMusic = new Slider(100, 100, 5, SimpleMath::Vector2(System::theWindow.width / 2.0F - 610 / 2, System::theWindow.height / 2.0F - 200));
+	this->sliderSound = new Slider(100, 100, 5, SimpleMath::Vector2(System::theWindow.width / 2.0F - 610 / 2, System::theWindow.height / 2.0F - 100));
+	this->checkBoxRumble1 = new CheckBox(true, SimpleMath::Vector2(System::theWindow.width / 2.0F - 350, System::theWindow.height / 2.0F + 100));
+	this->checkBoxRumble2 = new CheckBox(true, SimpleMath::Vector2(System::theWindow.width / 2.0F - 150, System::theWindow.height / 2.0F + 100));
+	this->checkBoxRumble3 = new CheckBox(true, SimpleMath::Vector2(System::theWindow.width / 2.0F + 50, System::theWindow.height / 2.0F + 100));
+	this->checkBoxRumble4 = new CheckBox(true, SimpleMath::Vector2(System::theWindow.width / 2.0F + 250, System::theWindow.height / 2.0F + 100));
 
 	this->selectedElement = this->sliderMusic;
 	this->sliderMusic->setConnectedElements(nullptr, nullptr, checkBoxRumble1, sliderSound);

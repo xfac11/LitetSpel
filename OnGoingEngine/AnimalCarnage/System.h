@@ -30,6 +30,7 @@
 #include "ShaderManager.h"
 #include "Skybox.h"
 #include "SoundManager.h"
+#include "ParticleManager.h"
 //Test
 #include "btBulletCollisionCommon.h"
 #include "btBulletDynamicsCommon.h"
@@ -39,13 +40,9 @@
 #include "Structs.h"
 
 #include "AssetManager.h"
+
+
 using namespace DirectX;
-//using namespace DirectX::SimpleMath;
-
-#define HEIGHT 1080
-#define WIDTH 1920
-
-//using Microsoft::WRL::ComPtr;
 
 enum GameState {
 	MAINMENU,
@@ -60,7 +57,6 @@ private:
 	HWND hwnd;
 	MSG msg;
 	int nCMDShow;
-	static WindowClient theWindow;
 	static std::vector<State*> states;
 	static GameState currentState;
 	static CommonStates* commonStates;
@@ -70,6 +66,7 @@ private:
 	static Physics* physices;
 	static DEBUG_DRAW* debugDraw;
 	static SoundManager* soundManager;
+	static ParticleManager* particleManager;
 
 	//ForwardShader* theForwardShader;
 	
@@ -116,6 +113,7 @@ public:
 	static WindowClient getWindowArea();
 	static Skybox* skybox;
 
+	static WindowClient theWindow;
 	static ShaderManager* shaderManager;
 	static System* fusk;
 	static Camera* theCamera;
@@ -128,7 +126,7 @@ public:
 	static GameObjectHandler* handler;
 	static GraphicsDevice* theGraphicDevice;
 
-
+	static AssetManager* assetMananger;
 	static ModelLoader* theModelLoader;
 	static SpriteBatch* getSpriteBatch();
 	static CommonStates* getCommonStates();
@@ -139,7 +137,7 @@ public:
 	static DEBUG_DRAW* getDebugDraw();
 	static void closeWindow();
 	static void setState(GameState state);
-
+	static void resizeWindow(int width, int height);
 
 };
 #endif

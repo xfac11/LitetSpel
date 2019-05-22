@@ -149,7 +149,7 @@ XMFLOAT3 normalize(XMFLOAT3 pos)
 
 float magnitude(XMFLOAT3 pos)
 {
-	return std::sqrtf( (pos.x * pos.x) +( pos.y * pos.y )+ (pos.z * pos.z));
+	return sqrtf( (pos.x * pos.x) +( pos.y * pos.y )+ (pos.z * pos.z));
 }
 
 XMFLOAT3 VECTORSUBTRACTION(const XMFLOAT3 other, const XMFLOAT3 other2)

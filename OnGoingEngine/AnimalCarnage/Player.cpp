@@ -46,6 +46,11 @@ bool Player::isDead() const
 	return this->health <= 0;
 }
 
+void Player::setColorMask(DirectX::XMFLOAT4 color)
+{
+	this->playerObj->setColorMask(color);
+}
+
 void Player::changeCharacter()
 {
 	if (canBeAnimal[0] == false && canBeAnimal[1] == false && canBeAnimal[2] == false && canBeAnimal[3] == false) {
@@ -53,8 +58,27 @@ void Player::changeCharacter()
 		System::setState(MAINMENU);
 		return;
 	}
-	canBeAnimal[nextAnimal] = false;
-	currentAnimal = nextAnimal;
+	int noNewAnimal = true;
+	for (int i = 0; i < 4; i++) 
+	{
+		if (canBeAnimal[randomNumberArray[i]] == true && noNewAnimal) 
+		{
+			currentAnimal = randomNumberArray[i];
+			canBeAnimal[randomNumberArray[i]] = false;
+			noNewAnimal = false;
+		}
+		if (canBeAnimal[randomNumberArray[i]] == true && !noNewAnimal)
+		{
+			nextAnimal = randomNumberArray[i];
+			break;
+		}
+		else {
+			nextAnimal = -1;
+		}
+	}
+
+	//canBeAnimal[currentAnimal] = false;
+	//currentAnimal = nextAnimal;
 	const AnimalDef& animal = Animal::getAnimal(ArrayOfAnimals[currentAnimal]);
 	this->type = ArrayOfAnimals[currentAnimal];
 	this->health = animal.maxHealh;
@@ -63,7 +87,7 @@ void Player::changeCharacter()
 	//playerObj->getRigidbody()->getCollisionShape()->calculateLocalInertia(getWeight(), inertia);
 	playerObj->getRigidbody()->setMassProps(10*getWeight(), inertia);
 
-	int falseCount = 0;
+	/*int falseCount = 0;
 	for (int i = 0; i < 4;i++) {
 		if (canBeAnimal[i] == false) {
 			falseCount++;
@@ -87,9 +111,9 @@ void Player::changeCharacter()
 				nextAnimal = i;
 			}
 		}
-	}
+	}*/
 	
-	//TEMP CHANGE MODEL
+	//TEMP CHANGE MODEL //ASSETMANAGER?
 	//System::theModelLoader->loadGO(this->playerObj, animal.modelPath);
 }
 
@@ -165,16 +189,30 @@ void Player::initialize(AnimalType type)
 	if (type == MOOSE)
 		canBeAnimal[3] = false;
 
-	int randomNumber;
-	bool newAnimalFound = false;
-	while (!newAnimalFound) {
-		srand(time(0));
-		randomNumber = (rand() % 4) + 0;
-		if (canBeAnimal[randomNumber] == true) {
-			newAnimalFound = true;
-			nextAnimal = randomNumber;
+	//SCUFFED RANDOMIZER
+	//srand(time(0));
+	//int randomNumber = 0;
+	//for (int i = 4; i > 0; i--) {
+	//	//srand(time(0));
+	//	randomNumber = rand() % i;
+	//	while (randomNumber < i-1) {
+	//		randomNumberArray[randomNumber] = randomNumberArray[randomNumber + 1];
+	//		randomNumber++;
+	//	}
+	//}
+
+	std::random_shuffle(std::begin(randomNumberArray), std::end(randomNumberArray));
+
+
+	for (int i = 0; i < 4; i++)
+	{
+		if (canBeAnimal[randomNumberArray[i]] == true)
+		{
+			nextAnimal = randomNumberArray[i];
+			break;
 		}
 	}
+
 
 
 	this->playerObj = new GameObject(System::shaderManager->getForwardShader());
@@ -196,6 +234,8 @@ void Player::initialize(AnimalType type)
 	//System::getDebugDraw()->addPrimitives(playerObj->CollisionShape);
 
 	System::theModelLoader->loadGO(this->playerObj, animal.modelPath);
+	if(animal.maskPath!="empty")
+		this->playerObj->setMask(animal.maskPath,0);//change to animal.maskPath
 	System::handler->addObject(this->playerObj);
 
 
@@ -227,9 +267,22 @@ void Player::initialize(AnimalType type)
 
 void Player::update(float deltaTime, int id)
 {
+
+
+	if (type == FOX)
+		canBeAnimal[0] = false;
+	if (type == BEAR)
+		canBeAnimal[1] = false;
+	if (type == RABBIT)
+		canBeAnimal[2] = false;
+	if (type == MOOSE)
+		canBeAnimal[3] = false;
+
+
+
 	//check if player is dead and have any animals left to play
 	//changeCharacter();
-	string str = to_string(nextAnimal) + "\n";
+	string str = "Player next animal: " + to_string(nextAnimal) + "\n";
 	OutputDebugString( str.c_str() );
 
 

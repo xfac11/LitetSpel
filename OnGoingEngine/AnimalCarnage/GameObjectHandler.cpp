@@ -40,14 +40,15 @@ void GameObjectHandler::addObject(GameObject *& gameObject)
 	
 	for (int i = 0; i < gameObject->getNrOfModels(); i++)
 	{
-		if (gameObject->getModel(i)->getOpacity() == Transparent)
+		if (gameObject->getModel()->getOpacity() == Transparent)
 		{
 			if (this->nrOfTrans == this->capTrans)
 				this->expandTransModels();
 			//gameObject->getModel(i).setShader(Shader);
-			this->transModels[this->nrOfTrans].modelPtr = gameObject->getModel(i);
+			this->transModels[this->nrOfTrans].modelPtr = gameObject->getModel();
 			this->transModels[this->nrOfTrans].worldPtr = &gameObject->getWorld();//&btTransform_to_XMMATRIX(gameObject->body()->getWorldTransform());
-			gameObject->getModel(i)->setShader(System::shaderManager->getForwardShader());
+			this->transModels[this->nrOfTrans].selfPtr = gameObject;
+			gameObject->getModel()->setShader(System::shaderManager->getForwardShader());
 			this->nrOfTrans++;
 			/*Model* *ptr = new Model*[4];
 			ptr[0] = new Model;
@@ -59,9 +60,10 @@ void GameObjectHandler::addObject(GameObject *& gameObject)
 		{
 			if (this->nrOfOpaque == this->capOpaque)
 				this->expandOpaqueModels();
-			this->opaqueModels[this->nrOfOpaque].modelPtr = gameObject->getModel(i);
+			this->opaqueModels[this->nrOfOpaque].modelPtr = gameObject->getModel();
 			this->opaqueModels[this->nrOfOpaque].worldPtr = &gameObject->getWorld();
-			gameObject->getModel(i)->setShader(System::shaderManager->getDefShader());
+			this->opaqueModels[this->nrOfOpaque].selfPtr = gameObject;
+			gameObject->getModel()->setShader(System::shaderManager->getDefShader());
 			this->nrOfOpaque++;
 		}
 	}
@@ -136,8 +138,9 @@ void GameObjectHandler::draw(float deltaTime)
 
 	for (int i = 0; i < this->nrOfOpaque; i++)
 	{
-		Model* ptr = this->opaqueModels[i].modelPtr;
+		shared_ptr<Model> ptr = this->opaqueModels[i].modelPtr;
 		System::shaderManager->getDefShader()->setRepeat(ptr->getRepeat());
+		System::shaderManager->getDefShader()->setMaskColor(this->opaqueModels[i].selfPtr->getColorMask());
 		ptr->getShader()->setWorld(*this->opaqueModels[i].worldPtr);
 		ptr->draw();
 	}

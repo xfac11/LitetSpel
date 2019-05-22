@@ -688,15 +688,19 @@
     <ClCompile Include="PauseGui.cpp">
       <Filter>Menu</Filter>
     </ClCompile>
-    <ClCompile Include="AssetManager.h">
-      <Filter>Engine</Filter>
-    </ClCompile>
-    <ClCompile Include="AssetManager.cpp">
-      <Filter>Engine</Filter>
-    </ClCompile>
     <ClCompile Include="AnimationShader.cpp" />
     <ClCompile Include="VerticalBlur.cpp" />
     <ClCompile Include="HorizontalBlur.cpp" />
+    <ClCompile Include="AssetManager.cpp" />
+    <ClCompile Include="ParticleManager.cpp">
+      <Filter>Particle</Filter>
+    </ClCompile>
+    <ClCompile Include="EffectBase.cpp">
+      <Filter>Particle</Filter>
+    </ClCompile>
+    <ClCompile Include="SimpleEffect.cpp">
+      <Filter>Particle</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource1.h" />
@@ -1579,6 +1583,16 @@
     <ClInclude Include="AnimationShader.h" />
     <ClInclude Include="VerticalBlur.h" />
     <ClInclude Include="HorizontalBlur.h" />
+    <ClInclude Include="AssetManager.h" />
+    <ClInclude Include="ParticleManager.h">
+      <Filter>Particle</Filter>
+    </ClInclude>
+    <ClInclude Include="EffectBase.h">
+      <Filter>Particle</Filter>
+    </ClInclude>
+    <ClInclude Include="SimpleEffect.h">
+      <Filter>Particle</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="imgui\.gitkeep" />
@@ -1620,6 +1634,9 @@
     </Filter>
     <Filter Include="Engine">
       <UniqueIdentifier>{132db05c-ec36-4c68-8f5e-bd2be05f2058}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Particle">
+      <UniqueIdentifier>{add710a2-d7b5-4b74-9058-bbf515af448b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

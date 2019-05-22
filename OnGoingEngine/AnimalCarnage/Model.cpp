@@ -6,10 +6,13 @@ Model::Model()
 	this->indexBuffer = IndexBuffer();
 	this->SamplerState = nullptr;
 	this->theShader = nullptr;
-	this->texture = new Texture;
+	shared_ptr<Texture> t;
+	texture = t;
 	this->normalMap = new Texture;
 	this->glowMap = new Texture;
+	this->mask = new Texture;
 	this->type = Opaque;
+	this->hasMask = false;
 	this->hasGlowMap = false;
 	D3D11_SAMPLER_DESC desc;
 	ZeroMemory(&desc, sizeof(desc));
@@ -28,6 +31,7 @@ Model::Model()
 
 	}
 	this->repeatXY = DirectX::XMFLOAT4(1, 1, 1, 1);
+	this->colorMask = DirectX::XMFLOAT4(1, 1, 1, 1);
 
 }
 
@@ -35,9 +39,9 @@ Model::~Model()
 {
 	if (this->SamplerState != nullptr)
 		this->SamplerState->Release();
-	if (this->texture != nullptr)
+	if (texture != nullptr)
 	{
-		delete this->texture;
+		 texture  = nullptr;
 	}
 	if (this->normalMap != nullptr)
 	{
@@ -46,6 +50,10 @@ Model::~Model()
 	if (this->glowMap != nullptr)
 	{
 		delete this->glowMap;
+	}
+	if (this->mask != nullptr)
+	{
+		delete this->mask;
 	}
 
 }
@@ -58,6 +66,16 @@ void Model::setShader(Shader *theShader)
 void Model::setRepeat(float x, float y)
 {
 	this->repeatXY = DirectX::XMFLOAT4(x, y, 1, 1);
+}
+
+void Model::setMaskColor(DirectX::XMFLOAT4 colorMask)
+{
+	this->colorMask = colorMask;
+}
+
+DirectX::XMFLOAT4 & Model::getMaskColor()
+{
+	return this->colorMask;
 }
 
 DirectX::XMFLOAT4 & Model::getRepeat()
@@ -95,10 +113,17 @@ void Model::setTexture(std::string file, int mipLevels)
 	}
 }
 
+
 void Model::setGlowMap(std::string file)
 {
 	this->glowMap->setTexture(file,1);
 	this->hasGlowMap = true;
+}
+
+void Model::setMask(std::string file)
+{
+	this->mask->setTexture(file, -1);
+	this->hasMask = true;
 }
 
 void Model::setMesh(std::vector<Vertex3D> aMesh,DWORD* indices, int numberOfIndices)
@@ -192,7 +217,7 @@ void Model::draw()
 		OutputDebugStringA("== ptr was null == "); //if nullptr then model may be transparent
 	}
 
-	System::getDeviceContext()->PSSetShaderResources(0, 1, &this->texture->getTexture());
+	System::getDeviceContext()->PSSetShaderResources(0, 1, &texture->getTexture());
 	if (this->normalMap != nullptr)
 	{
 		System::getDeviceContext()->PSSetShaderResources(1, 1, &this->normalMap->getTexture());
@@ -206,6 +231,15 @@ void Model::draw()
 		ID3D11ShaderResourceView* temp = nullptr;
 		System::getDeviceContext()->PSSetShaderResources(2, 1, &temp);
 	}
+	if (this->hasMask)
+	{
+		System::getDeviceContext()->PSSetShaderResources(3, 1, &this->mask->getTexture());
+	}
+	else
+	{
+		ID3D11ShaderResourceView* temp = nullptr;
+		System::getDeviceContext()->PSSetShaderResources(3, 1, &temp);
+	}
 	System::getDeviceContext()->IASetVertexBuffers(0, 1, &*this->vertexBuffer.GetAddressOf(), &*vertexBuffer.getStridePtr(), &offset);
 //	UINT offset = 0;
 	//devcon->IASetVertexBuffers(0, 1, &pVBuffer, &stride, &offset);
@@ -215,4 +249,9 @@ void Model::draw()
 	System::getDeviceContext()->PSSetSamplers(0, 1, &this->SamplerState);
 
 	this->theShader->renderShader((int)mesh.size(),indexBuffer.getBufferSize());
+}
+
+void Model::SetTexture(shared_ptr<Texture> t)
+{
+	this->texture = t;
 }

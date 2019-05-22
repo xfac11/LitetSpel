@@ -6,11 +6,8 @@ GameObject::GameObject()
 	this->hasLoadedAABB = false;
 	this->cap=5;
 	this->nrOfModels = 0;
-	this->theModel = new Model*[this->cap];
-	for (int i = 0; i < cap; i++)
-	{
-		this->theModel[i] = nullptr;
-	}
+	shared_ptr<Model> m;
+	this->theModel = m;
 	this->colBox = AABB();
 	//this->gotSkeleton = false;
 
@@ -23,11 +20,8 @@ GameObject::GameObject(Shader * shader)
 	this->hasLoadedAABB = false;
 	this->cap = 5;
 	this->nrOfModels = 0;
-	this->theModel = new Model*[this->cap];
-	for (int i = 0; i < cap; i++)
-	{
-		this->theModel[i] = nullptr;
-	}
+	shared_ptr<Model> m;
+	this->theModel = m;
 	this->colBox = AABB();
 
 	this->timePassed = 0.f;
@@ -43,12 +37,14 @@ GameObject::GameObject(Shader * shader)
 
 GameObject::~GameObject()
 {
-	for (int i = 0; i < this->nrOfModels; i++)
-	{
-		if(this->theModel[i]!=nullptr)
-			delete this->theModel[i];
-	}
-	delete[] this->theModel;
+	//for (int i = 0; i < this->nrOfModels; i++)
+	//{
+	//	/*if(this->theModel[i]!=nullptr)
+	//		delete this->theModel[i];*/
+	//}
+	//delete[] this->theModel;
+	if (theModel != NULL)
+		this->theModel = nullptr;
 }
 
 
@@ -57,15 +53,15 @@ int GameObject::getNrOfModels()
 	return this->nrOfModels;
 }
 
-Model *& GameObject::getModel(int id)
-{
-	return this->theModel[id];
-}
-
-Model **& GameObject::getTheModelPtr()
+shared_ptr<Model>  GameObject::getModel()
 {
 	return this->theModel;
 }
+
+//Model **& GameObject::getTheModelPtr()
+//{
+//	return this->theModel;
+//}
 
 void GameObject::setHalfSize(float halfSize[3], float posOffset[3])
 {
@@ -145,31 +141,53 @@ void GameObject::calcAABB(std::vector<Vertex3D> mesh)
 	this->colBox.Max = max;*/
 }
 
+void GameObject::addModel(shared_ptr<Model> m)
+{
+	this->theModel = m;
+	nrOfModels++;
+}
+
 void GameObject::addModel(std::vector<Vertex3D> mesh, DWORD * indices, int numberOfIndices, bool hasSkeleton)
 {
-	this->theModel[nrOfModels] = new Model;
-	this->theModel[nrOfModels]->setMesh(mesh, indices, numberOfIndices);
+	shared_ptr<Model> m;
+	this->theModel = m;
+	this->theModel->setMesh(mesh, indices, numberOfIndices);
 	//if(this->colBox.Max.x == 1.0f)
 	this->calcAABB(mesh);
 	//this->theModel[nrOfModels]->setSampler();
-	this->theModel[nrOfModels]->setGotSkeleton(hasSkeleton);
+	this->theModel->setGotSkeleton(hasSkeleton);
 	nrOfModels++;
 
 }
 
 void GameObject::setMesh(std::vector<Vertex3D> mesh, DWORD * indices, int numberOfIndices, int id)
 {
-	this->theModel[id]->setMesh(mesh, indices, numberOfIndices);
+	this->theModel->setMesh(mesh, indices, numberOfIndices);
 }
 
 void GameObject::setTexture(std::string file, int id, int mipLevels)
 {									
-	this->theModel[id]->setTexture(file, mipLevels);
+	this->theModel->setTexture(file, mipLevels);
 }
 
 void GameObject::setGlowMap(std::string file, int id)
 {
-	this->theModel[id]->setGlowMap(file);
+	this->theModel->setGlowMap(file);
+}
+
+void GameObject::setMask(std::string file, int id)
+{
+	this->theModel->setMask(file);
+}
+
+void GameObject::setColorMask(DirectX::XMFLOAT4 colorMask)
+{
+	this->colorMask = colorMask;
+}
+
+DirectX::XMFLOAT4 & GameObject::getColorMask()
+{
+	return this->colorMask;
 }
 
 void GameObject::draw()
@@ -189,8 +207,8 @@ void GameObject::draw()
 
 
 
-	this->theModel[0]->getShader()->setWorld(this->getWorld());
-	this->theModel[0]->draw();
+	this->theModel->getShader()->setWorld(this->getWorld());
+	this->theModel->draw();
 
 }
 
@@ -322,7 +340,7 @@ void GameObject::setNewAnimation(float fps, float duration, std::string name, st
 
 void GameObject::setSkeleton(std::vector<Luna::Joint> theJoints)
 {
-
+	//this->
 	this->skeleton.resize(theJoints.size());
 	for (int i = 0; i < theJoints.size(); i++)
 	{

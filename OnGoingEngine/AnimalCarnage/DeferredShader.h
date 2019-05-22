@@ -16,6 +16,7 @@ public:
 	void setSkeleton(bool hasSkeleton);
 	void setJointData(std::vector<DirectX::XMMATRIX> jointTransforms);
 	//uses the rendershader in Shader
+	void setMaskColor(DirectX::XMFLOAT4 color);
 	void setCamPosToMatricesPerFrame(DirectX::XMFLOAT3 campos);
 	void setCBuffers();
 	void resetRenderTargets();
@@ -32,6 +33,7 @@ private:
 	struct Repeat
 	{
 		DirectX::XMFLOAT4 texRepeat;
+		DirectX::XMFLOAT4 colorMask;
 	};
 	ConstantBuffer<Repeat> repeat;
 };

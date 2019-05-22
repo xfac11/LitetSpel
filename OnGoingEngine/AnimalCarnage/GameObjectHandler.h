@@ -29,7 +29,8 @@ private:
 	struct ModWorld
 	{
 		DirectX::XMMATRIX* worldPtr;
-		Model* modelPtr;
+		shared_ptr<Model> modelPtr;
+		GameObject* selfPtr;
 	};
 
 	

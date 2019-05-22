@@ -18,17 +18,20 @@ public:
 	~GameObject();
 
 	int getNrOfModels();
-	Model*& getModel(int id);
-	Model**& getTheModelPtr();
+	shared_ptr<Model>  getModel();
+	//Model**& getTheModelPtr();
 
 	void setHalfSize(float halfSize[3], float posOffset[3]);
 
 	void calcAABB(std::vector<Vertex3D> mesh);
-
+	void addModel(shared_ptr<Model> m);
 	void addModel(std::vector<Vertex3D> mesh, DWORD *indices, int numberOfIndices,  bool hasSkeleton);
 	void setMesh(std::vector<Vertex3D> mesh, DWORD *indices, int numberOfIndices, int id);
 	void setTexture(std::string file, int id, int mipLevels=-1);
 	void setGlowMap(std::string file, int id);
+	void setMask(std::string file, int id);
+	void setColorMask(DirectX::XMFLOAT4 colorMask);
+	DirectX::XMFLOAT4& getColorMask();
 	void draw();
 	AABB getCollisionBox();
 	Primitives * CollisionShape;
@@ -45,7 +48,7 @@ public:
 	JointTransformation interpolate1(JointTransformation frameA, JointTransformation frameB, float progression);
 	JointTransformation interpolate2(JointTransformation frameA, JointTransformation frameB, float progression);
 private:
-	Model* *theModel;
+	shared_ptr<Model> theModel;
 	int cap;
 
 	bool hasLoadedAABB;
@@ -61,7 +64,7 @@ private:
 	std::vector<DirectX::XMMATRIX> matrixPallete; //to pipeline
 	//std::vector<KeyFrame> keyframes;
 	//AnimationShader* animShader;
-
+	DirectX::XMFLOAT4 colorMask;
 	AABB colBox;
 	//ConstantBuffer<WorldMatrix> worldConstBuffer;
 	//Hitbox theHitbox; a model with just the index and vertices and a color. no textures etc
