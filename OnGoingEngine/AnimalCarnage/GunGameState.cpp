@@ -217,7 +217,7 @@ bool GunGameState::initailize()
 
 
 
-	nrOfPlayers = 2;
+	nrOfPlayers = 4;
 	player = new Player * [nrOfPlayers];
 	for (int i = 0; i < nrOfPlayers; i++)
 	{
@@ -380,23 +380,16 @@ bool GunGameState::update(float deltaTime)
 					//TAKE DAMAGE HERE
 					player[i]->takeDamage(player[j]->getStrength());
 
-					//srand(time(0));
 					int randomNumber = (rand() % 4) + 0;
 					System::getSoundManager()->playEffect(to_string(randomNumber));
 
-					//srand(time(0));
 					int randomNumber2 = (rand() % 3) - 1;
-					//srand(time(0));
 					int randomNumber3 = (rand() % 3) - 1;
-					//srand(time(0));
 					int randomNumber4 = (rand() % 3) - 1;
 
 					if (randomNumber2 == 0 && randomNumber3 == 0 && randomNumber4 == 0) {
-						//srand(time(0));
 						int randomNumber2 = (rand() % 3) - 1;
-						//srand(time(0));
 						int randomNumber3 = (rand() % 3) - 1;
-						//srand(time(0));
 						int randomNumber4 = (rand() % 3) - 1;
 					}
 

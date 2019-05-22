@@ -587,9 +587,19 @@ void Player::update(float deltaTime, int id)
 
 	if (isDead()) {
 		//this->playerObj->getRigidbody()->setLinearFactor(btVector3(1, 1, 0));
-		//this->playerObj->getRigidbody()->setAngularFactor(btVector3(0, 0, 1));
+		this->playerObj->getRigidbody()->setAngularFactor(btVector3(0, 0, 1));
 
-		//this->playerObj->setRotation(this->playerObj->getRigidbody()->getWorldTransform().getRotation().getX()*3.14 * 2, this->playerObj->getRigidbody()->getWorldTransform().getRotation().getY()*3.14 * 2, this->playerObj->getRigidbody()->getWorldTransform().getRotation().getZ()*3.14 * 2, this->playerObj->getRigidbody()->getWorldTransform().getRotation().getW()*3.14 * 2);
+		//playerObj->setRotationRollPitchYaw()
+		XMVECTOR temp;
+		temp.m128_f32[0] = this->playerObj->getRigidbody()->getWorldTransform().getRotation().getX();
+		temp.m128_f32[1] = this->playerObj->getRigidbody()->getWorldTransform().getRotation().getY();
+		temp.m128_f32[2] = this->playerObj->getRigidbody()->getWorldTransform().getRotation().getZ();
+		temp.m128_f32[3] = this->playerObj->getRigidbody()->getWorldTransform().getRotation().getW();
+
+		playerObj->setRotationRollPitchYaw(getRoll(temp) * -1, playerObj->getRotation().y, playerObj->getRotation().z);
+
+
+		//this->playerObj->setRotation(this->playerObj->getRigidbody()->getWorldTransform().getRotation().getX(), this->playerObj->getRigidbody()->getWorldTransform().getRotation().getY()*3.14 * 2, this->playerObj->getRigidbody()->getWorldTransform().getRotation().getZ()*3.14 * 2, this->playerObj->getRigidbody()->getWorldTransform().getRotation().getW()*3.14 * 2);
 		//this->playerObj->setRotationRollPitchYaw(this->playerObj->getRigidbody()->getWorldTransform().getRotation().getX() *3.14 * 2,
 		//this->playerObj->getRigidbody()->getWorldTransform().getRotation().getY() *3.14 * 2,
 		//this->playerObj->getRigidbody()->getWorldTransform().getRotation().getZ() *3.14 * 2);
@@ -603,9 +613,8 @@ void Player::update(float deltaTime, int id)
 			deathTimer = 0;
 			setRigidbodyPosition(0,+20,0);
 		}
-		
 	}
-
+	//Fixar bug så att man inte kan hoppa på plattformar
 	groundTimer += deltaTime * 1000;
 	if (groundTimer >= 100) {
 		grounded = false;
@@ -694,6 +703,11 @@ AABB Player::getAABB()
 	return this->playerObj->getCollisionBox();
 }
 
+int Player::getNextAnimal()
+{
+	return this->nextAnimal;
+}
+
 void Player::setGrounded(bool grounded)
 {
 	this->grounded = grounded;
@@ -751,4 +765,18 @@ XMFLOAT3 Player::cross(const XMFLOAT3 & l, XMFLOAT3 & r)
 {
 
 	return XMFLOAT3(l.y * r.z - l.z * r.y, l.z * r.x - l.x * r.z, l.x * r.y - l.y * r.x);
+}
+float Player::getPitch(DirectX::XMVECTOR Quaternion)
+{
+	return atan2(2 * (Quaternion.m128_f32[1] * Quaternion.m128_f32[2] + Quaternion.m128_f32[3] * Quaternion.m128_f32[0]), Quaternion.m128_f32[3] * Quaternion.m128_f32[3] - Quaternion.m128_f32[0] * Quaternion.m128_f32[0] - Quaternion.m128_f32[1] * Quaternion.m128_f32[1] + Quaternion.m128_f32[2] * Quaternion.m128_f32[2]);
+}
+
+float Player::getYaw(DirectX::XMVECTOR Quaternion)
+{
+	return asin(-2 * (Quaternion.m128_f32[0] * Quaternion.m128_f32[2] - Quaternion.m128_f32[3] * Quaternion.m128_f32[1]));
+}
+
+float Player::getRoll(DirectX::XMVECTOR Quaternion)
+{
+	return atan2(2 * (Quaternion.m128_f32[0] * Quaternion.m128_f32[1] + Quaternion.m128_f32[3] * Quaternion.m128_f32[2]), Quaternion.m128_f32[3] * Quaternion.m128_f32[3] + Quaternion.m128_f32[0] * Quaternion.m128_f32[0] - Quaternion.m128_f32[1] * Quaternion.m128_f32[1] - Quaternion.m128_f32[2] * Quaternion.m128_f32[2]);
 }
