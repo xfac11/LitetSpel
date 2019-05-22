@@ -228,19 +228,18 @@ void GameObjectHandler::draw(float deltaTime)
 		}
 	}
 
-	//enable this to animate also set //mesh.hasSkeleton in modelloader
-
-	this->animTimer += 60 * deltaTime;
-	if (animTimer >= 60) {
+	//enable this to animate also set //mesh.hasSkeleton in modelloader addModel()
+	//this->animTimer += 60 * deltaTime;
+	//if (animTimer >= 60) {
 		for (int a = 0; a < nrOfObjects; a++)
 		{
 			if (this->gameObjects[a]->haveAnimation() == true)
 			{
-				//this->gameObjects[a]->computeAnimationMatrix(deltaTime); //
+				//this->gameObjects[a]->computeAnimationMatrix(deltaTime); //to animate enable this 
 			}
 		}
-		animTimer = 0;
-	}
+	//	animTimer = 0;
+	//}
 	
 
 	/*for (int i = 0; i < this->nrOfOpaque; i++)

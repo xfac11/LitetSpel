@@ -141,14 +141,15 @@ void GameObject::calcAABB(std::vector<Vertex3D> mesh)
 	this->colBox.Max = max;*/
 }
 
-void GameObject::addModel(shared_ptr<Model> m)
+void GameObject::addModel(shared_ptr<Model> m, bool hasSkeleton)
 {
 	this->theModel = m;
+	this->theModel->setGotSkeleton(hasSkeleton);
 	nrOfModels++;
 }
 
 void GameObject::addModel(std::vector<Vertex3D> mesh, DWORD * indices, int numberOfIndices, bool hasSkeleton)
-{
+{ //not using this???
 	shared_ptr<Model> m;
 	this->theModel = m;
 	this->theModel->setMesh(mesh, indices, numberOfIndices);

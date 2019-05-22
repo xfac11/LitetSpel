@@ -22,17 +22,16 @@ void ModelLoader::loadGO(GameObject*& object, const char* filePath, int mipLevel
 		{
 			modelloaded = true;
 			Luna::Material mat1 = reader.getMaterial(0);
-
+			Luna::Mesh  mesh = reader.getMesh(0);
 			System::assetMananger->LoadTexture(mat1.diffuseTexPath, mat1.diffuseTexPath);
 			shared_ptr<Texture> texture = System::assetMananger->GetTexture(mat1.diffuseTexPath);
 			m->SetTexture(texture);
-			object->addModel(m);
+			object->addModel(m, false); //mesh.hasSkeleton
 			object->setHalfSize(reader.getBoundingBox(0).halfSize, reader.getBoundingBox(0).pos);
 			return;
 		}
 
 	}
-
 
 
 
@@ -79,10 +78,8 @@ void ModelLoader::loadGO(GameObject*& object, const char* filePath, int mipLevel
 			keyframePack.resize(joints.size());
 			for (int i = 0; i < joints.size(); i++)
 			{
-				//keyframePack[i].resize()
 				reader.getKeyframes(i, keyframePack[i]);
 			}
-			//reader.getKeyframes(15, keyframes);
 
 			
 			std::string animName(anims.animationName);
@@ -105,42 +102,9 @@ void ModelLoader::loadGO(GameObject*& object, const char* filePath, int mipLevel
 
 			}
 
-			//int vertexId = 0;
-			//for (int p = 0; p < weights.size() / 3; p++)
-			//{
-			//	for (int v = 0; v < 3; v++)
-			//	{
-			//		//int ctrlPointIdx = -1;
-			//		//if (p >= 0 && p < weights.size() / 3 && v >= 0 && v < 3)
-			//		//{
-			//		//	//weigh[vertexId];
-			//		//}
-
-			//		//float sumWeights = weights[vertexId].weights[0] + weights[vertexId].weights[1] + weights[vertexId].weights[2] + weights[vertexId].weights[3];
-			//		vertices3D[vertexId].Joint.x = weights[vertexId].jointIDs[0];
-			//		vertices3D[vertexId].Joint.y = weights[vertexId].jointIDs[1];
-			//		vertices3D[vertexId].Joint.z = weights[vertexId].jointIDs[2];
-			//		vertices3D[vertexId].Joint.w = weights[vertexId].jointIDs[3];
-
-			//		vertices3D[vertexId].Weights.x = weights[vertexId].weights[0];
-			//		vertices3D[vertexId].Weights.y = weights[vertexId].weights[1];
-			//		vertices3D[vertexId].Weights.z = weights[vertexId].weights[2];
-			//		vertices3D[vertexId].Weights.w = weights[vertexId].weights[3];
-			//		vertexId++;
-			//	}
-			//}
-			
 
 		}
-		else
-		{
-		/*		
-			std::vector<Luna::Keyframe> keyframes;
-			Luna::Keyframe temp;
-			keyframes.push_back(temp);
-			object[i].setKeyFrameData(keyframes, false);
-		*/
-		}
+
 
 		{
 			//check if model is loaded
@@ -155,7 +119,7 @@ void ModelLoader::loadGO(GameObject*& object, const char* filePath, int mipLevel
 			texture = System::assetMananger->GetTexture(mat.diffuseTexPath);
 			model->SetTexture(texture); 	//set the texture to the model
 			System::assetMananger->LoadModel(filePath, model); //load model
-			object->addModel(System::assetMananger->GetModel(filePath));
+			object->addModel(System::assetMananger->GetModel(filePath), false); //mesh.hasSkeleton
 
 			if (mesh.hasBoundingBox)
 				object[i].setHalfSize(reader.getBoundingBox(i).halfSize, reader.getBoundingBox(i).pos);
@@ -173,13 +137,6 @@ void ModelLoader::loadGO(GameObject*& object, const char* filePath, int mipLevel
 	delete[]dIndices;
 
 
-
-	
-
-
-		
-		
-		
 	
 }
 //void ModelLoader::loadModel(Model**&model, const char* filePath) //unused?
