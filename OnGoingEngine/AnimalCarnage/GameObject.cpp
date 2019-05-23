@@ -278,25 +278,24 @@ void GameObject::computeAnimationMatrix(float deltaTime)
 	{
 		prevTimeIncrement = t;
 		
-		//std::vector<DirectX::XMMATRIX> pose_global;
-		//std::vector<DirectX::XMMATRIX> matrixPallete;//into pipeline
+
+		DirectX::XMMATRIX sclMtx = DirectX::XMMatrixScaling( 0.1f,0.1f,0.1f);
+
+		
 		JointTransformation local;
 		JointTransformation local_root = this->interpolate2(anims.getKeyframes()[0][k1].getJointKeyFrames(), anims.getKeyframes()[0][k2].getJointKeyFrames(),t);
-		//pose_global.push_back(local_root.getLocalTransform());
 		
+
 		pose_global[0] = local_root.getLocalTransform();
 
 		//matrixPallete.resize(skeleton.size());
-		pose_global[0] = DirectX::XMMatrixTranspose(pose_global[0]);
+		pose_global[0] = DirectX::XMMatrixMultiply(sclMtx,DirectX::XMMatrixTranspose(pose_global[0]));
 		matrixPallete[0] = DirectX::XMMatrixMultiplyTranspose(pose_global[0], DirectX::XMMatrixTranspose(this->skeleton[0].getInverseBindTransform()));
 		for (int joint = 1; joint < skeleton.size(); joint++)
 		{
 			
-
 			local = this->interpolate2(anims.getKeyframes()[joint][k1].getJointKeyFrames(), anims.getKeyframes()[joint][k2].getJointKeyFrames(), t);
-			//pose_global.push_back(local.getLocalTransform());
-			//pose_global[joint] = local_root.getLocalTransform();
-
+			
 			pose_global[joint] = DirectX::XMMatrixMultiply(pose_global[this->skeleton[joint].getParent()->getID()], DirectX::XMMatrixTranspose(local.getLocalTransform()));
 			matrixPallete[joint] = DirectX::XMMatrixMultiplyTranspose(pose_global[joint], DirectX::XMMatrixTranspose(this->skeleton[joint].getInverseBindTransform()));
 		}

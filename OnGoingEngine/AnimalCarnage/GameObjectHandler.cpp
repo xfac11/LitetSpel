@@ -235,7 +235,7 @@ void GameObjectHandler::draw(float deltaTime)
 		{
 			if (this->gameObjects[a]->haveAnimation() == true)
 			{
-				//this->gameObjects[a]->computeAnimationMatrix(deltaTime); //to animate enable this 
+				this->gameObjects[a]->computeAnimationMatrix(deltaTime); //to animate enable this 
 			}
 		}
 	//	animTimer = 0;

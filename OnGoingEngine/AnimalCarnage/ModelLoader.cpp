@@ -26,7 +26,7 @@ void ModelLoader::loadGO(GameObject*& object, const char* filePath, int mipLevel
 			System::assetMananger->LoadTexture(mat1.diffuseTexPath, mat1.diffuseTexPath);
 			shared_ptr<Texture> texture = System::assetMananger->GetTexture(mat1.diffuseTexPath);
 			m->SetTexture(texture);
-			object->addModel(m, false); //mesh.hasSkeleton
+			object->addModel(m, mesh.hasSkeleton); //mesh.hasSkeleton
 			object->setHalfSize(reader.getBoundingBox(0).halfSize, reader.getBoundingBox(0).pos);
 			return;
 		}
@@ -119,7 +119,7 @@ void ModelLoader::loadGO(GameObject*& object, const char* filePath, int mipLevel
 			texture = System::assetMananger->GetTexture(mat.diffuseTexPath);
 			model->SetTexture(texture); 	//set the texture to the model
 			System::assetMananger->LoadModel(filePath, model); //load model
-			object->addModel(System::assetMananger->GetModel(filePath), false); //mesh.hasSkeleton
+			object->addModel(System::assetMananger->GetModel(filePath), mesh.hasSkeleton); //mesh.hasSkeleton
 
 			if (mesh.hasBoundingBox)
 				object[i].setHalfSize(reader.getBoundingBox(i).halfSize, reader.getBoundingBox(i).pos);
