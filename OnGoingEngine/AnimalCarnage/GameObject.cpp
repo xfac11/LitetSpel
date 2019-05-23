@@ -278,7 +278,7 @@ void GameObject::computeAnimationMatrix(float deltaTime)
 		this->timePassed = fmodf(this->timePassed,anims.getDuration());
 
 	this->frameCounter++;
-	if (this->frameCounter >= 10)
+	if (this->frameCounter >= 1)
 	{
 		int k1 = (int)(this->timePassed* anims.getFPS());
 		int k2 = std::min<int>(k1 + 1, anims.getKeyframes()[0].size());
