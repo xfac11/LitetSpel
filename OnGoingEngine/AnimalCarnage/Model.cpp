@@ -51,10 +51,10 @@ Model::~Model()
 	{
 		delete this->glowMap;
 	}
-	if (this->mask != nullptr)
-	{
+	/*if (this->mask != nullptr)
+	{*/
 		delete this->mask;
-	}
+	//}
 
 }
 
@@ -76,6 +76,11 @@ void Model::setMaskColor(DirectX::XMFLOAT4 colorMask)
 DirectX::XMFLOAT4 & Model::getMaskColor()
 {
 	return this->colorMask;
+}
+
+bool Model::hasMaskColor()
+{
+	return this->hasMask;
 }
 
 DirectX::XMFLOAT4 & Model::getRepeat()

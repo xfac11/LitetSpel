@@ -28,7 +28,7 @@ bool HealthBar::render(bool selected)
 
 	source.right = static_cast<long>((this->health / static_cast<float>(this->maxHealth)) * 290);
 	DirectX::SimpleMath::Color color(DirectX::SimpleMath::Color::Lerp(DirectX::SimpleMath::Color(1, 0, 0),DirectX::SimpleMath::Color(0, 1, 0), colorValue));
-	color.w = 0.9f;
+	//color.w = 0.9f;
 	System::getSpriteBatch()->Draw(HealthBar::texture.getTexture(), this->position + DirectX::SimpleMath::Vector2(5, 0), &source, color);
 	System::getSpriteBatch()->Draw(HealthBar::textureOutline.getTexture(), this->position);
 

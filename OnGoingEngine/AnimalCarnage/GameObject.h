@@ -30,8 +30,10 @@ public:
 	void setTexture(std::string file, int id, int mipLevels=-1);
 	void setGlowMap(std::string file, int id);
 	void setMask(std::string file, int id);
+	void setRepeat(float x, float y);
 	void setColorMask(DirectX::XMFLOAT4 colorMask);
 	DirectX::XMFLOAT4& getColorMask();
+	DirectX::XMFLOAT4& getRepeat();
 	void draw();
 	AABB getCollisionBox();
 	Primitives * CollisionShape;
@@ -65,6 +67,7 @@ private:
 	//std::vector<KeyFrame> keyframes;
 	//AnimationShader* animShader;
 	DirectX::XMFLOAT4 colorMask;
+	DirectX::XMFLOAT4 repeat;
 	AABB colBox;
 	//ConstantBuffer<WorldMatrix> worldConstBuffer;
 	//Hitbox theHitbox; a model with just the index and vertices and a color. no textures etc

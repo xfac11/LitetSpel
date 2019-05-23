@@ -102,11 +102,16 @@ public:
 	Hitbox hitbox;
 	int dir;
 
+	int getNextAnimal();
 	void setGrounded(bool grounded);
 	void setCanWallJump(bool canWallJump);
 	void addGroundMovingSpeed(XMFLOAT3 speed);
 	void follow(XMFLOAT3 postion);
 	GameObject* playerObj;
+
+	float getPitch(DirectX::XMVECTOR Quaternion);
+	float getYaw(DirectX::XMVECTOR Quaternion);
+	float getRoll(DirectX::XMVECTOR Quaternion);
 };
 
 

@@ -26,7 +26,7 @@ public:
 	void setRepeat(float x, float y);
 	void setMaskColor(DirectX::XMFLOAT4 colorMask);
 	DirectX::XMFLOAT4 &getMaskColor();
-
+	bool hasMaskColor();
 	DirectX::XMFLOAT4 &getRepeat();
 	void setTexture(std::string file, int mipLevels=-1);
 
