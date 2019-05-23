@@ -9,7 +9,7 @@
 //#include "Player.h"
 #include "joint.h"
 #include "Animation.h"
-//#include "KeyFrame.h"
+#include <map>
 class GameObject: public Transform//arv
 {
 public:
@@ -60,11 +60,13 @@ private:
 	std::vector<Joint> skeleton;
 	Animation anims;
 	float timePassed;
-	float prevTimeIncrement;
+	//float prevTimeIncrement;
 	int frameCounter;
 
 	std::vector<DirectX::XMMATRIX> pose_global;
 	std::vector<DirectX::XMMATRIX> matrixPallete; //to pipeline
+	
+	std::map<int, std::vector<DirectX::XMMATRIX>> calculatedFrames;
 	//std::vector<KeyFrame> keyframes;
 	//AnimationShader* animShader;
 	DirectX::XMFLOAT4 colorMask;
