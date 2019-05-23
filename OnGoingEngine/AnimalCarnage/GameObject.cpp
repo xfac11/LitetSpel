@@ -279,7 +279,7 @@ void GameObject::computeAnimationMatrix(float deltaTime)
 
 	this->frameCounter++;
 
-	if (this->frameCounter >= 2)
+	if (this->frameCounter >= 1) //frameskip
 	{
 		int k1 = (int)(this->timePassed* anims.getFPS());
 		int k2 = std::min<int>(k1 + 1, anims.getKeyframes()[0].size());
@@ -288,7 +288,7 @@ void GameObject::computeAnimationMatrix(float deltaTime)
 		float k2_time = k2 / anims.getFPS();
 		float t = (timePassed - k1_time) / (k2_time - k1_time);
 
-		int timeStamp = int(10*(k1 + t));
+		int timeStamp = int(10*(k1 + t)); //accuracy of deltaTime saved
 
 		if (calculatedFrames[timeStamp].empty())
 		{
