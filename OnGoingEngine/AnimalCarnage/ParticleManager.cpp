@@ -1,4 +1,5 @@
 #include "ParticleManager.h"
+#include "SimpleEffect.h"
 
 ParticleManager::ParticleManager()
 {
@@ -12,8 +13,10 @@ ParticleManager::~ParticleManager()
 	}
 }
 
-void ParticleManager::addEffect(SimpleMath::Vector3 position)
+void ParticleManager::addSimpleEffect(SimpleMath::Vector3 position)
 {
+	SimpleEffect* newEffect = new SimpleEffect(position, 5, 10, 5);
+	this->activeEffects.push_back(newEffect);
 }
 
 void ParticleManager::resetAndClear()

@@ -14,7 +14,7 @@ private:
 	bool aliveForever;
 public:
 	EffectBase(float lifeTime = 10.0f);
-	EffectBase(bool aliveForever, float lifeTime = 10.0f);
+	EffectBase(bool aliveForever, float lifeTime = 0.0f);
 	virtual ~EffectBase();
 
 	virtual void update(float deltaTime);

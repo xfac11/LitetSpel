@@ -17,7 +17,7 @@ public:
 	ParticleManager();
 	virtual ~ParticleManager();
 
-	void addEffect(SimpleMath::Vector3 position);
+	void addSimpleEffect(SimpleMath::Vector3 position);
 
 	void resetAndClear();
 	void render();

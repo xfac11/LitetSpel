@@ -376,6 +376,7 @@ bool System::initialize()
 	System::getSoundManager()->loadEffect(L"Wall_Jump_Crash.wav", "4");
 	System::getSoundManager()->loadEffect(L"Swing.wav", "5");
 
+	shaderManager->getParticleShader()->setCamera(SimpleMath::Vector3(this->theCamera->GetUp()));
 	shaderManager->getLightShader()->setWindow(this->theWindow);
 	D3D11_VIEWPORT vp;
 	ZeroMemory(&vp, sizeof(D3D11_VIEWPORT));
@@ -606,10 +607,10 @@ void System::update(float deltaTime)
 
 	//theCamera->SetRotation(theMouse->GetPos().y, 0, 0);
 	
-
 	System::states[System::currentState]->update(deltaTime);
+
 	if(System::states[System::currentState])
-	System::soundManager->update();
+		System::soundManager->update();
 }
 
 void System::render()
@@ -661,8 +662,9 @@ void System::render()
 	System::states[System::currentState]->render();
 
 	//physices->Update();
-	if(currentState==GUNGAME)
+	if (currentState == GUNGAME)
 		debugDraw->Draw(this->theCamera->GetViewMatrix(), this->theGraphicDevice->getProj());
+
 	System::getDeviceContext()->GSSetShader(nullptr, nullptr, 0);
     ImGui::Render();
 
@@ -771,6 +773,11 @@ SoundManager * System::getSoundManager()
 	return System::soundManager;
 }
 
+ParticleManager * System::getParticleManager()
+{
+	return System::particleManager;
+}
+
 SpriteFont * System::getFontComicSans()
 {
 	return System::fontComicSans;
@@ -803,6 +810,11 @@ void System::setState(GameState state)
 	if (state == MAINMENU)
 	{
 		static_cast<MainMenu*>(System::fusk->states[MAINMENU])->setCurrentMenu(MAIN, true);
+	}
+
+	if (state != GUNGAME)
+	{
+		particleManager->resetAndClear();
 	}
 }
 

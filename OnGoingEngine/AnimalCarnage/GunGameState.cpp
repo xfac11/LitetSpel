@@ -297,6 +297,11 @@ bool GunGameState::render()
 	renderImgui();
 	System::handler->draw(ImGui::GetIO().DeltaTime);
 
+	System::shaderManager->getParticleShader()->setCBuffers();
+	System::shaderManager->getParticleShader()->setShaders();
+	System::shaderManager->getParticleShader()->setViewProj(System::theCamera->GetViewMatrix(), System::theGraphicDevice->getProj(), DirectX::XMFLOAT4(System::theCamera->GetPosition().x, System::theCamera->GetPosition().y, System::theCamera->GetPosition().z, 1.0f));
+	System::getParticleManager()->render();
+
 	System::fusk->resetShaders();
 	this->inGameGui->render();
 
@@ -379,6 +384,7 @@ bool GunGameState::update(float deltaTime)
 					int tempHP = player[i]->getHealth();
 					//TAKE DAMAGE HERE
 					player[i]->takeDamage(player[j]->getStrength());
+					System::getParticleManager()->addSimpleEffect(player[i]->getPosition());
 
 					int randomNumber = (rand() % 4) + 0;
 					System::getSoundManager()->playEffect(to_string(randomNumber));
@@ -430,6 +436,7 @@ bool GunGameState::update(float deltaTime)
 	//}
 
 	this->inGameGui->update(deltaTime);
+	System::getParticleManager()->update(deltaTime);
 	return true;
 }
 

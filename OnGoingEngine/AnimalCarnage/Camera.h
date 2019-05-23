@@ -46,7 +46,7 @@ public:
 	void cameraShake(float amount, DirectX::XMFLOAT3 direction);
 	DirectX::XMFLOAT3 GetPosition();
 	DirectX::XMFLOAT3 GetRotation();
-
+	DirectX::XMVECTOR GetUp() const;
 	void Render();
 	DirectX::XMMATRIX& GetViewMatrix();
 	void calcCamera(std::vector<DirectX::XMFLOAT3> playerPos);

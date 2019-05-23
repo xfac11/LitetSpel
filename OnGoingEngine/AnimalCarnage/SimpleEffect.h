@@ -3,15 +3,27 @@
 
 #include "EffectBase.h"
 #include "Texture.h"
+#include "VertexBuffer.h"
+#include "Shader.h"
 
 class SimpleEffect : public EffectBase
 {
 private:
-	static Texture* particleTexture;
-	SimpleMath::Vector3 position;
+	struct Particle
+	{
+		XMFLOAT3 position;
+	};
 
+	ID3D11SamplerState* SamplerState;
+	VertexBuffer<Particle> vertexBuffer;
+	Shader* theShader;
+	std::shared_ptr<Texture> particleTexture;
+
+	int particleCount;
+	SimpleMath::Vector3* velocities;
+	Particle* particles;
 public:
-	SimpleEffect(SimpleMath::Vector3 position = SimpleMath::Vector3());
+	SimpleEffect(SimpleMath::Vector3 position = SimpleMath::Vector3(), float lifeTime = 10.0f, int particleCount = 10, float maxStartSpeed = 5.0f);
 	virtual ~SimpleEffect();
 
 	virtual void update(float deltaTime);

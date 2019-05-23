@@ -55,6 +55,15 @@
     <FxCompile Include="VerticalBlurVS.hlsl">
       <Filter>Shader</Filter>
     </FxCompile>
+    <FxCompile Include="ParticleGS.hlsl">
+      <Filter>Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="ParticlePS.hlsl">
+      <Filter>Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="ParticleVS.hlsl">
+      <Filter>Shader</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="InputHandler.cpp" />
@@ -700,6 +709,9 @@
     </ClCompile>
     <ClCompile Include="SimpleEffect.cpp">
       <Filter>Particle</Filter>
+    </ClCompile>
+    <ClCompile Include="ParticleShader.cpp">
+      <Filter>Shader</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1592,6 +1604,9 @@
     </ClInclude>
     <ClInclude Include="SimpleEffect.h">
       <Filter>Particle</Filter>
+    </ClInclude>
+    <ClInclude Include="ParticleShader.h">
+      <Filter>Shader</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

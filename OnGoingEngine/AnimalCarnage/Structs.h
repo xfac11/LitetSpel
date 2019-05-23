@@ -57,3 +57,7 @@ struct WindowClient
 	int width;
 
 };
+struct ParticleCamera
+{
+	DirectX::XMFLOAT3 up;
+};

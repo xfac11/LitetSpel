@@ -23,5 +23,5 @@ void EffectBase::render()
 
 bool EffectBase::isAlive() const
 {
-	return this->currentAge >= this->lifetime || this->aliveForever;
+	return this->currentAge < this->lifetime || this->aliveForever;
 }

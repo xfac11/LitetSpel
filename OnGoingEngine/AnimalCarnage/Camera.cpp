@@ -120,6 +120,11 @@ DirectX::XMFLOAT3 Camera::GetRotation()
 	return this->rotation;
 }
 
+DirectX::XMVECTOR Camera::GetUp() const
+{
+	return this->Up;
+}
+
 void Camera::Render()
 {
 	float radians = 0.0174532925f;

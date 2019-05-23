@@ -131,6 +131,7 @@ public:
 	static SpriteBatch* getSpriteBatch();
 	static CommonStates* getCommonStates();
 	static SoundManager* getSoundManager();
+	static ParticleManager* getParticleManager();
 	static SpriteFont* getFontComicSans();
 	static SpriteFont* getFontArial();
 	static Physics* getphysices();

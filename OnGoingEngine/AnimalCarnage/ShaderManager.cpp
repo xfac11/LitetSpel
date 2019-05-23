@@ -5,6 +5,7 @@ ShaderManager::ShaderManager()
 	this->fShader = nullptr;
 	this->dShader = nullptr;
 	this->lShader = nullptr;
+	this->pShader = nullptr;
 	this->shadowMapping = nullptr;
 }
 
@@ -16,6 +17,8 @@ ShaderManager::~ShaderManager()
 		delete this->dShader;
 	if (this->lShader != nullptr)
 		delete this->lShader;
+	if (this->pShader != nullptr)
+		delete this->pShader;
 	if (this->shadowMapping != nullptr)
 		delete this->shadowMapping;
 	if (this->horBlur != nullptr)
@@ -32,6 +35,8 @@ void ShaderManager::initialize(int height, int width, float nearPlane, float far
 	this->dShader->initialize(height, width, nearPlane, farPlane);
 	this->lShader = new LightShader;
 	this->lShader->initialize();
+	this->pShader = new ParticleShader;
+	this->pShader->initialize();
 	this->shadowMapping = new ShadowMapping;
 	this->shadowMapping->initialize();
 	this->horBlur = new HorizontalBlur;
@@ -53,6 +58,11 @@ DeferredShader *& ShaderManager::getDefShader()
 LightShader *& ShaderManager::getLightShader()
 {
 	return this->lShader;
+}
+
+ParticleShader *& ShaderManager::getParticleShader()
+{
+	return this->pShader;
 }
 
 ShadowMapping *& ShaderManager::getShadowMapping()
