@@ -294,8 +294,14 @@ bool GunGameState::initailize()
 
 bool GunGameState::render()
 {
+
+	currentAnimSpeed[0] = player[0]->getAnimSpeed();
+	currentAnimSpeed[1] = player[1]->getAnimSpeed();
+	currentAnimSpeed[2] = player[2]->getAnimSpeed();
+	currentAnimSpeed[3] = player[3]->getAnimSpeed();
+
 	renderImgui();
-	System::handler->draw(ImGui::GetIO().DeltaTime, this->paused);
+	System::handler->draw(ImGui::GetIO().DeltaTime, this->paused, currentAnimSpeed);
 
 	System::shaderManager->getParticleShader()->setCBuffers();
 	System::shaderManager->getParticleShader()->setShaders();

@@ -52,6 +52,8 @@ private:
 
 	int ObjectId;
 
+	std::vector<float>currentAnimSpeed = { 0,0,0,0 };
+
 public:
 	GunGameState();
 	~GunGameState();
