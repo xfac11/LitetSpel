@@ -129,7 +129,8 @@ Player::Player()
 	hitTime2 = 100;
 	hitTimer = 0;
 	punching = false;
-	type = DEFAULT_TYPE;
+	type = FOX;
+	color = RED;
 	health = 100;
 	canPressPunch = true;
 	deathTimer = 0;
@@ -156,9 +157,9 @@ Player::~Player()
 	//delete this->hitbox.hitbox;
 }
 
-void Player::initialize(AnimalType type)
+void Player::initialize(AnimalType type, PlayerColor color)
 {
-	//setup health
+	this->color = color;
 	const AnimalDef& animal = Animal::getAnimal(type);
 	this->type = type;
 	this->health = animal.maxHealh;

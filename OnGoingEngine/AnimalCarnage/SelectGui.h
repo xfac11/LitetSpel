@@ -10,17 +10,8 @@ class SelectGui : public GuiBase
 {
 private:
 	GuiElement* selectedElement;
-	Button* buttonTest;
-	PlayerSelector* playerSelector0;
-	PlayerSelector* playerSelector1;
-	PlayerSelector* playerSelector2;
-	PlayerSelector* playerSelector3;
-
-	bool changedLastFrame;
-	float timeSinceChanged;
-
-	void changeSelected_Keyboard();
-	void changeSelected();
+	Button* buttonStart;
+	PlayerSelector* playerSelectors[4];
 
 public:
 	SelectGui(State* myState);
