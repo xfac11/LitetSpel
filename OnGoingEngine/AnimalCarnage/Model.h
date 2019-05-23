@@ -29,7 +29,6 @@ public:
 	bool hasMaskColor();
 	DirectX::XMFLOAT4 &getRepeat();
 	void setTexture(std::string file, int mipLevels=-1);
-	void setGlowMap(shared_ptr<Texture> t);
 	void setGlowMap(std::string file);
 	void setMask(std::string file);
 	void setMesh(std::vector<Vertex3D> aMesh,DWORD *indices, int numberOfIndices);
@@ -38,6 +37,7 @@ public:
 	void drawOnlyVertex();
 	void draw();
 	void SetTexture(shared_ptr<Texture>);// { texture = t; }
+	void setGlowMap(shared_ptr<Texture> t);
 public:
 
 

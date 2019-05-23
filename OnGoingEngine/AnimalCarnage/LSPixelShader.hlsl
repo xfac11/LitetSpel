@@ -46,14 +46,19 @@ float4 CalcLight(AnyLight light, float3 normal, float3 wPos, float3 LightDirecti
 	float4 ambientColor = float4(light.color.xyz, 1.0f)*ambientAmount;
 	float diffuseFactor = max(0, dot(normal, -LightDirection));
 	float theShade = diffuseFactor;
-		if( theShade < 0.25f)
+		/*if( theShade < 0.25f)
 			theShade=0.f;
 		else if( theShade >= 0.5f && theShade < 0.75f)
 			theShade=0.5f;
 		else if( theShade >= 0.75f && theShade < 0.9f)
 			theShade=0.75f;
 		else if( theShade >= 1.0f)
-			theShade=1.0f;
+			theShade=1.0f;*/
+	
+		/*if( theShade < 0.5f)
+			theShade=0.2f;
+		else if( theShade >= 0.5f)
+			theShade=0.75f;*/
 	diffuseFactor = max(theShade,0); 
 
 
