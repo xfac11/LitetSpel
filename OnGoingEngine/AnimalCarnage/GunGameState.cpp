@@ -295,12 +295,12 @@ bool GunGameState::initailize()
 bool GunGameState::render()
 {
 	renderImgui();
-	System::handler->draw(ImGui::GetIO().DeltaTime);
+	System::handler->draw(ImGui::GetIO().DeltaTime, this->paused);
 
 	System::fusk->resetShaders();
 	this->inGameGui->render();
 
-	if (paused)
+	if (this->paused)
 	{
 		this->pauseGui->render();
 	}

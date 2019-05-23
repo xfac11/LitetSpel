@@ -8,7 +8,8 @@ struct Vertex3D //must be same as Luna::Vertex
 	DirectX::XMFLOAT3 normal; 
 	DirectX::XMFLOAT3 tangent; 
 	DirectX::XMFLOAT3 biNormal;
-	DirectX::XMFLOAT4 Joint;
+	DirectX::XMINT4 Joint;
+	//DirectX::XMFLOAT4 Joint;
 	DirectX::XMFLOAT4 Weights;
 
 	void operator=(const Luna::Vertex& obj)
@@ -21,17 +22,17 @@ struct Vertex3D //must be same as Luna::Vertex
 			tangent = { obj.tangent[0],obj.tangent[1],obj.tangent[2] };
 			biNormal= { obj.bitangent[0], obj.bitangent[1],obj.bitangent[2] };
 			Joint = { 0,0,0,0 };
-			Weights = { 0,0,0,0 };
+			Weights = { 0.f,0.f,0.f,0.f };
 		}
 		else
 		{
-			position = { 0,0,0 };
-			uv = { 0,0};
-			normal = { 0,0,0 };
-			tangent = { 0,0,0 };
-			biNormal = { 0,0,0 };
+			position = { 0.f,0.f,0.f };
+			uv = { 0.f,0.f};
+			normal = { 0.f,0.f,0.f };
+			tangent = { 0.f,0.f,0.f };
+			biNormal = { 0.f,0.f,0.f };
 			Joint = { 0,0,0,0 };
-			Weights = { 0,0,0,0 };
+			Weights = { 0.f,0.f,0.f,0.f };
 		}
 	}
 };

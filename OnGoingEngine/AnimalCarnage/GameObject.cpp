@@ -315,8 +315,7 @@ void GameObject::computeAnimationMatrix(float deltaTime)
 		if (ptr != nullptr)
 		{
 			ptr->setJointData(matrixPallete);
-			//pose_global.clear();
-			//matrixPallete.clear();
+
 		}
 		else
 		{

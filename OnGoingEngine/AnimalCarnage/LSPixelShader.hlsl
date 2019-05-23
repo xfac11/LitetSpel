@@ -45,18 +45,18 @@ float4 CalcLight(AnyLight light, float3 normal, float3 wPos, float3 LightDirecti
 	float ambientAmount = 0.2f;
 	float4 ambientColor = float4(light.color.xyz, 1.0f)*ambientAmount;
 	float diffuseFactor = max(0, dot(normal, -LightDirection));
-	/*float theShade = diffuseFactor;
-		if( theShade < 0.2f)
+	float theShade = diffuseFactor;
+		if( theShade < 0.25f)
 			theShade=0.f;
-		else if( theShade >= 0.2f && theShade < 0.4f)
-			theShade=0.2f;
-		else if( theShade >= 0.4f && theShade < 0.6f)
-			theShade=0.4f;
-		else if( theShade >= 0.6f && theShade < 0.8f)
-			theShade=0.6f;
-		else if( theShade >= 0.8f)
-			theShade=0.8f;
-	diffuseFactor = max(theShade,0);*/ 
+		else if( theShade >= 0.5f && theShade < 0.75f)
+			theShade=0.5f;
+		else if( theShade >= 0.75f && theShade < 0.9f)
+			theShade=0.75f;
+		else if( theShade >= 1.0f)
+			theShade=1.0f;
+	diffuseFactor = max(theShade,0); 
+
+
 	float4 diffuseColor = float4(0.0f, 0.0f, 0.0f, 0.0f);
 	float4 specularColor = float4(0.0f, 0.0f, 0.0f, 0.0f);
 

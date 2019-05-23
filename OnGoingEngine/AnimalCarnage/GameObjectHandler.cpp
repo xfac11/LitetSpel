@@ -81,7 +81,7 @@ GameObject & GameObjectHandler::getObject(int id)
 	return *this->gameObjects[id];
 }
 
-void GameObjectHandler::draw(float deltaTime)
+void GameObjectHandler::draw(float deltaTime,bool isPaused)
 {
 	
 	//System::theGraphicDevice->setRasterFront();
@@ -229,8 +229,10 @@ void GameObjectHandler::draw(float deltaTime)
 	}
 
 	//enable this to animate also set //mesh.hasSkeleton in modelloader addModel()
-	//this->animTimer += 60 * deltaTime;
-	//if (animTimer >= 60) {
+	if (isPaused == false)
+	{
+		//this->animTimer += 60 * deltaTime;
+		//if (animTimer >= 60) {
 		for (int a = 0; a < nrOfObjects; a++)
 		{
 			if (this->gameObjects[a]->haveAnimation() == true)
@@ -238,9 +240,9 @@ void GameObjectHandler::draw(float deltaTime)
 				this->gameObjects[a]->computeAnimationMatrix(deltaTime); //to animate enable this 
 			}
 		}
-	//	animTimer = 0;
-	//}
-	
+		//	animTimer = 0;
+		//}
+	}
 
 	/*for (int i = 0; i < this->nrOfOpaque; i++)
 	{

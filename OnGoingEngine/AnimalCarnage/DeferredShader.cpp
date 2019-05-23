@@ -73,7 +73,7 @@ bool DeferredShader::initialize(int height, int width, float nearPlane, float fa
 		{
 			"JOINTS",
 			0,				// same slot as previous (same vertexBuffer)
-			DXGI_FORMAT_R32G32B32A32_FLOAT,
+			DXGI_FORMAT_R32G32B32A32_SINT,
 			0,
 			D3D11_APPEND_ALIGNED_ELEMENT,							// offset of FIRST element (after POSITION)
 			D3D11_INPUT_PER_VERTEX_DATA,
