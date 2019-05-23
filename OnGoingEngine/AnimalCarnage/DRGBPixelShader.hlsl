@@ -52,9 +52,9 @@ PS_OUT PS_main(PS_IN input)
 
 
 	float4 textureColor = Tex.Sample(SampSt, input.Tex*repeat).xyzw;
-	if (Mask.Sample(SampSt, input.Tex*repeat).w > 0.9f)
+	if (Mask.Sample(SampSt, input.Tex*repeat).w > 0.0f) //If there is relevant information in the mask sample
 	{
-		textureColor = float4(colorMask.xyz, 1);
+		textureColor = textureColor * float4(colorMask.xyz, 1); //Add the mask to the texture (Works like an overlay)
 	}
 	float3 bumpNormal;
 

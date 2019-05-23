@@ -20,6 +20,17 @@ struct Hitbox
 	int time;
 	GameObject* hitbox;
 };
+enum PlayerColor
+{
+	RED,
+	BLUE,
+	GREEN,
+	YELLOW,
+	CYAN,
+	PINK,
+	BLACK,
+	WHITE
+};
 class Player
 {
 private:
@@ -52,6 +63,7 @@ private:
 	int nextAnimal;
 
 	RumbleProperties theRumble;
+	PlayerColor color;
 	AnimalType type;
 	AnimalType ArrayOfAnimals[4];
 	int currentAnimal;
@@ -79,7 +91,7 @@ public:
 	Player();
 	~Player();
 
-	void initialize(AnimalType type);
+	void initialize(AnimalType type, PlayerColor color);
 	void update(float dt, int id);
 	bool updateRumble(float dt,int id);
 	bool setRumble(bool rumble = true);
