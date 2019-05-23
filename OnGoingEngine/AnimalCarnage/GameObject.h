@@ -60,7 +60,7 @@ private:
 	std::vector<Joint> skeleton;
 	Animation anims;
 	float timePassed;
-	//float prevTimeIncrement;
+	
 	int frameCounter;
 
 	std::vector<DirectX::XMMATRIX> pose_global;

@@ -12,6 +12,7 @@ GameObject::GameObject()
 	//this->gotSkeleton = false;
 	this->repeat = DirectX::XMFLOAT4(1, 1, 1, 1);
 	this->timePassed = 0.f;
+	this->frameCounter = 0;
 	//this->prevTimeIncrement = 0.f;
 }
 
@@ -25,7 +26,7 @@ GameObject::GameObject(Shader * shader)
 	this->colBox = AABB();
 	this->repeat = DirectX::XMFLOAT4(1, 1, 1, 1);
 	this->timePassed = 0.f;
-	//this->prevTimeIncrement = 0.f;
+	
 	this->frameCounter=0;
 	//this->gotSkeleton = false;
 	/*this->theModel[0] = new Model;
@@ -278,7 +279,7 @@ bool GameObject::haveAnimation() const
 	return result;
 }
 
-void GameObject::computeAnimationMatrix(float deltaTime)
+void GameObject::computeAnimationMatrix(float deltaTime) //include float to multiply timePassed to make speed of animation (den ska gå från 0 - 1)
 {
 
 	this->timePassed += deltaTime;
@@ -287,7 +288,7 @@ void GameObject::computeAnimationMatrix(float deltaTime)
 
 	this->frameCounter++;
 
-	if (this->frameCounter >= 1) //frameskip
+	if (this->frameCounter >= 5) //frameskip (must never be zero, higher for lower quality)
 	{
 		int k1 = (int)(this->timePassed* anims.getFPS());
 		int k2 = std::min<int>(k1 + 1, anims.getKeyframes()[0].size());
@@ -296,16 +297,14 @@ void GameObject::computeAnimationMatrix(float deltaTime)
 		float k2_time = k2 / anims.getFPS();
 		float t = (timePassed - k1_time) / (k2_time - k1_time);
 
-		int timeStamp = int(10*(k1 + t)); //accuracy of deltaTime saved
+		int timeStamp = int(5*(k1 + t)); //accuracy of deltaTime saved (lower for low quality, high for higher quality)
 
 		if (calculatedFrames[timeStamp].empty())
 		{
 
-
 			DirectX::XMMATRIX sclMtx = DirectX::XMMatrixScaling(0.1f, 0.1f, 0.1f);
 			JointTransformation local;
-			JointTransformation local_root = this->interpolate2(anims.getKeyframes()[0][k1].getJointKeyFrames(), anims.getKeyframes()[0][k2].getJointKeyFrames(), t);
-
+			JointTransformation local_root = this->interpolate1(anims.getKeyframes()[0][k1].getJointKeyFrames(), anims.getKeyframes()[0][k2].getJointKeyFrames(), t);
 
 			pose_global[0] = local_root.getLocalTransform();
 
@@ -314,28 +313,18 @@ void GameObject::computeAnimationMatrix(float deltaTime)
 			for (int joint = 1; joint < skeleton.size(); joint++)
 			{
 
-				local = this->interpolate2(anims.getKeyframes()[joint][k1].getJointKeyFrames(), anims.getKeyframes()[joint][k2].getJointKeyFrames(), t);
+				local = this->interpolate1(anims.getKeyframes()[joint][k1].getJointKeyFrames(), anims.getKeyframes()[joint][k2].getJointKeyFrames(), t);
 
 				pose_global[joint] = DirectX::XMMatrixMultiply(pose_global[this->skeleton[joint].getParent()->getID()], DirectX::XMMatrixTranspose(local.getLocalTransform()));
 				matrixPallete[joint] = DirectX::XMMatrixMultiplyTranspose(pose_global[joint], DirectX::XMMatrixTranspose(this->skeleton[joint].getInverseBindTransform()));
 			}
 
 			this->calculatedFrames[timeStamp] = matrixPallete;
-			DeferredShader* ptr = dynamic_cast<DeferredShader*>(System::shaderManager->getDefShader());
-			if (ptr != nullptr)
-			{
-				ptr->setJointData(matrixPallete);
-			}
-
+			System::shaderManager->getDefShader()->setJointData(matrixPallete);
 		}
-		else
+		else //if the frames is already calculated
 		{
-	
-			DeferredShader* ptr = dynamic_cast<DeferredShader*>(System::shaderManager->getDefShader());
-			if (ptr != nullptr)
-			{
-				ptr->setJointData(calculatedFrames[timeStamp]);
-			}
+			System::shaderManager->getDefShader()->setJointData(calculatedFrames[timeStamp]);
 		}
 		this->frameCounter = 0;
 	}
@@ -403,8 +392,8 @@ JointTransformation GameObject::interpolate1(JointTransformation frameA, JointTr
 	DirectX::XMFLOAT3 pos = this->interpolate1(frameA.getPosition(), frameB.getPosition(), progression);
 	DirectX::XMFLOAT4 pos4 = { pos.x, pos.y, pos.z, 1.f };
 	DirectX::XMVECTOR quaternion = DirectX::XMQuaternionSlerp(frameA.getRotation(), frameB.getRotation(), progression);
-	//DirectX::XMFLOAT3 scale = this->interpolate(frameA.scale, frameB.scale, progression);
-	DirectX::XMFLOAT3 scale = { 10.f,10.f,10.f };
+	DirectX::XMFLOAT3 scale = this->interpolate1(frameA.getScale(), frameB.getScale(), progression);
+	
 	return JointTransformation(pos4, quaternion, scale);
 }
 
