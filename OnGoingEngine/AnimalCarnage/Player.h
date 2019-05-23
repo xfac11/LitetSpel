@@ -57,6 +57,7 @@ private:
 	bool canPressPunch;
 	int deathTimer;
 	int groundTimer;
+	float animSpeed;
 
 	bool canBeAnimal[4];
 	int randomNumberArray[4] = {0,1,2,3};
@@ -72,6 +73,7 @@ private:
 
 	/*Primitives *CollisionShape;*/
 public:
+	float getAnimSpeed() const;
 	float getJumpHeight() const;
 	int getStrength() const;
 	float getSpeed() const;
