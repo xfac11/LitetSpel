@@ -587,7 +587,7 @@ void Player::update(float deltaTime, int id)
 
 	if (isDead()) {
 		//this->playerObj->getRigidbody()->setLinearFactor(btVector3(1, 1, 0));
-		this->playerObj->getRigidbody()->setAngularFactor(btVector3(0, 0, 1));
+		//this->playerObj->getRigidbody()->setAngularFactor(btVector3(0, 0, 1));
 
 		//playerObj->setRotationRollPitchYaw()
 		XMVECTOR temp;
@@ -596,7 +596,7 @@ void Player::update(float deltaTime, int id)
 		temp.m128_f32[2] = this->playerObj->getRigidbody()->getWorldTransform().getRotation().getZ();
 		temp.m128_f32[3] = this->playerObj->getRigidbody()->getWorldTransform().getRotation().getW();
 
-		playerObj->setRotationRollPitchYaw(getRoll(temp) * -1, playerObj->getRotation().y, playerObj->getRotation().z);
+		//playerObj->setRotationRollPitchYaw(getRoll(temp) * -1, playerObj->getRotation().y, playerObj->getRotation().z);
 
 
 		//this->playerObj->setRotation(this->playerObj->getRigidbody()->getWorldTransform().getRotation().getX(), this->playerObj->getRigidbody()->getWorldTransform().getRotation().getY()*3.14 * 2, this->playerObj->getRigidbody()->getWorldTransform().getRotation().getZ()*3.14 * 2, this->playerObj->getRigidbody()->getWorldTransform().getRotation().getW()*3.14 * 2);
@@ -612,6 +612,7 @@ void Player::update(float deltaTime, int id)
 			health = getMaxHealth();
 			deathTimer = 0;
 			setRigidbodyPosition(0,+20,0);
+			playerObj->getRigidbody()->setAngularFactor(btVector3(0, 0, 0));
 		}
 	}
 	//Fixar bug så att man inte kan hoppa på plattformar
