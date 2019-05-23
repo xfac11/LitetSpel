@@ -5,7 +5,6 @@
 
 enum AnimalType
 {
-	DEFAULT_TYPE,
 	FOX,
 	BEAR,
 	RABBIT,

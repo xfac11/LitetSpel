@@ -1,146 +1,63 @@
 #include "SelectGui.h"
 #include "System.h"
 #include "MainMenu.h"
-
-void SelectGui::changeSelected_Keyboard()
-{
-	GuiElement* newSelected = nullptr;
-
-	if (System::theKeyboard->KeyIsPressed('W'))
-	{
-		newSelected = this->selectedElement->getUp();
-	}
-	if (System::theKeyboard->KeyIsPressed('S'))
-	{
-		newSelected = this->selectedElement->getDown();
-	}
-	if (System::theKeyboard->KeyIsPressed('A'))
-	{
-		newSelected = this->selectedElement->getLeft();
-	}
-	if (System::theKeyboard->KeyIsPressed('D'))
-	{
-		newSelected = this->selectedElement->getRight();
-	}
-
-	if (newSelected != nullptr)
-	{
-		this->changedLastFrame = true;
-		this->selectedElement = newSelected;
-	}
-	else
-	{
-		this->changedLastFrame = false;
-	}
-}
-
-void SelectGui::changeSelected()
-{
-	GuiElement* newSelected = nullptr;
-
-	if (System::theTracker->dpadUp == DirectX::GamePad::ButtonStateTracker::PRESSED)
-	{
-		newSelected = this->selectedElement->getUp();
-	}
-	if (System::theTracker->dpadDown == DirectX::GamePad::ButtonStateTracker::PRESSED)
-	{
-		newSelected = this->selectedElement->getDown();
-	}
-	if (System::theTracker->dpadLeft == DirectX::GamePad::ButtonStateTracker::PRESSED)
-	{
-		newSelected = this->selectedElement->getLeft();
-	}
-	if (System::theTracker->dpadRight == DirectX::GamePad::ButtonStateTracker::PRESSED)
-	{
-		newSelected = this->selectedElement->getRight();
-	}
-
-	if (newSelected != nullptr)
-	{
-		this->selectedElement = newSelected;
-	}
-}
+#include "Player.h"
 
 SelectGui::SelectGui(State * myState) : GuiBase(myState)
 {
 	this->selectedElement = nullptr;
-	this->buttonTest = nullptr;
-	this->playerSelector0 = nullptr;
-	this->playerSelector1 = nullptr;
-	this->playerSelector2 = nullptr;
-	this->playerSelector3 = nullptr;
-
-	this->changedLastFrame = false;
-	this->timeSinceChanged = 0.0F;
+	this->buttonStart = nullptr;
+	this->playerSelectors[0] = nullptr;
+	this->playerSelectors[1] = nullptr;
+	this->playerSelectors[2] = nullptr;
+	this->playerSelectors[3] = nullptr;
 }
 
 SelectGui::~SelectGui()
 {
-	delete this->playerSelector0;
-	delete this->playerSelector1;
-	delete this->playerSelector2;
-	delete this->playerSelector3;
-	delete this->buttonTest;
+	delete this->playerSelectors[0];
+	delete this->playerSelectors[1];
+	delete this->playerSelectors[2];
+	delete this->playerSelectors[3];
+	delete this->buttonStart;
 }
 
 bool SelectGui::initialize()
 {
-	this->buttonTest = new Button("Start Game", Vector2(System::theWindow.width / 2.0F - 300, System::theWindow.height / 2.0F + 300));
-	this->playerSelector0 = new PlayerSelector(WOLF, Vector2(System::theWindow.width / 2.0F - 775, System::theWindow.height / 2.0F - 300));
-	this->playerSelector1 = new PlayerSelector(WOLF, Vector2(System::theWindow.width / 2.0F - 375, System::theWindow.height / 2.0F - 300));
-	this->playerSelector2 = new PlayerSelector(WOLF, Vector2(System::theWindow.width / 2.0F + 25, System::theWindow.height / 2.0F - 300));
-	this->playerSelector3 = new PlayerSelector(WOLF, Vector2(System::theWindow.width / 2.0F + 425, System::theWindow.height / 2.0F - 300));
+	this->buttonStart = new Button("Start Game", Vector2(System::theWindow.width / 2.0F - 300, System::theWindow.height / 2.0F + 300));
+	this->playerSelectors[0] = new PlayerSelector(FOX, RED, Vector2(System::theWindow.width / 2.0F - 775, System::theWindow.height / 2.0F - 300));
+	this->playerSelectors[1] = new PlayerSelector(FOX, BLUE, Vector2(System::theWindow.width / 2.0F - 375, System::theWindow.height / 2.0F - 300));
+	this->playerSelectors[2] = new PlayerSelector(FOX, GREEN, Vector2(System::theWindow.width / 2.0F + 25, System::theWindow.height / 2.0F - 300));
+	this->playerSelectors[3] = new PlayerSelector(FOX, YELLOW, Vector2(System::theWindow.width / 2.0F + 425, System::theWindow.height / 2.0F - 300));
 
-	this->selectedElement = buttonTest;
-	this->buttonTest->setConnectedElements(nullptr, nullptr, nullptr, nullptr);
+	this->selectedElement = buttonStart;
+	this->buttonStart->setConnectedElements(nullptr, nullptr, nullptr, nullptr);
 	return true;
 }
 
 void SelectGui::shutDown()
 {
-	delete this->playerSelector0;
-	delete this->playerSelector1;
-	delete this->playerSelector2;
-	delete this->playerSelector3;
-	delete this->buttonTest;
+	delete this->playerSelectors[0];
+	delete this->playerSelectors[1];
+	delete this->playerSelectors[2];
+	delete this->playerSelectors[3];
+	delete this->buttonStart;
 
 	this->selectedElement = nullptr;
-	this->buttonTest = nullptr;
-	this->playerSelector0 = nullptr;
-	this->playerSelector1 = nullptr;
-	this->playerSelector2 = nullptr;
-	this->playerSelector3 = nullptr;
-
-	this->changedLastFrame = false;
-	this->timeSinceChanged = 0.0F;
+	this->buttonStart = nullptr;
+	this->playerSelectors[0] = nullptr;
+	this->playerSelectors[1] = nullptr;
+	this->playerSelectors[2] = nullptr;
+	this->playerSelectors[3] = nullptr;
 }
 
 bool SelectGui::update(float deltaTime)
 {
 	if (this->keyboardDelay <= 0.0F)
 	{
-		if (this->changedLastFrame)
-		{
-			if (this->timeSinceChanged > 0.2F)
-			{
-				this->timeSinceChanged -= 0.2F;
-				this->changeSelected_Keyboard();
-			}
-
-			this->timeSinceChanged += deltaTime;
-		}
-		else
-		{
-			this->timeSinceChanged = 0.0F;
-			this->changeSelected_Keyboard();
-		}
-
 		if (System::theKeyboard->KeyIsPressed('E'))
 		{
-			if (this->selectedElement == buttonTest)
-			{
-				System::setState(GUNGAME);
-			}
+			System::setState(GUNGAME);
 		}
 		else if (System::theKeyboard->KeyIsPressed('Q'))
 		{
@@ -160,28 +77,32 @@ bool SelectGui::update(float deltaTime)
 		if (gamepadState.IsConnected())
 		{
 			System::theTracker->Update(gamepadState);
-			this->changeSelected();
-			if (System::theTracker->dpadDown)
-			{
-				if (i == 0)
-				{
-					this->playerSelector0->backGroundColor = DirectX::XMVectorSet(1, 0, 0, 1);
-				}
-			}
+
 			if (System::theTracker->a == DirectX::GamePad::ButtonStateTracker::PRESSED)
 			{
-				if (this->selectedElement == buttonTest)
-				{
-					System::setState(GUNGAME);
-				}
+				System::setState(GUNGAME);
 			}
 			else if (System::theTracker->b == DirectX::GamePad::ButtonStateTracker::PRESSED)
 			{
 				MainMenu* state = dynamic_cast<MainMenu*>(this->myState);
 				state->setCurrentMenu(MAIN/*RULES*/);
 			}
-
-			break;
+			else if (System::theTracker->dpadDown == DirectX::GamePad::ButtonStateTracker::PRESSED)
+			{
+				this->playerSelectors[i]->changePlayerColor(false);
+			}
+			else if (System::theTracker->dpadUp == DirectX::GamePad::ButtonStateTracker::PRESSED)
+			{
+				this->playerSelectors[i]->changePlayerColor(true);
+			}
+			else if (System::theTracker->dpadLeft == DirectX::GamePad::ButtonStateTracker::PRESSED)
+			{
+				this->playerSelectors[i]->changeAnimalType(true);
+			}
+			else if (System::theTracker->dpadRight == DirectX::GamePad::ButtonStateTracker::PRESSED)
+			{
+				this->playerSelectors[i]->changeAnimalType(false);
+			}
 		}
 	}
 
@@ -194,11 +115,11 @@ bool SelectGui::render()
 
 	Vector2 textWidth = System::getFontArial()->MeasureString("Player Select");
 	System::getFontArial()->DrawString(System::getSpriteBatch(), "Player Select", Vector2(System::theWindow.width / 2.0F, System::theWindow.height / 2.0F - 400), DirectX::Colors::Black, 0.0f, textWidth / 2.f, Vector2::One);
-	this->buttonTest->render(this->selectedElement == buttonTest);
-	this->playerSelector0->render(false);
-	this->playerSelector1->render(false);
-	this->playerSelector2->render(false);
-	this->playerSelector3->render(false);
+	this->buttonStart->render(this->selectedElement == buttonStart);
+	this->playerSelectors[0]->render(false);
+	this->playerSelectors[1]->render(false);
+	this->playerSelectors[2]->render(false);
+	this->playerSelectors[3]->render(false);
 
 	System::getSpriteBatch()->End();
 	return true;

@@ -278,6 +278,7 @@ void GameObject::computeAnimationMatrix(float deltaTime)
 		this->timePassed = fmodf(this->timePassed,anims.getDuration());
 
 	this->frameCounter++;
+
 	if (this->frameCounter >= 2)
 	{
 		int k1 = (int)(this->timePassed* anims.getFPS());

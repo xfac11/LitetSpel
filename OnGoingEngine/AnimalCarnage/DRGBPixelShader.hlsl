@@ -52,10 +52,10 @@ PS_OUT PS_main(PS_IN input)
 
 
 	float4 textureColor = Tex.Sample(SampSt, input.Tex*repeat).xyzw;
-	if (Mask.Sample(SampSt, input.Tex*repeat).w > 0.0f) //If there is relevant information in the mask sample
-	{
-		textureColor = textureColor * float4(colorMask.xyz, 1); //Add the mask to the texture (Works like an overlay)
-	}
+	float bgTexValue = 1 - Mask.Sample(SampSt, input.Tex*repeat).w; //How much of the texture is black
+	textureColor *= bgTexValue;
+	textureColor += (Mask.Sample(SampSt, input.Tex*repeat).w * float4(colorMask.xyz, 1));
+	textureColor = clamp(textureColor, 0, 1);
 	float3 bumpNormal;
 
 	//float3 diffuseAlbedo = Tex.Sample(SampSt, input.Tex).rgb;

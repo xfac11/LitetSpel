@@ -129,7 +129,8 @@ Player::Player()
 	hitTime2 = 100;
 	hitTimer = 0;
 	punching = false;
-	type = DEFAULT_TYPE;
+	type = FOX;
+	color = RED;
 	health = 100;
 	canPressPunch = true;
 	deathTimer = 0;
@@ -156,9 +157,9 @@ Player::~Player()
 	//delete this->hitbox.hitbox;
 }
 
-void Player::initialize(AnimalType type)
+void Player::initialize(AnimalType type, PlayerColor color)
 {
-	//setup health
+	this->color = color;
 	const AnimalDef& animal = Animal::getAnimal(type);
 	this->type = type;
 	this->health = animal.maxHealh;
@@ -314,7 +315,7 @@ void Player::update(float deltaTime, int id)
 		
 		//GROUND MOVEMENT
 		float stickAbsL = abs(state.thumbSticks.leftX);
-		if (stickAbsL > 0.f && canJump  && this->hitbox.time == 0){
+		if ((stickAbsL > 0.f && canJump  && this->punching == false) && !(punching == true && type == MOOSE)){
 			float dir = 17.0f * state.thumbSticks.leftX  * getSpeed();// / stickAbsL;
 			//this->playerObj->getRigidbody()->setLinearVelocity(btVector3(dir, 0, 0));
 			
@@ -330,7 +331,7 @@ void Player::update(float deltaTime, int id)
 		}
 
 		//AIR MOVEMENT && //FAST FALL
-		if (stickAbsL > 0.f && !canJump) {
+		if ((stickAbsL > 0.f && !canJump) && !(punching == true && type == MOOSE)) {
 			float dir = 400.0f * state.thumbSticks.leftX  * getSpeed() * getWeight();// / stickAbsL;
 			//this->playerObj->getRigidbody()->setLinearVelocity(btVector3(dir, 0, 0));
 
@@ -345,6 +346,7 @@ void Player::update(float deltaTime, int id)
 			airSpeed = dir;
 
 		}
+		//Air drag
 		if(!canJump) {
 			playerObj->getRigidbody()->setLinearVelocity(btVector3(playerObj->getRigidbody()->getLinearVelocity().getX()/1.02f, playerObj->getRigidbody()->getLinearVelocity().getY(), playerObj->getRigidbody()->getLinearVelocity().getZ()));
 		}
@@ -427,7 +429,7 @@ void Player::update(float deltaTime, int id)
 		}
 		if (punching == true && type == FOX) {
 			if (grounded) {
-				playerObj->getRigidbody()->setLinearVelocity(btVector3(0, playerObj->getRigidbody()->getLinearVelocity().getY(), playerObj->getRigidbody()->getLinearVelocity().getZ() / 2));
+				playerObj->getRigidbody()->setLinearVelocity(btVector3(playerObj->getRigidbody()->getLinearVelocity().getX() / 1.1, playerObj->getRigidbody()->getLinearVelocity().getY(), playerObj->getRigidbody()->getLinearVelocity().getZ() / 2));
 			}
 			canPressPunch = false;
 			hitTimer += 165 * deltaTime;
@@ -440,15 +442,20 @@ void Player::update(float deltaTime, int id)
 		}
 		if (punching == true && type == BEAR) {
 			if (grounded) {
-				playerObj->getRigidbody()->setLinearVelocity(btVector3(playerObj->getRigidbody()->getLinearVelocity().getX() / 1.1, playerObj->getRigidbody()->getLinearVelocity().getY(), playerObj->getRigidbody()->getLinearVelocity().getZ() / 2));
+				playerObj->getRigidbody()->setLinearVelocity(btVector3(0, playerObj->getRigidbody()->getLinearVelocity().getY(), playerObj->getRigidbody()->getLinearVelocity().getZ() / 2));
 			}
 			canPressPunch = false;
-			hitTimer += 165 * deltaTime;
-			this->hitbox.hitbox->setPosition(this->getPosition().x + 1.5*dir, this->getPosition().y, this->getPosition().z);
+			hitTimer += 125 * deltaTime;
 			//this->hitbox.hitbox->setPosition(this->getPosition().x, this->getPosition().y, this->getPosition().z);
+			if (hitTimer >30 && hitTimer < 50) {
+				playerObj->getRigidbody()->setLinearVelocity(btVector3(20*dir, playerObj->getRigidbody()->getLinearVelocity().getY(), playerObj->getRigidbody()->getLinearVelocity().getZ() / 2));
+				this->hitbox.hitbox->setPosition(this->getPosition().x + 1.5*dir, this->getPosition().y, this->getPosition().z);
+			}
 			if (hitTimer >= 60) {
 				punching = false;
 				hitTimer = 0;
+				playerObj->getRigidbody()->setLinearVelocity(btVector3(0, playerObj->getRigidbody()->getLinearVelocity().getY(), playerObj->getRigidbody()->getLinearVelocity().getZ() / 2));
+
 			}
 		}
 		if (punching == true && type == RABBIT) {
@@ -466,7 +473,16 @@ void Player::update(float deltaTime, int id)
 		}
 		if (punching == true && type == MOOSE) {
 			if (grounded) {
-				playerObj->getRigidbody()->setLinearVelocity(btVector3(dir*20.0f, playerObj->getRigidbody()->getLinearVelocity().getY(), playerObj->getRigidbody()->getLinearVelocity().getZ()));
+				playerObj->getRigidbody()->applyForce(btVector3(2400.0f*dir,0.0f,0.0f), btVector3(0.0f, 0.0f, 0.0f));
+			}
+			else {
+				playerObj->getRigidbody()->applyForce(btVector3(1000.0f*dir, 0.0f, 0.0f), btVector3(0.0f, 0.0f, 0.0f));
+			}
+			if (playerObj->getRigidbody()->getLinearVelocity().getX() > 20.0f) {
+				playerObj->getRigidbody()->setLinearVelocity(btVector3(20.0f, playerObj->getRigidbody()->getLinearVelocity().getY(), playerObj->getRigidbody()->getLinearVelocity().getZ()));
+			}
+			if (playerObj->getRigidbody()->getLinearVelocity().getX() < -20.0f) {
+				playerObj->getRigidbody()->setLinearVelocity(btVector3(-20.0f, playerObj->getRigidbody()->getLinearVelocity().getY(), playerObj->getRigidbody()->getLinearVelocity().getZ()));
 			}
 			canPressPunch = false;
 			hitTimer += 65 * deltaTime;
@@ -587,15 +603,17 @@ void Player::update(float deltaTime, int id)
 		if (dir == -1 && !grounded) {
 			facing -= 0.1f*deltaTime*60;
 		}
-		if (state.thumbSticks.leftX < 0 && dir == 1)
-		{
-			dir = -1;
-			this->playerObj->setRotationRollPitchYaw(this->playerObj->getRotation().x, facing, this->playerObj->getRotation().z);
-		}
-		else if (state.thumbSticks.leftX > 0 && dir == -1)
-		{
-			dir = 1;
-			this->playerObj->setRotationRollPitchYaw(this->playerObj->getRotation().x, facing, this->playerObj->getRotation().z);
+		if (!(punching == true && type == MOOSE)) {
+			if (state.thumbSticks.leftX < 0 && dir == 1)
+			{
+				dir = -1;
+				this->playerObj->setRotationRollPitchYaw(this->playerObj->getRotation().x, facing, this->playerObj->getRotation().z);
+			}
+			else if (state.thumbSticks.leftX > 0 && dir == -1)
+			{
+				dir = 1;
+				this->playerObj->setRotationRollPitchYaw(this->playerObj->getRotation().x, facing, this->playerObj->getRotation().z);
+			}
 		}
 		if (facing > (3.14f / 2.f)) {
 			facing = 3.14f/ 2.f;
