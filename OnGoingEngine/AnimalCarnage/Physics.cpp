@@ -55,13 +55,7 @@ Physics::~Physics()
 
 void Physics::Update(float deltaTime)
 {
-	/*for (int i = 0; i < this->bodies.size(); i++)
-	{
-		renderSphere(bodies[i]);
-		renderPlane(bodies[i]);
-	}*/
 
-	//this->world->stepSimulation(1 / 60.f, 10);
 	this->world->stepSimulation(deltaTime);
 
 }

@@ -84,12 +84,11 @@ void Player::changeCharacter()
 	this->type = ArrayOfAnimals[currentAnimal];
 	this->health = animal.maxHealh;
 	
-	{
-		System::theModelLoader->loadGO(this->playerObj, animal.modelPath);
-		//if (animal.maskPath != "empty" && !this->playerObj->getModel()->hasMaskColor())
-		//	this->playerObj->setMask(animal.maskPath, 0);//change to animal.maskPath
-		//System::handler->addObject(this->playerObj);
-	}
+	System::theModelLoader->loadGO(this->playerObj, animal.modelPath);
+	//if (animal.maskPath != "empty" && !this->playerObj->getModel()->hasMaskColor())
+	//	this->playerObj->setMask(animal.maskPath, 0);//change to animal.maskPath
+	//System::handler->addObject(this->playerObj);
+	
 
 
 	btVector3 inertia(0, 0, 0);
@@ -186,7 +185,6 @@ void Player::initialize(AnimalType type, PlayerColor color)
 	}
 
 
-
 	this->playerObj = new GameObject(System::shaderManager->getForwardShader());
 	this->hitbox.hitbox = new GameObject();
 	//this->hitbox.hitbox->setRotation(0, 1, 0, 3.14 / 2);
@@ -201,7 +199,6 @@ void Player::initialize(AnimalType type, PlayerColor color)
 	if(animal.maskPath!="empty"&&!this->playerObj->getModel()->hasMaskColor())
 		this->playerObj->setMask(animal.maskPath,0);//change to animal.maskPath
 	System::handler->addObject(this->playerObj);
-
 
 	AABB aabb = playerObj->getCollisionBox();
 	btVector3 size = btVector3(1+aabb.width*2, aabb.height*2,1);
@@ -273,8 +270,7 @@ void Player::update(float deltaTime, int id)
 		hitStun = false;
 	}
 
-	this->playerObj->setPosition(this->playerObj->getRigidbody()->getWorldTransform().getOrigin().getX()
-		, this->playerObj->getRigidbody()->getWorldTransform().getOrigin().getY(), this->playerObj->getRigidbody()->getWorldTransform().getOrigin().getZ());
+	this->playerObj->setPosition(this->playerObj->GetPosition());
 
 	//this->playerObj->setRotation(0, 1,this->playerObj->getRigidbody()->getWorldTransform().getRotation().getZ(), 3.14 / 2);
 	
@@ -427,6 +423,79 @@ void Player::update(float deltaTime, int id)
 			punching = true;
 			System::getSoundManager()->playEffect("5");
 		}
+		//switch (type && punching)
+		//{
+		//case FOX:
+		//	if (grounded) {
+		//		playerObj->getRigidbody()->setLinearVelocity(btVector3(playerObj->getRigidbody()->getLinearVelocity().getX() / 1.1, playerObj->getRigidbody()->getLinearVelocity().getY(), playerObj->getRigidbody()->getLinearVelocity().getZ() / 2));
+		//	}
+		//	canPressPunch = false;
+		//	hitTimer += 165 * deltaTime;
+		//	this->hitbox.hitbox->setPosition(this->getPosition().x + 1.5 * dir, this->getPosition().y, this->getPosition().z);
+		//	//this->hitbox.hitbox->setPosition(this->getPosition().x, this->getPosition().y, this->getPosition().z);
+		//	if (hitTimer >= 60) {
+		//		punching = false;
+		//		hitTimer = 0;
+		//	}
+		//	break;
+		//case BEAR:
+		//	if (grounded) {
+		//		playerObj->getRigidbody()->setLinearVelocity(btVector3(0, playerObj->getRigidbody()->getLinearVelocity().getY(), playerObj->getRigidbody()->getLinearVelocity().getZ() / 2));
+		//	}
+		//	canPressPunch = false;
+		//	hitTimer += 125 * deltaTime;
+		//	//this->hitbox.hitbox->setPosition(this->getPosition().x, this->getPosition().y, this->getPosition().z);
+		//	if (hitTimer > 30 && hitTimer < 50) {
+		//		playerObj->getRigidbody()->setLinearVelocity(btVector3(20 * dir, playerObj->getRigidbody()->getLinearVelocity().getY(), playerObj->getRigidbody()->getLinearVelocity().getZ() / 2));
+		//		this->hitbox.hitbox->setPosition(this->getPosition().x + 1.5 * dir, this->getPosition().y, this->getPosition().z);
+		//	}
+		//	if (hitTimer >= 60) {
+		//		punching = false;
+		//		hitTimer = 0;
+		//		playerObj->getRigidbody()->setLinearVelocity(btVector3(0, playerObj->getRigidbody()->getLinearVelocity().getY(), playerObj->getRigidbody()->getLinearVelocity().getZ() / 2));
+
+		//	}
+		//	break;
+		//case RABBIT:
+		//	if (grounded) {
+		//		playerObj->getRigidbody()->setLinearVelocity(btVector3(playerObj->getRigidbody()->getLinearVelocity().getX() / 1.01, playerObj->getRigidbody()->getLinearVelocity().getY(), playerObj->getRigidbody()->getLinearVelocity().getZ() / 2));
+		//	}
+		//	canPressPunch = false;
+		//	hitTimer += 200 * deltaTime;
+		//	this->hitbox.hitbox->setPosition(this->getPosition().x + 1.5 * dir, this->getPosition().y, this->getPosition().z);
+		//	//this->hitbox.hitbox->setPosition(this->getPosition().x, this->getPosition().y, this->getPosition().z);
+		//	if (hitTimer >= 60) {
+		//		punching = false;
+		//		hitTimer = 0;
+		//	}
+		//	break;
+		//case MOOSE:
+		//	if (grounded) {
+		//		playerObj->getRigidbody()->applyForce(btVector3(2400.0f * dir, 0.0f, 0.0f), btVector3(0.0f, 0.0f, 0.0f));
+		//	}
+		//	else {
+		//		playerObj->getRigidbody()->applyForce(btVector3(1000.0f * dir, 0.0f, 0.0f), btVector3(0.0f, 0.0f, 0.0f));
+		//	}
+		//	if (playerObj->getRigidbody()->getLinearVelocity().getX() > 20.0f) {
+		//		playerObj->getRigidbody()->setLinearVelocity(btVector3(20.0f, playerObj->getRigidbody()->getLinearVelocity().getY(), playerObj->getRigidbody()->getLinearVelocity().getZ()));
+		//	}
+		//	if (playerObj->getRigidbody()->getLinearVelocity().getX() < -20.0f) {
+		//		playerObj->getRigidbody()->setLinearVelocity(btVector3(-20.0f, playerObj->getRigidbody()->getLinearVelocity().getY(), playerObj->getRigidbody()->getLinearVelocity().getZ()));
+		//	}
+		//	canPressPunch = false;
+		//	hitTimer += 65 * deltaTime;
+		//	this->hitbox.hitbox->setPosition(this->getPosition().x + 1.5 * dir, this->getPosition().y, this->getPosition().z);
+		//	//this->hitbox.hitbox->setPosition(this->getPosition().x, this->getPosition().y, this->getPosition().z);
+		//	if (hitTimer >= 60) {
+		//		punching = false;
+		//		hitTimer = 0;
+		//	}
+		//	break;
+		//default:
+		//	break;
+		//}
+
+
 		if (punching == true && type == FOX) {
 			if (grounded) {
 				playerObj->getRigidbody()->setLinearVelocity(btVector3(playerObj->getRigidbody()->getLinearVelocity().getX() / 1.1, playerObj->getRigidbody()->getLinearVelocity().getY(), playerObj->getRigidbody()->getLinearVelocity().getZ() / 2));
@@ -455,7 +524,6 @@ void Player::update(float deltaTime, int id)
 				punching = false;
 				hitTimer = 0;
 				playerObj->getRigidbody()->setLinearVelocity(btVector3(0, playerObj->getRigidbody()->getLinearVelocity().getY(), playerObj->getRigidbody()->getLinearVelocity().getZ() / 2));
-
 			}
 		}
 		if (punching == true && type == RABBIT) {
@@ -494,7 +562,7 @@ void Player::update(float deltaTime, int id)
 			}
 		}
 
-		if (!state.buttons.y && punching == false) {
+		if (!state.buttons.y && !punching) {
 			canPressPunch = true;
 		}
 
@@ -512,7 +580,6 @@ void Player::update(float deltaTime, int id)
 		//float dist = 700;
 		//if ((state.buttons.y && canPressPunch) || (this->hitbox.time > 0))
 		//{
-
 		//	/*if (this->hitbox.time > 0 &&state.thumbSticks.leftX < 0)
 		//	{
 		//		dist = -700;
