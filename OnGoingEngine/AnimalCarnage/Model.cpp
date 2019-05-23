@@ -122,6 +122,7 @@ void Model::setTexture(std::string file, int mipLevels)
 void Model::setGlowMap(shared_ptr<Texture> t)
 {
 	glowMap = t;
+	this->hasGlowMap = true;
 }
 
 

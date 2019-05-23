@@ -15,6 +15,7 @@ public:
 	AssetManager() {}
 	~AssetManager();
 	void LoadTexture(std::string name, std::string fileName);
+	void LoadGlowMap(std::string name, std::string fileName);
 	shared_ptr<Texture>  GetTexture(std::string name);
 
 	void LoadModel(std::string name, shared_ptr<Model>  m);
