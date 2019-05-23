@@ -116,7 +116,7 @@ void GameObjectHandler::draw(float deltaTime,bool isPaused)
 		if (i != 3)
 		{
 			System::shaderManager->getShadowMapping()->setWorld(*this->opaqueModels[i].worldPtr);
-			this->opaqueModels[i].modelPtr->drawOnlyVertex();
+			this->opaqueModels[i].selfPtr->getModel()->drawOnlyVertex();
 		}
 	}
 	this->lightsCB.data.nrOfLights = nrOfLights;
@@ -139,7 +139,7 @@ void GameObjectHandler::draw(float deltaTime,bool isPaused)
 
 	for (int i = 0; i < this->nrOfOpaque; i++)
 	{
-		shared_ptr<Model> ptr = this->opaqueModels[i].modelPtr;
+		shared_ptr<Model> ptr = this->opaqueModels[i].selfPtr->getModel();
 		System::shaderManager->getDefShader()->setRepeat(this->opaqueModels[i].selfPtr->getRepeat());
 		System::shaderManager->getDefShader()->setMaskColor(this->opaqueModels[i].selfPtr->getColorMask());
 		ptr->getShader()->setWorld(*this->opaqueModels[i].worldPtr);

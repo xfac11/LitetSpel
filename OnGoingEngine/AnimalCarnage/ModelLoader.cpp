@@ -154,38 +154,6 @@ void ModelLoader::loadGO(GameObject*& object, const char* filePath, int mipLevel
 
 	
 }
-//void ModelLoader::loadModel(Model**&model, const char* filePath) //unused?
-//{
-//	Luna::Reader reader;
-//	reader.readFile(filePath);
-//
-//	unsigned int meshCount = reader.getMeshCount();
-//	std::vector<Luna::Vertex> vertices;
-//	std::vector<Luna::Index> indices;
-//	reader.getVertices(0, vertices);
-//	reader.getIndices(0, indices);
-//
-//
-//	//converting to fit functions and shaders
-//	std::vector<Vertex3D> vertices3D; 
-//	vertices3D.resize(vertices.size());
-//	for (int i = 0; i < vertices.size(); i++)
-//		vertices3D[i] = vertices[i];
-//	DWORD* dIndices =new DWORD[indices.size()];
-//	for (int j = 0; j < indices.size(); j++)
-//		dIndices[j] = indices[j].vertIndex;
-//
-//	model = new Model*[meshCount];
-//	for (int i = 0; i < (int)meshCount; i++)
-//	{
-//		model[i] = new Model;
-//		model[i]->setMesh(vertices3D, dIndices, 0);
-//		model[i]->setTexture("Textures/cat.tga");
-//		model[i]->setSampler();
-//
-//	}
-//
-//}
 
 std::string ModelLoader::getPath() const
 {
