@@ -360,7 +360,7 @@ bool GunGameState::update(float deltaTime)
 		return true;
 	}
 
-	for (int i = 0; i < 3; i++)
+	for (int i = 0; i < 5; i++)
 	{
 		this->object[i]->update(deltaTime);
 	}

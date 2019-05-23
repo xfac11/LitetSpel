@@ -136,8 +136,8 @@ Objects::~Objects()
 
 void Objects::update(float dt)
 {
-	
-	this->ObjectOBJ->setPosition(this->ObjectOBJ->GetPosition().x, this->ObjectOBJ->GetPosition().y + 0.57f,
+	if(this->ObjectOBJ != nullptr)
+		this->ObjectOBJ->setPosition(this->ObjectOBJ->GetPosition().x, this->ObjectOBJ->GetPosition().y + 0.57f,
 		this->ObjectOBJ->GetPosition().z);
 
 
