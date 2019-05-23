@@ -235,12 +235,13 @@ void GameObjectHandler::draw(float deltaTime,bool isPaused)
 		//this->animTimer += 60 * deltaTime;
 		//if (animTimer >= 60) {
 	
-		for (int a = 0; a < nrOfObjects; a++)
+		for (int a = 0; a < nrOfObjects; a++) //make counter for nrOf animated Objects
 		{
 
 
 			if (this->gameObjects[a]->haveAnimation() == true)
 			{
+
 				this->gameObjects[a]->computeAnimationMatrix(deltaTime); //to animate enable this 
 			}
 		}
@@ -339,158 +340,13 @@ void GameObjectHandler::setSkyboxTexture(std::string file)
 
 void GameObjectHandler::generateSphere()
 {
-	double latitudeBands = 5;
-	double longitudeBands = 5;
-	double radius = 0.5f;
-
-	//for (double latNumber = 0; latNumber <= latitudeBands; latNumber++)
-	//{
-	//	double theta = latNumber * M_PI / latitudeBands;
-	//	double sinTheta = sin(theta);
-	//	double cosTheta = cos(theta);
-
-	//	for (double longNumber = 0; longNumber <= longitudeBands; longNumber++)
-	//	{
-	//		double phi = longNumber * 2 * M_PI / longitudeBands;
-	//		double sinPhi = sin(phi);
-	//		double cosPhi = cos(phi);
-
-	//		LightVertex vs;
-	//		float Normal[3] = {
-	//			0,0,0	
-	//		};
-	//		Normal[0] = cosPhi * sinTheta;   // x
-	//		Normal[1] = cosTheta;            // y
-	//		Normal[2] = sinPhi * sinTheta;   // z
-	//		vs.uv[0] = 1 - (longNumber / longitudeBands); // u
-	//		vs.uv[1] = 1 - (latNumber / latitudeBands);   // v
-	//		vs.position[0] = radius * Normal[0];   //x
-	//		vs.position[1] = radius * Normal[1];   //y
-	//		vs.position[2] = radius * Normal[2];   //z
-
-	//		sphereVector.push_back(vs);
-	//	}
-
-	//	for (int latNumber = 0; latNumber < latitudeBands; latNumber++)
-	//	{
-	//		for (int longNumber = 0; longNumber < longitudeBands; longNumber++) 
-	//		{
-	//			int first = (latNumber * (longitudeBands + 1)) + longNumber;
-	//			int second = first + longitudeBands + 1;
-
-	//			sphereIndices.push_back(first);
-	//			sphereIndices.push_back(second);
-	//			sphereIndices.push_back(first + 1);
-
-	//			sphereIndices.push_back(second);
-	//			sphereIndices.push_back(second + 1);
-	//			sphereIndices.push_back(first + 1);
-
-	//		}
-	//	}
-	//}
+	//double latitudeBands = 5;
+	//double longitudeBands = 5;
+	//double radius = 0.5f;
 
 
-
-
-	/*int n;
-
-	double a;
-
-	double b;
-
-	double R = 0.5;
-	double H = 0;
-	double K = 0;
-	double Z = 0;
-
-	n = 0;
-
-	const int space = 1;
-
-	LightVertex vertex;
-	for (b = 0; b <= 90 - space; b += space) {
-
-		for (a = 0; a <= 360 - space; a += space) {
-
-
-
-			vertex.position[0] = R * sin((a) / 180 * M_PI) * sin((b) / 180 * M_PI) - H;
-
-			vertex.position[1] = R * cos((a) / 180 * M_PI) * sin((b) / 180 * M_PI) + K;
-
-			vertex.position[2] = R * cos((b) / 180 * M_PI) - Z;
-
-			vertex.uv[0] = (2 * b) / 360;
-
-			vertex.uv[1] = (a) / 360;
-
-			n++;
-			sphereVector.push_back(vertex);
-
-
-
-			vertex.position[0] = R * sin((a) / 180 * M_PI) * sin((b + space) / 180 * M_PI
-
-			) - H;
-
-			vertex.position[1] = R * cos((a) / 180 * M_PI) * sin((b + space) / 180 * M_PI
-
-			) + K;
-
-			vertex.position[2] = R * cos((b + space) / 180 * M_PI) - Z;
-
-			vertex.uv[0] = (2 * (b + space)) / 360;
-
-			vertex.uv[1] = (a) / 360;
-
-			n++;
-			sphereVector.push_back(vertex);
-
-
-			vertex.position[0] = R * sin((a + space) / 180 * M_PI) * sin((b) / 180 * M_PI
-
-			) - H;
-
-			vertex.position[1] = R * cos((a + space) / 180 * M_PI) * sin((b) / 180 * M_PI
-
-			) + K;
-
-			vertex.position[2] = R * cos((b) / 180 * M_PI) - Z;
-
-			vertex.uv[0] = (2 * b) / 360;
-
-			vertex.uv[1] = (a + space) / 360;
-
-			n++;
-			sphereVector.push_back(vertex);
-
-
-			vertex.position[0] = R * sin((a + space) / 180 * M_PI) * sin((b + space) /
-
-				180 * M_PI) - H;
-
-			vertex.position[1] = R * cos((a + space) / 180 * M_PI) * sin((b + space) /
-
-				180 * M_PI) + K;
-
-			vertex.position[2] = R * cos((b + space) / 180 * M_PI) - Z;
-
-			vertex.uv[0] = (2 * (b + space)) / 360;
-
-			vertex.uv[1] = (a + space) / 360;
-
-			n++;
-			sphereVector.push_back(vertex);
-
-
-		}
-
-	}*/
-
-
-	int stacks = 20;
-	int slices = 20;
+	int stacks = 5;
+	int slices = 5;
 	const float PI = 3.14f;
 
 	LightVertex vertex;
