@@ -23,7 +23,7 @@ struct VS_IN
 	float3 Normal : NORMAL;
 	float3 Tangent : TANGENT;
 	float3 Binormal : BINORMAL;
-	float4 Joint : JOINTS;
+	int4 Joint : JOINTS;
 	float4 Weights : WEIGHTS;
 };
 

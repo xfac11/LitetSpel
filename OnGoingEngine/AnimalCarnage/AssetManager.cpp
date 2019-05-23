@@ -21,6 +21,17 @@ void AssetManager::LoadTexture(std::string name, std::string fileName)
 
 }
 
+void AssetManager::LoadGlowMap(std::string name, std::string fileName)
+{
+	//there are already one with that texture
+	if (_textures.count(name))
+		return;
+
+	shared_ptr<Texture>  texture(new Texture());
+	texture->setTexture(fileName,1);
+	this->_textures[name] = texture;
+}
+
 shared_ptr<Texture>  AssetManager::GetTexture(std::string name)
 {
 	return this->_textures.at(name);

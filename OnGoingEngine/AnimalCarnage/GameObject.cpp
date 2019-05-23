@@ -26,6 +26,7 @@ GameObject::GameObject(Shader * shader)
 	this->repeat = DirectX::XMFLOAT4(1, 1, 1, 1);
 	this->timePassed = 0.f;
 	this->prevTimeIncrement = 0.f;
+	this->frameCounter=0;
 	//this->gotSkeleton = false;
 	/*this->theModel[0] = new Model;
 	this->theModel[0]->setShader(shader);
@@ -276,54 +277,52 @@ void GameObject::computeAnimationMatrix(float deltaTime)
 	if (this->timePassed >= anims.getDuration())
 		this->timePassed = fmodf(this->timePassed,anims.getDuration());
 
-	
-	int k1 = (int)(this->timePassed* anims.getFPS());
-	int k2 = std::min<int>(k1 + 1, anims.getKeyframes()[0].size());
-
-	float k1_time = k1 / anims.getFPS();
-	float k2_time = k2 / anims.getFPS();
-	float t = (timePassed - k1_time) / (k2_time - k1_time);
-	
-
-	if (t != prevTimeIncrement)
+	this->frameCounter++;
+	if (this->frameCounter >= 10)
 	{
-		prevTimeIncrement = t;
-		
+		int k1 = (int)(this->timePassed* anims.getFPS());
+		int k2 = std::min<int>(k1 + 1, anims.getKeyframes()[0].size());
 
-		DirectX::XMMATRIX sclMtx = DirectX::XMMatrixScaling( 0.1f,0.1f,0.1f);
+		float k1_time = k1 / anims.getFPS();
+		float k2_time = k2 / anims.getFPS();
+		float t = (timePassed - k1_time) / (k2_time - k1_time);
 
-		
-		JointTransformation local;
-		JointTransformation local_root = this->interpolate2(anims.getKeyframes()[0][k1].getJointKeyFrames(), anims.getKeyframes()[0][k2].getJointKeyFrames(),t);
-		
-
-		pose_global[0] = local_root.getLocalTransform();
-
-		//matrixPallete.resize(skeleton.size());
-		pose_global[0] = DirectX::XMMatrixMultiply(sclMtx,DirectX::XMMatrixTranspose(pose_global[0]));
-		matrixPallete[0] = DirectX::XMMatrixMultiplyTranspose(pose_global[0], DirectX::XMMatrixTranspose(this->skeleton[0].getInverseBindTransform()));
-		for (int joint = 1; joint < skeleton.size(); joint++)
+		if (t != prevTimeIncrement)
 		{
-			
-			local = this->interpolate2(anims.getKeyframes()[joint][k1].getJointKeyFrames(), anims.getKeyframes()[joint][k2].getJointKeyFrames(), t);
-			
-			pose_global[joint] = DirectX::XMMatrixMultiply(pose_global[this->skeleton[joint].getParent()->getID()], DirectX::XMMatrixTranspose(local.getLocalTransform()));
-			matrixPallete[joint] = DirectX::XMMatrixMultiplyTranspose(pose_global[joint], DirectX::XMMatrixTranspose(this->skeleton[joint].getInverseBindTransform()));
-		}
+			prevTimeIncrement = t;
 
-		DeferredShader* ptr = dynamic_cast<DeferredShader*>(System::shaderManager->getDefShader());
-		if (ptr != nullptr)
-		{
-			ptr->setJointData(matrixPallete);
-			//pose_global.clear();
-			//matrixPallete.clear();
+
+			DirectX::XMMATRIX sclMtx = DirectX::XMMatrixScaling(0.1f, 0.1f, 0.1f);
+			JointTransformation local;
+			JointTransformation local_root = this->interpolate2(anims.getKeyframes()[0][k1].getJointKeyFrames(), anims.getKeyframes()[0][k2].getJointKeyFrames(), t);
+
+
+			pose_global[0] = local_root.getLocalTransform();
+
+			pose_global[0] = DirectX::XMMatrixMultiply(sclMtx, DirectX::XMMatrixTranspose(pose_global[0]));
+			matrixPallete[0] = DirectX::XMMatrixMultiplyTranspose(pose_global[0], DirectX::XMMatrixTranspose(this->skeleton[0].getInverseBindTransform()));
+			for (int joint = 1; joint < skeleton.size(); joint++)
+			{
+
+				local = this->interpolate2(anims.getKeyframes()[joint][k1].getJointKeyFrames(), anims.getKeyframes()[joint][k2].getJointKeyFrames(), t);
+
+				pose_global[joint] = DirectX::XMMatrixMultiply(pose_global[this->skeleton[joint].getParent()->getID()], DirectX::XMMatrixTranspose(local.getLocalTransform()));
+				matrixPallete[joint] = DirectX::XMMatrixMultiplyTranspose(pose_global[joint], DirectX::XMMatrixTranspose(this->skeleton[joint].getInverseBindTransform()));
+			}
+
+			DeferredShader* ptr = dynamic_cast<DeferredShader*>(System::shaderManager->getDefShader());
+			if (ptr != nullptr)
+			{
+				ptr->setJointData(matrixPallete);
+
+			}
+			//else
+			//{
+			//	OutputDebugStringA("== FAILED IN SET KEYFRAME to shader!! == ");
+			//}
 		}
-		else
-		{
-			OutputDebugStringA("== FAILED IN SET KEYFRAME to shader!! == ");
-		}
+		this->frameCounter = 0;
 	}
-
 }
 
 void GameObject::setNewAnimation(float fps, float duration, std::string name, std::vector<std::vector<Luna::Keyframe>> keyframePack)

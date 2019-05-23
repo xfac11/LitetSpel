@@ -295,7 +295,7 @@ bool GunGameState::initailize()
 bool GunGameState::render()
 {
 	renderImgui();
-	System::handler->draw(ImGui::GetIO().DeltaTime);
+	System::handler->draw(ImGui::GetIO().DeltaTime, this->paused);
 
 	System::shaderManager->getParticleShader()->setCBuffers();
 	System::shaderManager->getParticleShader()->setShaders();
@@ -305,7 +305,7 @@ bool GunGameState::render()
 	System::fusk->resetShaders();
 	this->inGameGui->render();
 
-	if (paused)
+	if (this->paused)
 	{
 		this->pauseGui->render();
 	}

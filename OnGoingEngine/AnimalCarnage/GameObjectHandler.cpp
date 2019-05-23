@@ -16,6 +16,7 @@ GameObjectHandler::GameObjectHandler()
 		this->gameObjects[i] = nullptr;
 	}
 	this->animTimer = 0;
+	
 }
 
 GameObjectHandler::~GameObjectHandler()
@@ -81,7 +82,7 @@ GameObject & GameObjectHandler::getObject(int id)
 	return *this->gameObjects[id];
 }
 
-void GameObjectHandler::draw(float deltaTime)
+void GameObjectHandler::draw(float deltaTime,bool isPaused)
 {
 	
 	//System::theGraphicDevice->setRasterFront();
@@ -94,7 +95,7 @@ void GameObjectHandler::draw(float deltaTime)
 	DirectX::XMVECTOR CamPos = DirectX::XMVectorSet(lightViewLengt * (-1 * this->lightsCB.data.lights[0].direction[0]), lightViewLengt * (-1 * this->lightsCB.data.lights[0].direction[1]), lightViewLengt * (this->lightsCB.data.lights[0].direction[2]), 1);
 	DirectX::XMVECTOR up = DirectX::XMVectorSet(0, 1, 0, 0);
 
-		//this->lightsCB.data.lights[2].position
+	//this->lightsCB.data.lights[2].position
 	
 
 		
@@ -229,18 +230,24 @@ void GameObjectHandler::draw(float deltaTime)
 	}
 
 	//enable this to animate also set //mesh.hasSkeleton in modelloader addModel()
-	//this->animTimer += 60 * deltaTime;
-	//if (animTimer >= 60) {
+	if (isPaused == false)
+	{
+		//this->animTimer += 60 * deltaTime;
+		//if (animTimer >= 60) {
+	
 		for (int a = 0; a < nrOfObjects; a++)
 		{
+
+
 			if (this->gameObjects[a]->haveAnimation() == true)
 			{
 				this->gameObjects[a]->computeAnimationMatrix(deltaTime); //to animate enable this 
 			}
 		}
-	//	animTimer = 0;
-	//}
 	
+		//	animTimer = 0;
+		//}
+	}
 
 	/*for (int i = 0; i < this->nrOfOpaque; i++)
 	{

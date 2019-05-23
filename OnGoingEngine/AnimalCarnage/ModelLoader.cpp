@@ -34,7 +34,7 @@ void ModelLoader::loadGO(GameObject*& object, const char* filePath, int mipLevel
 			if (mat1.hasGlowMap)
 			{
 				shared_ptr<Texture> glowmap;
-				System::assetMananger->LoadTexture(mat1.glowTexPath, mat1.glowTexPath); //load texture
+				System::assetMananger->LoadGlowMap(mat1.glowTexPath, mat1.glowTexPath); //load texture
 				glowmap = System::assetMananger->GetTexture(mat1.glowTexPath); //set glow texture
 				m->setGlowMap(glowmap);
 			}
@@ -134,7 +134,7 @@ void ModelLoader::loadGO(GameObject*& object, const char* filePath, int mipLevel
 			if (mat.hasGlowMap) 
 			{
 				shared_ptr<Texture> glowmap;
-				System::assetMananger->LoadTexture(mat.glowTexPath, mat.glowTexPath); //load texture
+				System::assetMananger->LoadGlowMap(mat.glowTexPath, mat.glowTexPath); //load texture
 				glowmap = System::assetMananger->GetTexture(mat.glowTexPath); //set glow texture
 				model->setGlowMap(glowmap);
 			}
