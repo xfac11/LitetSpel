@@ -84,12 +84,11 @@ void Player::changeCharacter()
 	this->type = ArrayOfAnimals[currentAnimal];
 	this->health = animal.maxHealh;
 	
-	{
-		System::theModelLoader->loadGO(this->playerObj, animal.modelPath);
-		//if (animal.maskPath != "empty" && !this->playerObj->getModel()->hasMaskColor())
-		//	this->playerObj->setMask(animal.maskPath, 0);//change to animal.maskPath
-		//System::handler->addObject(this->playerObj);
-	}
+	System::theModelLoader->loadGO(this->playerObj, animal.modelPath);
+	//if (animal.maskPath != "empty" && !this->playerObj->getModel()->hasMaskColor())
+	//	this->playerObj->setMask(animal.maskPath, 0);//change to animal.maskPath
+	//System::handler->addObject(this->playerObj);
+	
 
 
 	btVector3 inertia(0, 0, 0);

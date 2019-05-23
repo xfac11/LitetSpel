@@ -144,9 +144,17 @@ void GameObject::calcAABB(std::vector<Vertex3D> mesh)
 
 void GameObject::addModel(shared_ptr<Model> m, bool hasSkeleton)
 {
+	this->theModel.reset();
 	this->theModel = m;
+	if (this->theModel->getShader() == nullptr)
+	{
+		if (this->theModel->getOpacity() == Transparent)
+			this->theModel->setShader(System::shaderManager->getForwardShader());
+		else
+			this->theModel->setShader(System::shaderManager->getDefShader());
+	}
 	this->theModel->setGotSkeleton(hasSkeleton);
-	nrOfModels++;
+	nrOfModels = 1;
 }
 
 void GameObject::addModel(std::vector<Vertex3D> mesh, DWORD * indices, int numberOfIndices, bool hasSkeleton)
@@ -158,7 +166,7 @@ void GameObject::addModel(std::vector<Vertex3D> mesh, DWORD * indices, int numbe
 	this->calcAABB(mesh);
 	//this->theModel[nrOfModels]->setSampler();
 	this->theModel->setGotSkeleton(hasSkeleton);
-	nrOfModels++;
+	nrOfModels = 1;
 
 }
 
