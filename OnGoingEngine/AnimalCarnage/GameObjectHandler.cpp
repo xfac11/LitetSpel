@@ -82,7 +82,7 @@ GameObject & GameObjectHandler::getObject(int id)
 	return *this->gameObjects[id];
 }
 
-void GameObjectHandler::draw(float deltaTime,bool isPaused)
+void GameObjectHandler::draw(float deltaTime,bool isPaused, std::vector<float> playerSpeed)
 {
 	
 	//System::theGraphicDevice->setRasterFront();
@@ -234,15 +234,17 @@ void GameObjectHandler::draw(float deltaTime,bool isPaused)
 	{
 		//this->animTimer += 60 * deltaTime;
 		//if (animTimer >= 60) {
-	
-		for (int a = 0; a < nrOfObjects; a++) //make counter for nrOf animated Objects
+		int playerIndex = 0;
+		for (int a = 0; a < nrOfObjects && playerIndex<4; a++) //make counter for nrOf animated Objects
 		{
 
 
 			if (this->gameObjects[a]->haveAnimation() == true)
 			{
 
-				this->gameObjects[a]->computeAnimationMatrix(deltaTime); //to animate enable this 
+
+				this->gameObjects[a]->computeAnimationMatrix(deltaTime*playerSpeed[playerIndex]); //to animate enable this 
+				playerIndex++;
 			}
 		}
 	
