@@ -1,24 +1,5 @@
 #include "JointTransformation.h"
 
-//DirectX::XMFLOAT3 JointTransformation::interpolate(DirectX::XMFLOAT3 start, DirectX::XMFLOAT3 end, float progression)
-//{
-//	DirectX::XMFLOAT3 interpol= { 0,0,0 };
-//	interpol.x = start.x + (end.x - start.x)*progression;
-//	interpol.y = start.y + (end.y - start.y)*progression;
-//	interpol.z = start.z + (end.z - start.z)*progression;
-//	return interpol;
-//}
-//
-//DirectX::XMFLOAT3 JointTransformation::interpolate2(DirectX::XMFLOAT3 start, DirectX::XMFLOAT3 end, float progression)
-//{
-//	DirectX::XMFLOAT3 interpol = { 0,0,0 };
-//	interpol.x = start.x * (1 - progression) + end.x * progression;
-//	interpol.y = start.y * (1 - progression) + end.y * progression;
-//	interpol.z = start.z * (1 - progression) + end.z * progression;
-//	return interpol;
-//}
-
-
 JointTransformation::JointTransformation()
 {
 	this->position = {};
@@ -226,37 +207,3 @@ DirectX::XMFLOAT3 JointTransformation::getScale() const
 	return this->scale;
 }
 
-//float JointTransformation::getPitch(DirectX::XMVECTOR Quaternion)
-//{
-//	return atan2(2 * (Quaternion.m128_f32[1]* Quaternion.m128_f32[2] + Quaternion.m128_f32[3] * Quaternion.m128_f32[0]), Quaternion.m128_f32[3] * Quaternion.m128_f32[3] - Quaternion.m128_f32[0] * Quaternion.m128_f32[0] - Quaternion.m128_f32[1] * Quaternion.m128_f32[1] + Quaternion.m128_f32[2] * Quaternion.m128_f32[2]);
-//}
-//
-//float JointTransformation::getYaw(DirectX::XMVECTOR Quaternion)
-//{
-//	return asin(-2 * (Quaternion.m128_f32[0] * Quaternion.m128_f32[2] - Quaternion.m128_f32[3] * Quaternion.m128_f32[1]));
-//}
-//
-//float JointTransformation::getRoll(DirectX::XMVECTOR Quaternion)
-//{
-//	return atan2(2 * (Quaternion.m128_f32[0] *Quaternion.m128_f32[1] + Quaternion.m128_f32[3] * Quaternion.m128_f32[2]), Quaternion.m128_f32[3] * Quaternion.m128_f32[3] + Quaternion.m128_f32[0] * Quaternion.m128_f32[0] - Quaternion.m128_f32[1] * Quaternion.m128_f32[1] - Quaternion.m128_f32[2] * Quaternion.m128_f32[2]);
-//}
-
-//JointTransformation JointTransformation::interpolate(JointTransformation frameA, JointTransformation frameB, float progression) //progression is 0 to 1
-//{
-//	DirectX::XMFLOAT3 pos = this->interpolate(frameA.position, frameB.position, progression);
-//	DirectX::XMFLOAT4 pos4 = { pos.x, pos.y, pos.z, 0.f };
-//	DirectX::XMVECTOR quaternion = DirectX::XMQuaternionSlerp(frameA.rotation, frameB.rotation, progression);
-//	//DirectX::XMFLOAT3 scale = this->interpolate(frameA.scale, frameB.scale, progression);
-//	DirectX::XMFLOAT3 scale = { 1.f,1.f,1.f };
-//	return JointTransformation(pos4, quaternion,scale);
-//}
-
-//JointTransformation JointTransformation::interpolate2(JointTransformation frameA, JointTransformation frameB, float progression)
-//{
-//	DirectX::XMFLOAT3 pos = this->interpolate2(frameA.position, frameB.position, progression);
-//	DirectX::XMFLOAT4 pos4 = { pos.x, pos.y, pos.z, 0.f };
-//	DirectX::XMVECTOR quaternion = DirectX::XMQuaternionSlerp(frameA.rotation, frameB.rotation, progression);
-//	DirectX::XMFLOAT3 scale = this->interpolate2(frameA.scale, frameB.scale, progression);
-//
-//	return JointTransformation(pos4, quaternion, scale);
-//}

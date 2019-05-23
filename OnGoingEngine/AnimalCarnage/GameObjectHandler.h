@@ -26,6 +26,7 @@ private:
 	int nrOfLights;
 
 	int animTimer;
+	//int frameCounter;
 	struct ModWorld
 	{
 		DirectX::XMMATRIX* worldPtr;
