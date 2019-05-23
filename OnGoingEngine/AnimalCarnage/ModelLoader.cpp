@@ -11,6 +11,10 @@ ModelLoader::~ModelLoader()
 }
 void ModelLoader::loadGO(GameObject*& object, const char* filePath, int mipLevels)
 {
+	if (object->getModel() != nullptr)
+		object->getModel().reset();
+
+
 	bool modelloaded = false;
 	Luna::Reader reader;
 	reader.readFile(filePath);
