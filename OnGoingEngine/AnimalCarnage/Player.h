@@ -38,6 +38,8 @@ private:
 	bool wallJumpReset;
 	bool canDoubleJump;
 	bool hitStun;
+	int hitTimer;
+	bool punching;
 	int hitTime2;
 	int hitTime;
 	int health;
