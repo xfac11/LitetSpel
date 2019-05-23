@@ -29,7 +29,7 @@ public:
 	bool hasMaskColor();
 	DirectX::XMFLOAT4 &getRepeat();
 	void setTexture(std::string file, int mipLevels=-1);
-
+	void setGlowMap(shared_ptr<Texture> t);
 	void setGlowMap(std::string file);
 	void setMask(std::string file);
 	void setMesh(std::vector<Vertex3D> aMesh,DWORD *indices, int numberOfIndices);
@@ -43,6 +43,7 @@ public:
 
 private:
 	shared_ptr<Texture> texture;// 
+	shared_ptr<Texture> glowMap;// 
 	//skeleton
 	bool gotSkeleton;
 	
@@ -58,7 +59,7 @@ private:
 	ID3D11SamplerState* SamplerState;
 	//mask
 	Texture* normalMap;
-	Texture* glowMap;
+//	Texture* glowMap;
 	Texture* mask;
 	bool hasGlowMap;
 	bool hasMask;
