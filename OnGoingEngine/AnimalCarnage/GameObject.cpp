@@ -12,7 +12,7 @@ GameObject::GameObject()
 	//this->gotSkeleton = false;
 	this->repeat = DirectX::XMFLOAT4(1, 1, 1, 1);
 	this->timePassed = 0.f;
-	this->prevTimeIncrement = 0.f;
+	//this->prevTimeIncrement = 0.f;
 }
 
 GameObject::GameObject(Shader * shader)
@@ -25,7 +25,7 @@ GameObject::GameObject(Shader * shader)
 	this->colBox = AABB();
 	this->repeat = DirectX::XMFLOAT4(1, 1, 1, 1);
 	this->timePassed = 0.f;
-	this->prevTimeIncrement = 0.f;
+	//this->prevTimeIncrement = 0.f;
 	this->frameCounter=0;
 	//this->gotSkeleton = false;
 	/*this->theModel[0] = new Model;
@@ -278,7 +278,7 @@ void GameObject::computeAnimationMatrix(float deltaTime)
 		this->timePassed = fmodf(this->timePassed,anims.getDuration());
 
 	this->frameCounter++;
-	if (this->frameCounter >= 10)
+	if (this->frameCounter >= 2)
 	{
 		int k1 = (int)(this->timePassed* anims.getFPS());
 		int k2 = std::min<int>(k1 + 1, anims.getKeyframes()[0].size());
@@ -287,9 +287,10 @@ void GameObject::computeAnimationMatrix(float deltaTime)
 		float k2_time = k2 / anims.getFPS();
 		float t = (timePassed - k1_time) / (k2_time - k1_time);
 
-		if (t != prevTimeIncrement)
+		int timeStamp = int(10*(k1 + t));
+
+		if (calculatedFrames[timeStamp].empty())
 		{
-			prevTimeIncrement = t;
 
 
 			DirectX::XMMATRIX sclMtx = DirectX::XMMatrixScaling(0.1f, 0.1f, 0.1f);
@@ -310,16 +311,22 @@ void GameObject::computeAnimationMatrix(float deltaTime)
 				matrixPallete[joint] = DirectX::XMMatrixMultiplyTranspose(pose_global[joint], DirectX::XMMatrixTranspose(this->skeleton[joint].getInverseBindTransform()));
 			}
 
+			this->calculatedFrames[timeStamp] = matrixPallete;
 			DeferredShader* ptr = dynamic_cast<DeferredShader*>(System::shaderManager->getDefShader());
 			if (ptr != nullptr)
 			{
 				ptr->setJointData(matrixPallete);
-
 			}
-			//else
-			//{
-			//	OutputDebugStringA("== FAILED IN SET KEYFRAME to shader!! == ");
-			//}
+
+		}
+		else
+		{
+	
+			DeferredShader* ptr = dynamic_cast<DeferredShader*>(System::shaderManager->getDefShader());
+			if (ptr != nullptr)
+			{
+				ptr->setJointData(calculatedFrames[timeStamp]);
+			}
 		}
 		this->frameCounter = 0;
 	}
