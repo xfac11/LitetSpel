@@ -222,7 +222,7 @@ bool GunGameState::initailize()
 	for (int i = 0; i < nrOfPlayers; i++)
 	{
 		player[i] = new Player();
-		player[i]->initialize(FOX);
+		player[i]->initialize(FOX, RED);
 		player[i]->setRigidbodyPosition(0, i *10.f, 0.f);
 		if (i == 0)
 			player[0]->setColorMask(DirectX::XMFLOAT4(1.0, 0, 0, 1));

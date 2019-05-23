@@ -3,11 +3,7 @@
 
 #include "GuiElement.h"
 #include "Texture.h"
-
-enum Players
-{
-	WOLF
-};
+#include "Player.h"
 
 class PlayerSelector : public GuiElement
 {
@@ -17,16 +13,20 @@ private:
 	static Texture playerCircle;
 	static Texture arrowLeft;
 	static Texture arrowRight;
-	static Texture playerFox;
-	//static Texture backGroundPLayer;
-	Players currentPlayer;
+	static Texture players[4];
+	static Texture backGroundLayer;
+	AnimalType animalType;
+	PlayerColor color;
 public:
-	PlayerSelector(Players currentPlayer, DirectX::SimpleMath::Vector2 position = DirectX::SimpleMath::Vector2::Zero);
+	PlayerSelector(AnimalType animalType = FOX, PlayerColor color = RED, DirectX::SimpleMath::Vector2 position = DirectX::SimpleMath::Vector2::Zero);
 	virtual ~PlayerSelector();
 
 	bool render(bool selected);
-	DirectX::XMVECTOR backGroundColor;
 
+	AnimalType getAnimalType() const;
+	PlayerColor getPlayerColor() const;
+	void changeAnimalType(bool dir);
+	void changePlayerColor(bool dir);
 };
 
 #endif // !PLAYER_SELECTOR_H
