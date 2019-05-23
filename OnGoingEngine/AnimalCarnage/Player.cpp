@@ -75,46 +75,27 @@ void Player::changeCharacter()
 		else {
 			nextAnimal = -1;
 		}
+
+
+
 	}
 
-	//canBeAnimal[currentAnimal] = false;
-	//currentAnimal = nextAnimal;
 	const AnimalDef& animal = Animal::getAnimal(ArrayOfAnimals[currentAnimal]);
 	this->type = ArrayOfAnimals[currentAnimal];
 	this->health = animal.maxHealh;
+	
+	{
+		System::theModelLoader->loadGO(this->playerObj, animal.modelPath);
+		//if (animal.maskPath != "empty" && !this->playerObj->getModel()->hasMaskColor())
+		//	this->playerObj->setMask(animal.maskPath, 0);//change to animal.maskPath
+		//System::handler->addObject(this->playerObj);
+	}
+
 
 	btVector3 inertia(0, 0, 0);
-	//playerObj->getRigidbody()->getCollisionShape()->calculateLocalInertia(getWeight(), inertia);
 	playerObj->getRigidbody()->setMassProps(10*getWeight(), inertia);
 
-	/*int falseCount = 0;
-	for (int i = 0; i < 4;i++) {
-		if (canBeAnimal[i] == false) {
-			falseCount++;
-		}
-	}
 
-	int randomNumber;
-	bool newAnimalFound = false;
-	while (!newAnimalFound && falseCount < 3) {
-		srand(time(0));
-		randomNumber = (rand() % 4) + 0;
-		if (canBeAnimal[randomNumber] == true) {
-			newAnimalFound = true;
-			nextAnimal = randomNumber;
-		}
-	}
-
-	if (falseCount >= 3) {
-		for (int i = 0; i < 4; i++) {
-			if (canBeAnimal[i] == true) {
-				nextAnimal = i;
-			}
-		}
-	}*/
-	
-	//TEMP CHANGE MODEL //ASSETMANAGER?
-	//System::theModelLoader->loadGO(this->playerObj, animal.modelPath);
 }
 
 bool Player::getHitStun()
@@ -189,18 +170,6 @@ void Player::initialize(AnimalType type)
 	if (type == MOOSE)
 		canBeAnimal[3] = false;
 
-	//SCUFFED RANDOMIZER
-	//srand(time(0));
-	//int randomNumber = 0;
-	//for (int i = 4; i > 0; i--) {
-	//	//srand(time(0));
-	//	randomNumber = rand() % i;
-	//	while (randomNumber < i-1) {
-	//		randomNumberArray[randomNumber] = randomNumberArray[randomNumber + 1];
-	//		randomNumber++;
-	//	}
-	//}
-
 	std::random_shuffle(std::begin(randomNumberArray), std::end(randomNumberArray));
 
 
@@ -223,16 +192,8 @@ void Player::initialize(AnimalType type)
 	System::theModelLoader->loadGO(this->hitbox.hitbox, "Resources/Models/cube2.lu");
 	this->hitbox.hitbox->setScale(0.2f, 0.2f, 0.2f);
 	System::handler->addObject(this->hitbox.hitbox);
-	//this->playerObj->getRigidbody() = System::getphysices()->addSphere(0.5f,btVector3(0,0,0),1);
 
-	//load player
-	//AABB aabb = playerObj->getCollisionBox();
-	//btVector3 size = btVector3(1 + aabb.width * 2, aabb.height * 2, 1);
-	//playerObj->CollisionShape->Initialize(1, btVector3(0, 0, 0), size);
-	////DirectX::XMMatrixTranslation(this->Position.x+posOffset[0])
-	//playerObj->CollisionShape->SetWorld(&playerObj->getWorld());
-	//System::getDebugDraw()->addPrimitives(playerObj->CollisionShape);
-
+	//loads animal
 	System::theModelLoader->loadGO(this->playerObj, animal.modelPath);
 	if(animal.maskPath!="empty"&&!this->playerObj->getModel()->hasMaskColor())
 		this->playerObj->setMask(animal.maskPath,0);//change to animal.maskPath
@@ -242,21 +203,17 @@ void Player::initialize(AnimalType type)
 	AABB aabb = playerObj->getCollisionBox();
 	btVector3 size = btVector3(1+aabb.width*2, aabb.height*2,1);
 	playerObj->getRigidbody() = System::getphysices()->addPlayer(btVector3(0, 0, 0), size, 10.0f * getWeight(),this);
-	//this->playerObj->getRigidbody()->getWorldTransform().setRotation(btQuaternion(3.14 / 2, 0, 0));
+
 	playerObj->getRigidbody()->setWorldTransform(XMMATRIX_to_btTransform(this->playerObj->getWorld()));
 	this->playerObj->setRotationRollPitchYaw(0.f,3.14f/2.f,0.f);;
 
 
-	//System::handler->addObject(this->hitbox.hitbox);
 	Primitives *CollisionShape;
 	CollisionShape = new Primitives();
 	CollisionShape->Initialize(1, btVector3(0,0,0), btVector3(0, 0, 0));
-	/*DirectX::XMMatrixTranspose(
-		XMMatrixScaling(Scale.x, Scale.y, Scale.z) *
-		XMMatrixTranslation(Position.x, Position.y, Position.z));*/
 	CollisionShape->SetWorld(&this->hitbox.hitbox->getWorld());
 	System::getDebugDraw()->addPrimitives(CollisionShape);
-	/////////////
+
 	playerObj->getRigidbody()->setActivationState(DISABLE_DEACTIVATION);
 	playerObj->getRigidbody()->setFriction(0.5);
 	playerObj->getRigidbody()->setRestitution(0);

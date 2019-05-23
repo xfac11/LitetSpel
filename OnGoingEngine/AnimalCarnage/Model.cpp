@@ -9,7 +9,8 @@ Model::Model()
 	shared_ptr<Texture> t;
 	texture = t;
 	this->normalMap = new Texture;
-	this->glowMap = new Texture;
+	shared_ptr<Texture> glowtex;
+	glowMap = glowtex;
 	this->mask = new Texture;
 	this->type = Opaque;
 	this->hasMask = false;
@@ -49,7 +50,7 @@ Model::~Model()
 	}
 	if (this->glowMap != nullptr)
 	{
-		delete this->glowMap;
+		glowMap = nullptr;
 	}
 	/*if (this->mask != nullptr)
 	{*/
@@ -116,6 +117,11 @@ void Model::setTexture(std::string file, int mipLevels)
 	{
 		this->type = Opaque;
 	}
+}
+
+void Model::setGlowMap(shared_ptr<Texture> t)
+{
+	glowMap = t;
 }
 
 

@@ -11,6 +11,10 @@ ModelLoader::~ModelLoader()
 }
 void ModelLoader::loadGO(GameObject*& object, const char* filePath, int mipLevels)
 {
+	if (object->getModel() != nullptr)
+		object->getModel().reset();
+
+
 	bool modelloaded = false;
 	Luna::Reader reader;
 	reader.readFile(filePath);
@@ -26,6 +30,15 @@ void ModelLoader::loadGO(GameObject*& object, const char* filePath, int mipLevel
 			System::assetMananger->LoadTexture(mat1.diffuseTexPath, mat1.diffuseTexPath);
 			shared_ptr<Texture> texture = System::assetMananger->GetTexture(mat1.diffuseTexPath);
 			m->SetTexture(texture);
+
+			if (mat1.hasGlowMap)
+			{
+				shared_ptr<Texture> glowmap;
+				System::assetMananger->LoadTexture(mat1.glowTexPath, mat1.glowTexPath); //load texture
+				glowmap = System::assetMananger->GetTexture(mat1.glowTexPath); //set glow texture
+				m->setGlowMap(glowmap);
+			}
+
 			object->addModel(m, mesh.hasSkeleton); //mesh.hasSkeleton
 			object->setHalfSize(reader.getBoundingBox(0).halfSize, reader.getBoundingBox(0).pos);
 			return;
@@ -118,16 +131,18 @@ void ModelLoader::loadGO(GameObject*& object, const char* filePath, int mipLevel
 			System::assetMananger->LoadTexture(mat.diffuseTexPath, mat.diffuseTexPath); //load texture
 			texture = System::assetMananger->GetTexture(mat.diffuseTexPath);
 			model->SetTexture(texture); 	//set the texture to the model
+			if (mat.hasGlowMap) 
+			{
+				shared_ptr<Texture> glowmap;
+				System::assetMananger->LoadTexture(mat.glowTexPath, mat.glowTexPath); //load texture
+				glowmap = System::assetMananger->GetTexture(mat.glowTexPath); //set glow texture
+				model->setGlowMap(glowmap);
+			}
 			System::assetMananger->LoadModel(filePath, model); //load model
 			object->addModel(System::assetMananger->GetModel(filePath), mesh.hasSkeleton); //mesh.hasSkeleton
 
 			if (mesh.hasBoundingBox)
 				object[i].setHalfSize(reader.getBoundingBox(i).halfSize, reader.getBoundingBox(i).pos);
-			//object[i].addModel(vertices3D, dIndices, (int)indices.size(), false); //mesh.hasSkeleton
-			//object[i].setTexture(reader.getMaterial(i).diffuseTexPath, i, mipLevels);
-
-			//if (mat.hasGlowMap)
-			//	object->setGlowMap(mat.glowTexPath, i);
 
 		}
 
