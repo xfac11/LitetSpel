@@ -23,7 +23,7 @@ private:
 	bool canGiveDmg;
 public:
 	Objects();
-	Objects(std::string filepath ,btVector3 position, int id, int friction, btVector3 size = btVector3(1,1,1), OBJECTSTATE state = STATIC, OBJECTYPE type = STONE,int mipLevels=-1, float x=1, float y=1);
+	Objects(std::string filepath ,btVector3 position, int id, int friction, btVector3 size = btVector3(1,1,1), OBJECTSTATE state = STATIC, OBJECTYPE type = STONE,int mipLevels=-1, float x=1, float y=1,bool changeOpacity=false);
 	~Objects();
 	void update(float dt);
 	GameObject* ObjectOBJ;

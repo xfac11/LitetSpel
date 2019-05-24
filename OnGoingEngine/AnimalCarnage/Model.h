@@ -21,6 +21,7 @@ public:
 	//void operator=(const Model& obj);
 	~Model();
 	int getOpacity();
+	void setOpacity(Opacity type);
 	void setGotSkeleton(bool gotSkltn);
 	Shader* getShader();
 	void setShader(Shader* theShader);

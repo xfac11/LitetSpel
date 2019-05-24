@@ -45,7 +45,7 @@ Objects::Objects()
 {
 	this->id = 1;
 }
-Objects::Objects(std::string filepath, btVector3 position,int id,int friction, btVector3 size, OBJECTSTATE state, OBJECTYPE type,int mipLevels, float x, float y) :state(state), type(type)
+Objects::Objects(std::string filepath, btVector3 position,int id,int friction, btVector3 size, OBJECTSTATE state, OBJECTYPE type,int mipLevels, float x, float y, bool changeOpacity) :state(state), type(type)
 {
 	this->activeTimer = 0;
 	this->canGiveDmg = true;
@@ -53,6 +53,8 @@ Objects::Objects(std::string filepath, btVector3 position,int id,int friction, b
 	this->ObjectOBJ = new GameObject(System::shaderManager->getForwardShader());
 
 	System::theModelLoader->loadGO(this->ObjectOBJ, filepath.c_str(),mipLevels);
+	if (changeOpacity)
+		this->ObjectOBJ->getModel()->setOpacity(Opaque);
 	System::handler->addObject(this->ObjectOBJ);
 	this->ObjectOBJ->setPosition(btVector3(position.getX(), position.getY()+0.57f, position.getZ()));
 	this->ObjectOBJ->setRepeat(x, y);//repeated texture
