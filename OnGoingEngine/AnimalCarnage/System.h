@@ -67,6 +67,7 @@ private:
 	static DEBUG_DRAW* debugDraw;
 	static SoundManager* soundManager;
 	static ParticleManager* particleManager;
+	static SimpleMath::Matrix matrixForSpritebatch;
 
 	//ForwardShader* theForwardShader;
 	
@@ -140,6 +141,6 @@ public:
 	static void setState(GameState state);
 	static State* getCurrentState();
 	static void resizeWindow(int width, int height);
-
+	static const SimpleMath::Matrix& getSpritebatchMatrix();
 };
 #endif
