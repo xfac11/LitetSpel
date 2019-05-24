@@ -235,7 +235,7 @@ bool GunGameState::initailize()
 	GameObject* grass2 = new GameObject;
 	System::theModelLoader->loadGO(grass2, "Resources/Models/grass2.lu");
 	System::handler->addObject(grass2);
-	grass2->setPosition(10, -0.5, 1);
+	grass2->setPosition(-5, 0.5, 1);
 	GameObject* tree3 = new GameObject;
 	System::theModelLoader->loadGO(tree3, "Resources/Models/tree3.lu");
 	System::handler->addObject(tree3);
