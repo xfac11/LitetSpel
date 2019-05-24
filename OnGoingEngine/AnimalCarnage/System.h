@@ -138,6 +138,7 @@ public:
 	static DEBUG_DRAW* getDebugDraw();
 	static void closeWindow();
 	static void setState(GameState state);
+	static State* getCurrentState();
 	static void resizeWindow(int width, int height);
 
 };

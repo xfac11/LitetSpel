@@ -173,6 +173,17 @@ Player * GunGameState::getPlayer(int id) const
 	return this->player[id];
 }
 
+bool GunGameState::initPlayers(AnimalType type[], PlayerColor color[])
+{
+	for (int i = 0; i < nrOfPlayers; i++)
+	{
+		player[i]->setAnimalType(type[i]);
+		player[i]->setColorMask(color[i]);
+	}
+
+	return true;
+}
+
 bool GunGameState::initailize()
 {
 	gContactAddedCallback = callbackFunc;
@@ -224,14 +235,6 @@ bool GunGameState::initailize()
 		player[i] = new Player();
 		player[i]->initialize(FOX, RED);
 		player[i]->setRigidbodyPosition(0, i *10.f, 0.f);
-		if (i == 0)
-			player[0]->setColorMask(DirectX::XMFLOAT4(1.0, 0, 0, 1));
-		else if(i==1)
-			player[1]->setColorMask(DirectX::XMFLOAT4(0.0, 1.0, 0, 1));
-		else if(i==2)
-			player[2]->setColorMask(DirectX::XMFLOAT4(0.0, 0, 1.0, 1));
-		else if(i==3)
-			player[3]->setColorMask(DirectX::XMFLOAT4(1.0, 1.0, 0, 1));
 	}
 	
 	System::handler->initialize();

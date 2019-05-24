@@ -51,9 +51,47 @@ bool Player::isDead() const
 	return this->health <= 0;
 }
 
-void Player::setColorMask(DirectX::XMFLOAT4 color)
+void Player::setColorMask(PlayerColor color)
 {
-	this->playerObj->setColorMask(color);
+	this->color = color;
+	XMFLOAT4 colorMask;
+
+	switch (color)
+	{
+	case RED:
+		colorMask = XMFLOAT4(Colors::Red);
+		break;
+	case BLUE:
+		colorMask = XMFLOAT4(Colors::Blue);
+		break;
+	case GREEN:
+		colorMask = XMFLOAT4(Colors::Green);
+		break;
+	case YELLOW:
+		colorMask = XMFLOAT4(Colors::Yellow);
+		break;
+	case CYAN:
+		colorMask = XMFLOAT4(Colors::Cyan);
+		break;
+	case PINK:
+		colorMask = XMFLOAT4(Colors::Pink);
+		break;
+	case BLACK:
+		colorMask = XMFLOAT4(Colors::Black);
+		break;
+	case WHITE:
+		colorMask = XMFLOAT4(Colors::White);
+		break;
+	}
+
+	this->playerObj->setColorMask(colorMask);
+}
+
+void Player::setAnimalType(AnimalType type)
+{
+	const AnimalDef& animal = Animal::getAnimal(type);
+	this->type = type;
+	this->health = animal.maxHealh;
 }
 
 void Player::changeCharacter()
@@ -85,11 +123,8 @@ void Player::changeCharacter()
 
 	}
 
-	const AnimalDef& animal = Animal::getAnimal(ArrayOfAnimals[currentAnimal]);
-	this->type = ArrayOfAnimals[currentAnimal];
-	this->health = animal.maxHealh;
-	
-	System::theModelLoader->loadGO(this->playerObj, animal.modelPath);
+	this->setAnimalType(ArrayOfAnimals[currentAnimal]);
+	System::theModelLoader->loadGO(this->playerObj, Animal::getAnimal(ArrayOfAnimals[currentAnimal]).modelPath);
 	//if (animal.maskPath != "empty" && !this->playerObj->getModel()->hasMaskColor())
 	//	this->playerObj->setMask(animal.maskPath, 0);//change to animal.maskPath
 	//System::handler->addObject(this->playerObj);
@@ -164,10 +199,7 @@ Player::~Player()
 
 void Player::initialize(AnimalType type, PlayerColor color)
 {
-	this->color = color;
-	const AnimalDef& animal = Animal::getAnimal(type);
-	this->type = type;
-	this->health = animal.maxHealh;
+	this->setAnimalType(type);
 
 	if (type == FOX)
 		canBeAnimal[0] = false;
@@ -201,9 +233,9 @@ void Player::initialize(AnimalType type, PlayerColor color)
 	System::handler->addObject(this->hitbox.hitbox);
 
 	//loads animal
-	System::theModelLoader->loadGO(this->playerObj, animal.modelPath);
-	if(animal.maskPath!="empty"&&!this->playerObj->getModel()->hasMaskColor())
-		this->playerObj->setMask(animal.maskPath,0);//change to animal.maskPath
+	System::theModelLoader->loadGO(this->playerObj, Animal::getAnimal(type).modelPath);
+	if(Animal::getAnimal(type).maskPath!="empty"&&!this->playerObj->getModel()->hasMaskColor())
+		this->playerObj->setMask(Animal::getAnimal(type).maskPath,0);//change to animal.maskPath
 	System::handler->addObject(this->playerObj);
 
 	AABB aabb = playerObj->getCollisionBox();
@@ -225,7 +257,7 @@ void Player::initialize(AnimalType type, PlayerColor color)
 	playerObj->getRigidbody()->setRestitution(0);
 	playerObj->getRigidbody()->setAngularFactor(btVector3(0, 0, 0));
 
-
+	this->setColorMask(color);
 }
 
 void Player::update(float deltaTime, int id)

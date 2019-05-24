@@ -62,6 +62,7 @@ public:
 	int getNrOfPlayers() const;
 	Player* getPlayer(int id) const;
 
+	bool initPlayers(AnimalType type[], PlayerColor color[]);
 	bool initailize();
 	bool render();
 	void renderImgui();
