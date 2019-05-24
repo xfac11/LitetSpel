@@ -18,6 +18,7 @@ class Model
 public:
 	
 	Model();
+	//void operator=(const Model& obj);
 	~Model();
 	int getOpacity();
 	void setGotSkeleton(bool gotSkltn);
@@ -38,6 +39,8 @@ public:
 	void draw();
 	void SetTexture(shared_ptr<Texture>);// { texture = t; }
 	void setGlowMap(shared_ptr<Texture> t);
+	
+	void setMatrixPallete(std::vector<DirectX::XMMATRIX> & matrixPallete);
 public:
 
 
@@ -65,9 +68,7 @@ private:
 	bool hasMask;
 	int vertexCount;
 	
-	//Joint jointHierarchy
-	//int3 jointIDs
-	//float3 weights
+	//std::vector<DirectX::XMMATRIX> matrixPallete;
 
 	Opacity type;
 	Shader * theShader;//pointer to the shader it uses. Comes from system or state. Do not delete

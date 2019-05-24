@@ -24,8 +24,8 @@ public:
 	void setHalfSize(float halfSize[3], float posOffset[3]);
 
 	void calcAABB(std::vector<Vertex3D> mesh);
-	void addModel(shared_ptr<Model> m, bool hasSkeleton);
-	void addModel(std::vector<Vertex3D> mesh, DWORD *indices, int numberOfIndices,  bool hasSkeleton);
+	void addModel(shared_ptr<Model> m , bool gotSkeleton);
+	//void addModel(std::vector<Vertex3D> mesh, DWORD *indices, int numberOfIndices,  bool hasSkeleton);
 	void setMesh(std::vector<Vertex3D> mesh, DWORD *indices, int numberOfIndices, int id);
 	void setTexture(std::string file, int id, int mipLevels=-1);
 	void setGlowMap(std::string file, int id);
@@ -34,7 +34,7 @@ public:
 	void setColorMask(DirectX::XMFLOAT4 colorMask);
 	DirectX::XMFLOAT4& getColorMask();
 	DirectX::XMFLOAT4& getRepeat();
-	void draw();
+	//void draw();
 	AABB getCollisionBox();
 	Primitives * CollisionShape;
 	btVector3 positionOffset;
@@ -49,6 +49,8 @@ public:
 	DirectX::XMFLOAT3 interpolate2(DirectX::XMFLOAT3 start, DirectX::XMFLOAT3 end, float progression);
 	JointTransformation interpolate1(JointTransformation frameA, JointTransformation frameB, float progression);
 	JointTransformation interpolate2(JointTransformation frameA, JointTransformation frameB, float progression);
+
+
 private:
 	shared_ptr<Model> theModel;
 	int cap;
@@ -56,8 +58,9 @@ private:
 	bool hasLoadedAABB;
 
 
-	//bool gotSkeleton;
+	
 	std::vector<Joint> skeleton;
+	//bool gotAnimation;
 	Animation anims;
 	float timePassed;
 	

@@ -26,7 +26,7 @@ GameObject::GameObject(Shader * shader)
 	this->colBox = AABB();
 	this->repeat = DirectX::XMFLOAT4(1, 1, 1, 1);
 	this->timePassed = 0.f;
-	
+	//this->gotAnimation = false;
 	this->frameCounter=0;
 	//this->gotSkeleton = false;
 	/*this->theModel[0] = new Model;
@@ -39,12 +39,7 @@ GameObject::GameObject(Shader * shader)
 
 GameObject::~GameObject()
 {
-	//for (int i = 0; i < this->nrOfModels; i++)
-	//{
-	//	/*if(this->theModel[i]!=nullptr)
-	//		delete this->theModel[i];*/
-	//}
-	//delete[] this->theModel;
+
 	if (theModel != NULL)
 		this->theModel = nullptr;
 }
@@ -143,7 +138,7 @@ void GameObject::calcAABB(std::vector<Vertex3D> mesh)
 	this->colBox.Max = max;*/
 }
 
-void GameObject::addModel(shared_ptr<Model> m, bool hasSkeleton)
+void GameObject::addModel(shared_ptr<Model> m, bool gotSkeleton)
 {
 	this->theModel.reset();
 	this->theModel = m;
@@ -154,22 +149,22 @@ void GameObject::addModel(shared_ptr<Model> m, bool hasSkeleton)
 		else
 			this->theModel->setShader(System::shaderManager->getDefShader());
 	}
-	this->theModel->setGotSkeleton(hasSkeleton);
+	this->theModel->setGotSkeleton(gotSkeleton);
 	nrOfModels = 1;
 }
 
-void GameObject::addModel(std::vector<Vertex3D> mesh, DWORD * indices, int numberOfIndices, bool hasSkeleton)
-{ //not using this???
-	shared_ptr<Model> m;
-	this->theModel = m;
-	this->theModel->setMesh(mesh, indices, numberOfIndices);
-	//if(this->colBox.Max.x == 1.0f)
-	this->calcAABB(mesh);
-	//this->theModel[nrOfModels]->setSampler();
-	this->theModel->setGotSkeleton(hasSkeleton);
-	nrOfModels = 1;
-
-}
+//void GameObject::addModel(std::vector<Vertex3D> mesh, DWORD * indices, int numberOfIndices, bool hasSkeleton)
+//{ //not using this???
+//	shared_ptr<Model> m;
+//	this->theModel = m;
+//	this->theModel->setMesh(mesh, indices, numberOfIndices);
+//	//if(this->colBox.Max.x == 1.0f)
+//	this->calcAABB(mesh);
+//	//this->theModel[nrOfModels]->setSampler();
+//	this->theModel->setGotSkeleton(hasSkeleton);
+//	nrOfModels = 1;
+//
+//}
 
 void GameObject::setMesh(std::vector<Vertex3D> mesh, DWORD * indices, int numberOfIndices, int id)
 {
@@ -212,27 +207,27 @@ DirectX::XMFLOAT4 & GameObject::getRepeat()
 	return this->repeat;
 }
 
-void GameObject::draw()
-{
-	/*ForwardShader* ptr = nullptr;
-	ptr = dynamic_cast<ForwardShader*>(this->theModel->getShader());
-	if (ptr != nullptr)
-	{
-		ptr->setWorld(this->theTransforms.getWorld());
-		this->theModel->draw();
-	}*/
-	/*for (int i = 0; i < this->nrOfModels; i++)
-	{
-		this->theModel[0]->getShader()->setWorld(this->theTransforms.getWorld());
-		this->theModel[0]->draw();
-	}*/
-
-
-
-	this->theModel->getShader()->setWorld(this->getWorld());
-	this->theModel->draw();
-
-}
+//void GameObject::draw()
+//{
+//	/*ForwardShader* ptr = nullptr;
+//	ptr = dynamic_cast<ForwardShader*>(this->theModel->getShader());
+//	if (ptr != nullptr)
+//	{
+//		ptr->setWorld(this->theTransforms.getWorld());
+//		this->theModel->draw();
+//	}*/
+//	/*for (int i = 0; i < this->nrOfModels; i++)
+//	{
+//		this->theModel[0]->getShader()->setWorld(this->theTransforms.getWorld());
+//		this->theModel[0]->draw();
+//	}*/
+//
+//
+//
+//	this->theModel->getShader()->setWorld(this->getWorld());
+//	this->theModel->draw();
+//
+//}
 
 AABB GameObject::getCollisionBox()
 {
@@ -309,17 +304,20 @@ void GameObject::computeAnimationMatrix(float deltaTime) //include float to mult
 			pose_global[0] = local_root.getLocalTransform();
 
 			pose_global[0] = DirectX::XMMatrixMultiply(sclMtx, DirectX::XMMatrixTranspose(pose_global[0]));
-			matrixPallete[0] = DirectX::XMMatrixMultiplyTranspose(pose_global[0], DirectX::XMMatrixTranspose(this->skeleton[0].getInverseBindTransform()));
+			this->matrixPallete[0] = DirectX::XMMatrixMultiplyTranspose(pose_global[0], DirectX::XMMatrixTranspose(this->skeleton[0].getInverseBindTransform()));
 			for (int joint = 1; joint < skeleton.size(); joint++)
 			{
 
 				local = this->interpolate1(anims.getKeyframes()[joint][k1].getJointKeyFrames(), anims.getKeyframes()[joint][k2].getJointKeyFrames(), t);
 
 				pose_global[joint] = DirectX::XMMatrixMultiply(pose_global[this->skeleton[joint].getParent()->getID()], DirectX::XMMatrixTranspose(local.getLocalTransform()));
-				matrixPallete[joint] = DirectX::XMMatrixMultiplyTranspose(pose_global[joint], DirectX::XMMatrixTranspose(this->skeleton[joint].getInverseBindTransform()));
+				this->matrixPallete[joint] = DirectX::XMMatrixMultiplyTranspose(pose_global[joint], DirectX::XMMatrixTranspose(this->skeleton[joint].getInverseBindTransform()));
 			}
 
 			//this->calculatedFrames[timeStamp] = matrixPallete;
+
+			////send to model
+			//this->theModel->setMatrixPallete(this->matrixPallete);
 			System::shaderManager->getDefShader()->setJointData(matrixPallete);
 		//}
 		//else //if the frames is already calculated
@@ -336,20 +334,6 @@ void GameObject::setNewAnimation(float fps, float duration, std::string name, st
 	Animation newAnim(fps, duration, name, keyframePack.size(), keyframePack[0].size());
 	newAnim.setKeyframes(keyframePack);
 	this->anims = newAnim;
-
-
-	//this->gotSkeleton = true;
-
-
-	//DeferredShader* ptr;
-	//if (ptr = dynamic_cast<DeferredShader*>(System::shaderManager->getDefShader()))
-	//{
-	//	//ptr->setJointData(jointTransforms, true);
-	//}
-	//else
-	//{
-	//	OutputDebugStringA("== FAILED IN SET KEYFRAME to shader!! == ");
-	//}
 	
 }
 
@@ -363,7 +347,7 @@ void GameObject::setSkeleton(std::vector<Luna::Joint> theJoints)
 		if (theJoints[i].parentID != -1)
 			this->skeleton[i].setParent(&this->skeleton[theJoints[i].parentID]);
 	}
-
+	//this->gotAnimation = true;
 	this->pose_global.resize(skeleton.size());
 	this->matrixPallete.resize(skeleton.size());
 	

@@ -133,7 +133,7 @@ bool SelectGui::update(float deltaTime)
 
 bool SelectGui::render()
 {
-	System::getSpriteBatch()->Begin(DirectX::SpriteSortMode_Deferred, System::getCommonStates()->NonPremultiplied());
+	System::getSpriteBatch()->Begin(DirectX::SpriteSortMode_Deferred, System::getCommonStates()->NonPremultiplied(), nullptr, nullptr, nullptr, nullptr, System::getSpritebatchMatrix());
 
 	Vector2 textWidth = System::getFontArial()->MeasureString("Player Select");
 	System::getFontArial()->DrawString(System::getSpriteBatch(), "Player Select", Vector2(System::theWindow.width / 2.0F, System::theWindow.height / 2.0F - 400), DirectX::Colors::Black, 0.0f, textWidth / 2.f, Vector2::One);

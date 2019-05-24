@@ -22,7 +22,8 @@ Physics* System::physices = nullptr;
 DEBUG_DRAW* System::debugDraw = nullptr;
 Skybox* System::skybox = nullptr;
 SoundManager* System::soundManager = nullptr;
-WindowClient System::theWindow = { 1080, 1920};
+WindowClient System::theWindow = { 1080/2, 1920/2};
+SimpleMath::Matrix System::matrixForSpritebatch = SimpleMath::Matrix::CreateScale(System::fusk->theWindow.height / 1080.0f) * SimpleMath::Matrix::CreateTranslation(System::theWindow.width * 0.25f, System::theWindow.height * 0.25f, 0);
 Camera* System::theCamera = nullptr;
 AssetManager* System::assetMananger = nullptr;
 ParticleManager* System::particleManager = nullptr;
@@ -259,7 +260,7 @@ System::System(HINSTANCE hInstance, LPCSTR name, int nCmdShow)
 
 	this->hinstance = hInstance;
 	this->applicationName = name;
-	this->hwnd = InitWindow(this->hinstance, this->theWindow.height, this->theWindow.width);
+	this->hwnd = InitWindow(this->hinstance, (float)this->theWindow.height, (float)this->theWindow.width);
 	this->nCMDShow = nCmdShow;
 	this->msg = { 0 };
 	this->theGraphicDevice = new GraphicsDevice();
@@ -380,8 +381,8 @@ bool System::initialize()
 	shaderManager->getLightShader()->setWindow(this->theWindow);
 	D3D11_VIEWPORT vp;
 	ZeroMemory(&vp, sizeof(D3D11_VIEWPORT));
-	vp.Height = System::fusk->theWindow.height;
-	vp.Width = System::fusk->theWindow.width;
+	vp.Height = (float)System::fusk->theWindow.height;
+	vp.Width = (float)System::fusk->theWindow.width;
 	vp.MinDepth = 0.0f;
 	vp.MaxDepth = 1.0f;
 	vp.TopLeftX = 0;
@@ -423,11 +424,11 @@ void System::mouseMovement(float deltaTime)
 	this->camRot.y += mouseX * sensitivity* deltaTime;
 
 	if (abs(this->camRot.y) >= 360)
-		this->camRot.y = 0;
-	if (this->camRot.y > 180)
-		this->camRot.y = -180;
-	if (this->camRot.y < -180)
-		this->camRot.y = 180;
+		this->camRot.y = 0.f;
+	if (this->camRot.y > 180.f)
+		this->camRot.y = -180.f;
+	if (this->camRot.y < -180.f)
+		this->camRot.y = 180.f;
 	theCamera->SetRotation(camRot);
 }
 
@@ -603,6 +604,15 @@ void System::update(float deltaTime)
 	if (theKeyboard->KeyIsPressed('N'))
 	{
 		this->soundManager->stopLooped();
+	}
+
+	if (theKeyboard->KeyIsPressed('L'))
+	{
+		this->resizeWindow(theWindow.width, theWindow.height + 10);
+	}
+	if (theKeyboard->KeyIsPressed('O'))
+	{
+		this->resizeWindow(theWindow.width + 10, theWindow.height);
 	}
 
 	//theCamera->SetRotation(theMouse->GetPos().y, 0, 0);
@@ -836,11 +846,18 @@ void System::resizeWindow(int width, int height)
 
 	D3D11_VIEWPORT vp;
 	ZeroMemory(&vp, sizeof(D3D11_VIEWPORT));
-	vp.Height = System::fusk->theWindow.height;
-	vp.Width = System::fusk->theWindow.width;
+	vp.Height =(float) System::fusk->theWindow.height;
+	vp.Width = (float)System::fusk->theWindow.width;
 	vp.MinDepth = 0.0f;
 	vp.MaxDepth = 1.0f;
 	spriteBatch->SetViewport(vp);
-	//spriteBatch->Ge
+
+	float scale = System::fusk->theWindow.height / 1080.0f;
+	System::matrixForSpritebatch = SimpleMath::Matrix::CreateScale(scale) * SimpleMath::Matrix::CreateTranslation(System::theWindow.width * 0.5f - System::theWindow.width * scale * 0.5f, System::theWindow.height * 0.25f, 0);
 	MoveWindow(System::fusk->hwnd, 0, 0, System::fusk->theWindow.width, System::fusk->theWindow.height, true);
+}
+
+const SimpleMath::Matrix & System::getSpritebatchMatrix()
+{
+	return System::matrixForSpritebatch;
 }

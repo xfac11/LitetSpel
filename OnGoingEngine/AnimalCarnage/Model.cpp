@@ -36,6 +36,37 @@ Model::Model()
 
 }
 
+//void Model::operator=(const Model & obj)
+//{
+//
+//	//this->texture
+//	//this->glowMap
+//
+//	this->gotSkeleton = obj.gotSkeleton;
+//	this->colorMask = obj.colorMask;
+//	this->repeatXY = obj.repeatXY;
+//	this->mesh.data = obj.mesh.data;
+//	this->vertexBuffer = obj.vertexBuffer;
+//
+//	//material
+//	//mesh
+//	//texture set( matdiff, matdiff)
+//	//texture assetmanage->getText
+//	//m->setTexture
+//
+//	//glowmap
+//
+//	//skeleton
+//	//
+//	//joint
+//	//weights
+//	//animation
+//	//keyframesPack
+//
+//
+//	//
+//}
+
 Model::~Model()
 {
 	if (this->SamplerState != nullptr)
@@ -125,6 +156,11 @@ void Model::setGlowMap(shared_ptr<Texture> t)
 	this->hasGlowMap = true;
 }
 
+//void Model::setMatrixPallete(std::vector<DirectX::XMMATRIX>& matrixPallete)
+//{
+//	this->matrixPallete = matrixPallete;
+//}
+
 
 void Model::setGlowMap(std::string file)
 {
@@ -193,17 +229,9 @@ void Model::drawOnlyVertex()
 	{
 		System::getDeviceContext()->PSSetShaderResources(1, 1, &this->normalMap->getTexture());
 	}*/
+	System::shaderManager->getDefShader()->setSkeleton(this->gotSkeleton);
+	//System::shaderManager->getDefShader()->setJointData(this->matrixPallete);
 
-	DeferredShader* ptr;
-	if (ptr = dynamic_cast<DeferredShader*>(this->theShader)) //System::shaderManager->getDefShader()))
-	{
-
-		ptr->setSkeleton(this->gotSkeleton);
-	}
-	else
-	{
-		OutputDebugStringA("== FAILED IN SET KEYFRAME to shader!! == ");
-	}
 	System::getDeviceContext()->IASetVertexBuffers(0, 1, &*this->vertexBuffer.GetAddressOf(), &*vertexBuffer.getStridePtr(), &offset);
 	//	UINT offset = 0;
 		//devcon->IASetVertexBuffers(0, 1, &pVBuffer, &stride, &offset);
@@ -218,16 +246,10 @@ void Model::drawOnlyVertex()
 void Model::draw()
 {
 	UINT32 offset = 0;
-	DeferredShader* ptr;
-	if (ptr = dynamic_cast<DeferredShader*>(this->theShader)) //System::shaderManager->getDefShader()))
-	{
+	//DeferredShader* ptr;
 
-		ptr->setSkeleton(this->gotSkeleton);
-	}
-	else
-	{
-		OutputDebugStringA("== ptr was null == "); //if nullptr then model may be transparent
-	}
+	System::shaderManager->getDefShader()->setSkeleton(this->gotSkeleton);
+	//System::shaderManager->getDefShader()->setJointData(this->matrixPallete);
 
 	System::getDeviceContext()->PSSetShaderResources(0, 1, &texture->getTexture());
 	if (this->normalMap != nullptr)

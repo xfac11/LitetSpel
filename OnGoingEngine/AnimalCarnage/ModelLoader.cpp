@@ -39,7 +39,28 @@ void ModelLoader::loadGO(GameObject*& object, const char* filePath, int mipLevel
 				m->setGlowMap(glowmap);
 			}
 
-			object->addModel(m, mesh.hasSkeleton); //mesh.hasSkeleton
+			if (mesh.hasSkeleton==true)
+			{
+		
+				std::vector<Luna::Joint> joints;		
+				Luna::Animation anims;
+				std::vector<std::vector<Luna::Keyframe>> keyframePack; // pack of all joint - keyframes
+				reader.getJoints(joints);
+				anims = reader.getAnimation();
+				keyframePack.resize(joints.size());
+				for (int i = 0; i < joints.size(); i++)
+				{
+					reader.getKeyframes(i, keyframePack[i]);
+				}
+				std::string animName(anims.animationName);
+				object->setSkeleton(joints);
+				object->setNewAnimation(anims.fps, anims.duration, animName, keyframePack);//change to pack
+
+			}
+
+			
+
+			object->addModel(m, mesh.hasSkeleton); //
 			object->setHalfSize(reader.getBoundingBox(0).halfSize, reader.getBoundingBox(0).pos);
 			return;
 		}
@@ -77,11 +98,10 @@ void ModelLoader::loadGO(GameObject*& object, const char* filePath, int mipLevel
 	
 		if (mesh.hasSkeleton == true)
 		{
-			Luna::Skeleton skltn; //done
+			Luna::Skeleton skltn;
 			std::vector<Luna::Joint> joints;
-			std::vector<Luna::Weights> weights; //done
+			std::vector<Luna::Weights> weights;
 			Luna::Animation anims;
-			//std::vector<Luna::Keyframe> keyframes;  //one joint-  keyframes
 			std::vector<std::vector<Luna::Keyframe>> keyframePack; // pack of all joint - keyframes
 
 			skltn = reader.getSkeleton();
@@ -99,10 +119,11 @@ void ModelLoader::loadGO(GameObject*& object, const char* filePath, int mipLevel
 			
 
 			
-			object[i].setSkeleton(joints);
-			object[i].setNewAnimation(anims.fps,anims.duration,animName, keyframePack);//change to pack
+			object->setSkeleton(joints);
+			object->setNewAnimation(anims.fps,anims.duration,animName, keyframePack);//change to pack
 
-			for (int j = 0; j < weights.size(); j++) {
+			for (int j = 0; j < weights.size(); j++) 
+			{
 				vertices3D[j].Joint.x = weights[j].jointIDs[0];
 				vertices3D[j].Joint.y = weights[j].jointIDs[1];
 				vertices3D[j].Joint.z = weights[j].jointIDs[2];
@@ -142,7 +163,7 @@ void ModelLoader::loadGO(GameObject*& object, const char* filePath, int mipLevel
 			object->addModel(System::assetMananger->GetModel(filePath), mesh.hasSkeleton); //mesh.hasSkeleton
 
 			if (mesh.hasBoundingBox)
-				object[i].setHalfSize(reader.getBoundingBox(i).halfSize, reader.getBoundingBox(i).pos);
+				object->setHalfSize(reader.getBoundingBox(i).halfSize, reader.getBoundingBox(i).pos);
 
 		}
 

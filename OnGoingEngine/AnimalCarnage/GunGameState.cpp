@@ -100,21 +100,6 @@ GunGameState::~GunGameState()
 	delete object[8];
 }
 
-//void GunGameState::callback(int other_arg, void * this_pointer)
-//{
-//	GunGameState * self = static_cast<GunGameState*>(this_pointer);
-//	int lol = 0;
-//	bool test = false;
-//
-//	test = self->checkPause();
-//	//test = this->checkPause(); //this does not work!!
-//	if (test == true)
-//		lol = 500;
-//	else
-//		lol = 2;
-//	shelf = self;
-//}
-
 bool GunGameState::callbackFunc(btManifoldPoint& cp, const btCollisionObjectWrapper* obj1, int id1, int index1, const btCollisionObjectWrapper* obj2, int id2, int index2)
 {
 
@@ -265,6 +250,7 @@ bool GunGameState::initailize()
 
 
 	nrOfPlayers = 4;
+	this->currentAnimSpeed.resize(nrOfPlayers);
 	player = new Player * [nrOfPlayers];
 	for (int i = 0; i < nrOfPlayers; i++)
 	{
@@ -333,11 +319,14 @@ bool GunGameState::initailize()
 
 bool GunGameState::render()
 {
-
-	currentAnimSpeed[0] = player[0]->getAnimSpeed();
-	currentAnimSpeed[1] = player[1]->getAnimSpeed();
-	currentAnimSpeed[2] = player[2]->getAnimSpeed();
-	currentAnimSpeed[3] = player[3]->getAnimSpeed();
+	for (int pSpd = 0; pSpd < nrOfPlayers; pSpd++)
+	{
+		currentAnimSpeed[pSpd]= player[pSpd]->getAnimSpeed();
+	}
+	//currentAnimSpeed[0] = player[0]->getAnimSpeed();
+	//currentAnimSpeed[1] = player[1]->getAnimSpeed();
+	//currentAnimSpeed[2] = player[2]->getAnimSpeed();
+	//currentAnimSpeed[3] = player[3]->getAnimSpeed();
 
 	renderImgui();
 	System::handler->draw(ImGui::GetIO().DeltaTime, this->paused, currentAnimSpeed);
@@ -550,8 +539,6 @@ void GunGameState::shutDown()
 	this->pauseGui = nullptr;
 }
 
-
-
 bool GunGameState::controllerIsConnected(int controllerPort)
 {
 	return System::theGamePad->GetState(controllerPort).IsConnected();
@@ -611,7 +598,6 @@ DirectX::XMFLOAT3 GunGameState::changeCamera(float deltaTime)const
 
 DirectX::XMFLOAT3 GunGameState::rotateCamera(float deltaTime) const
 {
-
 	DirectX::XMFLOAT3 rotation = { 0,0,0 };
 	DirectX::GamePad::State state = System::theGamePad->GetState(0);
 	float rotX = 35.f * state.thumbSticks.rightX*deltaTime;
@@ -621,67 +607,3 @@ DirectX::XMFLOAT3 GunGameState::rotateCamera(float deltaTime) const
 	//rotation.x
 	return rotation;
 }
-
-//btCollisionObjectWrapper GunGameState::getGroundCollisionObject()
-//{
-//	//return ground->;
-//}
-
-//bool GunGameState::collision(DirectX::XMFLOAT2 posOne, DirectX::XMFLOAT2 scaleOne,int playerID, DirectX::XMFLOAT2 posTwo, DirectX::XMFLOAT2 scaleTwo, int itemID)
-//{
-//	bool result = false;
-//
-//	DirectX::GamePad::State state;
-//
-//	state = System::theGamePad->GetState(playerID);
-//	if (state.IsConnected())
-//	{
-//		System::theTracker->Update(state);
-//		if (System::theTracker->a == DirectX::GamePad::ButtonStateTracker::PRESSED)
-//		{
-//
-//			float size = 0.5f;
-//
-//			DirectX::XMFLOAT2 topLeftOne = { posOne.x - scaleOne.x * size, posOne.y - size * scaleOne.y };
-//			DirectX::XMFLOAT2 topLeftTwo = { posTwo.x - scaleTwo.x * size, posTwo.y - size * scaleTwo.y };
-//
-//			if (topLeftOne.x < topLeftTwo.x + (scaleTwo.x*size * 2) &&
-//				topLeftOne.x + (scaleOne.x*size * 2) > topLeftTwo.x &&
-//				topLeftOne.y < topLeftTwo.y + (scaleTwo.y *size * 2) &&
-//				topLeftOne.y + (scaleOne.y*size * 2) > topLeftTwo.y)
-//			{
-//				result = true;
-//				items[itemID].isFlying = true;
-//				items[itemID].grounded = false;
-//			}
-//		}
-//	}
-//	
-//	return result;
-//}
-
-//bool GunGameState::collision(DirectX::XMFLOAT2 posOne, float radiusOne, DirectX::XMFLOAT2 posTwo, float radiusTwo)
-//{
-//	bool result = false;
-//	float deltaX = posTwo.x - posOne.x;
-//	float deltaY = posTwo.y - posOne.y;
-//	float rad = radiusOne + radiusTwo;
-//	if ((deltaX * deltaX) + (deltaY * deltaY) < rad * rad)
-//	{
-//		result = true;
-//	}
-//	return result;
-//}
-//
-//bool GunGameState::collision(DirectX::XMFLOAT2 posBox, DirectX::XMFLOAT2 scaleBox, DirectX::XMFLOAT2 posCircle, float radiusCircle)
-//{
-//	float size = 0.5f;
-//	float widthBox = scaleBox.x * size * 2;
-//	float heightBox = scaleBox.y * size * 2;
-//
-//
-//	float Dx = posCircle.x - std::fmaxf(posBox.x, std::fminf(posCircle.x, posBox.x + widthBox));
-//	float Dy = posCircle.y - std::fmaxf(posBox.y, std::fminf(posCircle.y, posBox.y + heightBox));
-//
-//	return (Dx * Dx + Dy * Dy) < (radiusCircle * radiusCircle);
-//}
