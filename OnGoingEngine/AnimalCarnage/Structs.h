@@ -35,6 +35,19 @@ struct Vertex3D //must be same as Luna::Vertex
 			Weights = { 0.f,0.f,0.f,0.f };
 		}
 	}
+	void operator=(const Vertex3D& obj)
+	{
+		if (&obj != nullptr)
+		{
+			position = { obj.position.x,obj.position.y,obj.position.z };
+			uv = { obj.uv.x, obj.uv.y };
+			normal = { obj.normal.x,obj.normal.y, obj.normal.z };
+			tangent = { obj.tangent.x,obj.tangent.y,obj.tangent.z };
+			biNormal = { obj.biNormal.x, obj.biNormal.y,obj.biNormal.z};
+			Joint = { obj.Joint.x,obj.Joint.y,obj.Joint.z,obj.Joint.w };
+			Weights = { obj.Weights.x,obj.Weights.y,obj.Weights.z,obj.Weights.w };
+		}
+	}
 };
 struct WorldMatrix  //every model
 {

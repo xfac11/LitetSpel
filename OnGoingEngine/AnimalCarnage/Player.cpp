@@ -773,6 +773,7 @@ void Player::update(float deltaTime, int id)
 	}
 	//grounded = false;
 
+	playerObj->computeAnimationMatrix(deltaTime*animSpeed);
 }
 
 bool Player::updateRumble(float dt, int id)

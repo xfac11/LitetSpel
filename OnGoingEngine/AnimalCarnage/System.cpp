@@ -259,7 +259,7 @@ System::System(HINSTANCE hInstance, LPCSTR name, int nCmdShow)
 
 	this->hinstance = hInstance;
 	this->applicationName = name;
-	this->hwnd = InitWindow(this->hinstance, this->theWindow.height, this->theWindow.width);
+	this->hwnd = InitWindow(this->hinstance, (float)this->theWindow.height, (float)this->theWindow.width);
 	this->nCMDShow = nCmdShow;
 	this->msg = { 0 };
 	this->theGraphicDevice = new GraphicsDevice();
@@ -380,8 +380,8 @@ bool System::initialize()
 	shaderManager->getLightShader()->setWindow(this->theWindow);
 	D3D11_VIEWPORT vp;
 	ZeroMemory(&vp, sizeof(D3D11_VIEWPORT));
-	vp.Height = System::fusk->theWindow.height;
-	vp.Width = System::fusk->theWindow.width;
+	vp.Height = (float)System::fusk->theWindow.height;
+	vp.Width = (float)System::fusk->theWindow.width;
 	vp.MinDepth = 0.0f;
 	vp.MaxDepth = 1.0f;
 	vp.TopLeftX = 0;
@@ -423,11 +423,11 @@ void System::mouseMovement(float deltaTime)
 	this->camRot.y += mouseX * sensitivity* deltaTime;
 
 	if (abs(this->camRot.y) >= 360)
-		this->camRot.y = 0;
-	if (this->camRot.y > 180)
-		this->camRot.y = -180;
-	if (this->camRot.y < -180)
-		this->camRot.y = 180;
+		this->camRot.y = 0.f;
+	if (this->camRot.y > 180.f)
+		this->camRot.y = -180.f;
+	if (this->camRot.y < -180.f)
+		this->camRot.y = 180.f;
 	theCamera->SetRotation(camRot);
 }
 
@@ -836,8 +836,8 @@ void System::resizeWindow(int width, int height)
 
 	D3D11_VIEWPORT vp;
 	ZeroMemory(&vp, sizeof(D3D11_VIEWPORT));
-	vp.Height = System::fusk->theWindow.height;
-	vp.Width = System::fusk->theWindow.width;
+	vp.Height =(float) System::fusk->theWindow.height;
+	vp.Width = (float)System::fusk->theWindow.width;
 	vp.MinDepth = 0.0f;
 	vp.MaxDepth = 1.0f;
 	spriteBatch->SetViewport(vp);

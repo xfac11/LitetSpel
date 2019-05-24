@@ -230,27 +230,27 @@ void GameObjectHandler::draw(float deltaTime,bool isPaused, std::vector<float> p
 	}
 
 	//enable this to animate also set //mesh.hasSkeleton in modelloader addModel()
-	if (isPaused == false)
-	{
-		//this->animTimer += 60 * deltaTime;
-		//if (animTimer >= 60) {
-		int playerIndex = 0;
-		for (int a = 0; a < nrOfObjects && playerIndex<4; a++) //make counter for nrOf animated Objects
-		{
+	//if (isPaused == false)
+	//{
+	//	//this->animTimer += 60 * deltaTime;
+	//	//if (animTimer >= 60) {
+	//	int playerIndex = 0;
+	//	for (int a = 0; a < nrOfObjects; a++) //make counter for nrOf animated Objects
+	//	{
 
 
-			if (this->gameObjects[a]->haveAnimation() == true)
-			{
+	//		if (this->gameObjects[a]->haveAnimation() == true)
+	//		{
 
 
-				this->gameObjects[a]->computeAnimationMatrix(deltaTime*playerSpeed[playerIndex]); //to animate enable this 
-				playerIndex++;
-			}
-		}
-	
-		//	animTimer = 0;
-		//}
-	}
+	//			this->gameObjects[a]->computeAnimationMatrix(deltaTime*playerSpeed[playerIndex]); //to animate enable this 
+	//			playerIndex++;
+	//		}
+	//	}
+	//
+	//	//	animTimer = 0;
+	//	//}
+	//}
 
 	/*for (int i = 0; i < this->nrOfOpaque; i++)
 	{
