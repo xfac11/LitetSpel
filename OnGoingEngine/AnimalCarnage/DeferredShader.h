@@ -14,7 +14,7 @@ public:
 	void setRepeat(DirectX::XMFLOAT4 repeat);
 	void setViewProj(DirectX::XMMATRIX view, DirectX::XMMATRIX proj, DirectX::XMFLOAT4 camPos);
 	void setSkeleton(bool hasSkeleton);
-	void setJointData(std::vector<DirectX::XMMATRIX> jointTransforms);
+	void setJointData(std::vector<DirectX::XMMATRIX>& jointTransforms);
 	//uses the rendershader in Shader
 	void setMaskColor(DirectX::XMFLOAT4 color);
 	void setCamPosToMatricesPerFrame(DirectX::XMFLOAT3 campos);

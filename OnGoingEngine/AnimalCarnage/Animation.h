@@ -17,7 +17,7 @@ public:
 	Animation(float fps, float duration, std::string name, int jointCount, int keyframeCount);
 	void operator=(const Animation & obj);
 	void setKeyframes(std::vector<std::vector<Luna::Keyframe>> newFrames);
-	std::vector<std::vector<KeyFrame>> getKeyframes()const;
+	std::vector<std::vector<KeyFrame>>& getKeyframes();
 	std::string getName()const;
 	float getFPS()const;
 	float getDuration()const;

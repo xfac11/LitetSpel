@@ -56,7 +56,7 @@ void Animation::setKeyframes(std::vector<std::vector<Luna::Keyframe>> newFrames)
 	
 }
 
-std::vector<std::vector<KeyFrame>> Animation::getKeyframes() const
+std::vector<std::vector<KeyFrame>>& Animation::getKeyframes()
 {
 	return this->keyframePack;
 }
