@@ -95,6 +95,9 @@ GunGameState::~GunGameState()
 	delete object[3];
 	delete object[4];
 	delete object[5];
+	delete object[6];
+	delete object[7];
+	delete object[8];
 }
 
 //void GunGameState::callback(int other_arg, void * this_pointer)
@@ -125,6 +128,32 @@ bool GunGameState::callbackFunc(btManifoldPoint& cp, const btCollisionObjectWrap
 		Objects* pointer = (Objects*)obj1->getCollisionObject()->getUserPointer();
 		switch (pointer->getId())
 		{
+		case 4:
+			if (((Player*)obj2->getCollisionObject()->getUserPointer()) != nullptr && !((Player*)obj2->getCollisionObject()->getUserPointer())->getHitStun()) {
+				((Player*)obj2->getCollisionObject()->getUserPointer())->setGrounded(true);
+				if ((pointer->getMovingSpeed().x > 20 || pointer->getMovingSpeed().y > 4) && pointer->getCanGiveDmg()) {
+					((Player*)obj2->getCollisionObject()->getUserPointer())->takeDamage(25);
+					((Player*)obj2->getCollisionObject()->getUserPointer())->setHitStun(true);
+
+					System::getParticleManager()->addSimpleEffect(((Player*)obj2->getCollisionObject()->getUserPointer())->getPosition());
+
+					int randomNumber = (rand() % 4) + 0;
+					System::getSoundManager()->playEffect(to_string(randomNumber));
+
+					int randomNumber2 = (rand() % 3) - 1;
+					int randomNumber3 = (rand() % 3) - 1;
+					int randomNumber4 = (rand() % 3) - 1;
+
+					if (randomNumber2 == 0 && randomNumber3 == 0 && randomNumber4 == 0) {
+						int randomNumber2 = (rand() % 3) - 1;
+						int randomNumber3 = (rand() % 3) - 1;
+						int randomNumber4 = (rand() % 3) - 1;
+					}
+
+					System::theCamera->cameraShake(0.1, DirectX::XMFLOAT3(((Player*)obj2->getCollisionObject()->getUserPointer())->dir, randomNumber3, randomNumber4));
+				}
+			}
+			break;
 		case 3:
 			if (((Player*)obj2->getCollisionObject()->getUserPointer()) != nullptr) {
 				((Player*)obj2->getCollisionObject()->getUserPointer())->setGrounded(true);
@@ -188,12 +217,15 @@ bool GunGameState::initailize()
 {
 	gContactAddedCallback = callbackFunc;
 
-	this->object[0] = new Objects("Resources/Models/platform2.lu", btVector3(-10, 5, 0),3,3, btVector3(0.6f, 0.8f, 0.6f), STATIC, PLATFORM,1);
-	this->object[1] = new Objects("Resources/Models/platform1.lu", btVector3(12, 4, 0), 3,3, btVector3(1.4f, 2.8f, 1.4f), DYNAMIC, PLATFORM,1);
-	this->object[2] = new Objects("Resources/Models/platform1.lu", btVector3(5,4, 0), 3,3, btVector3(1.4f, 2.8f, 1.4f),DYNAMIC, PLATFORM,1);
-	this->object[3] = new Objects("Resources/Models/ground.lu", btVector3(16, 0, 20), 3,3, btVector3(100.f, 4.f, 50.f), STATIC,STONE,-1,10000,10000);
-	this->object[4] = new Objects("Resources/Models/cube2.lu", btVector3(35, 17, 0), 2,1, btVector3(10.f, 40.f, 10.f), STATIC);
-	this->object[5] = new Objects("Resources/Models/cube2.lu", btVector3(-35, 17, 0), 2,1, btVector3(10.f, 40.f, 10.f), STATIC);
+	this->object[0] = new Objects("Resources/Models/small_stone1.lu", btVector3(-5, 4, 0), 4, 2, btVector3(7.5f, 7.5f, 7.5f), TRUE_DYNAMIC, PLATFORM, 1);
+	this->object[1] = new Objects("Resources/Models/small_stone2.lu", btVector3(-6, 5, 0), 4, 2, btVector3(7.5f, 7.5f, 7.5f), TRUE_DYNAMIC, PLATFORM, 1);
+	this->object[2] = new Objects("Resources/Models/small_stone3.lu", btVector3(-7, 6, 0), 4, 2, btVector3(7.5f, 7.5f, 7.5f), TRUE_DYNAMIC, PLATFORM, 1);
+	this->object[3] = new Objects("Resources/Models/ground.lu", btVector3(16, 0, 20), 3, 3, btVector3(100.f, 4.f, 50.f), STATIC, STONE, -1, 10000, 10000);
+	this->object[4] = new Objects("Resources/Models/platform1.lu", btVector3(12, 4, 0), 3,3, btVector3(1.4f, 2.8f, 1.4f), DYNAMIC, PLATFORM,1);
+	this->object[5] = new Objects("Resources/Models/platform1.lu", btVector3(5,4, 0), 3,3, btVector3(1.4f, 2.8f, 1.4f),DYNAMIC, PLATFORM,1);
+	this->object[6] = new Objects("Resources/Models/cube2.lu", btVector3(35, 17, 0), 2,1, btVector3(10.f, 40.f, 10.f), STATIC);
+	this->object[7] = new Objects("Resources/Models/cube2.lu", btVector3(-35, 17, 0), 2,1, btVector3(10.f, 40.f, 10.f), STATIC);
+	this->object[8] = new Objects("Resources/Models/platform2.lu", btVector3(-10, 5, 0), 3, 3, btVector3(0.6f, 0.8f, 0.6f), STATIC, PLATFORM, 1);
 
 	GameObject* tree1 = new GameObject;
 	System::theModelLoader->loadGO(tree1, "Resources/Models/tree1.lu");
@@ -206,11 +238,15 @@ bool GunGameState::initailize()
 	System::handler->addObject(tree2);
 	tree2->setPosition(0, -0.5, 20);
 	tree2->setScale(0.6, 0.6, 0.6);
-	GameObject* smallStone1 = new GameObject;
+	
+	/*GameObject* smallStone1 = new GameObject;
 	System::theModelLoader->loadGO(smallStone1, "Resources/Models/small_stone1.lu");
 	System::handler->addObject(smallStone1);
 	smallStone1->setPosition(4, 0.5, 0);
-	smallStone1->setScale(3, 3, 3);
+	smallStone1->setScale(6, 6, 6);
+	smallStone1->getRigidbody() = System::getphysices()->addBox(btVector3(0, 0, 0), btVector3(smallStone1->getScale().x, smallStone1->getScale().y, smallStone1->getScale().z), 10.0f, smallStone1->);
+*/
+
 	GameObject* grass2 = new GameObject;
 	System::theModelLoader->loadGO(grass2, "Resources/Models/grass2.lu");
 	System::handler->addObject(grass2);
@@ -369,19 +405,18 @@ bool GunGameState::update(float deltaTime)
 		return true;
 	}
 
-	for (int i = 0; i < 5; i++)
+	for (int i = 0; i < 9; i++)
 	{
 		this->object[i]->update(deltaTime);
 	}
 
 	for (int i = 0; i < nrOfPlayers; i++)
 	{
-		btVector3 min;
-		btVector3 max;
 		player[i]->playerObj->getRigidbody()->getAabb(min, max);
-		DirectX::XMFLOAT3 minTemp(min.getX(), min.getY(), min.getZ());
-		DirectX::XMFLOAT3 maxTemp(max.getX(), max.getY(), max.getZ());
+		minTemp = DirectX::XMFLOAT3(min.getX(), min.getY(), min.getZ());
+		maxTemp = DirectX::XMFLOAT3(max.getX(), max.getY(), max.getZ());
 		for (int j = 0; j < nrOfPlayers; j++) {
+			//Collision with Player Hitbox
 			if (i != j)
 			{
 				if (Intersects(minTemp, maxTemp, player[j]->hitbox.hitbox->getCollisionBox(), player[j]->hitbox.hitbox->getPosition()) && !player[i]->getHitStun())
@@ -424,6 +459,52 @@ bool GunGameState::update(float deltaTime)
 
 			}
 		}
+		//Collision with Object Hitbox
+		for (int i = 0; i < 6; i++) {
+			if (object[i]->GetState() == TRUE_DYNAMIC) {
+				
+				btVector3 minObj;
+				btVector3 maxObj;
+
+				DirectX::XMFLOAT3 minTempObj;
+				DirectX::XMFLOAT3 maxTempObj;
+				object[i]->ObjectOBJ->getRigidbody()->getAabb(minObj, maxObj);
+				minTempObj = DirectX::XMFLOAT3(minObj.getX(), minObj.getY(), minObj.getZ());
+				maxTempObj = DirectX::XMFLOAT3(maxObj.getX(), maxObj.getY(), maxObj.getZ());
+				for (int j = 0; j < nrOfPlayers; j++) {
+					if (Intersects(minTempObj, maxTempObj, player[j]->hitbox.hitbox->getCollisionBox(), player[j]->hitbox.hitbox->getPosition()) && !player[i]->getHitStun()) {
+						object[i]->addImpulse(player[j]->dir * 65 * player[j]->getWeight());
+					}
+					//if (Intersects(minTempObj, maxTempObj, player[j]->getAABB(),player[j]->getPosition())) {
+					//	if (/*(object[i]->getMovingSpeed().x > 0.01 || object[i]->getMovingSpeed().y > 0.01) && !player[i]->getHitStun()*/true) {
+					//		player[j]->setHitStun(true);
+					//		//player[j]->playerObj->getRigidbody()->applyCentralImpulse(btVector3(player[j]->dir * 150 * ((player[j]->getWeight() + 2) / 3), 150 * ((player[j]->getWeight() + 2) / 3), 0));// , btVector3(1, 0, 0));
+
+					//		//int tempHP = player[i]->getHealth();
+					//		player[j]->takeDamage(10);
+					//		System::getParticleManager()->addSimpleEffect(player[i]->getPosition());
+
+					//		int randomNumber = (rand() % 4) + 0;
+					//		System::getSoundManager()->playEffect(to_string(randomNumber));
+
+					//		int randomNumber2 = (rand() % 3) - 1;
+					//		int randomNumber3 = (rand() % 3) - 1;
+					//		int randomNumber4 = (rand() % 3) - 1;
+
+					//		if (randomNumber2 == 0 && randomNumber3 == 0 && randomNumber4 == 0) {
+					//			int randomNumber2 = (rand() % 3) - 1;
+					//			int randomNumber3 = (rand() % 3) - 1;
+					//			int randomNumber4 = (rand() % 3) - 1;
+					//		}
+
+					//		System::theCamera->cameraShake(0.1, DirectX::XMFLOAT3(player[j]->dir, randomNumber3, randomNumber4));
+
+					//	}
+					//}
+				}
+			}
+		}
+
 		//for(int k=0;k<nrOfObjects;k++){}
 
 		//if(Intersect())

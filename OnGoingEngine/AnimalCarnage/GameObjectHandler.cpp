@@ -244,6 +244,7 @@ void GameObjectHandler::draw(float deltaTime,bool isPaused, std::vector<float> p
 
 
 				this->gameObjects[a]->computeAnimationMatrix(deltaTime*playerSpeed[playerIndex]); //to animate enable this 
+				//getMatrriiiixifigieiisfrafileStuff()
 				playerIndex++;
 			}
 		}

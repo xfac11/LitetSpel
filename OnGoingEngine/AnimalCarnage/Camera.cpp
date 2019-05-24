@@ -277,26 +277,26 @@ void Camera::calcCamera(std::vector<DirectX::XMFLOAT3> playerPos)
 		distanceX = this->position.x - medX;
 		this->accelerationX += 0.0005;
 		//this->position.x -= distanceX / 20);
-		tempPosX -= distanceX / 20;
+		tempPosX -= distanceX / 12.5;
 	}
 	if (this->position.x > medX) {
 		distanceX = medX - this->position.x;
 		this->accelerationX -= 0.0005;
 		//this->position.x += distanceX / 20);
-		tempPosX += distanceX / 20;
+		tempPosX += distanceX / 12.5;
 	}
 
 	if (this->position.y < medY) {
 		distanceY = this->position.y - medY;
 		this->accelerationY += 0.0005;
 		//this->position.y -= distanceY / 20);
-		tempPosY -= distanceY / 20;
+		tempPosY -= distanceY / 12.5;
 	}
 	if (this->position.y > medY) {
 		distanceY = medY - this->position.y;
 		this->accelerationY -= 0.0005;
 		//this->position.y += distanceY / 20);
-		tempPosY += distanceY / 20;
+		tempPosY += distanceY / 12.5;
 	}
 
 	//Re-Center when zoomed out
@@ -310,12 +310,12 @@ void Camera::calcCamera(std::vector<DirectX::XMFLOAT3> playerPos)
 
 	if (length < this->position.z) {
 		distanceZ = this->position.z - length;
-		this->tempPosZ -= distanceZ / 20;
+		this->tempPosZ -= distanceZ / 12.5;
 		accelerationZ -= 0.0005;
 	}
 	else if(length > this->position.z) {
 		distanceZ = length - this->position.z;
-		this->tempPosZ += distanceZ / 20;
+		this->tempPosZ += distanceZ / 12.5;
 		accelerationZ += 0.0005;
 	}
 

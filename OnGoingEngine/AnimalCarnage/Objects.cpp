@@ -47,6 +47,8 @@ Objects::Objects()
 }
 Objects::Objects(std::string filepath, btVector3 position,int id,int friction, btVector3 size, OBJECTSTATE state, OBJECTYPE type,int mipLevels, float x, float y) :state(state), type(type)
 {
+	this->activeTimer = 0;
+	this->canGiveDmg = true;
 	this->id = id;
 	this->ObjectOBJ = new GameObject(System::shaderManager->getForwardShader());
 
@@ -79,6 +81,10 @@ Objects::Objects(std::string filepath, btVector3 position,int id,int friction, b
 			btVector3(ObjectOBJ->getCollisionBox().width * 2, ObjectOBJ->getCollisionBox().height * 2, ObjectOBJ->getCollisionBox().depth * 2), 10000000.0f, this);
 		this->ObjectOBJ->getRigidbody()->setGravity(btVector3(0, 0, 0));
 	}
+	else if (state == TRUE_DYNAMIC) {
+		this->ObjectOBJ->getRigidbody() = System::getphysices()->addBox(btVector3(position),
+			btVector3(ObjectOBJ->getCollisionBox().width * 2, ObjectOBJ->getCollisionBox().height * 2, ObjectOBJ->getCollisionBox().depth * 2), 20.0f, this);
+	}
 	else {
 		this->ObjectOBJ->getRigidbody() = System::getphysices()->addBox(btVector3(position),
 			btVector3(ObjectOBJ->getCollisionBox().width * 2, ObjectOBJ->getCollisionBox().height * 2, ObjectOBJ->getCollisionBox().depth * 2), 0.0f, this);
@@ -91,6 +97,10 @@ Objects::Objects(std::string filepath, btVector3 position,int id,int friction, b
 		ObjectOBJ->getRigidbody()->setCollisionFlags(btCollisionObject::CF_CUSTOM_MATERIAL_CALLBACK);
 	}
 
+	/*if (state == TRUE_DYNAMIC) {
+		ObjectOBJ->getRigidbody()->setCollisionFlags(btCollisionObject::CF_KINEMATIC_OBJECT | btCollisionObject::CF_CUSTOM_MATERIAL_CALLBACK);
+	}
+*/
 	/*if (type == PLATFORM) {
 		this->ObjectOBJPlatform = new GameObject(System::shaderManager->getForwardShader());
 
@@ -126,8 +136,17 @@ Objects::Objects(std::string filepath, btVector3 position,int id,int friction, b
 
 	this->ObjectOBJ->getRigidbody()->setActivationState(DISABLE_DEACTIVATION);
 	this->ObjectOBJ->getRigidbody()->setFriction(friction);
-	this->ObjectOBJ->getRigidbody()->setRestitution(0);
-	this->ObjectOBJ->getRigidbody()->setAngularFactor(btVector3(0, 0, 0));
+	if (state != TRUE_DYNAMIC) {
+		this->ObjectOBJ->getRigidbody()->setAngularFactor(btVector3(0, 0, 0));
+		this->ObjectOBJ->getRigidbody()->setRestitution(0);
+	}
+	else if (state == TRUE_DYNAMIC) {
+		this->ObjectOBJ->getRigidbody()->setAngularFactor(btVector3(0, 0, 1));
+		this->ObjectOBJ->getRigidbody()->setLinearFactor(btVector3(1, 1, 0));
+		this->ObjectOBJ->getRigidbody()->setRestitution(0.5);
+		this->ObjectOBJ->getRigidbody()->setGravity(btVector3(0, -20, 0));
+	}
+	//this->ObjectOBJ->getRigidbody()->setAngularFactor(btVector3(0, 0, 0));
 }
 
 Objects::~Objects()
@@ -136,10 +155,27 @@ Objects::~Objects()
 
 void Objects::update(float dt)
 {
+	this->activeTimer += 7500 * dt;
+	if (activeTimer >= 100) {
+		canGiveDmg = true;
+	}
+	else {
+		canGiveDmg = false;
+	}
+
 	if(this->ObjectOBJ != nullptr)
 		this->ObjectOBJ->setPosition(this->ObjectOBJ->GetPosition().x, this->ObjectOBJ->GetPosition().y + 0.57f,
 		this->ObjectOBJ->GetPosition().z);
+	if (state == TRUE_DYNAMIC) {
+		XMVECTOR temp;
+		temp.m128_f32[0] = this->ObjectOBJ->getRigidbody()->getWorldTransform().getRotation().getX();
+		temp.m128_f32[1] = this->ObjectOBJ->getRigidbody()->getWorldTransform().getRotation().getY();
+		temp.m128_f32[2] = this->ObjectOBJ->getRigidbody()->getWorldTransform().getRotation().getZ();
+		temp.m128_f32[3] = this->ObjectOBJ->getRigidbody()->getWorldTransform().getRotation().getW();
 
+		ObjectOBJ->setRotationRollPitchYaw(ObjectOBJ->getRotation().x, ObjectOBJ->getRotation().y, getRoll(temp));
+		//getRoll(temp) * -1
+	}
 
 	
 	btRigidBody* rgb = this->ObjectOBJ->getRigidbody();
@@ -190,4 +226,31 @@ int Objects::getId()
 XMFLOAT3 Objects::getMovingSpeed()
 {
 	return XMFLOAT3(this->ObjectOBJ->getRigidbody()->getLinearVelocity().getX(), this->ObjectOBJ->getRigidbody()->getLinearVelocity().getY(), this->ObjectOBJ->getRigidbody()->getLinearVelocity().getZ());
+}
+
+float Objects::getPitch(DirectX::XMVECTOR Quaternion)
+{
+	return atan2(2 * (Quaternion.m128_f32[1] * Quaternion.m128_f32[2] + Quaternion.m128_f32[3] * Quaternion.m128_f32[0]), Quaternion.m128_f32[3] * Quaternion.m128_f32[3] - Quaternion.m128_f32[0] * Quaternion.m128_f32[0] - Quaternion.m128_f32[1] * Quaternion.m128_f32[1] + Quaternion.m128_f32[2] * Quaternion.m128_f32[2]);
+}
+
+float Objects::getYaw(DirectX::XMVECTOR Quaternion)
+{
+	return asin(-2 * (Quaternion.m128_f32[0] * Quaternion.m128_f32[2] - Quaternion.m128_f32[3] * Quaternion.m128_f32[1]));
+}
+
+float Objects::getRoll(DirectX::XMVECTOR Quaternion)
+{
+	return atan2(2 * (Quaternion.m128_f32[0] * Quaternion.m128_f32[1] + Quaternion.m128_f32[3] * Quaternion.m128_f32[2]), Quaternion.m128_f32[3] * Quaternion.m128_f32[3] + Quaternion.m128_f32[0] * Quaternion.m128_f32[0] - Quaternion.m128_f32[1] * Quaternion.m128_f32[1] - Quaternion.m128_f32[2] * Quaternion.m128_f32[2]);
+}
+
+void Objects::addImpulse(float impulse)
+{
+	canGiveDmg = false;
+	activeTimer = 0;
+	ObjectOBJ->getRigidbody()->applyImpulse(btVector3(impulse,10,0),btVector3(1,0,0));
+}
+
+bool Objects::getCanGiveDmg() const
+{
+	return this->canGiveDmg;
 }
