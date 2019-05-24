@@ -61,7 +61,8 @@ void ModelLoader::loadGO(GameObject*& object, const char* filePath, int mipLevel
 			
 
 			object->addModel(m, mesh.hasSkeleton); //
-			object->setHalfSize(reader.getBoundingBox(0).halfSize, reader.getBoundingBox(0).pos);
+			if (mesh.hasBoundingBox)
+				object->setHalfSize(reader.getBoundingBox(0).halfSize, reader.getBoundingBox(0).pos);
 			return;
 		}
 
