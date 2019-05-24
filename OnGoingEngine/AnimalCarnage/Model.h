@@ -68,7 +68,7 @@ private:
 	bool hasMask;
 	int vertexCount;
 	
-	std::vector<DirectX::XMMATRIX> matrixPallete;
+	//std::vector<DirectX::XMMATRIX> matrixPallete;
 
 	Opacity type;
 	Shader * theShader;//pointer to the shader it uses. Comes from system or state. Do not delete

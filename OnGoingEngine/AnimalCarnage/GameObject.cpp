@@ -26,7 +26,7 @@ GameObject::GameObject(Shader * shader)
 	this->colBox = AABB();
 	this->repeat = DirectX::XMFLOAT4(1, 1, 1, 1);
 	this->timePassed = 0.f;
-	
+	//this->gotAnimation = false;
 	this->frameCounter=0;
 	//this->gotSkeleton = false;
 	/*this->theModel[0] = new Model;
@@ -39,12 +39,7 @@ GameObject::GameObject(Shader * shader)
 
 GameObject::~GameObject()
 {
-	//for (int i = 0; i < this->nrOfModels; i++)
-	//{
-	//	/*if(this->theModel[i]!=nullptr)
-	//		delete this->theModel[i];*/
-	//}
-	//delete[] this->theModel;
+
 	if (theModel != NULL)
 		this->theModel = nullptr;
 }
@@ -321,9 +316,9 @@ void GameObject::computeAnimationMatrix(float deltaTime) //include float to mult
 
 			//this->calculatedFrames[timeStamp] = matrixPallete;
 
-			//send to model
-			this->theModel->setMatrixPallete(this->matrixPallete);
-			//System::shaderManager->getDefShader()->setJointData(matrixPallete);
+			////send to model
+			//this->theModel->setMatrixPallete(this->matrixPallete);
+			System::shaderManager->getDefShader()->setJointData(matrixPallete);
 		//}
 		//else //if the frames is already calculated
 		//{
@@ -352,7 +347,7 @@ void GameObject::setSkeleton(std::vector<Luna::Joint> theJoints)
 		if (theJoints[i].parentID != -1)
 			this->skeleton[i].setParent(&this->skeleton[theJoints[i].parentID]);
 	}
-
+	//this->gotAnimation = true;
 	this->pose_global.resize(skeleton.size());
 	this->matrixPallete.resize(skeleton.size());
 	

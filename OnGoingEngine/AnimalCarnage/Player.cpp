@@ -296,10 +296,10 @@ void Player::update(float deltaTime, int id)
 		hitTime -= 165 * deltaTime;
 		string str = to_string(hitTime) + "\n";
 		if (dir = 1) {
-			this->playerObj->setRotationRollPitchYaw(this->playerObj->getRotation().x + (hitTime * 0.007), this->playerObj->getRotation().y, this->playerObj->getRotation().z);
+			this->playerObj->setRotationRollPitchYaw(this->playerObj->getRotation().x + (hitTime * 0.007f), this->playerObj->getRotation().y, this->playerObj->getRotation().z);
 		}
 		if (dir = -1) {
-			this->playerObj->setRotationRollPitchYaw(this->playerObj->getRotation().x - (hitTime * 0.007)*2, this->playerObj->getRotation().y, this->playerObj->getRotation().z);
+			this->playerObj->setRotationRollPitchYaw(this->playerObj->getRotation().x - (hitTime * 0.007f)*2, this->playerObj->getRotation().y, this->playerObj->getRotation().z);
 		}
 
 	}
@@ -773,7 +773,7 @@ void Player::update(float deltaTime, int id)
 	}
 	//grounded = false;
 
-	playerObj->computeAnimationMatrix(deltaTime*animSpeed);
+	//playerObj->computeAnimationMatrix(deltaTime*animSpeed);
 }
 
 bool Player::updateRumble(float dt, int id)

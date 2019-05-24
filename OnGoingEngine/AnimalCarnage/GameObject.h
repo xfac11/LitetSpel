@@ -60,6 +60,7 @@ private:
 
 	
 	std::vector<Joint> skeleton;
+	//bool gotAnimation;
 	Animation anims;
 	float timePassed;
 	

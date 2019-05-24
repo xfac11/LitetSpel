@@ -70,12 +70,12 @@ void GameObjectHandler::addObject(GameObject *& gameObject)
 	}
 }
 
-void GameObjectHandler::addObject(char* file)
-{
-	
-	//Modelloader
-	//readfile(file);
-}
+//void GameObjectHandler::addObject(char* file)
+//{
+//	
+//	//Modelloader
+//	//readfile(file);
+//}
 
 GameObject & GameObjectHandler::getObject(int id)
 {
@@ -94,9 +94,6 @@ void GameObjectHandler::draw(float deltaTime,bool isPaused, std::vector<float> p
 	float lightViewLengt = 7;
 	DirectX::XMVECTOR CamPos = DirectX::XMVectorSet(lightViewLengt * (-1 * this->lightsCB.data.lights[0].direction[0]), lightViewLengt * (-1 * this->lightsCB.data.lights[0].direction[1]), lightViewLengt * (this->lightsCB.data.lights[0].direction[2]), 1);
 	DirectX::XMVECTOR up = DirectX::XMVectorSet(0, 1, 0, 0);
-
-	//this->lightsCB.data.lights[2].position
-	
 
 		
 
@@ -137,9 +134,18 @@ void GameObjectHandler::draw(float deltaTime,bool isPaused, std::vector<float> p
 	System::shaderManager->getDefShader()->setShaders();
 	System::shaderManager->getDefShader()->prepGBuffer(color);
 
+	int index = 0;
 	for (int i = 0; i < this->nrOfOpaque; i++)
 	{
+		//has skeleton? then calculate matrix  anim
 		shared_ptr<Model> ptr = this->opaqueModels[i].selfPtr->getModel();
+
+		if(this->opaqueModels[i].selfPtr->haveAnimation()==true && index<playerSpeed.size())
+		{
+			this->opaqueModels[i].selfPtr->computeAnimationMatrix(deltaTime*playerSpeed[index]);
+			index++;
+		}
+		
 		System::shaderManager->getDefShader()->setRepeat(this->opaqueModels[i].selfPtr->getRepeat());
 		System::shaderManager->getDefShader()->setMaskColor(this->opaqueModels[i].selfPtr->getColorMask());
 		ptr->getShader()->setWorld(*this->opaqueModels[i].worldPtr);

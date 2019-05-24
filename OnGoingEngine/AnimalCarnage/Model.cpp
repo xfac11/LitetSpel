@@ -156,10 +156,10 @@ void Model::setGlowMap(shared_ptr<Texture> t)
 	this->hasGlowMap = true;
 }
 
-void Model::setMatrixPallete(std::vector<DirectX::XMMATRIX>& matrixPallete)
-{
-	this->matrixPallete = matrixPallete;
-}
+//void Model::setMatrixPallete(std::vector<DirectX::XMMATRIX>& matrixPallete)
+//{
+//	this->matrixPallete = matrixPallete;
+//}
 
 
 void Model::setGlowMap(std::string file)
@@ -230,7 +230,7 @@ void Model::drawOnlyVertex()
 		System::getDeviceContext()->PSSetShaderResources(1, 1, &this->normalMap->getTexture());
 	}*/
 	System::shaderManager->getDefShader()->setSkeleton(this->gotSkeleton);
-	System::shaderManager->getDefShader()->setJointData(this->matrixPallete);
+	//System::shaderManager->getDefShader()->setJointData(this->matrixPallete);
 
 	System::getDeviceContext()->IASetVertexBuffers(0, 1, &*this->vertexBuffer.GetAddressOf(), &*vertexBuffer.getStridePtr(), &offset);
 	//	UINT offset = 0;
@@ -249,7 +249,7 @@ void Model::draw()
 	//DeferredShader* ptr;
 
 	System::shaderManager->getDefShader()->setSkeleton(this->gotSkeleton);
-	System::shaderManager->getDefShader()->setJointData(this->matrixPallete);
+	//System::shaderManager->getDefShader()->setJointData(this->matrixPallete);
 
 	System::getDeviceContext()->PSSetShaderResources(0, 1, &texture->getTexture());
 	if (this->normalMap != nullptr)

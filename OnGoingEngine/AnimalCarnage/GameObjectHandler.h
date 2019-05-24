@@ -8,7 +8,7 @@ public:
 	GameObjectHandler();
 	~GameObjectHandler();
 	void addObject(GameObject*& gameObject);
-	void addObject(char *file);
+	//void addObject(char *file);
 	GameObject& getObject(int id);
 	void draw(float deltaTime, bool isPaused, std::vector<float> playerSpeed);
 	void initialize();
