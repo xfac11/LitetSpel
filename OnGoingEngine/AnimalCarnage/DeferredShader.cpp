@@ -149,7 +149,7 @@ void DeferredShader::setSkeleton(bool hasSkeleton)
 	this->jointCB.applyChanges(System::getDevice(), System::getDeviceContext());
 }
 
-void DeferredShader::setJointData(std::vector<DirectX::XMMATRIX> jointTransforms)
+void DeferredShader::setJointData(std::vector<DirectX::XMMATRIX>& jointTransforms)
 {
 	for (int i = 0; i < jointTransforms.size(); i++)
 	{

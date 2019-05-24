@@ -288,7 +288,7 @@ void GameObject::computeAnimationMatrix(float deltaTime) //include float to mult
 
 	this->frameCounter++;
 
-	if (this->frameCounter >= 5) //frameskip (must never be zero, higher for lower quality)
+	if (this->frameCounter >= 1) //frameskip (must never be zero, higher for lower quality)
 	{
 		int k1 = (int)(this->timePassed* anims.getFPS());
 		int k2 = std::min<int>(k1 + 1, anims.getKeyframes()[0].size());
@@ -297,10 +297,10 @@ void GameObject::computeAnimationMatrix(float deltaTime) //include float to mult
 		float k2_time = k2 / anims.getFPS();
 		float t = (timePassed - k1_time) / (k2_time - k1_time);
 
-		int timeStamp = int(5*(k1 + t)); //accuracy of deltaTime saved (lower for low quality, high for higher quality)
+		//int timeStamp = int(10*(k1 + t)); //accuracy of deltaTime saved (lower for low quality, high for higher quality)
 
-		if (calculatedFrames[timeStamp].empty())
-		{
+		//if (calculatedFrames[timeStamp].empty())
+		//{
 
 			DirectX::XMMATRIX sclMtx = DirectX::XMMatrixScaling(0.1f, 0.1f, 0.1f);
 			JointTransformation local;
@@ -319,13 +319,13 @@ void GameObject::computeAnimationMatrix(float deltaTime) //include float to mult
 				matrixPallete[joint] = DirectX::XMMatrixMultiplyTranspose(pose_global[joint], DirectX::XMMatrixTranspose(this->skeleton[joint].getInverseBindTransform()));
 			}
 
-			this->calculatedFrames[timeStamp] = matrixPallete;
+			//this->calculatedFrames[timeStamp] = matrixPallete;
 			System::shaderManager->getDefShader()->setJointData(matrixPallete);
-		}
-		else //if the frames is already calculated
-		{
-			System::shaderManager->getDefShader()->setJointData(calculatedFrames[timeStamp]);
-		}
+		//}
+		//else //if the frames is already calculated
+		//{
+		//	System::shaderManager->getDefShader()->setJointData(calculatedFrames[timeStamp]);
+		//}
 		this->frameCounter = 0;
 	}
 }
