@@ -22,7 +22,8 @@ Physics* System::physices = nullptr;
 DEBUG_DRAW* System::debugDraw = nullptr;
 Skybox* System::skybox = nullptr;
 SoundManager* System::soundManager = nullptr;
-WindowClient System::theWindow = { 1080, 1920};
+WindowClient System::theWindow = { 1080/2, 1920/2};
+SimpleMath::Matrix System::matrixForSpritebatch = SimpleMath::Matrix::CreateScale(System::fusk->theWindow.height / 1080.0f) * SimpleMath::Matrix::CreateTranslation(System::theWindow.width * 0.25f, System::theWindow.height * 0.25f, 0);
 Camera* System::theCamera = nullptr;
 AssetManager* System::assetMananger = nullptr;
 ParticleManager* System::particleManager = nullptr;
@@ -605,6 +606,15 @@ void System::update(float deltaTime)
 		this->soundManager->stopLooped();
 	}
 
+	if (theKeyboard->KeyIsPressed('L'))
+	{
+		this->resizeWindow(theWindow.width, theWindow.height + 10);
+	}
+	if (theKeyboard->KeyIsPressed('O'))
+	{
+		this->resizeWindow(theWindow.width + 10, theWindow.height);
+	}
+
 	//theCamera->SetRotation(theMouse->GetPos().y, 0, 0);
 	
 	System::states[System::currentState]->update(deltaTime);
@@ -841,6 +851,13 @@ void System::resizeWindow(int width, int height)
 	vp.MinDepth = 0.0f;
 	vp.MaxDepth = 1.0f;
 	spriteBatch->SetViewport(vp);
-	//spriteBatch->Ge
+
+	float scale = System::fusk->theWindow.height / 1080.0f;
+	System::matrixForSpritebatch = SimpleMath::Matrix::CreateScale(scale) * SimpleMath::Matrix::CreateTranslation(System::theWindow.width * 0.5f - System::theWindow.width * scale * 0.5f, System::theWindow.height * 0.25f, 0);
 	MoveWindow(System::fusk->hwnd, 0, 0, System::fusk->theWindow.width, System::fusk->theWindow.height, true);
+}
+
+const SimpleMath::Matrix & System::getSpritebatchMatrix()
+{
+	return System::matrixForSpritebatch;
 }
