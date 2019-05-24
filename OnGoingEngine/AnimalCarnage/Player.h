@@ -82,13 +82,14 @@ public:
 	int getHealth() const;
 	void takeDamage(int damage);
 	bool isDead() const;
-	void setColorMask(DirectX::XMFLOAT4 color);
 	void changeCharacter();
 	bool getHit()const { return hit; }
 	bool getHitStun();
 	void setHitStun(bool hitStun);
 	bool hit = false;
 	//void groundedTimer();
+	void setColorMask(PlayerColor color);
+	void setAnimalType(AnimalType type);
 	
 	Player();
 	~Player();

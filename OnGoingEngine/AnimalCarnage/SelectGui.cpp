@@ -58,6 +58,17 @@ bool SelectGui::update(float deltaTime)
 		if (System::theKeyboard->KeyIsPressed('E'))
 		{
 			System::setState(GUNGAME);
+
+			AnimalType type[4];
+			PlayerColor color[4];
+
+			for (int i = 0; i < 4; i++)
+			{
+				type[i] = this->playerSelectors[i]->getAnimalType();
+				color[i] = this->playerSelectors[i]->getPlayerColor();
+			}
+
+			dynamic_cast<GunGameState*>(System::getCurrentState())->initPlayers(type, color);
 		}
 		else if (System::theKeyboard->KeyIsPressed('Q'))
 		{
@@ -81,6 +92,17 @@ bool SelectGui::update(float deltaTime)
 			if (System::theTracker->a == DirectX::GamePad::ButtonStateTracker::PRESSED)
 			{
 				System::setState(GUNGAME);
+
+				AnimalType type[4];
+				PlayerColor color[4];
+
+				for (int i = 0; i < 4; i++)
+				{
+					type[i] = this->playerSelectors[i]->getAnimalType();
+					color[i] = this->playerSelectors[i]->getPlayerColor();
+				}
+
+				dynamic_cast<GunGameState*>(System::getCurrentState())->initPlayers(type, color);
 			}
 			else if (System::theTracker->b == DirectX::GamePad::ButtonStateTracker::PRESSED)
 			{

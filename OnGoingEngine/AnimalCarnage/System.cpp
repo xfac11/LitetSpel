@@ -818,6 +818,11 @@ void System::setState(GameState state)
 	}
 }
 
+State * System::getCurrentState()
+{
+	return System::states[System::currentState];
+}
+
 void System::resizeWindow(int width, int height)
 {
 	System::fusk->theWindow.width = width;
