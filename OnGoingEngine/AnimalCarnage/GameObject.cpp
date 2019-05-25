@@ -13,12 +13,14 @@ GameObject::GameObject()
 	this->repeat = DirectX::XMFLOAT4(1, 1, 1, 1);
 	this->timePassed = 0.f;
 	this->frameCounter = 0;
+	this->activeDraw = true;
 	//this->prevTimeIncrement = 0.f;
 }
 
 GameObject::GameObject(Shader * shader)
 {
 	this->hasLoadedAABB = false;
+	this->activeDraw = true;
 	this->cap = 5;
 	this->nrOfModels = 0;
 	shared_ptr<Model> m;
@@ -262,6 +264,16 @@ AABB GameObject::getCollisionBox()
 	tempBox.height = this->colBox.height*this->Scale.y;
 	tempBox.depth = this->colBox.depth*this->Scale.z;
 	return tempBox;
+}
+
+void GameObject::setActiveDraw(bool arg)
+{
+	this->activeDraw = arg;
+}
+
+bool GameObject::getActiveDraw()
+{
+	return this->activeDraw;
 }
 
 bool GameObject::haveAnimation() const

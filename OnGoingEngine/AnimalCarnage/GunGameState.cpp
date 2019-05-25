@@ -208,8 +208,8 @@ bool GunGameState::initailize()
 	this->object[3] = new Objects("Resources/Models/ground.lu", btVector3(16, 0, 20), 3, 3, btVector3(100.f, 4.f, 50.f), STATIC, STONE, -1, 10000, 10000,true);
 	this->object[4] = new Objects("Resources/Models/platform1.lu", btVector3(12, 4, 0), 3,3, btVector3(1.4f, 2.8f, 1.4f), DYNAMIC, PLATFORM,1);
 	this->object[5] = new Objects("Resources/Models/platform1.lu", btVector3(5,4, 0), 3,3, btVector3(1.4f, 2.8f, 1.4f),DYNAMIC, PLATFORM,1);
-	this->object[6] = new Objects("Resources/Models/cube2.lu", btVector3(35, 17, 0), 2,1, btVector3(10.f, 40.f, 10.f), STATIC);
-	this->object[7] = new Objects("Resources/Models/cube2.lu", btVector3(-35, 17, 0), 2,1, btVector3(10.f, 40.f, 10.f), STATIC);
+	this->object[6] = new Objects("Resources/Models/cube2.lu", btVector3(35, 17, 0), 2,1, btVector3(10.f, 40.f, 10.f), STATIC,STONE,-1,1,1,false,false);
+	this->object[7] = new Objects("Resources/Models/cube2.lu", btVector3(-35, 17, 0), 2,1, btVector3(10.f, 40.f, 10.f), STATIC, STONE, -1, 1, 1, false, false);
 	this->object[8] = new Objects("Resources/Models/platform2.lu", btVector3(-10, 5, 0), 3, 3, btVector3(0.6f, 0.8f, 0.6f), STATIC, PLATFORM, 1);
 
 	//Background trees
@@ -224,6 +224,7 @@ bool GunGameState::initailize()
 	System::handler->addObject(tree2);
 	tree2->setPosition(-1, -0.5, 25);
 	tree2->setScale(0.6, 0.6, 0.6);
+
 	GameObject* tree3 = new GameObject;
 	System::theModelLoader->loadGO(tree3, "Resources/Models/tree3.lu");
 	System::handler->addObject(tree3);

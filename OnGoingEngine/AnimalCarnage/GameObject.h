@@ -39,6 +39,8 @@ public:
 	btVector3 positionOffset;
 	/*DatForaObject data;*/
 	//void initAnimationData(AnimationShader* animShader);
+	void setActiveDraw(bool arg);
+	bool getActiveDraw();
 	bool haveAnimation()const;
 	void computeAnimationMatrix(float deltaTime, std::string animName);
 	void setNewAnimation(float fps, float duration, std::string name, std::vector<std::vector<Luna::Keyframe>> keyframePack);
@@ -55,7 +57,7 @@ private:
 	int cap;
 
 	bool hasLoadedAABB;
-
+	bool activeDraw;
 
 	
 	std::vector<Joint> skeleton;

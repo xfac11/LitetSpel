@@ -93,7 +93,7 @@ void GameObjectHandler::draw(float deltaTime, bool isPaused, std::vector<float> 
 
 	for (int i = 0; i < this->nrOfOpaque; i++)
 	{
-		if (i != 3)
+		if (i != 3&&this->opaqueModels[i].selfPtr->getActiveDraw())
 		{
 			System::shaderManager->getShadowMapping()->setWorld(*this->opaqueModels[i].worldPtr);
 			this->opaqueModels[i].selfPtr->getModel()->drawOnlyVertex();
@@ -110,20 +110,23 @@ void GameObjectHandler::draw(float deltaTime, bool isPaused, std::vector<float> 
 	int index = 0;
 	for (int i = 0; i < this->nrOfOpaque; i++)
 	{
-		//has skeleton? then calculate matrix  anim
-		GameObject* gameObjectPtr = this->opaqueModels[i].selfPtr;
-		shared_ptr<Model> ptr = gameObjectPtr->getModel();
-		if (isPaused == false && this->opaqueModels[i].selfPtr->haveAnimation() == true && index < playerSpeed.size())
+		if (this->opaqueModels[i].selfPtr->getActiveDraw())
 		{
-			//this->timePassed += deltaTime;
-			this->opaqueModels[i].selfPtr->computeAnimationMatrix(deltaTime*playerSpeed[index], "run_cycle"); //run_cycle, idle
-			index++;
-		}
+			//has skeleton? then calculate matrix  anim
+			GameObject* gameObjectPtr = this->opaqueModels[i].selfPtr;
+			shared_ptr<Model> ptr = gameObjectPtr->getModel();
+			if (isPaused == false && this->opaqueModels[i].selfPtr->haveAnimation() == true && index < playerSpeed.size())
+			{
+				//this->timePassed += deltaTime;
+				this->opaqueModels[i].selfPtr->computeAnimationMatrix(deltaTime*playerSpeed[index], "run_cycle"); //run_cycle, idle
+				index++;
+			}
 
-		System::shaderManager->getDefShader()->setRepeat(gameObjectPtr->getRepeat());
-		System::shaderManager->getDefShader()->setMaskColor(gameObjectPtr->getColorMask());
-		System::shaderManager->getDefShader()->setWorld(*this->opaqueModels[i].worldPtr);
-		ptr->draw();
+			System::shaderManager->getDefShader()->setRepeat(gameObjectPtr->getRepeat());
+			System::shaderManager->getDefShader()->setMaskColor(gameObjectPtr->getColorMask());
+			System::shaderManager->getDefShader()->setWorld(*this->opaqueModels[i].worldPtr);
+			ptr->draw();
+		}
 	}
 
 	System::shaderManager->getDefShader()->resetRenderTargets();
@@ -170,6 +173,7 @@ void GameObjectHandler::draw(float deltaTime, bool isPaused, std::vector<float> 
 		System::shaderManager->getLightShader()->setTheWorld(this->lightSphereWorld[i]);
 		System::shaderManager->getLightShader()->renderShaderPoint((int)sphereIndices.size(), System::shaderManager->getDefShader()->gBuffer.getDepthStcView());
 	}
+
 	System::theGraphicDevice->turnOnZ();
 	System::theGraphicDevice->setRasterState();
 	System::getDeviceContext()->PSSetShaderResources(3, 0, nullptr);
@@ -190,6 +194,7 @@ void GameObjectHandler::draw(float deltaTime, bool isPaused, std::vector<float> 
 	}*/
 
 	////Forward
+	
 	if (this->nrOfTrans > 0)
 	{
 		for (int i = 0; i < this->nrOfTrans; i++)
