@@ -16,8 +16,9 @@ GameObjectHandler::GameObjectHandler()
 	{
 		this->gameObjects[i] = nullptr;
 	}
-	//this->animTimer = 0;
 
+	//this->animTimer = 0;
+	//this->animTimer = 0;
 }
 
 GameObjectHandler::~GameObjectHandler()
@@ -84,7 +85,7 @@ GameObject & GameObjectHandler::getObject(int id)
 	return *this->gameObjects[id];
 }
 
-void GameObjectHandler::draw(float deltaTime, bool isPaused, std::vector<float> playerSpeed)
+void GameObjectHandler::draw(float deltaTime, bool isPaused, std::vector<float> playerSpeed, std::vector<string> playerName)
 {
 	//Shadow
 	System::theGraphicDevice->setRasterState();
@@ -126,6 +127,9 @@ void GameObjectHandler::draw(float deltaTime, bool isPaused, std::vector<float> 
 			System::shaderManager->getDefShader()->setMaskColor(gameObjectPtr->getColorMask());
 			System::shaderManager->getDefShader()->setWorld(*this->opaqueModels[i].worldPtr);
 			ptr->draw();
+
+			this->opaqueModels[i].selfPtr->computeAnimationMatrix(deltaTime*playerSpeed[index], playerName[index]); //run_cycle, idle
+			index++;
 		}
 	}
 

@@ -58,6 +58,7 @@ private:
 	int deathTimer;
 	int groundTimer;
 	float animSpeed;
+	string animName;
 
 	bool canBeAnimal[4];
 	int randomNumberArray[4] = {0,1,2,3};
@@ -74,6 +75,7 @@ private:
 	/*Primitives *CollisionShape;*/
 public:
 	float getAnimSpeed() const;
+	string getAnimName() const;
 	float getJumpHeight() const;
 	int getStrength() const;
 	float getSpeed() const;
@@ -90,6 +92,7 @@ public:
 	//void groundedTimer();
 	void setColorMask(PlayerColor color);
 	void setAnimalType(AnimalType type);
+	void setAnimalTypeAndMass(AnimalType type);
 	
 	Player();
 	~Player();

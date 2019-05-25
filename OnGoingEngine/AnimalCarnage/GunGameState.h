@@ -53,6 +53,7 @@ private:
 	int ObjectId;
 
 	std::vector<float>currentAnimSpeed;// = { 0,0,0,0 };
+	std::vector<string>currentAnimName;// = { 0,0,0,0 };
 
 	btVector3 min;
 	btVector3 max;

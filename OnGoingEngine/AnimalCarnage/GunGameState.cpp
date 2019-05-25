@@ -191,7 +191,7 @@ bool GunGameState::initPlayers(AnimalType type[], PlayerColor color[])
 {
 	for (int i = 0; i < nrOfPlayers; i++)
 	{
-		player[i]->setAnimalType(type[i]);
+		player[i]->setAnimalTypeAndMass(type[i]);
 		player[i]->setColorMask(color[i]);
 	}
 
@@ -303,6 +303,7 @@ bool GunGameState::initailize()
 
 	this->nrOfPlayers = 2;
 	this->currentAnimSpeed.resize(this->nrOfPlayers);
+	this->currentAnimName.resize(this->nrOfPlayers);
 	player = new Player*[nrOfPlayers];
 	for (int i = 0; i < nrOfPlayers; i++)
 	{
@@ -374,11 +375,17 @@ bool GunGameState::render()
 	for (int pSpd = 0; pSpd < nrOfPlayers; pSpd++)
 	{
 		currentAnimSpeed[pSpd]= player[pSpd]->getAnimSpeed();
+
+	}
+	for (int pNm = 0; pNm < nrOfPlayers; pNm++)
+	{
+		currentAnimName[pNm] = player[pNm]->getAnimName();
+
 	}
 
 
 	renderImgui();
-	System::handler->draw(ImGui::GetIO().DeltaTime, this->paused, currentAnimSpeed);
+	System::handler->draw(ImGui::GetIO().DeltaTime, this->paused, currentAnimSpeed, currentAnimName);
 
 	System::shaderManager->getParticleShader()->setCBuffers();
 	System::shaderManager->getParticleShader()->setShaders();

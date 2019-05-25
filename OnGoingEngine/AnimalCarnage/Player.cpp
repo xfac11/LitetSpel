@@ -6,6 +6,11 @@ float Player::getAnimSpeed() const
 	return this->animSpeed;
 }
 
+string Player::getAnimName() const
+{
+	return this->animName;
+}
+
 float Player::getJumpHeight() const
 {
 	return Animal::getAnimal(this->type).jumpHeight;
@@ -94,6 +99,16 @@ void Player::setAnimalType(AnimalType type)
 	this->health = animal.maxHealh;
 }
 
+void Player::setAnimalTypeAndMass(AnimalType type)
+{
+	const AnimalDef& animal = Animal::getAnimal(type);
+	this->type = type;
+	this->health = animal.maxHealh;
+
+	btVector3 inertia(0, 0, 0);
+	playerObj->getRigidbody()->setMassProps(10 * getWeight(), inertia);
+}
+
 void Player::changeCharacter()
 {
 	if (canBeAnimal[0] == false && canBeAnimal[1] == false && canBeAnimal[2] == false && canBeAnimal[3] == false) {
@@ -176,6 +191,7 @@ Player::Player()
 	groundTimer = 0;
 	nextAnimal = 0;
 	animSpeed = 1;
+	animName = "idle";
 	
 	currentAnimal = 0;
 	ArrayOfAnimals[0] = FOX;
@@ -263,6 +279,8 @@ void Player::initialize(AnimalType type, PlayerColor color)
 
 void Player::update(float deltaTime, int id)
 {
+	animName = "idle";
+	animSpeed = 1;
 
 	if (type == FOX)
 		canBeAnimal[0] = false;
@@ -355,6 +373,7 @@ void Player::update(float deltaTime, int id)
 			//float dir = 2400.0f * state.thumbSticks.leftX  * getSpeed() * getWeight();
 
 			animSpeed = abs(state.thumbSticks.leftX);
+			animName = "run_cycle";
 
 			playerObj->getRigidbody()->setLinearVelocity(btVector3(dir, playerObj->getRigidbody()->getLinearVelocity().getY(), playerObj->getRigidbody()->getLinearVelocity().getZ()));
 			//playerObj->getRigidbody()->applyForce(btVector3(dir, 0, 0), btVector3(0, 0, 0));
@@ -374,6 +393,7 @@ void Player::update(float deltaTime, int id)
 			//this->playerObj->getRigidbody()->setLinearVelocity(btVector3(dir, 0, 0));
 
 			animSpeed = abs(state.thumbSticks.leftX);
+			animName = "run_cycle";
 
 			playerObj->getRigidbody()->applyForce(btVector3(dir, 0, 0), btVector3(0, 0, 0));
 
@@ -386,6 +406,7 @@ void Player::update(float deltaTime, int id)
 			airSpeed = dir;
 
 		}
+
 		//Air drag
 		if(!canJump) {
 			playerObj->getRigidbody()->setLinearVelocity(btVector3(playerObj->getRigidbody()->getLinearVelocity().getX()/1.02f, playerObj->getRigidbody()->getLinearVelocity().getY(), playerObj->getRigidbody()->getLinearVelocity().getZ()));
