@@ -119,8 +119,8 @@ void GameObjectHandler::draw(float deltaTime, bool isPaused, std::vector<float> 
 			if (isPaused == false && this->opaqueModels[i].selfPtr->haveAnimation() == true && index < playerSpeed.size())
 			{
 				//this->timePassed += deltaTime;
-				this->opaqueModels[i].selfPtr->computeAnimationMatrix(deltaTime*playerSpeed[index], "run_cycle"); //run_cycle, idle
-				index++;
+				this->opaqueModels[i].selfPtr->computeAnimationMatrix(deltaTime*playerSpeed[index], playerName[index]); //run_cycle, idle
+			    index++;
 			}
 
 			System::shaderManager->getDefShader()->setRepeat(gameObjectPtr->getRepeat());
@@ -128,8 +128,7 @@ void GameObjectHandler::draw(float deltaTime, bool isPaused, std::vector<float> 
 			System::shaderManager->getDefShader()->setWorld(*this->opaqueModels[i].worldPtr);
 			ptr->draw();
 
-			this->opaqueModels[i].selfPtr->computeAnimationMatrix(deltaTime*playerSpeed[index], playerName[index]); //run_cycle, idle
-			index++;
+			
 		}
 	}
 
