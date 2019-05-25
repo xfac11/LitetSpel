@@ -54,6 +54,12 @@ private:
 
 	std::vector<float>currentAnimSpeed;// = { 0,0,0,0 };
 
+	btVector3 min;
+	btVector3 max;
+
+	DirectX::XMFLOAT3 minTemp;
+	DirectX::XMFLOAT3 maxTemp;
+
 public:
 	GunGameState();
 	~GunGameState();

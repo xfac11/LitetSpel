@@ -64,8 +64,6 @@ void ModelLoader::loadAO(GameObject*& object, const char* characterName, int mip
 			}
 
 			
-			//anims = reader.getAnimation();
-			
 			std::string animName(anims.animationName);
 	
 			if (!object->checkIfAnimExist(animName))
@@ -135,8 +133,8 @@ void ModelLoader::loadAO(GameObject*& object, const char* characterName, int mip
 			object->addModel(System::assetMananger->GetModel(filePath), mesh.hasSkeleton); //mesh.hasSkeleton
 
 			if (mesh.hasBoundingBox)
-				object->setHalfSize(reader.getBoundingBox(i).halfSize, reader.getBoundingBox(i).pos);
-		
+				object->setHalfSize(reader.getBoundingBox(0).halfSize, reader.getBoundingBox(0).pos);
+			
 			vertices3D.clear();
 		}
 

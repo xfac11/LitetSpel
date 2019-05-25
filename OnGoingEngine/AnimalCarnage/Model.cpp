@@ -125,6 +125,11 @@ int Model::getOpacity()
 	return this->type;
 }
 
+void Model::setOpacity(Opacity type)
+{
+	this->type = type;
+}
+
 void Model::setGotSkeleton(bool gotSkltn)
 {
 	this->gotSkeleton = gotSkltn;
@@ -279,4 +284,12 @@ void Model::draw()
 void Model::SetTexture(shared_ptr<Texture> t)
 {
 	this->texture = t;
+	if (texture->isTransparent())
+	{
+		this->type = Transparent;
+	}
+	else
+	{
+		this->type = Opaque;
+	}
 }

@@ -16,7 +16,7 @@ GameObjectHandler::GameObjectHandler()
 		this->gameObjects[i] = nullptr;
 	}
 	this->animTimer = 0;
-	
+
 }
 
 GameObjectHandler::~GameObjectHandler()
@@ -38,7 +38,7 @@ void GameObjectHandler::addObject(GameObject *& gameObject)
 	}
 	this->gameObjects[this->nrOfObjects] = gameObject;
 	this->nrOfObjects++;
-	
+
 	for (int i = 0; i < gameObject->getNrOfModels(); i++)
 	{
 		if (gameObject->getModel()->getOpacity() == Transparent)
@@ -54,7 +54,7 @@ void GameObjectHandler::addObject(GameObject *& gameObject)
 			/*Model* *ptr = new Model*[4];
 			ptr[0] = new Model;
 			ptr[0]->setTexture("box.tga");
-			gameObject->getTheModelPtr() = ptr;*/ 
+			gameObject->getTheModelPtr() = ptr;*/
 			//gameObject->getTheModelPtr() = new Model*[54];
 		}
 		else
@@ -82,9 +82,9 @@ GameObject & GameObjectHandler::getObject(int id)
 	return *this->gameObjects[id];
 }
 
-void GameObjectHandler::draw(float deltaTime,bool isPaused, std::vector<float> playerSpeed)
+void GameObjectHandler::draw(float deltaTime, bool isPaused, std::vector<float> playerSpeed)
 {
-	
+
 	//System::theGraphicDevice->setRasterFront();
 	System::theGraphicDevice->setRasterState();
 
@@ -95,13 +95,13 @@ void GameObjectHandler::draw(float deltaTime,bool isPaused, std::vector<float> p
 	DirectX::XMVECTOR CamPos = DirectX::XMVectorSet(lightViewLengt * (-1 * this->lightsCB.data.lights[0].direction[0]), lightViewLengt * (-1 * this->lightsCB.data.lights[0].direction[1]), lightViewLengt * (this->lightsCB.data.lights[0].direction[2]), 1);
 	DirectX::XMVECTOR up = DirectX::XMVectorSet(0, 1, 0, 0);
 
-		
+
 
 	//this->lightsCB.data.lights[2].position
 	// Variables you already know:
 	DirectX::XMVECTOR lightDirectionVector = DirectX::XMVectorSet(this->lightsCB.data.lights[0].direction[0], this->lightsCB.data.lights[0].direction[1], this->lightsCB.data.lights[0].direction[1], 1); // the light direction
 	// Variables you have to define somehow:
-	DirectX::XMVECTOR lookAt = DirectX::XMVectorSet(0,0,0,1);
+	DirectX::XMVECTOR lookAt = DirectX::XMVectorSet(0, 0, 0, 1);
 
 
 
@@ -118,7 +118,7 @@ void GameObjectHandler::draw(float deltaTime,bool isPaused, std::vector<float> p
 	}
 	this->lightsCB.data.nrOfLights = nrOfLights;
 	this->lightsCB.applyChanges(System::getDevice(), System::getDeviceContext());
-	DirectX::XMMATRIX worldPos = DirectX::XMMatrixTranslation(gameObjects[6]->getPosition().x, gameObjects[6]->getPosition().y+2, gameObjects[6]->getPosition().z);
+	DirectX::XMMATRIX worldPos = DirectX::XMMatrixTranslation(gameObjects[6]->getPosition().x, gameObjects[6]->getPosition().y + 2, gameObjects[6]->getPosition().z);
 	this->lightsCB.data.lights[1].worldLight = worldPos;
 	//this->lightsCB.applyChanges(System::getDevice(), System::getDeviceContext());
 	float color[] = {
@@ -140,13 +140,13 @@ void GameObjectHandler::draw(float deltaTime,bool isPaused, std::vector<float> p
 		//has skeleton? then calculate matrix  anim
 		shared_ptr<Model> ptr = this->opaqueModels[i].selfPtr->getModel();
 
-		
+	
 		if (isPaused == false && this->opaqueModels[i].selfPtr->haveAnimation() == true && index < playerSpeed.size())
 		{
-			this->opaqueModels[i].selfPtr->computeAnimationMatrix(deltaTime*playerSpeed[index], "run_cycle"); //run_cycle, idle
+			this->opaqueModels[i].selfPtr->computeAnimationMatrix(deltaTime*playerSpeed[index], "idle"); //run_cycle, idle
 			index++;
 		}
-		
+
 		System::shaderManager->getDefShader()->setRepeat(this->opaqueModels[i].selfPtr->getRepeat());
 		System::shaderManager->getDefShader()->setMaskColor(this->opaqueModels[i].selfPtr->getColorMask());
 		ptr->getShader()->setWorld(*this->opaqueModels[i].worldPtr);
@@ -158,10 +158,10 @@ void GameObjectHandler::draw(float deltaTime,bool isPaused, std::vector<float> p
 
 
 	//
-	
+
 	//
 	//System::shaderManager->getDefShader()->resetCB();
-	
+
 	//System::getDeviceContext()->OMSetRenderTargets()
 	//Glow
 	System::theGraphicDevice->turnOffZ();
@@ -200,7 +200,7 @@ void GameObjectHandler::draw(float deltaTime,bool isPaused, std::vector<float> p
 
 	for (int i = 1; i < nrOfLights; i++)
 	{
-		DirectX::XMMATRIX worldSphere= DirectX::XMMatrixTranspose(XMMatrixScaling(this->lightsCB.data.lights[i].position[3]*10, this->lightsCB.data.lights[i].position[3]*10, this->lightsCB.data.lights[i].position[3]*10)*
+		DirectX::XMMATRIX worldSphere = DirectX::XMMatrixTranspose(XMMatrixScaling(this->lightsCB.data.lights[i].position[3] * 10, this->lightsCB.data.lights[i].position[3] * 10, this->lightsCB.data.lights[i].position[3] * 10)*
 			this->lightsCB.data.lights[i].worldLight);
 		this->lightsCB.data.index = i;
 		this->lightsCB.applyChanges(System::getDevice(), System::getDeviceContext());
@@ -216,7 +216,7 @@ void GameObjectHandler::draw(float deltaTime,bool isPaused, std::vector<float> p
 	System::theGraphicDevice->setBlendState();
 	System::skybox->setCB();
 	System::skybox->render();
-	
+
 	System::shaderManager->getForwardShader()->setShaders();//tänker att man kör denna sen renderar allla som använder denna shader sen tar setshader på nästa osv.
 	System::shaderManager->getForwardShader()->setCBuffers();
 	System::shaderManager->getForwardShader()->setConstanbuffer(PIXEL, 1, this->lightsCB.getBuffer());
@@ -225,7 +225,7 @@ void GameObjectHandler::draw(float deltaTime,bool isPaused, std::vector<float> p
 		this->opaqueModels[i].modelPtr->getShader()->setWorld(*this->opaqueModels[i].worldPtr);
 		this->opaqueModels[i].modelPtr->draw();
 	}*/
-	
+
 	////Forward
 	if (this->nrOfTrans > 0)
 	{
@@ -264,7 +264,7 @@ void GameObjectHandler::draw(float deltaTime,bool isPaused, std::vector<float> p
 		this->opaqueModels[i].modelPtr->getShader()->setWorld(*this->opaqueModels[i].worldPtr);
 		this->opaqueModels[i].modelPtr->draw();
 	}*/
-	
+
 }
 
 void GameObjectHandler::initialize()
@@ -312,7 +312,7 @@ void GameObjectHandler::initialize()
 	temp.uv[0] = 1.0f;
 	temp.uv[1] = 1.0f;
 	quad.push_back(temp);
-	
+
 	this->vertexBufferQuad.initialize(quad.data(), (UINT)quad.size(), System::getDevice());
 	this->generateSphere();
 }
@@ -325,7 +325,7 @@ void GameObjectHandler::setSunDir(DirectX::XMFLOAT3 dir)
 	this->lightsCB.applyChanges(System::getDevice(), System::getDeviceContext());
 
 }
-void GameObjectHandler::addLight(float pos[4],float dir[4],float color[4] )
+void GameObjectHandler::addLight(float pos[4], float dir[4], float color[4])
 {
 	if (nrOfLights != 16)
 	{
@@ -432,7 +432,7 @@ void GameObjectHandler::expandOpaqueModels()
 
 void GameObjectHandler::renderToTexture(float* color)
 {
-	
+
 	System::shaderManager->getDefShader()->prepGBuffer(color);
 
 }

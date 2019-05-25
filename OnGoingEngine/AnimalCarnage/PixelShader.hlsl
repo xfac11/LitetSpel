@@ -27,6 +27,7 @@ cbuffer Lights : register(b1)
 	int nrOfLights;
 	AnyLight lights[16];
 }
+
 float4 CalcLight(AnyLight light,  float3 normal, float3 wPos, float3 LightDirection)
 {
 	//float3 LightDirection = light.direction.xyz;

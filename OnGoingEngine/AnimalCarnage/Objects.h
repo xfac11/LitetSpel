@@ -4,7 +4,7 @@ enum OBJECTYPE {
 	PLATFORM,STONE,TREE
 };
 enum OBJECTSTATE {
-STATIC,DYNAMIC
+STATIC,DYNAMIC,TRUE_DYNAMIC
 };
 class Objects
 {
@@ -19,9 +19,11 @@ private:
 
 	XMFLOAT3 firstriktningsVector;
 	XMFLOAT3 secondriktningsVector;
+	float activeTimer;
+	bool canGiveDmg;
 public:
 	Objects();
-	Objects(std::string filepath ,btVector3 position, int id, int friction, btVector3 size = btVector3(1,1,1), OBJECTSTATE state = STATIC, OBJECTYPE type = STONE,int mipLevels=-1, float x=1, float y=1);
+	Objects(std::string filepath ,btVector3 position, int id, int friction, btVector3 size = btVector3(1,1,1), OBJECTSTATE state = STATIC, OBJECTYPE type = STONE,int mipLevels=-1, float x=1, float y=1,bool changeOpacity=false);
 	~Objects();
 	void update(float dt);
 	GameObject* ObjectOBJ;
@@ -32,6 +34,12 @@ public:
 	XMFLOAT3 getMovingSpeed();
 	OBJECTYPE GetType() { return this->type; }
 	OBJECTSTATE GetState() { return this->state; }
+	
+	float getPitch(DirectX::XMVECTOR Quaternion);
+	float getYaw(DirectX::XMVECTOR Quaternion);
+	float getRoll(DirectX::XMVECTOR Quaternion);
 
+	void addImpulse(float impulse);
+	bool getCanGiveDmg() const;
 };
 
