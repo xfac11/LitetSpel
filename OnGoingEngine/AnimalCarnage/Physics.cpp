@@ -55,9 +55,7 @@ Physics::~Physics()
 
 void Physics::Update(float deltaTime)
 {
-
 	this->world->stepSimulation(deltaTime);
-
 }
 
 btRigidBody* Physics::addSphere(float radius, btVector3 Origin, float mass)

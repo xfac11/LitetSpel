@@ -97,6 +97,8 @@ private:
 	static LRESULT CALLBACK  WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
 	HWND InitWindow(HINSTANCE hInstance, float height, float width);
 	void change(bool & theSwitch);
+
+	float deltaTime;
 	
 	//btCollisionConfiguration* collisionConfig; //Test
 public:
@@ -142,5 +144,7 @@ public:
 	static State* getCurrentState();
 	static void resizeWindow(int width, int height);
 	static const SimpleMath::Matrix& getSpritebatchMatrix();
+
+	float getDeltaTime();
 };
 #endif
