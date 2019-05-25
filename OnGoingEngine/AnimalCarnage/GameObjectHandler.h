@@ -25,7 +25,7 @@ private:
 	int nrOfTrans;
 	int nrOfLights;
 
-	//int animTimer;
+	std::vector<float> playerAnimTimer;
 	//int nrOfAnimsObj
 	struct ModWorld
 	{

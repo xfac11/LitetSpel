@@ -31,8 +31,8 @@ public:
 	void setMask(std::string file, int id);
 	void setRepeat(float x, float y);
 	void setColorMask(DirectX::XMFLOAT4 colorMask);
-	const DirectX::XMFLOAT4& getColorMask();
-	const DirectX::XMFLOAT4& getRepeat();
+	DirectX::XMFLOAT4& getColorMask();
+	DirectX::XMFLOAT4& getRepeat();
 	//void draw();
 	AABB getCollisionBox();
 	Primitives * CollisionShape;
@@ -60,6 +60,7 @@ private:
 	
 	std::vector<Joint> skeleton;
 	std::map<std::string,Animation> anims;
+	std::string lastAnimation;
 	float timePassed;
 	int frameCounter;
 

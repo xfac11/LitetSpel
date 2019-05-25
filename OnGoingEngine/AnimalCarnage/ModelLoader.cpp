@@ -274,7 +274,7 @@ void ModelLoader::loadGO(GameObject*& object, const char* filePath, int mipLevel
 
 
 	
-			//check if model is loaded
+	//check if model is loaded
 	if (modelloaded)
 		return;
 
