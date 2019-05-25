@@ -393,6 +393,7 @@ void Player::update(float deltaTime, int id)
 			//this->playerObj->getRigidbody()->setLinearVelocity(btVector3(dir, 0, 0));
 
 			animSpeed = abs(state.thumbSticks.leftX);
+			animName = "run_cycle";
 
 			playerObj->getRigidbody()->applyForce(btVector3(dir, 0, 0), btVector3(0, 0, 0));
 

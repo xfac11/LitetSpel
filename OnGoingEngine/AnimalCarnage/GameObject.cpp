@@ -197,12 +197,12 @@ void GameObject::setColorMask(DirectX::XMFLOAT4 colorMask)
 	this->colorMask = colorMask;
 }
 
-const DirectX::XMFLOAT4 & GameObject::getColorMask()
+DirectX::XMFLOAT4 & GameObject::getColorMask()
 {
 	return this->colorMask;
 }
 
-const DirectX::XMFLOAT4 & GameObject::getRepeat()
+DirectX::XMFLOAT4 & GameObject::getRepeat()
 {
 	return this->repeat;
 }
@@ -276,7 +276,11 @@ bool GameObject::haveAnimation() const
 
 void GameObject::computeAnimationMatrix(float deltaTime, std::string animName) //include float to multiply timePassed to make speed of animation (den ska gå från 0 - 1)
 {
-
+	if (this->lastAnimation != animName)
+	{
+		this->timePassed = 0;
+		this->lastAnimation = animName;
+	}
 	this->timePassed += deltaTime;
 	if (this->timePassed >= anims[animName].getDuration())
 		this->timePassed = fmodf(this->timePassed,anims[animName].getDuration());

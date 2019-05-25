@@ -27,6 +27,9 @@ private:
 
 	int animTimer;
 	string animName;
+
+	std::vector<float> playerAnimTimer;
+
 	//int nrOfAnimsObj
 	struct ModWorld
 	{
