@@ -213,9 +213,9 @@ bool GunGameState::initailize()
 
 
 
-	nrOfPlayers = 4;
-	this->currentAnimSpeed.resize(nrOfPlayers);
-	player = new Player * [nrOfPlayers];
+	this->nrOfPlayers = 2;
+	this->currentAnimSpeed.resize(this->nrOfPlayers);
+	player = new Player*[nrOfPlayers];
 	for (int i = 0; i < nrOfPlayers; i++)
 	{
 		player[i] = new Player();
@@ -287,10 +287,7 @@ bool GunGameState::render()
 	{
 		currentAnimSpeed[pSpd]= player[pSpd]->getAnimSpeed();
 	}
-	//currentAnimSpeed[0] = player[0]->getAnimSpeed();
-	//currentAnimSpeed[1] = player[1]->getAnimSpeed();
-	//currentAnimSpeed[2] = player[2]->getAnimSpeed();
-	//currentAnimSpeed[3] = player[3]->getAnimSpeed();
+
 
 	renderImgui();
 	System::handler->draw(ImGui::GetIO().DeltaTime, this->paused, currentAnimSpeed);

@@ -19,14 +19,13 @@ public:
 
 	int getNrOfModels();
 	shared_ptr<Model>  getModel();
-	//Model**& getTheModelPtr();
 
 	void setHalfSize(float halfSize[3], float posOffset[3]);
 
 	void calcAABB(std::vector<Vertex3D> mesh);
 	void addModel(shared_ptr<Model> m , bool gotSkeleton);
 	//void addModel(std::vector<Vertex3D> mesh, DWORD *indices, int numberOfIndices,  bool hasSkeleton);
-	void setMesh(std::vector<Vertex3D> mesh, DWORD *indices, int numberOfIndices, int id);
+	//void setMesh(std::vector<Vertex3D> mesh, DWORD *indices, int numberOfIndices, int id);
 	void setTexture(std::string file, int id, int mipLevels=-1);
 	void setGlowMap(std::string file, int id);
 	void setMask(std::string file, int id);
@@ -41,7 +40,7 @@ public:
 	/*DatForaObject data;*/
 	//void initAnimationData(AnimationShader* animShader);
 	bool haveAnimation()const;
-	void computeAnimationMatrix(float deltaTime);
+	void computeAnimationMatrix(float deltaTime, std::string animName);
 	void setNewAnimation(float fps, float duration, std::string name, std::vector<std::vector<Luna::Keyframe>> keyframePack);
 	void setSkeleton(std::vector<Luna::Joint> theJoints);
 	
@@ -49,7 +48,7 @@ public:
 	DirectX::XMFLOAT3 interpolate2(DirectX::XMFLOAT3 start, DirectX::XMFLOAT3 end, float progression);
 	JointTransformation interpolate1(JointTransformation frameA, JointTransformation frameB, float progression);
 	JointTransformation interpolate2(JointTransformation frameA, JointTransformation frameB, float progression);
-
+	bool checkIfAnimExist(std::string animName);
 
 private:
 	shared_ptr<Model> theModel;
@@ -60,10 +59,8 @@ private:
 
 	
 	std::vector<Joint> skeleton;
-	//bool gotAnimation;
-	Animation anims;
+	std::map<std::string,Animation> anims;
 	float timePassed;
-	
 	int frameCounter;
 
 	std::vector<DirectX::XMMATRIX> pose_global;

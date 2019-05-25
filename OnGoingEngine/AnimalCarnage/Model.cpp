@@ -156,12 +156,6 @@ void Model::setGlowMap(shared_ptr<Texture> t)
 	this->hasGlowMap = true;
 }
 
-//void Model::setMatrixPallete(std::vector<DirectX::XMMATRIX>& matrixPallete)
-//{
-//	this->matrixPallete = matrixPallete;
-//}
-
-
 void Model::setGlowMap(std::string file)
 {
 	this->glowMap->setTexture(file,1);
@@ -174,7 +168,7 @@ void Model::setMask(std::string file)
 	this->hasMask = true;
 }
 
-void Model::setMesh(std::vector<Vertex3D> aMesh,DWORD* indices, int numberOfIndices)
+void Model::setMesh(std::vector<Vertex3D> aMesh)// , DWORD* indices, int numberOfIndices)
 {
 	this->mesh = aMesh;
 	this->vertexCount = int(aMesh.size());
@@ -230,7 +224,6 @@ void Model::drawOnlyVertex()
 		System::getDeviceContext()->PSSetShaderResources(1, 1, &this->normalMap->getTexture());
 	}*/
 	System::shaderManager->getDefShader()->setSkeleton(this->gotSkeleton);
-	//System::shaderManager->getDefShader()->setJointData(this->matrixPallete);
 
 	System::getDeviceContext()->IASetVertexBuffers(0, 1, &*this->vertexBuffer.GetAddressOf(), &*vertexBuffer.getStridePtr(), &offset);
 	//	UINT offset = 0;
@@ -246,10 +239,8 @@ void Model::drawOnlyVertex()
 void Model::draw()
 {
 	UINT32 offset = 0;
-	//DeferredShader* ptr;
 
 	System::shaderManager->getDefShader()->setSkeleton(this->gotSkeleton);
-	//System::shaderManager->getDefShader()->setJointData(this->matrixPallete);
 
 	System::getDeviceContext()->PSSetShaderResources(0, 1, &texture->getTexture());
 	if (this->normalMap != nullptr)

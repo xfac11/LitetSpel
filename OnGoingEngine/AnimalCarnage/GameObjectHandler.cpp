@@ -140,9 +140,10 @@ void GameObjectHandler::draw(float deltaTime,bool isPaused, std::vector<float> p
 		//has skeleton? then calculate matrix  anim
 		shared_ptr<Model> ptr = this->opaqueModels[i].selfPtr->getModel();
 
-		if(this->opaqueModels[i].selfPtr->haveAnimation()==true && index<playerSpeed.size())
+		
+		if (isPaused == false && this->opaqueModels[i].selfPtr->haveAnimation() == true && index < playerSpeed.size())
 		{
-			this->opaqueModels[i].selfPtr->computeAnimationMatrix(deltaTime*playerSpeed[index]);
+			this->opaqueModels[i].selfPtr->computeAnimationMatrix(deltaTime*playerSpeed[index], "run_cycle"); //run_cycle, idle
 			index++;
 		}
 		
