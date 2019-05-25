@@ -197,7 +197,8 @@ void GameObjectHandler::draw(float deltaTime, bool isPaused, std::vector<float> 
 	}*/
 
 	////Forward
-	
+	//back to front sorting here 
+	this->sortBackToFront();
 	if (this->nrOfTrans > 0)
 	{
 		for (int i = 0; i < this->nrOfTrans; i++)
@@ -397,4 +398,33 @@ void GameObjectHandler::renderToTexture(float* color)
 
 void GameObjectHandler::deferredRender()
 {
+}
+
+void GameObjectHandler::sortBackToFront()
+{
+	DirectX::XMFLOAT3 camPos=System::theCamera->GetPosition();
+	int low = 0;
+	for (int i = 0; i < nrOfTrans; i++)
+	{
+		for (int j = i+1; j < nrOfTrans; j++)
+		{
+			DirectX::XMFLOAT3 camToModel = DirectX::XMFLOAT3(this->transModels[low].selfPtr->getPosition().x - camPos.x,
+				this->transModels[low].selfPtr->getPosition().y - camPos.y,
+				this->transModels[low].selfPtr->getPosition().z - camPos.z);
+
+			float length1 = sqrt(pow(camToModel.x, 2) + pow(camToModel.y, 2) + pow(camToModel.z, 2));
+			DirectX::XMFLOAT3 camToModel2 = DirectX::XMFLOAT3(this->transModels[j].selfPtr->getPosition().x - camPos.x,
+				this->transModels[j].selfPtr->getPosition().y - camPos.y,
+				this->transModels[j].selfPtr->getPosition().z - camPos.z);
+			float length2 = sqrt(pow(camToModel2.x, 2) + pow(camToModel2.y, 2) + pow(camToModel2.z, 2));
+			if (length2 > length1)
+			{
+				low = j;
+			}
+		}
+		ModWorld temp = this->transModels[i];
+		this->transModels[i] = this->transModels[low];
+		this->transModels[low] = temp;
+	}
+
 }
