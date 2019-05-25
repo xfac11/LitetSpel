@@ -25,7 +25,7 @@ private:
 	int nrOfTrans;
 	int nrOfLights;
 
-	int animTimer;
+	//int animTimer;
 	//int nrOfAnimsObj
 	struct ModWorld
 	{
