@@ -32,8 +32,8 @@ public:
 	void setMask(std::string file, int id);
 	void setRepeat(float x, float y);
 	void setColorMask(DirectX::XMFLOAT4 colorMask);
-	DirectX::XMFLOAT4& getColorMask();
-	DirectX::XMFLOAT4& getRepeat();
+	const DirectX::XMFLOAT4& getColorMask();
+	const DirectX::XMFLOAT4& getRepeat();
 	//void draw();
 	AABB getCollisionBox();
 	Primitives * CollisionShape;

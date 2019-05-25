@@ -195,7 +195,7 @@ void HorizontalBlur::render(int vertexCount, ID3D11ShaderResourceView*& shaderVi
 	this->renderShader(vertexCount, 0);
 }
 
-void HorizontalBlur::setWorld(DirectX::XMMATRIX world)
+void HorizontalBlur::setWorld(const DirectX::XMMATRIX & world)
 {
 
 }
@@ -203,6 +203,12 @@ void HorizontalBlur::setWorld(DirectX::XMMATRIX world)
 void HorizontalBlur::setCBuffers()
 {
 	this->setConstanbuffer(VERTEX, 0, this->windowCB.getBuffer());
+}
+
+void HorizontalBlur::prepare()
+{
+	this->setConstanbuffer(VERTEX, 0, this->windowCB.getBuffer());
+	setShaders();
 }
 
 ID3D11ShaderResourceView * HorizontalBlur::getShaderView()

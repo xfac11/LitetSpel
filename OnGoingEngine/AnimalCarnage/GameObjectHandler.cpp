@@ -11,6 +11,7 @@ GameObjectHandler::GameObjectHandler()
 	this->opaqueModels = new ModWorld[this->capOpaque];
 	this->transModels = new ModWorld[this->capTrans];
 	this->gameObjects = new GameObject*[this->cap];
+	this->lightSphereWorld = new DirectX::XMMATRIX[16];//16 cap of light
 	for (int i = 0; i < this->cap; i++)
 	{
 		this->gameObjects[i] = nullptr;
@@ -25,6 +26,7 @@ GameObjectHandler::~GameObjectHandler()
 	{
 		delete this->gameObjects[i];
 	}
+	delete[] this->lightSphereWorld;
 	delete[] this->gameObjects;
 	delete[] this->transModels;
 	delete[] this->opaqueModels;
@@ -84,30 +86,11 @@ GameObject & GameObjectHandler::getObject(int id)
 
 void GameObjectHandler::draw(float deltaTime, bool isPaused, std::vector<float> playerSpeed)
 {
-
-	//System::theGraphicDevice->setRasterFront();
+	//Shadow
 	System::theGraphicDevice->setRasterState();
+	lightView = DirectX::XMMatrixLookAtLH(lightCamPos, lightDirView, up);//Måste kalkuleras varje frame av någon anledning
+	System::shaderManager->getShadowMapping()->prepare(lightView);//setshader + omsetrendertarget(0,0,depthstencilview
 
-	//System::theGraphicDevice->setRasterFront();
-	System::shaderManager->getShadowMapping()->prepare();//setshader + omsetrendertarget(0,0,depthstencilview
-	DirectX::XMVECTOR lightDirView = DirectX::XMVectorSet(0, 0, 0, 1);
-	float lightViewLengt = 7;
-	DirectX::XMVECTOR CamPos = DirectX::XMVectorSet(lightViewLengt * (-1 * this->lightsCB.data.lights[0].direction[0]), lightViewLengt * (-1 * this->lightsCB.data.lights[0].direction[1]), lightViewLengt * (this->lightsCB.data.lights[0].direction[2]), 1);
-	DirectX::XMVECTOR up = DirectX::XMVectorSet(0, 1, 0, 0);
-
-
-
-	//this->lightsCB.data.lights[2].position
-	// Variables you already know:
-	DirectX::XMVECTOR lightDirectionVector = DirectX::XMVectorSet(this->lightsCB.data.lights[0].direction[0], this->lightsCB.data.lights[0].direction[1], this->lightsCB.data.lights[0].direction[1], 1); // the light direction
-	// Variables you have to define somehow:
-	DirectX::XMVECTOR lookAt = DirectX::XMVectorSet(0, 0, 0, 1);
-
-
-
-	System::shaderManager->getShadowMapping()->setCBuffers();
-	//DirectX::XMMatrixLookAtLH(CamPos, lightDirView, up);
-	System::shaderManager->getShadowMapping()->setView(DirectX::XMMatrixLookAtLH(CamPos, lightDirView, up));
 	for (int i = 0; i < this->nrOfOpaque; i++)
 	{
 		if (i != 3)
@@ -116,63 +99,42 @@ void GameObjectHandler::draw(float deltaTime, bool isPaused, std::vector<float> 
 			this->opaqueModels[i].selfPtr->getModel()->drawOnlyVertex();
 		}
 	}
-	this->lightsCB.data.nrOfLights = nrOfLights;
-	this->lightsCB.applyChanges(System::getDevice(), System::getDeviceContext());
-	DirectX::XMMATRIX worldPos = DirectX::XMMatrixTranslation(gameObjects[6]->getPosition().x, gameObjects[6]->getPosition().y + 2, gameObjects[6]->getPosition().z);
-	this->lightsCB.data.lights[1].worldLight = worldPos;
-	//this->lightsCB.applyChanges(System::getDevice(), System::getDeviceContext());
-	float color[] = {
-		0,0,0,1.0f
-	};
+	//Reset and prep for deferred rendering
 	System::theGraphicDevice->setViewPort();
-	System::theGraphicDevice->setRasterState();
-	float blendFactor[4] = { 0.f, 0.f, 0.f, 0.f };
+	//System::theGraphicDevice->setRasterState();// om shadow mapping körs med front så
 	System::getDeviceContext()->OMSetBlendState(nullptr, blendFactor, 0xffffffff);
-	//System::theGraphicDevice->turnOnZ();
-	System::shaderManager->getDefShader()->setCBuffers();
-	//System::shaderManager->getDefShader()->setConstanbuffer(PIXEL, 1, this->lightsCB.getBuffer());
-	System::shaderManager->getDefShader()->setShaders();
-	System::shaderManager->getDefShader()->prepGBuffer(color);
+
+	System::shaderManager->getDefShader()->prepDeferredRendering(color);
+	//sets the constantbuffer set shaders set rendertargets to gbuffer and clear with color
 
 	int index = 0;
 	for (int i = 0; i < this->nrOfOpaque; i++)
 	{
 		//has skeleton? then calculate matrix  anim
-		shared_ptr<Model> ptr = this->opaqueModels[i].selfPtr->getModel();
-
-		if (this->opaqueModels[i].selfPtr->haveAnimation() == true && index < playerSpeed.size())
+		GameObject* gameObjectPtr = this->opaqueModels[i].selfPtr;
+		shared_ptr<Model> ptr = gameObjectPtr->getModel();
+		if (gameObjectPtr->haveAnimation() == true && index < playerSpeed.size())
 		{
-			this->opaqueModels[i].selfPtr->computeAnimationMatrix(deltaTime*playerSpeed[index]);
+			gameObjectPtr->computeAnimationMatrix(deltaTime*playerSpeed[index]);
 			index++;
 		}
 
-		System::shaderManager->getDefShader()->setRepeat(this->opaqueModels[i].selfPtr->getRepeat());
-		System::shaderManager->getDefShader()->setMaskColor(this->opaqueModels[i].selfPtr->getColorMask());
-		ptr->getShader()->setWorld(*this->opaqueModels[i].worldPtr);
+		System::shaderManager->getDefShader()->setRepeat(gameObjectPtr->getRepeat());
+		System::shaderManager->getDefShader()->setMaskColor(gameObjectPtr->getColorMask());
+		System::shaderManager->getDefShader()->setWorld(*this->opaqueModels[i].worldPtr);
 		ptr->draw();
 	}
 
 	System::shaderManager->getDefShader()->resetRenderTargets();
-	//glow
 
-
-	//
-
-	//
-	//System::shaderManager->getDefShader()->resetCB();
-
-	//System::getDeviceContext()->OMSetRenderTargets()
-	//Glow
 	System::theGraphicDevice->turnOffZ();
-
+	//glow map blur
 	UINT32 offset = 0;
 	System::getDeviceContext()->IASetVertexBuffers(0, 1, &*this->vertexBufferQuad.GetAddressOf(), &*vertexBufferQuad.getStridePtr(), &offset);
 	System::getDeviceContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-	System::shaderManager->getHorBlur()->setCBuffers();
-	System::shaderManager->getHorBlur()->setShaders();
+	System::shaderManager->getHorBlur()->prepare();
 	System::shaderManager->getHorBlur()->render(quad.size(), System::shaderManager->getDefShader()->gBuffer.getShadResView(3));
-	System::shaderManager->getVerBlur()->setCBuffers();
-	System::shaderManager->getVerBlur()->setShaders();
+	System::shaderManager->getVerBlur()->prepare();
 	System::shaderManager->getVerBlur()->render(quad.size(), System::shaderManager->getHorBlur()->getShaderView());
 	//light
 	System::getDeviceContext()->PSSetShaderResources(3, 1, &System::shaderManager->getShadowMapping()->getShadowMap());
@@ -187,6 +149,7 @@ void GameObjectHandler::draw(float deltaTime, bool isPaused, std::vector<float> 
 	System::shaderManager->getLightShader()->setConstanbuffer(PIXEL, 1, this->lightsCB.getBuffer());
 	System::shaderManager->getLightShader()->setTypeOfLight(0);//0 directlight
 	this->lightsCB.data.index = 0;
+	this->lightsCB.data.nrOfLights = nrOfLights;
 	this->lightsCB.applyChanges(System::getDevice(), System::getDeviceContext());
 	System::shaderManager->getShadowMapping()->setPSDepthView();//sets the mvp for the depth in lspixelshader
 
@@ -199,11 +162,11 @@ void GameObjectHandler::draw(float deltaTime, bool isPaused, std::vector<float> 
 
 	for (int i = 1; i < nrOfLights; i++)
 	{
-		DirectX::XMMATRIX worldSphere = DirectX::XMMatrixTranspose(XMMatrixScaling(this->lightsCB.data.lights[i].position[3] * 10, this->lightsCB.data.lights[i].position[3] * 10, this->lightsCB.data.lights[i].position[3] * 10)*
-			this->lightsCB.data.lights[i].worldLight);
+		//DirectX::XMMATRIX worldSphere = DirectX::XMMatrixTranspose(XMMatrixScaling(this->lightsCB.data.lights[i].position[3] * 10, this->lightsCB.data.lights[i].position[3] * 10, this->lightsCB.data.lights[i].position[3] * 10)*
+			//this->lightsCB.data.lights[i].worldLight);
 		this->lightsCB.data.index = i;
 		this->lightsCB.applyChanges(System::getDevice(), System::getDeviceContext());
-		System::shaderManager->getLightShader()->setWorld(worldSphere);
+		System::shaderManager->getLightShader()->setTheWorld(this->lightSphereWorld[i]);
 		System::shaderManager->getLightShader()->renderShaderPoint((int)sphereIndices.size(), System::shaderManager->getDefShader()->gBuffer.getDepthStcView());
 	}
 	System::theGraphicDevice->turnOnZ();
@@ -336,7 +299,15 @@ void GameObjectHandler::addLight(float pos[4], float dir[4], float color[4])
 			this->lightsCB.data.lights[nrOfLights].direction[i] = dir[i];
 			this->lightsCB.data.lights[nrOfLights].color[i] = color[i];
 		}
-		this->lightsCB.data.index = nrOfLights;
+		if (nrOfLights == 0)
+		{
+			
+			float lightViewLengt = 7;
+			lightCamPos = DirectX::XMVectorSet(lightViewLengt * (-1 * this->lightsCB.data.lights[0].direction[0]), lightViewLengt * (-1 * this->lightsCB.data.lights[0].direction[1]), lightViewLengt * (this->lightsCB.data.lights[0].direction[2]), 1);
+			
+		}
+		lightSphereWorld[nrOfLights] = DirectX::XMMatrixTranspose(XMMatrixScaling(this->lightsCB.data.lights[nrOfLights].position[3] * 10, this->lightsCB.data.lights[nrOfLights].position[3] * 10, this->lightsCB.data.lights[nrOfLights].position[3] * 10)*
+			this->lightsCB.data.lights[nrOfLights].worldLight);
 		nrOfLights++;
 	}
 }

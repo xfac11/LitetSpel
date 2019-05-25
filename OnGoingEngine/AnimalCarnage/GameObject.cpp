@@ -197,12 +197,12 @@ void GameObject::setColorMask(DirectX::XMFLOAT4 colorMask)
 	this->colorMask = colorMask;
 }
 
-DirectX::XMFLOAT4 & GameObject::getColorMask()
+const DirectX::XMFLOAT4 & GameObject::getColorMask()
 {
 	return this->colorMask;
 }
 
-DirectX::XMFLOAT4 & GameObject::getRepeat()
+const DirectX::XMFLOAT4 & GameObject::getRepeat()
 {
 	return this->repeat;
 }

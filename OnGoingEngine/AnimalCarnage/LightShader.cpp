@@ -203,9 +203,14 @@ bool LightShader::initialize()
 	//Like a default. The rasteriser state is set in the initialize of GraphicsDevice
 }
 
-void LightShader::setWorld(DirectX::XMMATRIX world)
+void LightShader::setTheWorld(DirectX::XMMATRIX & world)
 {
-	//world = XMMatrixTranspose(world);
+	this->worldCB.data.world = world;
+	this->worldCB.applyChanges(System::getDevice(), System::getDeviceContext());
+}
+
+void LightShader::setWorld(const DirectX::XMMATRIX& world)
+{
 	this->worldCB.data.world = world;
 	this->worldCB.applyChanges(System::getDevice(), System::getDeviceContext());
 }

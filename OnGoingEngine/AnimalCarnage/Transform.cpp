@@ -91,19 +91,18 @@ void Transform::ApplyTransform() {
 	{
 
 		//if you want to rotate around a certain point
-		this->world = DirectX::XMMatrixTranspose(
+		this->world = 
 			this->rotationMatrix*
 			XMMatrixScaling(Scale.x, Scale.y, Scale.z) *
 			//*DirectX::XMMatrixRotationAxis(Axis, Angle) **/
-			XMMatrixTranslation(Position.x, Position.y, Position.z)
-		);
+			XMMatrixTranslation(Position.x, Position.y, Position.z);
 		//	world = DirectX::XMMatrixTranspose(DirectX::XMMatrixRotationAxis(Axis, Angle));
 
 	}
 	else {
-		this->world = DirectX::XMMatrixTranspose(
+		this->world = 
 			XMMatrixScaling(Scale.x, Scale.y, Scale.z) *
-			XMMatrixTranslation(Position.x, Position.y, Position.z));
+			XMMatrixTranslation(Position.x, Position.y, Position.z);
 	}
 	world = DirectX::XMMatrixTranspose(world);
 }

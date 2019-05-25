@@ -194,7 +194,7 @@ void VerticalBlur::render(int vertexCount, ID3D11ShaderResourceView* shaderView)
 	this->renderShader(vertexCount, 0);
 }
 
-void VerticalBlur::setWorld(DirectX::XMMATRIX world)
+void VerticalBlur::setWorld(const DirectX::XMMATRIX &world)
 {
 	
 }
@@ -202,6 +202,12 @@ void VerticalBlur::setWorld(DirectX::XMMATRIX world)
 void VerticalBlur::setCBuffers()
 {
 	this->setConstanbuffer(VERTEX, 0, this->windowCB.getBuffer());
+}
+
+void VerticalBlur::prepare()
+{
+	this->setConstanbuffer(VERTEX, 0, this->windowCB.getBuffer());
+	this->setShaders();
 }
 
 ID3D11ShaderResourceView *& VerticalBlur::getShaderView()

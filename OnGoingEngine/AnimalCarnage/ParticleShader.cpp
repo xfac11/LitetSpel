@@ -35,7 +35,7 @@ bool ParticleShader::initialize()
 	return true;
 }
 
-void ParticleShader::setWorld(DirectX::XMMATRIX world)
+void ParticleShader::setWorld(const DirectX::XMMATRIX& world)
 {
 }
 

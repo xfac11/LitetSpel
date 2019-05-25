@@ -149,9 +149,8 @@ bool ShadowMapping::initialize()
 	return true;
 }
 
-void ShadowMapping::setWorld(DirectX::XMMATRIX world)
+void ShadowMapping::setWorld(const DirectX::XMMATRIX& world)
 {
-	world = XMMatrixTranspose(world);
 	this->worldCB.data.world = world;
 	this->worldCB.applyChanges(System::getDevice(),System::getDeviceContext());
 }
@@ -184,10 +183,12 @@ void ShadowMapping::setCBuffers()
 	this->setConstanbuffer(VERTEX, 1, this->worldCB.getBuffer());
 }
 
-void ShadowMapping::prepare()
+void ShadowMapping::prepare(DirectX::XMMATRIX &view)
 {
 	System::getDeviceContext()->RSSetViewports(1, &this->vp);
 	this->setShaders();
+	this->setCBuffers();
+	this->setView(view);
 	System::getDeviceContext()->ClearDepthStencilView(this->depthStencilView, D3D11_CLEAR_DEPTH, 1.0f, 0);
 	ID3D11ShaderResourceView* s = NULL;
 	System::getDeviceContext()->PSSetShaderResources(3, 1, &s);

@@ -9,13 +9,13 @@ public:
 	virtual~ShadowMapping();
 
 	bool initialize();
-	void setWorld(DirectX::XMMATRIX world);
+	void setWorld(const DirectX::XMMATRIX& world);
 	void setViewProj(DirectX::XMMATRIX view, DirectX::XMMATRIX proj, DirectX::XMFLOAT4 camPos);
 	void setView(DirectX::XMMATRIX view);
 	//uses the rendershader in Shader
 	void setCamPosToMatricesPerFrame(DirectX::XMFLOAT3 campos);
 	void setCBuffers();
-	void prepare();
+	void prepare(DirectX::XMMATRIX& view);
 
 	void setPSDepthView();
 	ID3D11ShaderResourceView*& getShadowMap();

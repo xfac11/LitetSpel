@@ -37,9 +37,6 @@
     <FxCompile Include="SkyPixelShader.hlsl">
       <Filter>Shader</Filter>
     </FxCompile>
-    <FxCompile Include="animatedEntityVertex.hlsl">
-      <Filter>Skeleton</Filter>
-    </FxCompile>
     <FxCompile Include="MulVertexShader.hlsl">
       <Filter>Shader</Filter>
     </FxCompile>
@@ -66,7 +63,6 @@
     </FxCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="InputHandler.cpp" />
     <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="BulletSDK\include\BulletCollision\CollisionDispatch\btActivatingCollisionAlgorithm.cpp">
       <Filter>Bullet SDK</Filter>
@@ -98,13 +94,7 @@
     <ClCompile Include="BulletSDK\include\BulletCollision\BroadphaseCollision\btBroadphaseProxy.cpp">
       <Filter>Bullet SDK</Filter>
     </ClCompile>
-    <ClCompile Include="AnimatedModel.cpp">
-      <Filter>Skeleton</Filter>
-    </ClCompile>
     <ClCompile Include="Animation.cpp">
-      <Filter>Skeleton</Filter>
-    </ClCompile>
-    <ClCompile Include="Animator.cpp">
       <Filter>Skeleton</Filter>
     </ClCompile>
     <ClCompile Include="BulletSDK\include\BulletCollision\CollisionShapes\btBvhTriangleMeshShape.cpp">
@@ -662,9 +652,6 @@
     <ClCompile Include="Camera.cpp">
       <Filter>Engine</Filter>
     </ClCompile>
-    <ClCompile Include="GameObjectHandler.cpp">
-      <Filter>Engine</Filter>
-    </ClCompile>
     <ClCompile Include="GraphicsDevice.cpp">
       <Filter>Engine</Filter>
     </ClCompile>
@@ -689,7 +676,6 @@
     <ClCompile Include="Physics.cpp">
       <Filter>Engine</Filter>
     </ClCompile>
-    <ClCompile Include="ShadowMapping.cpp" />
     <ClCompile Include="Objects.cpp" />
     <ClCompile Include="GunGameGui.cpp">
       <Filter>Menu</Filter>
@@ -697,9 +683,6 @@
     <ClCompile Include="PauseGui.cpp">
       <Filter>Menu</Filter>
     </ClCompile>
-    <ClCompile Include="AnimationShader.cpp" />
-    <ClCompile Include="VerticalBlur.cpp" />
-    <ClCompile Include="HorizontalBlur.cpp" />
     <ClCompile Include="AssetManager.cpp" />
     <ClCompile Include="ParticleManager.cpp">
       <Filter>Particle</Filter>
@@ -711,6 +694,18 @@
       <Filter>Particle</Filter>
     </ClCompile>
     <ClCompile Include="ParticleShader.cpp">
+      <Filter>Shader</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObjectHandler.cpp">
+      <Filter>Shader</Filter>
+    </ClCompile>
+    <ClCompile Include="VerticalBlur.cpp">
+      <Filter>Shader</Filter>
+    </ClCompile>
+    <ClCompile Include="ShadowMapping.cpp">
+      <Filter>Shader</Filter>
+    </ClCompile>
+    <ClCompile Include="HorizontalBlur.cpp">
       <Filter>Shader</Filter>
     </ClCompile>
   </ItemGroup>
@@ -762,13 +757,7 @@
     <ClInclude Include="BulletSDK\include\BulletCollision\BroadphaseCollision\btBroadphaseInterface.h">
       <Filter>Bullet SDK</Filter>
     </ClInclude>
-    <ClInclude Include="AnimatedModel.h">
-      <Filter>Skeleton</Filter>
-    </ClInclude>
     <ClInclude Include="Animation.h">
-      <Filter>Skeleton</Filter>
-    </ClInclude>
-    <ClInclude Include="Animator.h">
       <Filter>Skeleton</Filter>
     </ClInclude>
     <ClInclude Include="BulletSDK\include\BulletCollision\BroadphaseCollision\btBroadphaseProxy.h">
@@ -1584,7 +1573,6 @@
     <ClInclude Include="State.h">
       <Filter>Engine</Filter>
     </ClInclude>
-    <ClInclude Include="ShadowMapping.h" />
     <ClInclude Include="Objects.h" />
     <ClInclude Include="GunGameGui.h">
       <Filter>Menu</Filter>
@@ -1592,9 +1580,6 @@
     <ClInclude Include="PauseGui.h">
       <Filter>Menu</Filter>
     </ClInclude>
-    <ClInclude Include="AnimationShader.h" />
-    <ClInclude Include="VerticalBlur.h" />
-    <ClInclude Include="HorizontalBlur.h" />
     <ClInclude Include="AssetManager.h" />
     <ClInclude Include="ParticleManager.h">
       <Filter>Particle</Filter>
@@ -1606,6 +1591,15 @@
       <Filter>Particle</Filter>
     </ClInclude>
     <ClInclude Include="ParticleShader.h">
+      <Filter>Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="VerticalBlur.h">
+      <Filter>Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="ShadowMapping.h">
+      <Filter>Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="HorizontalBlur.h">
       <Filter>Shader</Filter>
     </ClInclude>
   </ItemGroup>

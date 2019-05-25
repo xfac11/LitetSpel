@@ -10,17 +10,18 @@ public:
 	DeferredShader();
 	virtual~DeferredShader();
 	bool initialize(int height, int width, float nearPlane, float farPlane);
-	void setWorld(DirectX::XMMATRIX world);
-	void setRepeat(DirectX::XMFLOAT4 repeat);
+	void setWorld(const DirectX::XMMATRIX& world);
+	void setRepeat(const DirectX::XMFLOAT4& repeat);
 	void setViewProj(DirectX::XMMATRIX view, DirectX::XMMATRIX proj, DirectX::XMFLOAT4 camPos);
 	void setSkeleton(bool hasSkeleton);
 	void setJointData(std::vector<DirectX::XMMATRIX>& jointTransforms);
 	//uses the rendershader in Shader
-	void setMaskColor(DirectX::XMFLOAT4 color);
+	void setMaskColor(const DirectX::XMFLOAT4& color);
 	void setCamPosToMatricesPerFrame(DirectX::XMFLOAT3 campos);
 	void setCBuffers();
 	void resetRenderTargets();
 	void resetCB();
+	void prepDeferredRendering(float* color);
 	void prepGBuffer(float* color);
 	void prepForLight();
 	GBuffer gBuffer;

@@ -86,12 +86,10 @@ bool ForwardShader::initialize()
 	//Like a default. The rasteriser state is set in the initialize of GraphicsDevice
 }
 
-void ForwardShader::setWorld(DirectX::XMMATRIX world)
+void ForwardShader::setWorld(const DirectX::XMMATRIX& world)
 {
-	world = XMMatrixTranspose(world);
 	this->worldCB.data.world = world;
 	this->worldCB.applyChanges(System::getDevice(), System::getDeviceContext());
-	
 }
 
 void ForwardShader::setViewProj(DirectX::XMMATRIX view, DirectX::XMMATRIX proj,DirectX::XMFLOAT4 camPos)

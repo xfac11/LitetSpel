@@ -119,14 +119,16 @@ bool DeferredShader::initialize(int height, int width, float nearPlane, float fa
 	return true;
 }
 
-void DeferredShader::setWorld(DirectX::XMMATRIX world)
+void DeferredShader::setWorld(const DirectX::XMMATRIX & world)
 {
-	world = XMMatrixTranspose(world);
+	//	world = XMMatrixTranspose(world);
 	this->worldCB.data.world = world;
 	this->worldCB.applyChanges(System::getDevice(), System::getDeviceContext());
 }
 
-void DeferredShader::setRepeat(DirectX::XMFLOAT4 repeat)
+
+
+void DeferredShader::setRepeat(const DirectX::XMFLOAT4& repeat)
 {
 	this->repeat.data.texRepeat = repeat;
 	this->repeat.applyChanges(System::getDevice(), System::getDeviceContext());
@@ -159,7 +161,7 @@ void DeferredShader::setJointData(std::vector<DirectX::XMMATRIX>& jointTransform
 	this->jointCB.applyChanges(System::getDevice(), System::getDeviceContext());
 }
 
-void DeferredShader::setMaskColor(DirectX::XMFLOAT4 color)
+void DeferredShader::setMaskColor(const DirectX::XMFLOAT4& color)
 {
 	this->repeat.data.colorMask = color;
 	this->repeat.applyChanges(System::getDevice(), System::getDeviceContext());
@@ -194,6 +196,14 @@ void DeferredShader::resetCB()
 	this->setConstanbuffer(VERTEX, 1, nullptr);
 	this->setConstanbuffer(GEOMETRY, 1, nullptr);
 	this->setConstanbuffer(VERTEX, 2, nullptr);
+}
+
+void DeferredShader::prepDeferredRendering(float * color)
+{
+	this->setCBuffers();
+	this->setShaders();
+	this->gBuffer.setRenderTargets();
+	this->gBuffer.clear(color);
 }
 
 void DeferredShader::prepGBuffer(float* color)

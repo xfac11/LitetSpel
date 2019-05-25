@@ -42,7 +42,17 @@ private:
 	};
 	std::vector<LightVertex> quad;
 	VertexBuffer<LightVertex> vertexBufferQuad;
+	//optimise
+	float blendFactor[4] = { 0.f, 0.f, 0.f, 0.f };
 
+	float color[4] = {
+		0,0,0,1.0f
+	};
+	DirectX::XMMATRIX *lightSphereWorld;
+	DirectX::XMMATRIX lightView;
+	DirectX::XMVECTOR lightDirView = DirectX::XMVectorSet(0, 0, 0, 1);
+	DirectX::XMVECTOR up = DirectX::XMVectorSet(0, 1, 0, 0);
+	DirectX::XMVECTOR lightCamPos;//for shadow
 
 	std::vector<LightVertex> sphereVector;
 	std::vector<DWORD> sphereIndices;

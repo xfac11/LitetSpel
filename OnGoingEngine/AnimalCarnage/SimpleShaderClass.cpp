@@ -39,9 +39,8 @@ bool SimpleShader::initialize()
 	return true;
 }
 
-void SimpleShader::setWorld(DirectX::XMMATRIX world)
+void SimpleShader::setWorld(const DirectX::XMMATRIX& world)
 {
-	world = XMMatrixTranspose(world);
 	this->worldCB.data.world = world;
 	this->worldCB.applyChanges(System::getDevice(), System::getDeviceContext());
 }

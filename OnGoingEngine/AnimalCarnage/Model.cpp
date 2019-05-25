@@ -179,7 +179,7 @@ void Model::setMask(std::string file)
 	this->hasMask = true;
 }
 
-void Model::setMesh(std::vector<Vertex3D> aMesh,DWORD* indices, int numberOfIndices)
+void Model::setMesh(std::vector<Vertex3D> &aMesh,DWORD* indices, int numberOfIndices)
 {
 	this->mesh = aMesh;
 	this->vertexCount = int(aMesh.size());

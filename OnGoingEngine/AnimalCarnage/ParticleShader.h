@@ -16,7 +16,7 @@ public:
 	virtual ~ParticleShader();
 
 	bool initialize();
-	void setWorld(DirectX::XMMATRIX world);
+	void setWorld(const DirectX::XMMATRIX& world);
 	void setViewProj(DirectX::XMMATRIX view, DirectX::XMMATRIX proj, DirectX::XMFLOAT4 campos);
 	void setCamera(DirectX::XMFLOAT3 camUp);
 	void setCBuffers();

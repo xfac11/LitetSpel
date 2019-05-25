@@ -22,7 +22,8 @@ public:
 	bool setConstanbuffer(ShaderType type, int index, ID3D11Buffer* buffer);
 	virtual void renderShader(int vertexCount,int indexCount);
 
-	virtual void setWorld(DirectX::XMMATRIX world)=0;
+	virtual void setWorld(const DirectX::XMMATRIX& world)=0;
+
 	virtual void setCBuffers()=0;
 	void setShaders();
 private:
