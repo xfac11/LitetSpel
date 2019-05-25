@@ -718,6 +718,16 @@ void System::run()
 		//btCollisionConfiguration* collisionConfig;
 		//this->collisionConfig = new btDefaultCollisionConfiguration();
 		
+		//Store counts per second
+		__int64 countsPerSec = 0;
+		QueryPerformanceFrequency((LARGE_INTEGER*)&countsPerSec);
+		float secPerCount = 1.0f / countsPerSec; //store seconds per count
+
+		//Initial previous time	
+		__int64 prevTime = 0;
+		QueryPerformanceCounter((LARGE_INTEGER*)&prevTime);
+
+
 		while (WM_QUIT != msg.message)
 		{
 			if (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE))
@@ -729,13 +739,24 @@ void System::run()
 			{
 				//Game
 				//make keyboard stuff into private function´?
-				float delteTime = ImGui::GetIO().DeltaTime;
-				update(delteTime);				
+				//float deltaTime = ImGui::GetIO().DeltaTime;
+
+				//Capture current count
+				__int64 curTime = 0;
+				QueryPerformanceCounter((LARGE_INTEGER*)&curTime);
+				//Calculate deltaTime
+				deltaTime = (curTime - prevTime) * secPerCount;
+				/*deltaTime /= 2;*/
+
+				update(deltaTime);				
 				render();
 
 				int xMouse = 0;
 				int yMouse = 0;
 				
+
+				//set previous to current after frame ends
+				prevTime = curTime;
 			}
 		}
 		//shutDown();  //<---Called in D3DMain after run
@@ -860,4 +881,9 @@ void System::resizeWindow(int width, int height)
 const SimpleMath::Matrix & System::getSpritebatchMatrix()
 {
 	return System::matrixForSpritebatch;
+}
+
+float System::getDeltaTime()
+{
+	return this->deltaTime;
 }

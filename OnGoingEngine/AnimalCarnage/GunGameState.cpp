@@ -385,7 +385,7 @@ bool GunGameState::render()
 
 
 	renderImgui();
-	System::handler->draw(ImGui::GetIO().DeltaTime, this->paused, currentAnimSpeed, currentAnimName);
+	System::handler->draw(System::fusk->getDeltaTime(), this->paused, currentAnimSpeed, currentAnimName);
 
 	System::shaderManager->getParticleShader()->setCBuffers();
 	System::shaderManager->getParticleShader()->setShaders();
