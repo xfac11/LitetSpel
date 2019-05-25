@@ -10,7 +10,7 @@ public:
 	void addObject(GameObject*& gameObject);
 	//void addObject(char *file);
 	GameObject& getObject(int id);
-	void draw(float deltaTime, bool isPaused, std::vector<float> playerSpeed);
+	void draw(float deltaTime, bool isPaused, std::vector<float> playerSpeed, std::vector<string> playerName);
 	void initialize();
 	void addLight(float pos[4], float dir[4], float color[4]);
 	void setSkyboxTexture(std::string file);
@@ -26,6 +26,7 @@ private:
 	int nrOfLights;
 
 	int animTimer;
+	string animName;
 	//int nrOfAnimsObj
 	struct ModWorld
 	{
