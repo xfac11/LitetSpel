@@ -166,10 +166,10 @@ void GameObject::addModel(shared_ptr<Model> m, bool gotSkeleton)
 //
 //}
 
-void GameObject::setMesh(std::vector<Vertex3D> mesh, DWORD * indices, int numberOfIndices, int id)
-{
-	this->theModel->setMesh(mesh, indices, numberOfIndices);
-}
+//void GameObject::setMesh(std::vector<Vertex3D> mesh, DWORD * indices, int numberOfIndices, int id)
+//{
+//	this->theModel->setMesh(mesh);
+//}
 
 void GameObject::setTexture(std::string file, int id, int mipLevels)
 {									
@@ -267,29 +267,29 @@ AABB GameObject::getCollisionBox()
 bool GameObject::haveAnimation() const
 {
 	bool result = false;
-	if (anims.getName() != "Default")
+	if (anims.empty() != true)
 	{
 		result = true;
 	}
 	return result;
 }
 
-void GameObject::computeAnimationMatrix(float deltaTime) //include float to multiply timePassed to make speed of animation (den ska gå från 0 - 1)
+void GameObject::computeAnimationMatrix(float deltaTime, std::string animName) //include float to multiply timePassed to make speed of animation (den ska gå från 0 - 1)
 {
 
 	this->timePassed += deltaTime;
-	if (this->timePassed >= anims.getDuration())
-		this->timePassed = fmodf(this->timePassed,anims.getDuration());
+	if (this->timePassed >= anims[animName].getDuration())
+		this->timePassed = fmodf(this->timePassed,anims[animName].getDuration());
 
 	this->frameCounter++;
 
 	if (this->frameCounter >= 1) //frameskip (must never be zero, higher for lower quality)
 	{
-		int k1 = (int)(this->timePassed* anims.getFPS());
-		int k2 = std::min<int>(k1 + 1, anims.getKeyframes()[0].size());
+		int k1 = (int)(this->timePassed* anims[animName].getFPS());
+		int k2 = std::min<int>(k1 + 1, anims[animName].getKeyframes()[0].size());
 
-		float k1_time = k1 / anims.getFPS();
-		float k2_time = k2 / anims.getFPS();
+		float k1_time = k1 / anims[animName].getFPS();
+		float k2_time = k2 / anims[animName].getFPS();
 		float t = (timePassed - k1_time) / (k2_time - k1_time);
 
 		//int timeStamp = int(10*(k1 + t)); //accuracy of deltaTime saved (lower for low quality, high for higher quality)
@@ -299,7 +299,7 @@ void GameObject::computeAnimationMatrix(float deltaTime) //include float to mult
 
 			DirectX::XMMATRIX sclMtx = DirectX::XMMatrixScaling(0.1f, 0.1f, 0.1f);
 			JointTransformation local;
-			JointTransformation local_root = this->interpolate1(anims.getKeyframes()[0][k1].getJointKeyFrames(), anims.getKeyframes()[0][k2].getJointKeyFrames(), t);
+			JointTransformation local_root = this->interpolate1(anims[animName].getKeyframes()[0][k1].getJointKeyFrames(), anims[animName].getKeyframes()[0][k2].getJointKeyFrames(), t);
 
 			pose_global[0] = local_root.getLocalTransform();
 
@@ -308,7 +308,7 @@ void GameObject::computeAnimationMatrix(float deltaTime) //include float to mult
 			for (int joint = 1; joint < skeleton.size(); joint++)
 			{
 
-				local = this->interpolate1(anims.getKeyframes()[joint][k1].getJointKeyFrames(), anims.getKeyframes()[joint][k2].getJointKeyFrames(), t);
+				local = this->interpolate1(anims[animName].getKeyframes()[joint][k1].getJointKeyFrames(), anims[animName].getKeyframes()[joint][k2].getJointKeyFrames(), t);
 
 				pose_global[joint] = DirectX::XMMatrixMultiply(pose_global[this->skeleton[joint].getParent()->getID()], DirectX::XMMatrixTranspose(local.getLocalTransform()));
 				this->matrixPallete[joint] = DirectX::XMMatrixMultiplyTranspose(pose_global[joint], DirectX::XMMatrixTranspose(this->skeleton[joint].getInverseBindTransform()));
@@ -333,8 +333,8 @@ void GameObject::setNewAnimation(float fps, float duration, std::string name, st
 
 	Animation newAnim(fps, duration, name, keyframePack.size(), keyframePack[0].size());
 	newAnim.setKeyframes(keyframePack);
-	this->anims = newAnim;
-	
+	this->anims[name] = newAnim;
+
 }
 
 void GameObject::setSkeleton(std::vector<Luna::Joint> theJoints)
@@ -389,4 +389,12 @@ JointTransformation GameObject::interpolate2(JointTransformation frameA, JointTr
 	DirectX::XMFLOAT3 scale = this->interpolate2(frameA.getScale(), frameB.getScale(), progression);
 
 	return JointTransformation(pos4, quaternion, scale);
+}
+
+bool GameObject::checkIfAnimExist(std::string animName)
+{
+	bool result = false;
+	if (anims.find(animName)!=anims.end())
+		result = true;
+	return result;
 }

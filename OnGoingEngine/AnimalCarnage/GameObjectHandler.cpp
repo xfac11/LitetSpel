@@ -116,6 +116,12 @@ void GameObjectHandler::draw(float deltaTime, bool isPaused, std::vector<float> 
 		if (gameObjectPtr->haveAnimation() == true && index < playerSpeed.size())
 		{
 			gameObjectPtr->computeAnimationMatrix(deltaTime*playerSpeed[index]);
+		shared_ptr<Model> ptr = this->opaqueModels[i].selfPtr->getModel();
+
+	
+		if (isPaused == false && this->opaqueModels[i].selfPtr->haveAnimation() == true && index < playerSpeed.size())
+		{
+			this->opaqueModels[i].selfPtr->computeAnimationMatrix(deltaTime*playerSpeed[index], "run_cycle"); //run_cycle, idle
 			index++;
 		}
 

@@ -124,7 +124,7 @@ void Player::changeCharacter()
 	}
 
 	this->setAnimalType(ArrayOfAnimals[currentAnimal]);
-	System::theModelLoader->loadGO(this->playerObj, Animal::getAnimal(ArrayOfAnimals[currentAnimal]).modelPath);
+	System::theModelLoader->loadAO(this->playerObj, Animal::getAnimal(ArrayOfAnimals[currentAnimal]).modelPath);
 	//if (animal.maskPath != "empty" && !this->playerObj->getModel()->hasMaskColor())
 	//	this->playerObj->setMask(animal.maskPath, 0);//change to animal.maskPath
 	//System::handler->addObject(this->playerObj);
@@ -233,7 +233,8 @@ void Player::initialize(AnimalType type, PlayerColor color)
 	System::handler->addObject(this->hitbox.hitbox);
 
 	//loads animal
-	System::theModelLoader->loadGO(this->playerObj, Animal::getAnimal(type).modelPath);
+	//System::theModelLoader->loadGO(this->playerObj, Animal::getAnimal(type).modelPath);
+	System::theModelLoader->loadAO(this->playerObj, Animal::getAnimal(type).modelPath);
 	if(Animal::getAnimal(type).maskPath!="empty"&&!this->playerObj->getModel()->hasMaskColor())
 		this->playerObj->setMask(Animal::getAnimal(type).maskPath,0);//change to animal.maskPath
 	System::handler->addObject(this->playerObj);

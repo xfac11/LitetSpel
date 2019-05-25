@@ -249,9 +249,9 @@ bool GunGameState::initailize()
 
 
 
-	nrOfPlayers = 4;
-	this->currentAnimSpeed.resize(nrOfPlayers);
-	player = new Player * [nrOfPlayers];
+	this->nrOfPlayers = 2;
+	this->currentAnimSpeed.resize(this->nrOfPlayers);
+	player = new Player*[nrOfPlayers];
 	for (int i = 0; i < nrOfPlayers; i++)
 	{
 		player[i] = new Player();
@@ -323,10 +323,7 @@ bool GunGameState::render()
 	{
 		currentAnimSpeed[pSpd]= player[pSpd]->getAnimSpeed();
 	}
-	//currentAnimSpeed[0] = player[0]->getAnimSpeed();
-	//currentAnimSpeed[1] = player[1]->getAnimSpeed();
-	//currentAnimSpeed[2] = player[2]->getAnimSpeed();
-	//currentAnimSpeed[3] = player[3]->getAnimSpeed();
+
 
 	renderImgui();
 	System::handler->draw(ImGui::GetIO().DeltaTime, this->paused, currentAnimSpeed);
@@ -461,7 +458,7 @@ bool GunGameState::update(float deltaTime)
 				minTempObj = DirectX::XMFLOAT3(minObj.getX(), minObj.getY(), minObj.getZ());
 				maxTempObj = DirectX::XMFLOAT3(maxObj.getX(), maxObj.getY(), maxObj.getZ());
 				for (int j = 0; j < nrOfPlayers; j++) {
-					if (Intersects(minTempObj, maxTempObj, player[j]->hitbox.hitbox->getCollisionBox(), player[j]->hitbox.hitbox->getPosition()) && !player[i]->getHitStun()) {
+					if (Intersects(minTempObj, maxTempObj, player[j]->hitbox.hitbox->getCollisionBox(), player[j]->hitbox.hitbox->getPosition()) && !player[j]->getHitStun()) {
 						object[i]->addImpulse(player[j]->dir * 65 * player[j]->getWeight());
 					}
 					//if (Intersects(minTempObj, maxTempObj, player[j]->getAABB(),player[j]->getPosition())) {
