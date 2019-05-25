@@ -212,17 +212,48 @@ bool GunGameState::initailize()
 	this->object[7] = new Objects("Resources/Models/cube2.lu", btVector3(-35, 17, 0), 2,1, btVector3(10.f, 40.f, 10.f), STATIC);
 	this->object[8] = new Objects("Resources/Models/platform2.lu", btVector3(-10, 5, 0), 3, 3, btVector3(0.6f, 0.8f, 0.6f), STATIC, PLATFORM, 1);
 
+	//Background trees
 	GameObject* tree1 = new GameObject;
 	System::theModelLoader->loadGO(tree1, "Resources/Models/tree1.lu");
 	System::handler->addObject(tree1);
-	tree1->setPosition(10, 0, 2.6);
+	tree1->setPosition(10, 0, 7.6);
 	tree1->setScale(1.6, 1.6, 1.6);
-
+	tree1->setRotationRollPitchYaw(0, -1, 0);
 	GameObject* tree2 = new GameObject;
 	System::theModelLoader->loadGO(tree2, "Resources/Models/tree2.lu");
 	System::handler->addObject(tree2);
-	tree2->setPosition(0, -0.5, 20);
+	tree2->setPosition(-1, -0.5, 25);
 	tree2->setScale(0.6, 0.6, 0.6);
+	GameObject* tree3 = new GameObject;
+	System::theModelLoader->loadGO(tree3, "Resources/Models/tree3.lu");
+	System::handler->addObject(tree3);
+	tree3->setPosition(-40, 0, 25);
+	tree3->setScale(0.8, 0.8, 0.8);
+	tree3->setRotationRollPitchYaw(0, -2.5, 0);
+
+	//Background stones
+	GameObject* cliff1 = new GameObject;
+	System::theModelLoader->loadGO(cliff1, "Resources/Models/cliff1.lu");
+	System::handler->addObject(cliff1);
+	cliff1->setPosition(35, 0, 7.6);
+	cliff1->setScale(10, 10, 10);
+
+	//Trees at the border of the stage
+	GameObject* rBorderTree1 = new GameObject;
+	System::theModelLoader->loadGO(rBorderTree1, "Resources/Models/tree4.lu");
+	System::handler->addObject(rBorderTree1);
+	rBorderTree1->setPosition(30, 0.5, -2);
+	rBorderTree1->setScale(0.7, 0.7, 0.7);
+	GameObject* rBorderTree2 = new GameObject;
+	System::theModelLoader->loadGO(rBorderTree2, "Resources/Models/tree1.lu");
+	System::handler->addObject(rBorderTree2);
+	rBorderTree2->setPosition(31, 0, 2.6);
+	rBorderTree2->setScale(1.6, 1.6, 1.6);
+	rBorderTree2->setRotationRollPitchYaw(0, -0.8, 0);
+	GameObject* lBorderTree1 = new GameObject;
+	System::theModelLoader->loadGO(lBorderTree1, "Resources/Models/tree4.lu");
+	System::handler->addObject(lBorderTree1);
+	lBorderTree1->setPosition(-30, 0.5, -2);
 	
 	/*GameObject* smallStone1 = new GameObject;
 	System::theModelLoader->loadGO(smallStone1, "Resources/Models/small_stone1.lu");
@@ -232,22 +263,42 @@ bool GunGameState::initailize()
 	smallStone1->getRigidbody() = System::getphysices()->addBox(btVector3(0, 0, 0), btVector3(smallStone1->getScale().x, smallStone1->getScale().y, smallStone1->getScale().z), 10.0f, smallStone1->);
 */
 
+	//Miscellaneous objects
+	GameObject* grass1 = new GameObject;
+	System::theModelLoader->loadGO(grass1, "Resources/Models/grass1.lu");
+	System::handler->addObject(grass1);
+	grass1->setPosition(-5, 0.6, -1);
 	GameObject* grass2 = new GameObject;
 	System::theModelLoader->loadGO(grass2, "Resources/Models/grass2.lu");
 	System::handler->addObject(grass2);
-	grass2->setPosition(-5, 0.5, 1);
-	GameObject* tree3 = new GameObject;
-	System::theModelLoader->loadGO(tree3, "Resources/Models/tree3.lu");
-	System::handler->addObject(tree3);
-	tree3->setPosition(-25, 0, 25);
-	tree3->setScale(0.5, 0.5, 0.5);
-	GameObject* tree4 = new GameObject;
-	System::theModelLoader->loadGO(tree4, "Resources/Models/tree4.lu");
-	System::handler->addObject(tree4);
-	tree4->setPosition(30, 0.5, -2);
-	tree4->setScale(0.5, 0.5, 0.5);
+	grass2->setPosition(-5, 0.6, 1);
+	GameObject* grass3 = new GameObject;
+	System::theModelLoader->loadGO(grass3, "Resources/Models/grass2.lu");
+	System::handler->addObject(grass3);
+	grass3->setPosition(5, 0.6, 1);
+	GameObject* grass4 = new GameObject;
+	System::theModelLoader->loadGO(grass4, "Resources/Models/grass2.lu");
+	System::handler->addObject(grass4);
+	grass4->setPosition(8, 0.6, -1.2);
+	GameObject* grass5 = new GameObject;
+	System::theModelLoader->loadGO(grass5, "Resources/Models/grass2.lu");
+	System::handler->addObject(grass5);
+	grass5->setPosition(7.5, 0.6, -5);
+	GameObject* grass6 = new GameObject;
+	System::theModelLoader->loadGO(grass6, "Resources/Models/grass2.lu");
+	System::handler->addObject(grass6);
+	grass6->setPosition(5.3, 0.6, -6);
 
-
+	GameObject* ray1 = new GameObject;
+	System::theModelLoader->loadGO(ray1, "Resources/Models/sun_ray1.lu");
+	System::handler->addObject(ray1);
+	ray1->setPosition(0, 30, 0);
+	ray1->setRotationRollPitchYaw(0, 0, -0.5);
+	GameObject* ray2 = new GameObject;
+	System::theModelLoader->loadGO(ray2, "Resources/Models/sun_ray1.lu");
+	System::handler->addObject(ray2);
+	ray2->setPosition(15, 30, 0);
+	ray2->setRotationRollPitchYaw(0, 0, -0.5);
 
 	this->nrOfPlayers = 2;
 	this->currentAnimSpeed.resize(this->nrOfPlayers);
