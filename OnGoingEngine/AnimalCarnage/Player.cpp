@@ -672,35 +672,6 @@ void Player::update(float deltaTime, int id)
 		//	this->hitbox.time++;
 		//}
 
-		//BEAR ATTACK
-		/*if (hitbox.time > 0 && hitbox.time < hitbox.totalTime)
-		{
-			hitbox.time += 1 * deltaTime * 60;
-		}
-		if (hitbox.time >= hitbox.totalTime)
-		{
-			this->hitbox.hitbox->setPosition(this->getPosition().x, this->getPosition().y, this->getPosition().z);
-			this->hitbox.time = 0;
-		}
-		dist = 700;
-		if (((state.buttons.a && canPressPunch) || (this->hitbox.time > 0)) && (type == BEAR))
-		{
-			if (grounded) {
-				playerObj->getRigidbody()->setLinearVelocity(btVector3(playerObj->getRigidbody()->getLinearVelocity().getX() / 1.1, playerObj->getRigidbody()->getLinearVelocity().getY(), playerObj->getRigidbody()->getLinearVelocity().getZ() / 2));
-			}
-			if (hitbox.time > hitbox.totalTime / 10 && hitbox.time < hitbox.totalTime) {
-				playerObj->getRigidbody()->setLinearVelocity(btVector3(dir*20.0f, playerObj->getRigidbody()->getLinearVelocity().getY(), playerObj->getRigidbody()->getLinearVelocity().getZ()));
-			}
-
-			if (hitbox.time > hitbox.totalTime / 2)
-				this->hitbox.hitbox->move((dir*-dist * deltaTime) / hitbox.totalTime, 0, 0);
-			else
-			{
-				this->hitbox.hitbox->move((dir*dist * deltaTime) / hitbox.totalTime, 0, 0);
-			}
-			this->hitbox.time++;
-		}*/
-
 		/*if (((state.buttons.y) || (state.buttons.a)) && canPressPunch) {
 			System::getSoundManager()->playEffect("5");
 		}
@@ -794,7 +765,17 @@ void Player::update(float deltaTime, int id)
 		grounded = false;
 		groundTimer = 100;
 	}
-	//grounded = false;
+	
+	if (grounded == false) {
+		if (playerObj->getRigidbody()->getLinearVelocity().getX() > 0) {
+			animName = "jump_start";
+		}
+		else if(playerObj->getRigidbody()->getLinearVelocity().getX() <= 0) {
+			animName = "jump_falling";
+		}
+	}
+
+
 
 	//playerObj->computeAnimationMatrix(deltaTime*animSpeed);
 }
