@@ -28,7 +28,7 @@ void ModelLoader::loadAO(GameObject*& object, const char* characterName, int mip
 
 	//filename paths
 	std::string lu = ".lu";
-	std::string animations[2];
+	std::string animations[6];
 	animations[0] = "_idle";
 	animations[1] = "_run";
 	animations[2] = "_jump";
