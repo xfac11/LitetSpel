@@ -31,9 +31,13 @@ void ModelLoader::loadAO(GameObject*& object, const char* characterName, int mip
 	std::string animations[2];
 	animations[0] = "_idle";
 	animations[1] = "_run";
+	animations[2] = "_jump";
+	animations[3] = "_jump_falling";
+	animations[4] = "_jump_landing";
+	animations[5] = "_jump_start";
 	
 	std::string filePath = "";
-	for (int i = 0; i < 2; i++) //nrOfAnimations
+	for (int i = 0; i < 6; i++) //nrOfAnimations
 	{
 		filePath = characterName + animations[i] + lu;
 		reader.readFile(filePath.c_str());

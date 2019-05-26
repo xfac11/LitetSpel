@@ -288,12 +288,12 @@ bool GameObject::haveAnimation() const
 
 void GameObject::computeAnimationMatrix(float deltaTime, std::string animName) //include float to multiply timePassed to make speed of animation (den ska gå från 0 - 1)
 {
+	this->timePassed += deltaTime;
 	if (this->lastAnimation != animName)
 	{
 		this->timePassed = 0;
 		this->lastAnimation = animName;
 	}
-	this->timePassed += deltaTime;
 	if (this->timePassed >= anims[animName].getDuration())
 		this->timePassed = fmodf(this->timePassed,anims[animName].getDuration());
 
