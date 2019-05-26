@@ -282,6 +282,16 @@ void Player::update(float deltaTime, int id)
 	animName = "idle";
 	animSpeed = 1;
 
+	if (grounded == false && !canJump) {
+		if (playerObj->getRigidbody()->getLinearVelocity().getY() >= 0) {
+			animName = "jump_start";
+		}
+		else if (playerObj->getRigidbody()->getLinearVelocity().getY() < 0) {
+			animName = "jump_falling";
+		}
+	}
+
+
 	if (type == FOX)
 		canBeAnimal[0] = false;
 	if (type == BEAR)
@@ -392,8 +402,7 @@ void Player::update(float deltaTime, int id)
 			float dir = 400.0f * state.thumbSticks.leftX  * getSpeed() * getWeight();// / stickAbsL;
 			//this->playerObj->getRigidbody()->setLinearVelocity(btVector3(dir, 0, 0));
 
-			animSpeed = abs(state.thumbSticks.leftX);
-			animName = "run_cycle";
+			//animSpeed = abs(state.thumbSticks.leftX);
 
 			playerObj->getRigidbody()->applyForce(btVector3(dir, 0, 0), btVector3(0, 0, 0));
 
@@ -765,17 +774,6 @@ void Player::update(float deltaTime, int id)
 		grounded = false;
 		groundTimer = 100;
 	}
-	
-	if (grounded == false) {
-		if (playerObj->getRigidbody()->getLinearVelocity().getX() > 0) {
-			animName = "jump_start";
-		}
-		else if(playerObj->getRigidbody()->getLinearVelocity().getX() <= 0) {
-			animName = "jump_falling";
-		}
-	}
-
-
 
 	//playerObj->computeAnimationMatrix(deltaTime*animSpeed);
 }
