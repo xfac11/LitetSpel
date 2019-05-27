@@ -21,6 +21,9 @@ private:
 	XMFLOAT3 secondriktningsVector;
 	float activeTimer;
 	bool canGiveDmg;
+	int health;
+	int maxHealth;
+	float respawnTimer;
 
 public:
 	Objects();
@@ -43,5 +46,6 @@ public:
 
 	void addImpulse(float impulse);
 	bool getCanGiveDmg() const;
+	void takeDmg(int damage);
 };
 

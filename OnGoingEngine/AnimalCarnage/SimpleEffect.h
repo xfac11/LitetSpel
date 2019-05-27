@@ -23,7 +23,7 @@ private:
 	SimpleMath::Vector3* velocities;
 	Particle* particles;
 public:
-	SimpleEffect(SimpleMath::Vector3 position = SimpleMath::Vector3(), float lifeTime = 10.0f, int particleCount = 10, float maxStartSpeed = 5.0f);
+	SimpleEffect(SimpleMath::Vector3 position = SimpleMath::Vector3(), float lifeTime = 10.0f, int particleCount = 10, float maxStartSpeed = 5.0f, std::string fileName = "");
 	virtual ~SimpleEffect();
 
 	virtual void update(float deltaTime);
