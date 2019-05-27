@@ -87,7 +87,7 @@ void Transform::setMatrix(DirectX::XMMATRIX theMatrix)
 
 	//set scale
 	//DirectX::XMMATRIX temp = DirectX::XMMatrixTranslation(this->Position.x, this->Position.y, this->Position.z);
-	this->world = theMatrix; //this->world*
+	this->world = theMatrix; //this->world*z
 	//ApplyTransform();
 }
 

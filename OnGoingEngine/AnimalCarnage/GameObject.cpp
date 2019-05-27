@@ -15,7 +15,7 @@ GameObject::GameObject()
 	this->frameCounter = 0;
 	this->activeDraw = true;
 	this->hitboxJointID = -1;
-	this->hitboxJointID = 27;
+	this->hitboxJointID = 21;
 }
 
 GameObject::GameObject(Shader * shader)
@@ -32,7 +32,7 @@ GameObject::GameObject(Shader * shader)
 	//this->gotAnimation = false;
 	this->frameCounter=0;
 	this->hitboxJointID = -1;
-	this->hitboxJointID = 27;
+	this->hitboxJointID = 21;
 
 	//this->gotSkeleton = false;
 	/*this->theModel[0] = new Model;
