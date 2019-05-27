@@ -25,3 +25,8 @@ bool Button::render(bool selected)
 	System::getFontArial()->DrawString(System::getSpriteBatch(), this->text.c_str(), this->position + Vector2(300, 50), selected ? DirectX::Colors::DarkGray : DirectX::Colors::Black, 0.0f, System::getFontArial()->MeasureString(this->text.c_str()) / 2.f, Vector2::One / 4 * 3);
 	return true;
 }
+
+void Button::setText(std::string text)
+{
+	this->text = text;
+}

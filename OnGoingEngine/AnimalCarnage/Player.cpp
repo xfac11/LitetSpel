@@ -163,6 +163,8 @@ void Player::changeCharacter()
 
 	this->setAnimalType(ArrayOfAnimals[currentAnimal]);
 	System::theModelLoader->loadAO(this->playerObj, Animal::getAnimal(ArrayOfAnimals[currentAnimal]).modelPath);
+	//System::theModelLoader->loadGO(this->playerObj, Animal::getAnimal(ArrayOfAnimals[currentAnimal]).modelPath);
+
 	//if (animal.maskPath != "empty" && !this->playerObj->getModel()->hasMaskColor())
 	//	this->playerObj->setMask(animal.maskPath, 0);//change to animal.maskPath
 	//System::handler->addObject(this->playerObj);
@@ -290,18 +292,20 @@ void Player::initialize(AnimalType type, PlayerColor color)
 	System::handler->addObject(this->playerObj);
 
 	AABB aabb = playerObj->getCollisionBox();
-	btVector3 size = btVector3(1+aabb.width*2, aabb.height*2,1);
-	playerObj->getRigidbody() = System::getphysices()->addPlayer(btVector3(0, 0, 0), size, 10.0f * getWeight(),this);
+	XMFLOAT3 scale = playerObj->getScale();
+	
+	btVector3 size = btVector3(1+ aabb.width*scale.x,aabb.height*scale.y*2,1);
+	playerObj->getRigidbody() = System::getphysices()->addPlayer(btVector3(aabb.offset.x, aabb.offset.y, aabb.offset.z), size, 10.0f * getWeight(),this);
 
 	playerObj->getRigidbody()->setWorldTransform(XMMATRIX_to_btTransform(this->playerObj->getWorld()));
 	this->playerObj->setRotationRollPitchYaw(0.f,3.14f/2.f,0.f);
 
 
-	Primitives *CollisionShape;
+	/*Primitives *CollisionShape;
 	CollisionShape = new Primitives();
 	CollisionShape->Initialize(1, btVector3(0,0,0), btVector3(0, 0, 0));
 	CollisionShape->SetWorld(&this->hitbox.hitbox->getWorld());
-	System::getDebugDraw()->addPrimitives(CollisionShape);
+	System::getDebugDraw()->addPrimitives(CollisionShape);*/
 
 	playerObj->getRigidbody()->setActivationState(DISABLE_DEACTIVATION);
 	playerObj->getRigidbody()->setFriction(0.5);
@@ -316,9 +320,10 @@ void Player::update(float deltaTime, int id)
 	animName = "idle";
 	animSpeed = 1;
 
-	if (grounded == false && !canJump) {
+	if (!canJump || canPressJump == false) {
 		if (playerObj->getRigidbody()->getLinearVelocity().getY() >= 1) {
 			animName = "jump_start";
+			animSpeed = 0.9;
 		}
 		else if (playerObj->getRigidbody()->getLinearVelocity().getY() < 1) {
 			animName = "jump_falling";
@@ -531,78 +536,6 @@ void Player::update(float deltaTime, int id)
 			punching = true;
 			System::getSoundManager()->playEffect("5");
 		}
-		//switch (type && punching)
-		//{
-		//case FOX:
-		//	if (grounded) {
-		//		playerObj->getRigidbody()->setLinearVelocity(btVector3(playerObj->getRigidbody()->getLinearVelocity().getX() / 1.1, playerObj->getRigidbody()->getLinearVelocity().getY(), playerObj->getRigidbody()->getLinearVelocity().getZ() / 2));
-		//	}
-		//	canPressPunch = false;
-		//	hitTimer += 165 * deltaTime;
-		//	this->hitbox.hitbox->setPosition(this->getPosition().x + 1.5 * dir, this->getPosition().y, this->getPosition().z);
-		//	//this->hitbox.hitbox->setPosition(this->getPosition().x, this->getPosition().y, this->getPosition().z);
-		//	if (hitTimer >= 60) {
-		//		punching = false;
-		//		hitTimer = 0;
-		//	}
-		//	break;
-		//case BEAR:
-		//	if (grounded) {
-		//		playerObj->getRigidbody()->setLinearVelocity(btVector3(0, playerObj->getRigidbody()->getLinearVelocity().getY(), playerObj->getRigidbody()->getLinearVelocity().getZ() / 2));
-		//	}
-		//	canPressPunch = false;
-		//	hitTimer += 125 * deltaTime;
-		//	//this->hitbox.hitbox->setPosition(this->getPosition().x, this->getPosition().y, this->getPosition().z);
-		//	if (hitTimer > 30 && hitTimer < 50) {
-		//		playerObj->getRigidbody()->setLinearVelocity(btVector3(20 * dir, playerObj->getRigidbody()->getLinearVelocity().getY(), playerObj->getRigidbody()->getLinearVelocity().getZ() / 2));
-		//		this->hitbox.hitbox->setPosition(this->getPosition().x + 1.5 * dir, this->getPosition().y, this->getPosition().z);
-		//	}
-		//	if (hitTimer >= 60) {
-		//		punching = false;
-		//		hitTimer = 0;
-		//		playerObj->getRigidbody()->setLinearVelocity(btVector3(0, playerObj->getRigidbody()->getLinearVelocity().getY(), playerObj->getRigidbody()->getLinearVelocity().getZ() / 2));
-
-		//	}
-		//	break;
-		//case RABBIT:
-		//	if (grounded) {
-		//		playerObj->getRigidbody()->setLinearVelocity(btVector3(playerObj->getRigidbody()->getLinearVelocity().getX() / 1.01, playerObj->getRigidbody()->getLinearVelocity().getY(), playerObj->getRigidbody()->getLinearVelocity().getZ() / 2));
-		//	}
-		//	canPressPunch = false;
-		//	hitTimer += 200 * deltaTime;
-		//	this->hitbox.hitbox->setPosition(this->getPosition().x + 1.5 * dir, this->getPosition().y, this->getPosition().z);
-		//	//this->hitbox.hitbox->setPosition(this->getPosition().x, this->getPosition().y, this->getPosition().z);
-		//	if (hitTimer >= 60) {
-		//		punching = false;
-		//		hitTimer = 0;
-		//	}
-		//	break;
-		//case MOOSE:
-		//	if (grounded) {
-		//		playerObj->getRigidbody()->applyForce(btVector3(2400.0f * dir, 0.0f, 0.0f), btVector3(0.0f, 0.0f, 0.0f));
-		//	}
-		//	else {
-		//		playerObj->getRigidbody()->applyForce(btVector3(1000.0f * dir, 0.0f, 0.0f), btVector3(0.0f, 0.0f, 0.0f));
-		//	}
-		//	if (playerObj->getRigidbody()->getLinearVelocity().getX() > 20.0f) {
-		//		playerObj->getRigidbody()->setLinearVelocity(btVector3(20.0f, playerObj->getRigidbody()->getLinearVelocity().getY(), playerObj->getRigidbody()->getLinearVelocity().getZ()));
-		//	}
-		//	if (playerObj->getRigidbody()->getLinearVelocity().getX() < -20.0f) {
-		//		playerObj->getRigidbody()->setLinearVelocity(btVector3(-20.0f, playerObj->getRigidbody()->getLinearVelocity().getY(), playerObj->getRigidbody()->getLinearVelocity().getZ()));
-		//	}
-		//	canPressPunch = false;
-		//	hitTimer += 65 * deltaTime;
-		//	this->hitbox.hitbox->setPosition(this->getPosition().x + 1.5 * dir, this->getPosition().y, this->getPosition().z);
-		//	//this->hitbox.hitbox->setPosition(this->getPosition().x, this->getPosition().y, this->getPosition().z);
-		//	if (hitTimer >= 60) {
-		//		punching = false;
-		//		hitTimer = 0;
-		//	}
-		//	break;
-		//default:
-		//	break;
-		//}
-
 
 		if (punching == true && type == FOX) {
 			if (grounded) {
@@ -806,14 +739,14 @@ void Player::update(float deltaTime, int id)
 
 
 	//Fixar bug så att man inte kan hoppa på plattformar
-	groundTimer += deltaTime * 1000;
+	groundTimer += deltaTime * 2700;
 	if (groundTimer >= 100) {
 		grounded = false;
 		groundTimer = 100;
 	}
 
 	//Landing Lag
-	if (grounded == true) {
+	if (canJump == false) {
 		landingLag = true;
 	}
 	if (landingLag == true)

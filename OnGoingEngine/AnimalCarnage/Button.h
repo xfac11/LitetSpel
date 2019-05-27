@@ -21,6 +21,8 @@ public:
 	~Button();
 
 	bool render(bool selected);
+
+	void setText(std::string text);
 };
 
 #endif // !BUTTON_H
