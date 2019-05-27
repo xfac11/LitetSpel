@@ -197,7 +197,8 @@ void GameObjectHandler::draw(float deltaTime, bool isPaused, std::vector<float> 
 	}*/
 
 	////Forward
-	//back to front sorting here 
+	//back to front sorting here
+
 	this->sortBackToFront();
 	if (this->nrOfTrans > 0)
 	{

@@ -48,6 +48,23 @@ void Player::reset()
 	{
 		this->canBeAnimal[i] = true;
 	}
+	if(this->type == FOX)
+		this->canBeAnimal[0] = false;
+	if (this->type == BEAR)
+		this->canBeAnimal[1] = false;
+	if (this->type == RABBIT)
+		this->canBeAnimal[2] = false;
+	if (this->type == MOOSE)
+		this->canBeAnimal[3] = false;
+	for (int i = 0; i < 4; i++)
+	{
+		if (canBeAnimal[randomNumberArray[i]] == true)
+		{
+			nextAnimal = randomNumberArray[i];
+			break;
+		}
+	}
+
 
 }
 
@@ -121,11 +138,7 @@ void Player::setAnimalTypeAndMass(AnimalType type)
 
 void Player::changeCharacter()
 {
-	if (canBeAnimal[0] == false && canBeAnimal[1] == false && canBeAnimal[2] == false && canBeAnimal[3] == false) {
-		//RESULT SCREEN
-		System::setState(MAINMENU);
-		return;
-	}
+	
 	int noNewAnimal = true;
 	for (int i = 0; i < 4; i++) 
 	{
@@ -213,9 +226,17 @@ Player::Player()
 		canBeAnimal[i] = true;
 	}
 
+	
+
 }
 
-
+bool Player::canChange()
+{
+	if (this->canBeAnimal[0] || this->canBeAnimal[1] || this->canBeAnimal[2] || this->canBeAnimal[3])
+		return true;
+	else
+		return false;
+}
 
 Player::~Player()
 {
@@ -334,10 +355,10 @@ void Player::update(float deltaTime, int id)
 	if (this->hitStun == true) {
 		hitTime -= 165 * deltaTime;
 		string str = to_string(hitTime) + "\n";
-		if (dir = 1) {
+		if (dir == 1) {
 			this->playerObj->setRotationRollPitchYaw(this->playerObj->getRotation().x + (hitTime * 0.007f), this->playerObj->getRotation().y, this->playerObj->getRotation().z);
 		}
-		if (dir = -1) {
+		if (dir == -1) {
 			this->playerObj->setRotationRollPitchYaw(this->playerObj->getRotation().x - (hitTime * 0.007f)*2, this->playerObj->getRotation().y, this->playerObj->getRotation().z);
 		}
 
@@ -929,6 +950,10 @@ XMFLOAT3 Player::cross(const XMFLOAT3 & l, XMFLOAT3 & r)
 {
 
 	return XMFLOAT3(l.y * r.z - l.z * r.y, l.z * r.x - l.x * r.z, l.x * r.y - l.y * r.x);
+}
+void Player::setDirection(int dir)
+{
+	this->dir = dir;
 }
 float Player::getPitch(DirectX::XMVECTOR Quaternion)
 {
