@@ -23,7 +23,7 @@ private:
 	bool paused;
 	int cameraFocus;
 	int objectId;
-	btVector3 spawnPoints[4];
+	btVector3 spawnPoints[4];//for players
 	////vector for rigid body
 	//std::vector<btRigidBody*> bodies;
 	//btRigidBody* addSphere(float rad, float x, float y, float z, float mass);
@@ -42,7 +42,7 @@ private:
 		btVector3 firstSpawn;
 		int objectID;
 	};
-	ReSpawn* respawnPoints;
+	ReSpawn* respawnPoints;//for objects
 	//bool checkReset(DirectX::GamePad::State state);
 
 	GameObject* ground;
@@ -74,7 +74,7 @@ public:
 	Player* getPlayer(int id) const;
 
 	void addObject(btVector3 pos);
-	void addObject()
+	void addObject();
 	bool initPlayers(AnimalType type[], PlayerColor color[]);
 	bool initailize();
 	bool render();
