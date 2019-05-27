@@ -236,7 +236,7 @@ bool GunGameState::initPlayers(AnimalType type[], PlayerColor color[])
 		player[i]->setAnimalTypeAndMass(type[i]);
 		player[i]->setColorMask(color[i]);
 	}
-
+	reset();
 	return true;
 }
 

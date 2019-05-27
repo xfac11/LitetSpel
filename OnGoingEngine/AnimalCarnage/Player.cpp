@@ -56,6 +56,10 @@ void Player::reset()
 		this->canBeAnimal[2] = false;
 	if (this->type == MOOSE)
 		this->canBeAnimal[3] = false;
+
+
+	std::random_shuffle(std::begin(randomNumberArray), std::end(randomNumberArray));
+
 	for (int i = 0; i < 4; i++)
 	{
 		if (canBeAnimal[randomNumberArray[i]] == true)
