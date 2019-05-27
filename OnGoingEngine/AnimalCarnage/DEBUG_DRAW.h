@@ -17,6 +17,7 @@ public:
 	bool DebugDraw = true;
 	bool addPrimitives(Primitives* shape);
 	void Draw(XMMATRIX view, XMMATRIX proj);
+	bool DeletePrimitiv(Primitives* shape);
 };
 
 #endif //DEBUG_DRAW_H

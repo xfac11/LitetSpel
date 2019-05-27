@@ -162,7 +162,9 @@ void Player::changeCharacter()
 	}
 
 	this->setAnimalType(ArrayOfAnimals[currentAnimal]);
-	System::theModelLoader->loadAO(this->playerObj, Animal::getAnimal(ArrayOfAnimals[currentAnimal]).modelPath);
+	//System::theModelLoader->loadAO(this->playerObj, Animal::getAnimal(ArrayOfAnimals[currentAnimal]).modelPath);
+	System::theModelLoader->loadGO(this->playerObj, Animal::getAnimal(ArrayOfAnimals[currentAnimal]).modelPath);
+
 	//if (animal.maskPath != "empty" && !this->playerObj->getModel()->hasMaskColor())
 	//	this->playerObj->setMask(animal.maskPath, 0);//change to animal.maskPath
 	//System::handler->addObject(this->playerObj);
@@ -283,25 +285,27 @@ void Player::initialize(AnimalType type, PlayerColor color)
 	System::handler->addObject(this->hitbox.hitbox);
 
 	//loads animal
-	//System::theModelLoader->loadGO(this->playerObj, Animal::getAnimal(type).modelPath);
-	System::theModelLoader->loadAO(this->playerObj, Animal::getAnimal(type).modelPath);
+	System::theModelLoader->loadGO(this->playerObj, Animal::getAnimal(type).modelPath);
+	//System::theModelLoader->loadAO(this->playerObj, Animal::getAnimal(type).modelPath);
 	if(Animal::getAnimal(type).maskPath!="empty"&&!this->playerObj->getModel()->hasMaskColor())
 		this->playerObj->setMask(Animal::getAnimal(type).maskPath,0);//change to animal.maskPath
 	System::handler->addObject(this->playerObj);
 
 	AABB aabb = playerObj->getCollisionBox();
-	btVector3 size = btVector3(1+aabb.width*2, aabb.height*2,1);
-	playerObj->getRigidbody() = System::getphysices()->addPlayer(btVector3(0, 0, 0), size, 10.0f * getWeight(),this);
+	XMFLOAT3 scale = playerObj->getScale();
+	
+	btVector3 size = btVector3(1+ aabb.width*scale.x,aabb.height*scale.y*2,1);
+	playerObj->getRigidbody() = System::getphysices()->addPlayer(btVector3(aabb.offset.x, aabb.offset.y, aabb.offset.z), size, 10.0f * getWeight(),this);
 
 	playerObj->getRigidbody()->setWorldTransform(XMMATRIX_to_btTransform(this->playerObj->getWorld()));
 	this->playerObj->setRotationRollPitchYaw(0.f,3.14f/2.f,0.f);
 
 
-	Primitives *CollisionShape;
+	/*Primitives *CollisionShape;
 	CollisionShape = new Primitives();
 	CollisionShape->Initialize(1, btVector3(0,0,0), btVector3(0, 0, 0));
 	CollisionShape->SetWorld(&this->hitbox.hitbox->getWorld());
-	System::getDebugDraw()->addPrimitives(CollisionShape);
+	System::getDebugDraw()->addPrimitives(CollisionShape);*/
 
 	playerObj->getRigidbody()->setActivationState(DISABLE_DEACTIVATION);
 	playerObj->getRigidbody()->setFriction(0.5);
