@@ -83,6 +83,8 @@ GunGameState::GunGameState()
 	this->pauseGui = nullptr;
 	this->cameraFocus = 0;
 	this->objectId = 1;
+	this->nrOfObjects = 0;
+	this->respawnPoints = new ReSpawn[10];
 }
 
 GunGameState::~GunGameState()
@@ -97,6 +99,7 @@ GunGameState::~GunGameState()
 	delete object[6];
 	delete object[7];
 	delete object[8];
+	delete[] this->respawnPoints;
 }
 
 bool GunGameState::callbackFunc(btManifoldPoint& cp, const btCollisionObjectWrapper* obj1, int id1, int index1, const btCollisionObjectWrapper* obj2, int id2, int index2)
@@ -211,7 +214,7 @@ bool GunGameState::initailize()
 	this->object[7] = new Objects("Resources/Models/cube2.lu", btVector3(-35, 17, 0), 2,1, btVector3(10.f, 40.f, 10.f), STATIC, STONE, -1, 1, 1, false, false);
 	this->object[8] = new Objects("Resources/Models/platform2.lu", btVector3(-10, 5, 0), 3, 3, btVector3(0.6f, 0.8f, 0.6f), STATIC, PLATFORM, 1);
 
-	
+	this->nrOfObjects = 9;
 	//Background trees
 	GameObject* tree1 = new GameObject;
 	System::theModelLoader->loadGO(tree1, "Resources/Models/tree1.lu");
@@ -301,7 +304,7 @@ bool GunGameState::initailize()
 	ray2->setPosition(15, 30, 0);
 	ray2->setRotationRollPitchYaw(0, 0, -0.5);
 
-	this->nrOfPlayers = 2;
+	this->nrOfPlayers = 4;
 	this->currentAnimSpeed.resize(this->nrOfPlayers);
 	this->currentAnimName.resize(this->nrOfPlayers);
 	player = new Player*[nrOfPlayers];
@@ -314,6 +317,8 @@ bool GunGameState::initailize()
 		player[i] = new Player();
 		player[i]->initialize(FOX, RED);
 		player[i]->setRigidbodyPosition(this->spawnPoints[i].getX(), this->spawnPoints[i].getY(), this->spawnPoints[i].getZ());
+		this->player[i]->setDirection(-1);//everyone should look towards the middle
+		
 	}
 	//this->player[2]->playerObj->setRotationRollPitchYaw(0.f, 1.5*(3.14f), 0.f);
 
@@ -497,7 +502,13 @@ bool GunGameState::update(float deltaTime)
 					System::theCamera->cameraShake(0.1,DirectX::XMFLOAT3(player[j]->dir, randomNumber3, randomNumber4));
 
 					if(player[i]->getHealth() <= 0 && tempHP > 0) {
-						player[j]->changeCharacter();
+						if(player[j]->canChange())
+							player[j]->changeCharacter();
+						else
+						{
+							reset();
+							System::setState(MAINMENU);
+						}
 					}
 
 					//player[i]->setGrounded(true);
@@ -608,7 +619,6 @@ void GunGameState::reset()
 		this->player[i]->reset();
 		this->player[i]->setRigidbodyPosition(this->spawnPoints[i].getX(), this->spawnPoints[i].getY(), this->spawnPoints[i].getZ());
 	}
-
 }
 
 bool GunGameState::controllerIsConnected(int controllerPort)

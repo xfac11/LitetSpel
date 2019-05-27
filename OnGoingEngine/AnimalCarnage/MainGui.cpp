@@ -82,9 +82,9 @@ MainGui::~MainGui()
 
 bool MainGui::initialize()
 {
-	this->playButton = new Button("Start", Vector2(System::theWindow.width / 2.0F - 300, System::theWindow.height / 2.0F - 140));
-	this->optionsButton = new Button("Options", Vector2(System::theWindow.width / 2.0F - 300, System::theWindow.height / 2.0F));
-	this->quitButton = new Button("Quit", Vector2(System::theWindow.width / 2.0F - 300, System::theWindow.height / 2.0F + 140));
+	this->playButton = new Button("Start", Vector2(1920 / 2.0F - 300, 1080 / 2.0F - 140));
+	this->optionsButton = new Button("Options", Vector2(1920 / 2.0F - 300, 1080 / 2.0F));
+	this->quitButton = new Button("Quit", Vector2(1920 / 2.0F - 300, 1080 / 2.0F + 140));
 
 	this->selectedElement = playButton;
 	this->playButton->setConnectedElements(nullptr, nullptr, quitButton, optionsButton);
@@ -189,7 +189,7 @@ bool MainGui::update(float deltaTime)
 
 bool MainGui::render()
 {
-	System::getSpriteBatch()->Begin(DirectX::SpriteSortMode_Deferred, System::getCommonStates()->NonPremultiplied());
+	System::getSpriteBatch()->Begin(DirectX::SpriteSortMode_Deferred, System::getCommonStates()->NonPremultiplied(), nullptr, nullptr, nullptr, nullptr, System::getSpritebatchMatrix());
 
 	this->playButton->render(this->playButton == this->selectedElement);
 	this->optionsButton->render(this->optionsButton == this->selectedElement);

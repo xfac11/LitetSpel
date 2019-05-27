@@ -23,7 +23,7 @@ private:
 	bool paused;
 	int cameraFocus;
 	int objectId;
-	btVector3 spawnPoints[4];
+	btVector3 spawnPoints[4];//for players
 	////vector for rigid body
 	//std::vector<btRigidBody*> bodies;
 	//btRigidBody* addSphere(float rad, float x, float y, float z, float mass);
@@ -37,8 +37,12 @@ private:
 	//	sphere->getMotionState()->getWorldTransform(t);
 	//}
 	bool testColBox;
-
-
+	struct ReSpawn
+	{
+		btVector3 firstSpawn;
+		int objectID;
+	};
+	ReSpawn* respawnPoints;//for objects
 	//bool checkReset(DirectX::GamePad::State state);
 
 	GameObject* ground;
@@ -49,7 +53,7 @@ private:
 	//static void Callback(int other_arg, void * this_pointer);
 	//static void otherCall();
 	Objects * object[10];
-
+	int nrOfObjects;
 	int ObjectId;
 
 	std::vector<float>currentAnimSpeed;// = { 0,0,0,0 };
@@ -69,6 +73,8 @@ public:
 	int getNrOfPlayers() const;
 	Player* getPlayer(int id) const;
 
+	void addObject(btVector3 pos);
+	void addObject();
 	bool initPlayers(AnimalType type[], PlayerColor color[]);
 	bool initailize();
 	bool render();

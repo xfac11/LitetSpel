@@ -59,6 +59,9 @@ private:
 	int groundTimer;
 	float animSpeed;
 	string animName;
+	bool previousGrounded;
+	float landingTimer;
+	float landingLag;
 
 	bool canBeAnimal[4];
 	int randomNumberArray[4] = {0,1,2,3};
@@ -98,6 +101,7 @@ public:
 	Player();
 	~Player();
 
+	bool canChange();
 	void initialize(AnimalType type, PlayerColor color);
 	void update(float dt, int id);
 	bool updateRumble(float dt,int id);
@@ -111,7 +115,7 @@ public:
 	XMFLOAT3 normalize(XMFLOAT3 l);
 	float dot(const XMFLOAT3& l, const XMFLOAT3& r);
 	XMFLOAT3 cross(const XMFLOAT3& l, XMFLOAT3& r);
-
+	void setDirection(int dir);
 	void move(float x, float y, float z);
 	void move(XMFLOAT3 source);
 	void setPosition(float x, float y, float z);
