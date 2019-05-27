@@ -88,7 +88,36 @@ void Transform::setMatrix(DirectX::XMMATRIX theMatrix)
 	//set scale
 	//DirectX::XMMATRIX temp = DirectX::XMMatrixTranslation(this->Position.x, this->Position.y, this->Position.z);
 	this->world = theMatrix; //this->world*
-	//ApplyTransform();
+
+
+	DirectX::XMVECTOR tempQuaternion;
+	DirectX::XMVECTOR tempPosition;
+	DirectX::XMVECTOR tempScale;
+	
+
+	DirectX::XMMatrixDecompose(&tempScale, &tempQuaternion, &tempPosition, DirectX::XMMatrixTranspose(world));
+
+	DirectX::XMStoreFloat3(&this->Position, tempPosition);
+	this->Rotation.x = getRoll(tempQuaternion);
+	this->Rotation.y = getPitch(tempQuaternion);
+	this->Rotation.z = getYaw(tempQuaternion);
+	DirectX::XMStoreFloat3(&this->Scale, tempScale);
+	ApplyTransform();
+}
+
+float Transform::getPitch(DirectX::XMVECTOR Quaternion)
+{
+	return atan2(2 * (Quaternion.m128_f32[1] * Quaternion.m128_f32[2] + Quaternion.m128_f32[3] * Quaternion.m128_f32[0]), Quaternion.m128_f32[3] * Quaternion.m128_f32[3] - Quaternion.m128_f32[0] * Quaternion.m128_f32[0] - Quaternion.m128_f32[1] * Quaternion.m128_f32[1] + Quaternion.m128_f32[2] * Quaternion.m128_f32[2]);
+}
+
+float Transform::getYaw(DirectX::XMVECTOR Quaternion)
+{
+	return asin(-2 * (Quaternion.m128_f32[0] * Quaternion.m128_f32[2] - Quaternion.m128_f32[3] * Quaternion.m128_f32[1]));
+}
+
+float Transform::getRoll(DirectX::XMVECTOR Quaternion)
+{
+	return atan2(2 * (Quaternion.m128_f32[0] * Quaternion.m128_f32[1] + Quaternion.m128_f32[3] * Quaternion.m128_f32[2]), Quaternion.m128_f32[3] * Quaternion.m128_f32[3] + Quaternion.m128_f32[0] * Quaternion.m128_f32[0] - Quaternion.m128_f32[1] * Quaternion.m128_f32[1] - Quaternion.m128_f32[2] * Quaternion.m128_f32[2]);
 }
 
 

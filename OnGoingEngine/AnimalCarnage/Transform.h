@@ -9,6 +9,10 @@ private:
 	XMMATRIX world = XMMATRIX(XMMatrixIdentity());
 	void ApplyTransform();
 	btRigidBody * rigidbody;
+
+	float getPitch(DirectX::XMVECTOR Quaternion);
+	float getYaw(DirectX::XMVECTOR Quaternion);
+	float getRoll(DirectX::XMVECTOR Quaternion);
 protected:
 	XMMATRIX rotationMatrix;
 	XMFLOAT3 Position = XMFLOAT3(0.0f, 0.0f, 0.0f);
@@ -40,6 +44,7 @@ public:
 	void setRotation(float x, float y, float z, float angle);
 	void setRotationRollPitchYaw(float x, float y, float z);
 	void setMatrix(DirectX::XMMATRIX theMatrix);
+
 
 	~Transform();
 
