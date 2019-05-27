@@ -318,6 +318,9 @@ void Player::initialize(AnimalType type, PlayerColor color)
 	playerObj->getRigidbody()->setAngularFactor(btVector3(0, 0, 0));
 
 	this->setColorMask(color);
+	
+	//DRAW HITBOX
+	this->hitbox.hitbox->setActiveDraw(false);
 }
 
 void Player::update(float deltaTime, int id)
@@ -554,6 +557,8 @@ void Player::update(float deltaTime, int id)
 			//this->hitbox.hitbox->setPosition(this->getPosition().x +1.5*dir, this->getPosition().y, this->getPosition().z);
 			this->hitbox.hitbox->setMatrix(this->playerObj->getWorld()*this->playerObj->getJointPos());
 			//this->hitbox.hitbox->setPosition(this->getPosition().x, this->getPosition().y, this->getPosition().z);
+			animName = "attack";
+			animSpeed = 2.0;
 			if (hitTimer >= 60) {
 				punching = false;
 				hitTimer = 0;
@@ -565,11 +570,15 @@ void Player::update(float deltaTime, int id)
 			}
 			canPressPunch = false;
 			hitTimer += 125 * deltaTime;
+
+			animName = "attack";
+			animSpeed = 2.0;
 			//this->hitbox.hitbox->setPosition(this->getPosition().x, this->getPosition().y, this->getPosition().z);
 			if (hitTimer >30 && hitTimer < 50) {
 				playerObj->getRigidbody()->setLinearVelocity(btVector3(20*dir, playerObj->getRigidbody()->getLinearVelocity().getY(), playerObj->getRigidbody()->getLinearVelocity().getZ() / 2));
 				//this->hitbox.hitbox->setPosition(this->getPosition().x + 1.5*dir, this->getPosition().y, this->getPosition().z);
 				this->hitbox.hitbox->setMatrix(this->playerObj->getWorld()*this->playerObj->getJointPos());
+
 			}
 			if (hitTimer >= 60) {
 				punching = false;
@@ -586,6 +595,8 @@ void Player::update(float deltaTime, int id)
 			//this->hitbox.hitbox->setPosition(this->getPosition().x + 1.5*dir, this->getPosition().y, this->getPosition().z);
 			this->hitbox.hitbox->setMatrix(this->playerObj->getWorld()*this->playerObj->getJointPos());
 			//this->hitbox.hitbox->setPosition(this->getPosition().x, this->getPosition().y, this->getPosition().z);
+			animName = "attack";
+			animSpeed = 2.0;
 			if (hitTimer >= 60) {
 				punching = false;
 				hitTimer = 0;
@@ -609,6 +620,8 @@ void Player::update(float deltaTime, int id)
 			//this->hitbox.hitbox->setPosition(this->getPosition().x + 1.5*dir, this->getPosition().y, this->getPosition().z);
 			//this->hitbox.hitbox->setPosition(this->getPosition().x, this->getPosition().y, this->getPosition().z);
 			this->hitbox.hitbox->setMatrix(this->playerObj->getWorld()*this->playerObj->getJointPos());
+			animName = "attack";
+			animSpeed = 2.0;
 			if (hitTimer >= 60) {
 				punching = false;
 				hitTimer = 0;
