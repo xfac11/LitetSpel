@@ -20,6 +20,7 @@ struct AABB {
 	//XMFLOAT3 size; // HALF SIZE!
 	XMFLOAT3 Max;
 	XMFLOAT3 Min;
+	XMFLOAT3 offset;
 	float height;
 	float width;
 	float depth;
