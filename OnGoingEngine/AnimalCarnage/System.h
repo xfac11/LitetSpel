@@ -44,6 +44,16 @@
 
 using namespace DirectX;
 
+enum Resolution
+{
+	_3840x2160,
+	_2560x1440,
+	_1920x1080,
+	_1280x720,
+	_854x480,
+	_640x360
+};
+
 enum GameState {
 	MAINMENU,
 	GUNGAME
@@ -116,6 +126,7 @@ public:
 	static WindowClient getWindowArea();
 	static Skybox* skybox;
 
+	static Resolution resolution;
 	static WindowClient theWindow;
 	static ShaderManager* shaderManager;
 	static System* fusk;

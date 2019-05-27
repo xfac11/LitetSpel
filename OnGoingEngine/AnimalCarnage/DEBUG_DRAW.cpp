@@ -41,3 +41,15 @@ void DEBUG_DRAW::Draw(XMMATRIX view,XMMATRIX proj)
 		this->shapes[i]->Draw(this->shader);
 	}
 }
+
+bool DEBUG_DRAW::DeletePrimitiv(Primitives * shape)
+{
+	for (int i = 0; i < this->shapes.size(); i++)
+	{
+		if (shapes[i] == shape)
+		{
+			this->shapes.erase(this->shapes.begin() + i);
+		}
+	}
+	return false;
+}

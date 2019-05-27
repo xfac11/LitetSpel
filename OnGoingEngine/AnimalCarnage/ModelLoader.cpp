@@ -66,7 +66,6 @@ void ModelLoader::loadAO(GameObject*& object, const char* characterName, int mip
 				glowmap = System::assetMananger->GetTexture(mat.glowTexPath); //set glow texture
 				m->setGlowMap(glowmap);
 			}
-
 			
 			std::string animName(anims.animationName);
 	
@@ -79,9 +78,10 @@ void ModelLoader::loadAO(GameObject*& object, const char* characterName, int mip
 				object->setSkeleton(joints);
 				object->setNewAnimation(anims.fps, anims.duration, animName, keyframePack);//change to pack
 			}
-			object->addModel(m, mesh.hasSkeleton); //
-			if(mesh.hasBoundingBox)
+			if (mesh.hasBoundingBox)
 				object->setHalfSize(reader.getBoundingBox(0).halfSize, reader.getBoundingBox(0).pos);
+			object->addModel(m, mesh.hasSkeleton); //
+
 
 
 		}
@@ -130,16 +130,15 @@ void ModelLoader::loadAO(GameObject*& object, const char* characterName, int mip
 			if (mat.hasGlowMap)
 			{
 				shared_ptr<Texture> glowmap;
+
 				System::assetMananger->LoadGlowMap(mat.glowTexPath, mat.glowTexPath); //load texture
 				glowmap = System::assetMananger->GetTexture(mat.glowTexPath); //set glow texture
 				model->setGlowMap(glowmap);
 			}
 			System::assetMananger->LoadModel(filePath, model); //load model
-			object->addModel(System::assetMananger->GetModel(filePath), mesh.hasSkeleton); //mesh.hasSkeleton
-
 			if (mesh.hasBoundingBox)
 				object->setHalfSize(reader.getBoundingBox(0).halfSize, reader.getBoundingBox(0).pos);
-			
+			object->addModel(System::assetMananger->GetModel(filePath), mesh.hasSkeleton); //mesh.hasSkeleton			
 			vertices3D.clear();
 		}
 
@@ -200,7 +199,6 @@ void ModelLoader::loadGO(GameObject*& object, const char* filePath, int mipLevel
 		object->addModel(m, mesh.hasSkeleton); //
 		if(mesh.hasBoundingBox)
 			object->setHalfSize(reader.getBoundingBox(0).halfSize, reader.getBoundingBox(0).pos);
-		return;
 	}
 
 	
