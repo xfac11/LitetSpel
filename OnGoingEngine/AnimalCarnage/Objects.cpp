@@ -166,6 +166,8 @@ void Objects::update(float dt)
 		canGiveDmg = false;
 	}
 
+
+
 	if(this->ObjectOBJ != nullptr)
 		this->ObjectOBJ->setPosition(this->ObjectOBJ->GetPosition().x, this->ObjectOBJ->GetPosition().y + 0.57f,
 		this->ObjectOBJ->GetPosition().z);
@@ -180,6 +182,8 @@ void Objects::update(float dt)
 		//getRoll(temp) * -1
 	}
 
+
+	
 	
 	btRigidBody* rgb = this->ObjectOBJ->getRigidbody();
 	switch (type)
@@ -214,6 +218,13 @@ void Objects::update(float dt)
 			break;
 	}
 
+}
+
+void Objects::respawn()
+{
+	this->ObjectOBJ->getRigidbody()->getWorldTransform().setOrigin(btVector3(this->position1.x, this->position1.y, this->position1.z));
+	//this->health=maxHealth;
+		//this->respawnPoints[i].respawnObject->ObjectOBJ->getRigidbody()->getWorldTransform().setOrigin(this->respawnPoints[i].firstSpawn);
 }
 
 void Objects::setMovement(bool move)

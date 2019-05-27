@@ -28,16 +28,17 @@ void ModelLoader::loadAO(GameObject*& object, const char* characterName, int mip
 
 	//filename paths
 	std::string lu = ".lu";
-	std::string animations[6];
+	std::string animations[7];
 	animations[0] = "_idle";
 	animations[1] = "_run";
 	animations[2] = "_jump";
 	animations[3] = "_jump_falling";
 	animations[4] = "_jump_landing";
 	animations[5] = "_jump_start";
+	animations[6] = "_attack";
 	
 	std::string filePath = "";
-	for (int i = 0; i < 6; i++) //nrOfAnimations
+	for (int i = 0; i < 7; i++) //nrOfAnimations
 	{
 		filePath = characterName + animations[i] + lu;
 		reader.readFile(filePath.c_str());
@@ -66,7 +67,6 @@ void ModelLoader::loadAO(GameObject*& object, const char* characterName, int mip
 				glowmap = System::assetMananger->GetTexture(mat.glowTexPath); //set glow texture
 				m->setGlowMap(glowmap);
 			}
-
 			
 			std::string animName(anims.animationName);
 	
@@ -79,9 +79,10 @@ void ModelLoader::loadAO(GameObject*& object, const char* characterName, int mip
 				object->setSkeleton(joints);
 				object->setNewAnimation(anims.fps, anims.duration, animName, keyframePack);//change to pack
 			}
-			object->addModel(m, mesh.hasSkeleton); //
-			if(mesh.hasBoundingBox)
+			if (mesh.hasBoundingBox)
 				object->setHalfSize(reader.getBoundingBox(0).halfSize, reader.getBoundingBox(0).pos);
+			object->addModel(m, mesh.hasSkeleton); //
+
 
 
 		}
@@ -130,16 +131,15 @@ void ModelLoader::loadAO(GameObject*& object, const char* characterName, int mip
 			if (mat.hasGlowMap)
 			{
 				shared_ptr<Texture> glowmap;
+
 				System::assetMananger->LoadGlowMap(mat.glowTexPath, mat.glowTexPath); //load texture
 				glowmap = System::assetMananger->GetTexture(mat.glowTexPath); //set glow texture
 				model->setGlowMap(glowmap);
 			}
 			System::assetMananger->LoadModel(filePath, model); //load model
-			object->addModel(System::assetMananger->GetModel(filePath), mesh.hasSkeleton); //mesh.hasSkeleton
-
 			if (mesh.hasBoundingBox)
 				object->setHalfSize(reader.getBoundingBox(0).halfSize, reader.getBoundingBox(0).pos);
-			
+			object->addModel(System::assetMananger->GetModel(filePath), mesh.hasSkeleton); //mesh.hasSkeleton			
 			vertices3D.clear();
 		}
 
@@ -200,7 +200,6 @@ void ModelLoader::loadGO(GameObject*& object, const char* filePath, int mipLevel
 		object->addModel(m, mesh.hasSkeleton); //
 		if(mesh.hasBoundingBox)
 			object->setHalfSize(reader.getBoundingBox(0).halfSize, reader.getBoundingBox(0).pos);
-		return;
 	}
 
 	

@@ -40,9 +40,12 @@ private:
 	struct ReSpawn
 	{
 		btVector3 firstSpawn;
-		int objectID;
+		Objects* respawnObject;
+		int id;
 	};
 	ReSpawn* respawnPoints;//for objects
+	int nrOfRespawns;
+	int capOfRespawns;
 	//bool checkReset(DirectX::GamePad::State state);
 
 	GameObject* ground;
@@ -52,8 +55,9 @@ private:
 	//static GunGameState * shelf;
 	//static void Callback(int other_arg, void * this_pointer);
 	//static void otherCall();
-	Objects * object[10];
+	Objects* *objects;
 	int nrOfObjects;
+	int capOfObjects;
 	int ObjectId;
 
 	std::vector<float>currentAnimSpeed;// = { 0,0,0,0 };
@@ -65,6 +69,8 @@ private:
 	DirectX::XMFLOAT3 minTemp;
 	DirectX::XMFLOAT3 maxTemp;
 
+	void expandRespawns();
+
 public:
 	GunGameState();
 	~GunGameState();
@@ -72,9 +78,11 @@ public:
 	void pause(bool paused);
 	int getNrOfPlayers() const;
 	Player* getPlayer(int id) const;
-
-	void addObject(btVector3 pos);
-	void addObject();
+	void expandObjects();
+	void addObject(std::string filePath, btVector3 pos, int id, int friction, btVector3 size = btVector3(1, 1, 1), bool canBeDrawn=true, bool shouldRespawn = false);
+	void addObject(std::string filePath, btVector3 pos, int id, int friction,btVector3 size,OBJECTSTATE state=STATIC, OBJECTYPE type=STONE, int mipLevels=-1,bool shouldRespawn=false);
+	void addObject(std::string filePath, btVector3 pos, int id, int friction, btVector3 size = btVector3(1, 1, 1), OBJECTSTATE state = STATIC, OBJECTYPE type = STONE, bool shouldRespawn = false,int mipLevels=-1,int xRepeated=1, int yRepeated=1, bool changeOpacity=false, bool canBeDrawn=true);
+	//std::string filepath, btVector3 position, int id, int friction, btVector3 size, OBJECTSTATE state, OBJECTYPE type, int mipLevels, float x, float y, bool changeOpacity, bool activeDraw
 	bool initPlayers(AnimalType type[], PlayerColor color[]);
 	bool initailize();
 	bool render();

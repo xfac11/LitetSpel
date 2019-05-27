@@ -75,6 +75,8 @@
 
 //Objects* GunGameState::object[];
 
+
+
 GunGameState::GunGameState()
 {
 	this->testColBox = false;
@@ -84,22 +86,20 @@ GunGameState::GunGameState()
 	this->cameraFocus = 0;
 	this->objectId = 1;
 	this->nrOfObjects = 0;
-	this->respawnPoints = new ReSpawn[10];
+	this->capOfObjects = 10;
+	this->nrOfRespawns = 0;
+	this->capOfRespawns = 10;
+	this->objects = new Objects*[this->capOfObjects];
+	for (int i = 0; i < this->capOfObjects; i++)
+	{
+		this->objects[i] = nullptr;
+	}
+
 }
 
 GunGameState::~GunGameState()
 {
 	shutDown();
-	delete object[0];
-	delete object[1];
-	delete object[2];
-	delete object[3];
-	delete object[4];
-	delete object[5];
-	delete object[6];
-	delete object[7];
-	delete object[8];
-	delete[] this->respawnPoints;
 }
 
 bool GunGameState::callbackFunc(btManifoldPoint& cp, const btCollisionObjectWrapper* obj1, int id1, int index1, const btCollisionObjectWrapper* obj2, int id2, int index2)
@@ -189,6 +189,45 @@ Player * GunGameState::getPlayer(int id) const
 	return this->player[id];
 }
 
+void GunGameState::expandObjects()
+{
+	this->capOfObjects += 5;
+	Objects* *temp = new Objects*[this->capOfObjects];
+	for (int i = 0; i < this->nrOfObjects; i++)
+	{
+		temp[i] = this->objects[i];
+	}
+	delete[]this->objects;
+	this->objects = temp;
+}
+
+void GunGameState::addObject(std::string filePath, btVector3 pos, int id, int friction, btVector3 size, bool canBeDrawn, bool shouldRespawn)
+{
+	if (this->nrOfObjects == this->capOfObjects)
+		this->expandObjects();
+	this->objects[this->nrOfObjects] = new Objects(filePath, pos, id, friction, size, STATIC, STONE, -1, 1, 1, false, canBeDrawn);
+	this->nrOfObjects++;
+	
+}
+
+void GunGameState::addObject(std::string filePath, btVector3 pos, int id, int friction, btVector3 size, OBJECTSTATE state, OBJECTYPE type, int mipLevels, bool shouldRespawn)
+{
+
+	if (this->nrOfObjects == this->capOfObjects)
+		this->expandObjects();
+	this->objects[this->nrOfObjects] = new Objects(filePath, pos, id, friction, size, state, type, mipLevels);
+
+	this->nrOfObjects++;
+}
+
+void GunGameState::addObject(std::string filePath, btVector3 pos, int id, int friction, btVector3 size, OBJECTSTATE state, OBJECTYPE type, bool shouldRespawn, int mipLevels, int xRepeated, int yRepeated, bool changeOpacity, bool canBeDrawn)
+{
+	if (this->nrOfObjects == this->capOfObjects)
+		this->expandObjects();
+	this->objects[this->nrOfObjects] = new Objects(filePath, pos, id, friction, size, state, type, mipLevels, xRepeated, yRepeated, changeOpacity, canBeDrawn);
+	this->nrOfObjects++;
+}
+
 bool GunGameState::initPlayers(AnimalType type[], PlayerColor color[])
 {
 	for (int i = 0; i < nrOfPlayers; i++)
@@ -196,7 +235,7 @@ bool GunGameState::initPlayers(AnimalType type[], PlayerColor color[])
 		player[i]->setAnimalTypeAndMass(type[i]);
 		player[i]->setColorMask(color[i]);
 	}
-
+	reset();
 	return true;
 }
 
@@ -204,17 +243,32 @@ bool GunGameState::initailize()
 {
 	gContactAddedCallback = callbackFunc;
 
-	this->object[0] = new Objects("Resources/Models/small_stone1.lu", btVector3(-10, 7, 0), 4, 2, btVector3(7.5f, 7.5f, 7.5f), TRUE_DYNAMIC, PLATFORM, 1);
-	this->object[1] = new Objects("Resources/Models/small_stone2.lu", btVector3(5, 6, 0), 4, 2, btVector3(7.5f, 7.5f, 7.5f), TRUE_DYNAMIC, PLATFORM, 1);
-	this->object[2] = new Objects("Resources/Models/small_stone3.lu", btVector3(12, 6, 0), 4, 2, btVector3(7.5f, 7.5f, 7.5f), TRUE_DYNAMIC, PLATFORM, 1);
-	this->object[3] = new Objects("Resources/Models/ground.lu", btVector3(16, 0, 20), 3, 3, btVector3(100.f, 4.f, 50.f), STATIC, STONE, -1, 10000, 10000,true);
-	this->object[4] = new Objects("Resources/Models/platform1.lu", btVector3(12, 4, 0), 3,3, btVector3(1.4f, 2.8f, 1.4f), DYNAMIC, PLATFORM,1);
-	this->object[5] = new Objects("Resources/Models/platform1.lu", btVector3(5,4, 0), 3,3, btVector3(1.4f, 2.8f, 1.4f),DYNAMIC, PLATFORM,1);
-	this->object[6] = new Objects("Resources/Models/cube2.lu", btVector3(35, 17, 0), 2,1, btVector3(10.f, 40.f, 10.f), STATIC,STONE,-1,1,1,false,false);
-	this->object[7] = new Objects("Resources/Models/cube2.lu", btVector3(-35, 17, 0), 2,1, btVector3(10.f, 40.f, 10.f), STATIC, STONE, -1, 1, 1, false, false);
-	this->object[8] = new Objects("Resources/Models/platform2.lu", btVector3(-10, 5, 0), 3, 3, btVector3(0.6f, 0.8f, 0.6f), STATIC, PLATFORM, 1);
+	/*this->objects[0] = new Objects("Resources/Models/small_stone1.lu", btVector3(-10, 7, 0), 4, 2, btVector3(7.5f, 7.5f, 7.5f), TRUE_DYNAMIC, PLATFORM, 1);
+	this->objects[1] = new Objects("Resources/Models/small_stone2.lu", btVector3(5, 6, 0), 4, 2, btVector3(7.5f, 7.5f, 7.5f), TRUE_DYNAMIC, PLATFORM, 1);
+	this->objects[2] = new Objects("Resources/Models/small_stone3.lu", btVector3(12, 6, 0), 4, 2, btVector3(7.5f, 7.5f, 7.5f), TRUE_DYNAMIC, PLATFORM, 1);
+	this->objects[3] = new Objects("Resources/Models/ground.lu", btVector3(16, 0, 20), 3, 3, btVector3(100.f, 4.f, 50.f), STATIC, STONE, -1, 10000, 10000,true);
+	this->objects[4] = new Objects("Resources/Models/platform1.lu", btVector3(12, 4, 0), 3,3, btVector3(1.4f, 2.8f, 1.4f), DYNAMIC, PLATFORM,1);
+	this->objects[5] = new Objects("Resources/Models/platform1.lu", btVector3(5,4, 0), 3,3, btVector3(1.4f, 2.8f, 1.4f),DYNAMIC, PLATFORM,1);
+	this->objects[6] = new Objects("Resources/Models/cube2.lu", btVector3(35, 17, 0), 2,1, btVector3(10.f, 40.f, 10.f), STATIC,STONE,-1,1,1,false,false);
+	this->objects[7] = new Objects("Resources/Models/cube2.lu", btVector3(-35, 17, 0), 2,1, btVector3(10.f, 40.f, 10.f), STATIC, STONE, -1, 1, 1, false, false);
+	this->objects[8] = new Objects("Resources/Models/platform2.lu", btVector3(-10, 5, 0), 3, 3, btVector3(0.6f, 0.8f, 0.6f), STATIC, PLATFORM, 1);
 
-	this->nrOfObjects = 9;
+	this->nrOfObjects = 9;*/
+
+	this->addObject("Resources/Models/small_stone1.lu", btVector3(-10, 7, 0), 4, 2, btVector3(7.5f, 7.5f, 7.5f), TRUE_DYNAMIC, PLATFORM, 1,true);
+	this->addObject("Resources/Models/small_stone2.lu", btVector3(5, 6, 0), 4, 2, btVector3(7.5f, 7.5f, 7.5f), TRUE_DYNAMIC, PLATFORM, 1,true);
+	this->addObject("Resources/Models/small_stone3.lu", btVector3(12, 6, 0), 4, 2, btVector3(7.5f, 7.5f, 7.5f), TRUE_DYNAMIC, PLATFORM, 1,true);
+
+	this->addObject("Resources/Models/ground.lu", btVector3(16, 0, 20), 3, 3, btVector3(100.f, 4.f, 50.f), STATIC, STONE, false, -1, 10000, 10000, true);
+
+	this->addObject("Resources/Models/platform1.lu", btVector3(12, 4, 0), 3, 3, btVector3(1.4f, 2.8f, 1.4f), DYNAMIC, PLATFORM, 1,true);
+	this->addObject("Resources/Models/platform1.lu", btVector3(5, 4, 0), 3, 3, btVector3(1.4f, 2.8f, 1.4f), DYNAMIC, PLATFORM, 1,true);
+
+	this->addObject("Resources/Models/cube2.lu", btVector3(35, 17, 0), 2, 1, btVector3(10.f, 40.f, 10.f), STATIC, STONE,false, -1, 1, 1, false,false);
+	this->addObject("Resources/Models/cube2.lu", btVector3(-35, 17, 0), 2, 1, btVector3(10.f, 40.f, 10.f), STATIC, STONE,false, -1, 1, 1, false, false);
+
+	this->addObject("Resources/Models/platform2.lu", btVector3(-10, 5, 0), 3, 3, btVector3(0.6f, 0.8f, 0.6f), STATIC, PLATFORM, 1,true);
+
 	//Background trees
 	GameObject* tree1 = new GameObject;
 	System::theModelLoader->loadGO(tree1, "Resources/Models/tree1.lu");
@@ -461,9 +515,9 @@ bool GunGameState::update(float deltaTime)
 		return true;
 	}
 
-	for (int i = 0; i < 9; i++)
+	for (int i = 0; i < this->nrOfObjects; i++)
 	{
-		this->object[i]->update(deltaTime);
+		this->objects[i]->update(deltaTime);
 	}
 
 	for (int i = 0; i < nrOfPlayers; i++)
@@ -523,19 +577,19 @@ bool GunGameState::update(float deltaTime)
 		}
 		//Collision with Object Hitbox
 		for (int i = 0; i < 6; i++) {
-			if (object[i]->GetState() == TRUE_DYNAMIC) {
+			if (objects[i]->GetState() == TRUE_DYNAMIC) {
 				
 				btVector3 minObj;
 				btVector3 maxObj;
 
 				DirectX::XMFLOAT3 minTempObj;
 				DirectX::XMFLOAT3 maxTempObj;
-				object[i]->ObjectOBJ->getRigidbody()->getAabb(minObj, maxObj);
+				objects[i]->ObjectOBJ->getRigidbody()->getAabb(minObj, maxObj);
 				minTempObj = DirectX::XMFLOAT3(minObj.getX(), minObj.getY(), minObj.getZ());
 				maxTempObj = DirectX::XMFLOAT3(maxObj.getX(), maxObj.getY(), maxObj.getZ());
 				for (int j = 0; j < nrOfPlayers; j++) {
 					if (Intersects(minTempObj, maxTempObj, player[j]->hitbox.hitbox->getCollisionBox(), player[j]->hitbox.hitbox->getPosition()) && !player[j]->getHitStun()) {
-						object[i]->addImpulse(player[j]->dir * 65 * player[j]->getWeight());
+						objects[i]->addImpulse(player[j]->dir * 65 * player[j]->getWeight());
 					}
 					//if (Intersects(minTempObj, maxTempObj, player[j]->getAABB(),player[j]->getPosition())) {
 					//	if (/*(object[i]->getMovingSpeed().x > 0.01 || object[i]->getMovingSpeed().y > 0.01) && !player[i]->getHitStun()*/true) {
@@ -600,6 +654,11 @@ void GunGameState::shutDown()
 	delete broadphase;
 	delete world;
 */
+	for (int i = 0; i < this->nrOfObjects; i++)
+	{
+		delete this->objects[i];
+	}
+	delete[] this->objects;
 	for (int i = 0; i < nrOfPlayers; i++)
 	{
 		delete player[i];
@@ -618,6 +677,10 @@ void GunGameState::reset()
 	{
 		this->player[i]->reset();
 		this->player[i]->setRigidbodyPosition(this->spawnPoints[i].getX(), this->spawnPoints[i].getY(), this->spawnPoints[i].getZ());
+	}
+	for (int i = 0; i < this->nrOfObjects; i++)
+	{
+		this->objects[i]->respawn();
 	}
 }
 

@@ -198,8 +198,7 @@ void GameObjectHandler::draw(float deltaTime, bool isPaused, std::vector<float> 
 
 	////Forward
 	//back to front sorting here
-
-	this->sortBackToFront();
+	this->sortBackToFront();//do it every 30 frames
 	if (this->nrOfTrans > 0)
 	{
 		for (int i = 0; i < this->nrOfTrans; i++)
