@@ -23,7 +23,6 @@ DEBUG_DRAW* System::debugDraw = nullptr;
 Skybox* System::skybox = nullptr;
 SoundManager* System::soundManager = nullptr;
 WindowClient System::theWindow = { 720, 1280};
-//SimpleMath::Matrix System::matrixForSpritebatch = SimpleMath::Matrix::CreateScale(System::fusk->theWindow.height / 1080.0f) * SimpleMath::Matrix::CreateTranslation(System::theWindow.width * 0.25f, System::theWindow.height * 0.25f, 0);
 SimpleMath::Matrix System::matrixForSpritebatch = SimpleMath::Matrix::CreateTranslation(((System::theWindow.width - 1920.0f * (System::theWindow.height / 1080.0f)) * 0.5f) / (System::theWindow.height / 1080.0f), 0, 0) * SimpleMath::Matrix::CreateScale((System::theWindow.height / 1080.0f));
 Camera* System::theCamera = nullptr;
 AssetManager* System::assetMananger = nullptr;

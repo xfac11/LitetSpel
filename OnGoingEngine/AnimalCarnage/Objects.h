@@ -21,11 +21,13 @@ private:
 	XMFLOAT3 secondriktningsVector;
 	float activeTimer;
 	bool canGiveDmg;
+
 public:
 	Objects();
 	Objects(std::string filepath ,btVector3 position, int id, int friction, btVector3 size = btVector3(1,1,1), OBJECTSTATE state = STATIC, OBJECTYPE type = STONE,int mipLevels=-1, float x=1, float y=1,bool changeOpacity=false,bool activeDraw=true);
 	~Objects();
 	void update(float dt);
+	void respawn();
 	GameObject* ObjectOBJ;
 	/*GameObject* ObjectOBJPlatform;*/
 	btRigidBody * GetRigidBody() { return this->ObjectOBJ->getRigidbody(); };
