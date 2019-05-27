@@ -749,30 +749,7 @@ void Player::update(float deltaTime, int id)
 		this->playerObj->setRotationRollPitchYaw(this->playerObj->getRotation().x, facing, this->playerObj->getRotation().z);
 	}
 
-	//Landing Lag
-	if (grounded == true) {
-		landingLag = true;
-	}
-	if (landingLag == true)
-	{
-		landingTimer += 220 * deltaTime;
-
-		if (landingTimer <= 100 && canJump == true) {
-			animName = "jump_landing";
-			animSpeed = 1;
-			playerObj->getRigidbody()->setLinearVelocity(btVector3(playerObj->getRigidbody()->getLinearVelocity().getX() / 2, playerObj->getRigidbody()->getLinearVelocity().getY(), playerObj->getRigidbody()->getLinearVelocity().getZ()));
-		}
-		/*if (landingTimer >= 100 && canJump == true)
-		{
-			landingTimer = 100;
-			landingLag = false;
-		}*/
-	}
-	if (canJump == false) {
-		landingTimer = 0;
-	}
-
-	grounded = false;
+	//grounded = false;
 
 	if (isDead()) {
 		//this->playerObj->getRigidbody()->setLinearFactor(btVector3(1, 1, 0));
@@ -812,6 +789,29 @@ void Player::update(float deltaTime, int id)
 	if (groundTimer >= 100) {
 		grounded = false;
 		groundTimer = 100;
+	}
+
+	//Landing Lag
+	if (grounded == true) {
+		landingLag = true;
+	}
+	if (landingLag == true)
+	{
+		landingTimer += 220 * deltaTime;
+
+		if (landingTimer <= 100 && grounded == true) {
+			animName = "jump_landing";
+			animSpeed = 1;
+			playerObj->getRigidbody()->setLinearVelocity(btVector3(playerObj->getRigidbody()->getLinearVelocity().getX() / 2, playerObj->getRigidbody()->getLinearVelocity().getY(), playerObj->getRigidbody()->getLinearVelocity().getZ()));
+		}
+		/*if (landingTimer >= 100 && canJump == true)
+		{
+			landingTimer = 100;
+			landingLag = false;
+		}*/
+	}
+	if (canJump == false) {
+		landingTimer = 0;
 	}
 
 	previousGrounded = canJump;
