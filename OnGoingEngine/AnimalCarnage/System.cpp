@@ -22,7 +22,7 @@ Physics* System::physices = nullptr;
 DEBUG_DRAW* System::debugDraw = nullptr;
 Skybox* System::skybox = nullptr;
 SoundManager* System::soundManager = nullptr;
-WindowClient System::theWindow = { 720, 1280};
+WindowClient System::theWindow = { 1080, 1920};
 //SimpleMath::Matrix System::matrixForSpritebatch = SimpleMath::Matrix::CreateScale(System::fusk->theWindow.height / 1080.0f) * SimpleMath::Matrix::CreateTranslation(System::theWindow.width * 0.25f, System::theWindow.height * 0.25f, 0);
 SimpleMath::Matrix System::matrixForSpritebatch = SimpleMath::Matrix::CreateTranslation(((System::theWindow.width - 1920.0f * (System::theWindow.height / 1080.0f)) * 0.5f) / (System::theWindow.height / 1080.0f), 0, 0) * SimpleMath::Matrix::CreateScale((System::theWindow.height / 1080.0f));
 Camera* System::theCamera = nullptr;
@@ -751,7 +751,7 @@ void System::run()
 				QueryPerformanceCounter((LARGE_INTEGER*)&curTime);
 				//Calculate deltaTime
 				deltaTime = (curTime - prevTime) * secPerCount;
-				/*deltaTime /= 2;*/
+				//deltaTime /= 2;
 
 				update(deltaTime);				
 				render();
