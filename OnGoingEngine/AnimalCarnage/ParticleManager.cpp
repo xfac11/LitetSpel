@@ -13,9 +13,9 @@ ParticleManager::~ParticleManager()
 	}
 }
 
-void ParticleManager::addSimpleEffect(SimpleMath::Vector3 position)
+void ParticleManager::addSimpleEffect(SimpleMath::Vector3 position, std::string filename)
 {
-	SimpleEffect* newEffect = new SimpleEffect(position, 5, 10, 5);
+	SimpleEffect* newEffect = new SimpleEffect(position, 1.5, 30, 5, filename);
 	this->activeEffects.push_back(newEffect);
 }
 

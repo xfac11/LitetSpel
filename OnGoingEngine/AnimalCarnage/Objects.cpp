@@ -149,6 +149,9 @@ Objects::Objects(std::string filepath, btVector3 position,int id,int friction, b
 		this->ObjectOBJ->getRigidbody()->setRestitution(0.5);
 		this->ObjectOBJ->getRigidbody()->setGravity(btVector3(0, -20, 0));
 	}
+	this->maxHealth = 100;
+	this->health = 100;
+	this->respawnTimer = 0;
 	//this->ObjectOBJ->getRigidbody()->setAngularFactor(btVector3(0, 0, 0));
 }
 
@@ -166,6 +169,22 @@ void Objects::update(float dt)
 		canGiveDmg = false;
 	}
 
+	//Respawn when Stone is dead
+	if (this->health <= 0) {
+		if (respawnTimer <= 0) {
+			System::getParticleManager()->addSimpleEffect(DirectX::SimpleMath::Vector3(ObjectOBJ->getRigidbody()->getWorldTransform().getOrigin().getX(), ObjectOBJ->getRigidbody()->getWorldTransform().getOrigin().getY(), ObjectOBJ->getRigidbody()->getWorldTransform().getOrigin().getZ()),"rumble");
+		}
+		respawnTimer += 40 * dt;
+		this->ObjectOBJ->getRigidbody()->getWorldTransform().setOrigin(btVector3(this->position1.x, this->position1.y - 100, this->position1.z));
+
+		if (respawnTimer >= 100) {
+			respawnTimer = 0;
+			respawn();
+		}
+	}
+	if (this->health >= 100) {
+		this->health = 100;
+	}
 
 
 	if(this->ObjectOBJ != nullptr)
@@ -222,9 +241,11 @@ void Objects::update(float dt)
 
 void Objects::respawn()
 {
+	this->ObjectOBJ->getRigidbody()->setLinearVelocity(btVector3(0, 0, 0));
 	this->ObjectOBJ->getRigidbody()->getWorldTransform().setOrigin(btVector3(this->position1.x, this->position1.y, this->position1.z));
 	//this->health=maxHealth;
 		//this->respawnPoints[i].respawnObject->ObjectOBJ->getRigidbody()->getWorldTransform().setOrigin(this->respawnPoints[i].firstSpawn);
+	this->health = 100;
 }
 
 void Objects::setMovement(bool move)
@@ -267,4 +288,9 @@ void Objects::addImpulse(float impulse)
 bool Objects::getCanGiveDmg() const
 {
 	return this->canGiveDmg;
+}
+
+void Objects::takeDmg(int damage)
+{
+	this->health -= damage;
 }

@@ -1,7 +1,7 @@
 #include "SimpleEffect.h"
 #include "System.h"
 
-SimpleEffect::SimpleEffect(SimpleMath::Vector3 position, float lifeTime, int particleCount, float maxStartSpeed) : EffectBase(lifeTime)
+SimpleEffect::SimpleEffect(SimpleMath::Vector3 position, float lifeTime, int particleCount, float maxStartSpeed, std::string fileName) : EffectBase(lifeTime)
 {
 	this->particles = new Particle[particleCount];
 	this->velocities = new SimpleMath::Vector3[particleCount];
@@ -17,8 +17,8 @@ SimpleEffect::SimpleEffect(SimpleMath::Vector3 position, float lifeTime, int par
 	this->vertexBuffer.initializeDynamic(this->particles, static_cast<UINT>(particleCount), System::getDevice());
 	this->theShader = System::shaderManager->getParticleShader();
 
-	System::assetMananger->LoadTexture("splat", "splat.tga");
-	this->particleTexture = System::assetMananger->GetTexture("splat");
+	System::assetMananger->LoadTexture(fileName, fileName + ".tga");
+	this->particleTexture = System::assetMananger->GetTexture(fileName);
 
 	D3D11_SAMPLER_DESC desc;
 	ZeroMemory(&desc, sizeof(desc));
