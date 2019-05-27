@@ -315,7 +315,7 @@ bool GunGameState::initailize()
 		player[i]->initialize(FOX, RED);
 		player[i]->setRigidbodyPosition(this->spawnPoints[i].getX(), this->spawnPoints[i].getY(), this->spawnPoints[i].getZ());
 	}
-	this->player[2]->playerObj->setRotationRollPitchYaw(0.f, 1.5*(3.14f), 0.f);
+	//this->player[2]->playerObj->setRotationRollPitchYaw(0.f, 1.5*(3.14f), 0.f);
 
 	//player[1]->setRigidbodyPosition(-10,10, 0.f);
 	System::handler->initialize();
