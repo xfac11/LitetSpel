@@ -14,7 +14,8 @@ GameObject::GameObject()
 	this->timePassed = 0.f;
 	this->frameCounter = 0;
 	this->activeDraw = true;
-	//this->prevTimeIncrement = 0.f;
+	this->hitboxJointID = -1;
+	this->hitboxJointID = 27;
 }
 
 GameObject::GameObject(Shader * shader)
@@ -30,6 +31,9 @@ GameObject::GameObject(Shader * shader)
 	this->timePassed = 0.f;
 	//this->gotAnimation = false;
 	this->frameCounter=0;
+	this->hitboxJointID = -1;
+	this->hitboxJointID = 27;
+
 	//this->gotSkeleton = false;
 	/*this->theModel[0] = new Model;
 	this->theModel[0]->setShader(shader);
@@ -332,8 +336,10 @@ void GameObject::computeAnimationMatrix(float deltaTime, std::string animName) /
 
 			//this->calculatedFrames[timeStamp] = matrixPallete;
 
-			////send to model
-			//this->theModel->setMatrixPallete(this->matrixPallete);
+	
+
+			if(hitboxJointID!=-1)
+				this->hitboxJointPos = pose_global[hitboxJointID];
 			System::shaderManager->getDefShader()->setJointData(matrixPallete);
 		//}
 		//else //if the frames is already calculated
@@ -362,6 +368,10 @@ void GameObject::setSkeleton(std::vector<Luna::Joint> theJoints)
 		this->skeleton[i]=theJoints[i];
 		if (theJoints[i].parentID != -1)
 			this->skeleton[i].setParent(&this->skeleton[theJoints[i].parentID]);
+
+		if (this->skeleton[i].getName() == "name_of_joint") //get animation hitbox joint
+			this->hitboxJointID = i;
+	
 	}
 	//this->gotAnimation = true;
 	this->pose_global.resize(skeleton.size());
@@ -413,4 +423,9 @@ bool GameObject::checkIfAnimExist(std::string animName)
 	if (anims.find(animName)!=anims.end())
 		result = true;
 	return result;
+}
+
+DirectX::XMMATRIX GameObject::getJointPos() const
+{
+	return this->hitboxJointPos;
 }

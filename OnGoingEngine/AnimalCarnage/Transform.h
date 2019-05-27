@@ -39,6 +39,7 @@ public:
 	void setScale(float x, float y, float z);
 	void setRotation(float x, float y, float z, float angle);
 	void setRotationRollPitchYaw(float x, float y, float z);
+	void setMatrix(DirectX::XMMATRIX theMatrix);
 
 	~Transform();
 

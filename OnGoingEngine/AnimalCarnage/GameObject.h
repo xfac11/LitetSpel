@@ -52,6 +52,8 @@ public:
 	JointTransformation interpolate2(JointTransformation frameA, JointTransformation frameB, float progression);
 	bool checkIfAnimExist(std::string animName);
 
+	DirectX::XMMATRIX getJointPos()const;
+
 private:
 	shared_ptr<Model> theModel;
 	int cap;
@@ -65,6 +67,8 @@ private:
 	std::string lastAnimation;
 	float timePassed;
 	int frameCounter;
+	int hitboxJointID; //testing indivdual joints
+	DirectX::XMMATRIX hitboxJointPos;
 
 	std::vector<DirectX::XMMATRIX> pose_global;
 	std::vector<DirectX::XMMATRIX> matrixPallete; //to pipeline

@@ -278,6 +278,7 @@ void Player::initialize(AnimalType type, PlayerColor color)
 	//this->hitbox.hitbox->setRotation(0, 1, 0, 3.14 / 2);
 	this->hitbox.time = 0;
 	this->hitbox.totalTime = 30;
+	
 	System::theModelLoader->loadGO(this->hitbox.hitbox, "Resources/Models/cube2.lu");
 	this->hitbox.hitbox->setScale(0.5f, 0.5f, 0.5f);
 	System::handler->addObject(this->hitbox.hitbox);
@@ -389,11 +390,14 @@ void Player::update(float deltaTime, int id)
 
 
 
-	if (hitbox.time == 0)
+	/*if (hitbox.time == 0)
 	{
 		this->hitbox.hitbox->setPosition(this->getPosition().x, this->getPosition().y, this->getPosition().z);
 	}
 	this->hitbox.hitbox->setPosition(this->hitbox.hitbox->getPosition().x, this->getPosition().y, this->getPosition().z);
+	*/
+
+	this->hitbox.hitbox->setPosition(this->getPosition().x, this->getPosition().y, this->getPosition().z);
 	DirectX::GamePad::State state = System::theGamePad->GetState(id);
 	if (state.IsConnected() && !hitStun && !(getHealth() == 0 || getHealth() < 0))
 	{
@@ -524,8 +528,8 @@ void Player::update(float deltaTime, int id)
 			canPressJump = true;
 		}
 
-		
-		this->hitbox.hitbox->setPosition(this->getPosition().x, this->getPosition().y, this->getPosition().z);
+		//this->hitbox.hitbox->setMatrix(this->playerObj->getWorld()*this->playerObj->getJointPos());
+		//this->hitbox.hitbox->setPosition(this->getPosition().x, this->getPosition().y, this->getPosition().z);
 		//NEW PUNCH
 		if (state.buttons.y && canPressPunch) {
 			punching = true;
@@ -610,7 +614,8 @@ void Player::update(float deltaTime, int id)
 			}
 			canPressPunch = false;
 			hitTimer += 165 * deltaTime;
-			this->hitbox.hitbox->setPosition(this->getPosition().x +1.5*dir, this->getPosition().y, this->getPosition().z);
+			//this->hitbox.hitbox->setPosition(this->getPosition().x +1.5*dir, this->getPosition().y, this->getPosition().z);
+			this->hitbox.hitbox->setMatrix(this->playerObj->getWorld()*this->playerObj->getJointPos());
 			//this->hitbox.hitbox->setPosition(this->getPosition().x, this->getPosition().y, this->getPosition().z);
 			if (hitTimer >= 60) {
 				punching = false;
@@ -626,7 +631,8 @@ void Player::update(float deltaTime, int id)
 			//this->hitbox.hitbox->setPosition(this->getPosition().x, this->getPosition().y, this->getPosition().z);
 			if (hitTimer >30 && hitTimer < 50) {
 				playerObj->getRigidbody()->setLinearVelocity(btVector3(20*dir, playerObj->getRigidbody()->getLinearVelocity().getY(), playerObj->getRigidbody()->getLinearVelocity().getZ() / 2));
-				this->hitbox.hitbox->setPosition(this->getPosition().x + 1.5*dir, this->getPosition().y, this->getPosition().z);
+				//this->hitbox.hitbox->setPosition(this->getPosition().x + 1.5*dir, this->getPosition().y, this->getPosition().z);
+				this->hitbox.hitbox->setMatrix(this->playerObj->getWorld()*this->playerObj->getJointPos());
 			}
 			if (hitTimer >= 60) {
 				punching = false;
@@ -640,7 +646,8 @@ void Player::update(float deltaTime, int id)
 			}
 			canPressPunch = false;
 			hitTimer += 200 * deltaTime;
-			this->hitbox.hitbox->setPosition(this->getPosition().x + 1.5*dir, this->getPosition().y, this->getPosition().z);
+			//this->hitbox.hitbox->setPosition(this->getPosition().x + 1.5*dir, this->getPosition().y, this->getPosition().z);
+			this->hitbox.hitbox->setMatrix(this->playerObj->getWorld()*this->playerObj->getJointPos());
 			//this->hitbox.hitbox->setPosition(this->getPosition().x, this->getPosition().y, this->getPosition().z);
 			if (hitTimer >= 60) {
 				punching = false;
@@ -662,14 +669,16 @@ void Player::update(float deltaTime, int id)
 			}
 			canPressPunch = false;
 			hitTimer += 65 * deltaTime;
-			this->hitbox.hitbox->setPosition(this->getPosition().x + 1.5*dir, this->getPosition().y, this->getPosition().z);
+			//this->hitbox.hitbox->setPosition(this->getPosition().x + 1.5*dir, this->getPosition().y, this->getPosition().z);
 			//this->hitbox.hitbox->setPosition(this->getPosition().x, this->getPosition().y, this->getPosition().z);
+			this->hitbox.hitbox->setMatrix(this->playerObj->getWorld()*this->playerObj->getJointPos());
 			if (hitTimer >= 60) {
 				punching = false;
 				hitTimer = 0;
 			}
 		}
 
+	
 		if (!state.buttons.y && !punching) {
 			canPressPunch = true;
 		}

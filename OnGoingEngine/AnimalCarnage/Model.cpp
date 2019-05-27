@@ -229,7 +229,7 @@ void Model::drawOnlyVertex()
 	{
 		System::getDeviceContext()->PSSetShaderResources(1, 1, &this->normalMap->getTexture());
 	}*/
-	System::shaderManager->getDefShader()->setSkeleton(this->gotSkeleton);
+	//System::shaderManager->getDefShader()->setSkeleton(this->gotSkeleton);
 
 	System::getDeviceContext()->IASetVertexBuffers(0, 1, &*this->vertexBuffer.GetAddressOf(), &*vertexBuffer.getStridePtr(), &offset);
 	//	UINT offset = 0;
