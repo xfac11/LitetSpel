@@ -23,7 +23,7 @@ private:
 	bool paused;
 	int cameraFocus;
 	int objectId;
-
+	btVector3 spawnPoints[4];
 	////vector for rigid body
 	//std::vector<btRigidBody*> bodies;
 	//btRigidBody* addSphere(float rad, float x, float y, float z, float mass);
@@ -75,7 +75,7 @@ public:
 	void renderImgui();
 	bool update(float deltaTime);
 	void shutDown();
-
+	void reset();
 	bool controllerIsConnected(int controllerPort);
 
 	bool checkPause() const;

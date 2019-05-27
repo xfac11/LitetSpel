@@ -82,7 +82,6 @@ GunGameState::GunGameState()
 	this->inGameGui = nullptr;
 	this->pauseGui = nullptr;
 	this->cameraFocus = 0;
-
 	this->objectId = 1;
 }
 
@@ -202,9 +201,9 @@ bool GunGameState::initailize()
 {
 	gContactAddedCallback = callbackFunc;
 
-	this->object[0] = new Objects("Resources/Models/small_stone1.lu", btVector3(-5, 4, 0), 4, 2, btVector3(7.5f, 7.5f, 7.5f), TRUE_DYNAMIC, PLATFORM, 1);
-	this->object[1] = new Objects("Resources/Models/small_stone2.lu", btVector3(-6, 5, 0), 4, 2, btVector3(7.5f, 7.5f, 7.5f), TRUE_DYNAMIC, PLATFORM, 1);
-	this->object[2] = new Objects("Resources/Models/small_stone3.lu", btVector3(-7, 6, 0), 4, 2, btVector3(7.5f, 7.5f, 7.5f), TRUE_DYNAMIC, PLATFORM, 1);
+	this->object[0] = new Objects("Resources/Models/small_stone1.lu", btVector3(-10, 7, 0), 4, 2, btVector3(7.5f, 7.5f, 7.5f), TRUE_DYNAMIC, PLATFORM, 1);
+	this->object[1] = new Objects("Resources/Models/small_stone2.lu", btVector3(5, 6, 0), 4, 2, btVector3(7.5f, 7.5f, 7.5f), TRUE_DYNAMIC, PLATFORM, 1);
+	this->object[2] = new Objects("Resources/Models/small_stone3.lu", btVector3(12, 6, 0), 4, 2, btVector3(7.5f, 7.5f, 7.5f), TRUE_DYNAMIC, PLATFORM, 1);
 	this->object[3] = new Objects("Resources/Models/ground.lu", btVector3(16, 0, 20), 3, 3, btVector3(100.f, 4.f, 50.f), STATIC, STONE, -1, 10000, 10000,true);
 	this->object[4] = new Objects("Resources/Models/platform1.lu", btVector3(12, 4, 0), 3,3, btVector3(1.4f, 2.8f, 1.4f), DYNAMIC, PLATFORM,1);
 	this->object[5] = new Objects("Resources/Models/platform1.lu", btVector3(5,4, 0), 3,3, btVector3(1.4f, 2.8f, 1.4f),DYNAMIC, PLATFORM,1);
@@ -212,6 +211,7 @@ bool GunGameState::initailize()
 	this->object[7] = new Objects("Resources/Models/cube2.lu", btVector3(-35, 17, 0), 2,1, btVector3(10.f, 40.f, 10.f), STATIC, STONE, -1, 1, 1, false, false);
 	this->object[8] = new Objects("Resources/Models/platform2.lu", btVector3(-10, 5, 0), 3, 3, btVector3(0.6f, 0.8f, 0.6f), STATIC, PLATFORM, 1);
 
+	
 	//Background trees
 	GameObject* tree1 = new GameObject;
 	System::theModelLoader->loadGO(tree1, "Resources/Models/tree1.lu");
@@ -254,7 +254,7 @@ bool GunGameState::initailize()
 	GameObject* lBorderTree1 = new GameObject;
 	System::theModelLoader->loadGO(lBorderTree1, "Resources/Models/tree4.lu");
 	System::handler->addObject(lBorderTree1);
-	lBorderTree1->setPosition(-30, 0.5, -2);
+	lBorderTree1->setPosition(-31.7, 0.5, -2);
 	
 	/*GameObject* smallStone1 = new GameObject;
 	System::theModelLoader->loadGO(smallStone1, "Resources/Models/small_stone1.lu");
@@ -305,13 +305,19 @@ bool GunGameState::initailize()
 	this->currentAnimSpeed.resize(this->nrOfPlayers);
 	this->currentAnimName.resize(this->nrOfPlayers);
 	player = new Player*[nrOfPlayers];
+	this->spawnPoints[0] = btVector3(5, 3, 0);
+	this->spawnPoints[1] = btVector3(-5, 3, 0);
+	this->spawnPoints[2] = btVector3(15, 3, 0);
+	this->spawnPoints[3] = btVector3(-15, 3, 0);
 	for (int i = 0; i < nrOfPlayers; i++)
 	{
 		player[i] = new Player();
 		player[i]->initialize(FOX, RED);
-		player[i]->setRigidbodyPosition(0, i *10.f, 0.f);
+		player[i]->setRigidbodyPosition(this->spawnPoints[i].getX(), this->spawnPoints[i].getY(), this->spawnPoints[i].getZ());
 	}
-	
+	this->player[2]->playerObj->setRotationRollPitchYaw(0.f, 1.5*(3.14f), 0.f);
+
+	//player[1]->setRigidbodyPosition(-10,10, 0.f);
 	System::handler->initialize();
 	System::handler->setSkyboxTexture("painted_skybox2");
 	float pos[4] = {
@@ -390,7 +396,7 @@ bool GunGameState::render()
 	System::shaderManager->getParticleShader()->setCBuffers();
 	System::shaderManager->getParticleShader()->setShaders();
 	System::shaderManager->getParticleShader()->setViewProj(System::theCamera->GetViewMatrix(), System::theGraphicDevice->getProj(), DirectX::XMFLOAT4(System::theCamera->GetPosition().x, System::theCamera->GetPosition().y, System::theCamera->GetPosition().z, 1.0f));
-	System::getParticleManager()->render();
+    System::getParticleManager()->render();
 
 	System::fusk->resetShaders();
 	this->inGameGui->render();
@@ -593,6 +599,16 @@ void GunGameState::shutDown()
 	delete this->pauseGui;
 	this->inGameGui = nullptr;
 	this->pauseGui = nullptr;
+}
+
+void GunGameState::reset()
+{
+	for (int i = 0; i < nrOfPlayers; i++)
+	{
+		this->player[i]->reset();
+		this->player[i]->setRigidbodyPosition(this->spawnPoints[i].getX(), this->spawnPoints[i].getY(), this->spawnPoints[i].getZ());
+	}
+
 }
 
 bool GunGameState::controllerIsConnected(int controllerPort)

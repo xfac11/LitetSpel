@@ -41,6 +41,16 @@ int Player::getHealth() const
 	return this->health;
 }
 
+void Player::reset()
+{
+	this->health = Animal::getAnimal(this->type).maxHealh;
+	for (int i = 0; i < 4; i++)
+	{
+		this->canBeAnimal[i] = true;
+	}
+
+}
+
 void Player::takeDamage(int damage)
 {
 	this->health -= damage;
@@ -260,7 +270,7 @@ void Player::initialize(AnimalType type, PlayerColor color)
 	playerObj->getRigidbody() = System::getphysices()->addPlayer(btVector3(0, 0, 0), size, 10.0f * getWeight(),this);
 
 	playerObj->getRigidbody()->setWorldTransform(XMMATRIX_to_btTransform(this->playerObj->getWorld()));
-	this->playerObj->setRotationRollPitchYaw(0.f,3.14f/2.f,0.f);;
+	this->playerObj->setRotationRollPitchYaw(0.f,3.14f/2.f,0.f);
 
 
 	Primitives *CollisionShape;
@@ -839,7 +849,7 @@ void Player::setPosition(float x, float y, float z)
 
 void Player::setRigidbodyPosition(float x, float y, float z)
 {
-	this->playerObj->getRigidbody()->getWorldTransform().setOrigin(btVector3(x,y,x));
+	this->playerObj->getRigidbody()->getWorldTransform().setOrigin(btVector3(x,y,z));
 }
 
 void Player::setScale(float x, float y, float z)

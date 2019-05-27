@@ -82,6 +82,7 @@ public:
 	float getWeight() const;
 	int getMaxHealth() const;
 	int getHealth() const;
+	void reset();
 	void takeDamage(int damage);
 	bool isDead() const;
 	void changeCharacter();
