@@ -5,18 +5,24 @@
 #include "GuiElement.h"
 #include "Slider.h"
 #include "CheckBox.h"
+#include "Button.h"
+
+enum Resolution;
 
 class OptionsGui : public GuiBase
 {
 private:
 	GuiElement* selectedElement;
 	Slider* sliderMusic;
-	Slider* sliderSound;
+	Button* buttonResolution;
+	Resolution resolution;
+	Button* buttonConfirm;
 	CheckBox* checkBoxRumble1;
 	CheckBox* checkBoxRumble2;
 	CheckBox* checkBoxRumble3;
 	CheckBox* checkBoxRumble4;
 
+	bool sliderSelected;
 	bool pressedLastFrame;
 	bool changedLastFrame;
 	float timeSinceChanged;
@@ -24,6 +30,9 @@ private:
 	void changeSelected_Keyboard();
 	void changeSelected();
 
+	std::string getResolutionText(Resolution res);
+	void setResolution();
+	void changeResolution();
 public:
 	OptionsGui(State* myState);
 	virtual ~OptionsGui();

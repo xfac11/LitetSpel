@@ -61,24 +61,92 @@ void OptionsGui::changeSelected()
 	}
 }
 
+std::string OptionsGui::getResolutionText(Resolution res)
+{
+	switch (res)
+	{
+	case _3840x2160:
+		return "3840x2160 16:9";
+	case _2560x1440:
+		return "2560x1440 16:9";
+	case _1920x1080:
+		return "1920x1080 16:9";
+	case _1280x720:
+		return "1280x720 16:9";
+	case _854x480:
+		return "854x480 16:9";
+	case _640x360:
+		return "640x360 16:9";
+	default:
+		return "Default 16:9";
+	}
+}
+
+void OptionsGui::setResolution()
+{
+	System::resolution = this->resolution;
+	
+	switch (this->resolution)
+	{
+	case _3840x2160:
+		System::resizeWindow(3840, 2160);
+		break;
+	case _2560x1440:
+		System::resizeWindow(2560, 1440);
+		break;
+	case _1920x1080:
+		System::resizeWindow(1920, 1080);
+		break;
+	case _1280x720:
+		System::resizeWindow(1280, 720);
+		break;
+	case _854x480:
+		System::resizeWindow(854, 480);
+		break;
+	case _640x360:
+		System::resizeWindow(640, 360);
+		break;
+	default:
+		System::resizeWindow(1280, 720);
+		break;
+	}
+}
+
+void OptionsGui::changeResolution()
+{
+	int id = static_cast<int>(this->resolution) + 1;
+
+	if (id >= 7)
+	{
+		id = 0;
+	}
+
+	this->resolution = static_cast<Resolution>(id);
+}
+
 OptionsGui::OptionsGui(State * myState) : GuiBase(myState)
 {
 	this->selectedElement = nullptr;
 
 	this->sliderMusic = nullptr;
-	this->sliderSound = nullptr;
+	this->buttonConfirm = nullptr;
+	this->buttonResolution = nullptr;
 	this->checkBoxRumble1 = nullptr;
 	this->checkBoxRumble2 = nullptr;
 	this->checkBoxRumble3 = nullptr;
 	this->checkBoxRumble4 = nullptr;
 
+	this->sliderSelected = false;
 	this->pressedLastFrame = false;
+	this->changedLastFrame = false;
+	this->timeSinceChanged = 0.0f;
 }
 
 OptionsGui::~OptionsGui()
 {
 	delete this->sliderMusic;
-	delete this->sliderSound;
+	delete this->buttonConfirm;
+	delete this->buttonResolution;
 	delete this->checkBoxRumble1;
 	delete this->checkBoxRumble2;
 	delete this->checkBoxRumble3;
@@ -87,20 +155,24 @@ OptionsGui::~OptionsGui()
 
 bool OptionsGui::initialize()
 {
+	this->resolution = System::resolution;
+
 	this->sliderMusic = new Slider(100, 100, 5, SimpleMath::Vector2(1920 / 2.0F - 610 / 2, 1080 / 2.0F - 200));
-	this->sliderSound = new Slider(100, 100, 5, SimpleMath::Vector2(1920 / 2.0F - 610 / 2, 1080 / 2.0F - 100));
+	this->buttonConfirm = new Button("Confirm", SimpleMath::Vector2(1920 / 2.0F + 10, 1080 / 2.0F - 50));
+	this->buttonResolution = new Button(this->getResolutionText(System::resolution), SimpleMath::Vector2(1920 / 2.0F - 610, 1080 / 2.0F - 50));
 	this->checkBoxRumble1 = new CheckBox(true, SimpleMath::Vector2(1920 / 2.0F - 350, 1080 / 2.0F + 100));
 	this->checkBoxRumble2 = new CheckBox(true, SimpleMath::Vector2(1920 / 2.0F - 150, 1080 / 2.0F + 100));
 	this->checkBoxRumble3 = new CheckBox(true, SimpleMath::Vector2(1920 / 2.0F + 50, 1080 / 2.0F + 100));
 	this->checkBoxRumble4 = new CheckBox(true, SimpleMath::Vector2(1920 / 2.0F + 250, 1080 / 2.0F + 100));
 
 	this->selectedElement = this->sliderMusic;
-	this->sliderMusic->setConnectedElements(nullptr, nullptr, checkBoxRumble1, sliderSound);
-	this->sliderSound->setConnectedElements(nullptr, nullptr, sliderMusic, checkBoxRumble1);
-	this->checkBoxRumble1->setConnectedElements(checkBoxRumble4, checkBoxRumble2, sliderSound, sliderMusic);
-	this->checkBoxRumble2->setConnectedElements(checkBoxRumble1, checkBoxRumble3, sliderSound, sliderMusic);
-	this->checkBoxRumble3->setConnectedElements(checkBoxRumble2, checkBoxRumble4, sliderSound, sliderMusic);
-	this->checkBoxRumble4->setConnectedElements(checkBoxRumble3, checkBoxRumble1, sliderSound, sliderMusic);
+	this->sliderMusic->setConnectedElements(nullptr, nullptr, checkBoxRumble1, buttonResolution);
+	this->buttonConfirm->setConnectedElements(buttonResolution, buttonResolution, sliderMusic, checkBoxRumble3);
+	this->buttonResolution->setConnectedElements(buttonConfirm, buttonConfirm, sliderMusic, checkBoxRumble1);
+	this->checkBoxRumble1->setConnectedElements(checkBoxRumble4, checkBoxRumble2, buttonResolution, sliderMusic);
+	this->checkBoxRumble2->setConnectedElements(checkBoxRumble1, checkBoxRumble3, buttonResolution, sliderMusic);
+	this->checkBoxRumble3->setConnectedElements(checkBoxRumble2, checkBoxRumble4, buttonConfirm, sliderMusic);
+	this->checkBoxRumble4->setConnectedElements(checkBoxRumble3, checkBoxRumble1, buttonConfirm, sliderMusic);
 
 	this->sliderMusic->setValue(static_cast<int>(System::getSoundManager()->getMasterVolume() * this->sliderMusic->getMaxValue()));
 
@@ -110,7 +182,8 @@ bool OptionsGui::initialize()
 void OptionsGui::shutDown()
 {
 	delete this->sliderMusic;
-	delete this->sliderSound;
+	delete this->buttonConfirm;
+	delete this->buttonResolution;
 	delete this->checkBoxRumble1;
 	delete this->checkBoxRumble2;
 	delete this->checkBoxRumble3;
@@ -119,13 +192,17 @@ void OptionsGui::shutDown()
 	this->selectedElement = nullptr;
 
 	this->sliderMusic = nullptr;
-	this->sliderSound = nullptr;
+	this->buttonConfirm = nullptr;
+	this->buttonResolution = nullptr;
 	this->checkBoxRumble1 = nullptr;
 	this->checkBoxRumble2 = nullptr;
 	this->checkBoxRumble3 = nullptr;
 	this->checkBoxRumble4 = nullptr;
 
+	this->sliderSelected = false;
 	this->pressedLastFrame = false;
+	this->changedLastFrame = false;
+	this->timeSinceChanged = 0.0f;
 }
 
 bool OptionsGui::update(float deltaTime)
@@ -137,7 +214,24 @@ bool OptionsGui::update(float deltaTime)
 			if (this->timeSinceChanged > 0.2F)
 			{
 				this->timeSinceChanged -= 0.2F;
-				this->changeSelected_Keyboard();
+				
+				if (this->sliderSelected)
+				{
+					if (System::theKeyboard->KeyIsPressed('A'))
+					{
+						this->sliderMusic->changeValueWithStep(true);
+					}
+					else if (System::theKeyboard->KeyIsPressed('D'))
+					{
+						this->sliderMusic->changeValueWithStep(false);
+					}
+
+					System::getSoundManager()->setMasterVolume(this->sliderMusic->getValue() / static_cast<float>(this->sliderMusic->getMaxValue()));
+				}
+				else
+				{
+					this->changeSelected_Keyboard();
+				}
 			}
 
 			this->timeSinceChanged += deltaTime;
@@ -145,52 +239,65 @@ bool OptionsGui::update(float deltaTime)
 		else
 		{
 			this->timeSinceChanged = 0.0F;
-			this->changeSelected_Keyboard();
+
+			if (this->sliderSelected)
+			{
+				if (System::theKeyboard->KeyIsPressed('A'))
+				{
+					this->sliderMusic->changeValueWithStep(true);
+				}
+				else if (System::theKeyboard->KeyIsPressed('D'))
+				{
+					this->sliderMusic->changeValueWithStep(false);
+				}
+
+				System::getSoundManager()->setMasterVolume(this->sliderMusic->getValue() / static_cast<float>(this->sliderMusic->getMaxValue()));
+			}
+			else
+			{
+				this->changeSelected_Keyboard();
+			}
 		}
 
 		if (System::theKeyboard->KeyIsPressed('E'))
 		{
 			if (!this->pressedLastFrame)
 			{
-				if (this->selectedElement == this->sliderMusic)
+				if (this->sliderSelected)
 				{
-					if (this->sliderMusic->getValue() < this->sliderMusic->getMaxValue())
+					this->sliderSelected = false;
+				}
+				else
+				{
+					if (this->selectedElement == this->sliderMusic)
 					{
-						this->sliderMusic->changeValueWithStep(false);
+						this->sliderSelected = true;
 					}
-					else
+					else if (this->selectedElement == this->buttonConfirm)
 					{
-						this->sliderMusic->setValue(0);
+						this->setResolution();
 					}
-
-					System::getSoundManager()->setMasterVolume(this->sliderMusic->getValue() / static_cast<float>(this->sliderMusic->getMaxValue()));
-				}
-				else if (this->selectedElement == this->sliderSound)
-				{
-					if (this->sliderSound->getValue() < this->sliderSound->getMaxValue())
+					else if (this->selectedElement == this->buttonResolution)
 					{
-						this->sliderSound->changeValueWithStep(false);
+						this->changeResolution();
+						this->buttonResolution->setText(this->getResolutionText(this->resolution));
 					}
-					else
+					else if (this->selectedElement == this->checkBoxRumble1)
 					{
-						this->sliderSound->setValue(0);
+						this->checkBoxRumble1->setChecked(!this->checkBoxRumble1->isChecked());
 					}
-				}
-				else if (this->selectedElement == this->checkBoxRumble1)
-				{
-					this->checkBoxRumble1->setChecked(!this->checkBoxRumble1->isChecked());
-				}
-				else if (this->selectedElement == this->checkBoxRumble2)
-				{
-					this->checkBoxRumble2->setChecked(!this->checkBoxRumble2->isChecked());
-				}
-				else if (this->selectedElement == this->checkBoxRumble3)
-				{
-					this->checkBoxRumble3->setChecked(!this->checkBoxRumble3->isChecked());
-				}
-				else if (this->selectedElement == this->checkBoxRumble4)
-				{
-					this->checkBoxRumble4->setChecked(!this->checkBoxRumble4->isChecked());
+					else if (this->selectedElement == this->checkBoxRumble2)
+					{
+						this->checkBoxRumble2->setChecked(!this->checkBoxRumble2->isChecked());
+					}
+					else if (this->selectedElement == this->checkBoxRumble3)
+					{
+						this->checkBoxRumble3->setChecked(!this->checkBoxRumble3->isChecked());
+					}
+					else if (this->selectedElement == this->checkBoxRumble4)
+					{
+						this->checkBoxRumble4->setChecked(!this->checkBoxRumble4->isChecked());
+					}
 				}
 			}
 
@@ -219,53 +326,65 @@ bool OptionsGui::update(float deltaTime)
 		if (gamepadState.IsConnected())
 		{
 			System::theTracker->Update(gamepadState);
-			this->changeSelected();
 
-			if (System::theTracker->a == DirectX::GamePad::ButtonStateTracker::PRESSED)
+			if (this->sliderSelected)
 			{
-				if (this->selectedElement == this->sliderMusic)
+				if (System::theTracker->a == DirectX::GamePad::ButtonStateTracker::PRESSED)
 				{
-					if (this->sliderMusic->getValue() < this->sliderMusic->getMaxValue())
-					{
-						this->sliderMusic->changeValueWithStep(false);
-					}
-					else
-					{
-						this->sliderMusic->setValue(0);
-					}
+					this->sliderSelected = false;
 				}
-				else if (this->selectedElement == this->sliderSound)
+				else if (System::theTracker->dpadLeft == DirectX::GamePad::ButtonStateTracker::PRESSED)
 				{
-					if (this->sliderSound->getValue() < this->sliderSound->getMaxValue())
-					{
-						this->sliderSound->changeValueWithStep(false);
-					}
-					else
-					{
-						this->sliderSound->setValue(0);
-					}
+					this->sliderMusic->changeValueWithStep(true);
 				}
-				else if (this->selectedElement == this->checkBoxRumble1)
+				else if (System::theTracker->dpadRight == DirectX::GamePad::ButtonStateTracker::PRESSED)
 				{
-					this->checkBoxRumble1->setChecked(!this->checkBoxRumble1->isChecked());
+					this->sliderMusic->changeValueWithStep(false);
 				}
-				else if (this->selectedElement == this->checkBoxRumble2)
-				{
-					this->checkBoxRumble2->setChecked(!this->checkBoxRumble2->isChecked());
-				}
-				else if (this->selectedElement == this->checkBoxRumble3)
-				{
-					this->checkBoxRumble3->setChecked(!this->checkBoxRumble3->isChecked());
-				}
-				else if (this->selectedElement == this->checkBoxRumble4)
-				{
-					this->checkBoxRumble4->setChecked(!this->checkBoxRumble4->isChecked());
-				}
+
+				System::getSoundManager()->setMasterVolume(this->sliderMusic->getValue() / static_cast<float>(this->sliderMusic->getMaxValue()));
 			}
-			else if (System::theTracker->b == DirectX::GamePad::ButtonStateTracker::PRESSED)
+			else
 			{
-				MainMenu* state = dynamic_cast<MainMenu*>(this->myState);
-				state->setCurrentMenu(MAIN);
+				this->changeSelected();
+
+				if (System::theTracker->a == DirectX::GamePad::ButtonStateTracker::PRESSED)
+				{
+					if (this->selectedElement == this->sliderMusic)
+					{
+						this->sliderSelected = true;
+					}
+					else if (this->selectedElement == this->buttonConfirm)
+					{
+						this->setResolution();
+					}
+					else if (this->selectedElement == this->buttonResolution)
+					{
+						this->changeResolution();
+						this->buttonResolution->setText(this->getResolutionText(this->resolution));
+					}
+					else if (this->selectedElement == this->checkBoxRumble1)
+					{
+						this->checkBoxRumble1->setChecked(!this->checkBoxRumble1->isChecked());
+					}
+					else if (this->selectedElement == this->checkBoxRumble2)
+					{
+						this->checkBoxRumble2->setChecked(!this->checkBoxRumble2->isChecked());
+					}
+					else if (this->selectedElement == this->checkBoxRumble3)
+					{
+						this->checkBoxRumble3->setChecked(!this->checkBoxRumble3->isChecked());
+					}
+					else if (this->selectedElement == this->checkBoxRumble4)
+					{
+						this->checkBoxRumble4->setChecked(!this->checkBoxRumble4->isChecked());
+					}
+				}
+				else if (System::theTracker->b == DirectX::GamePad::ButtonStateTracker::PRESSED)
+				{
+					MainMenu* state = dynamic_cast<MainMenu*>(this->myState);
+					state->setCurrentMenu(MAIN);
+				}
 			}
 
 			break;
@@ -281,7 +400,8 @@ bool OptionsGui::render()
 	
 	System::getFontComicSans()->DrawString(System::getSpriteBatch(), "Options", DirectX::SimpleMath::Vector2(200, 200), DirectX::Colors::Black, 0.0f, DirectX::SimpleMath::Vector2::Zero, DirectX::SimpleMath::Vector2::One * 3);
 	this->sliderMusic->render(this->sliderMusic == this->selectedElement);
-	this->sliderSound->render(this->sliderSound == this->selectedElement);
+	this->buttonConfirm->render(this->buttonConfirm == this->selectedElement);
+	this->buttonResolution->render(this->buttonResolution == this->selectedElement);
 	this->checkBoxRumble1->render(this->checkBoxRumble1 == this->selectedElement);
 	this->checkBoxRumble2->render(this->checkBoxRumble2 == this->selectedElement);
 	this->checkBoxRumble3->render(this->checkBoxRumble3 == this->selectedElement);
