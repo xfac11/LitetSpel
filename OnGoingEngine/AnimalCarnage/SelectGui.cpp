@@ -24,11 +24,11 @@ SelectGui::~SelectGui()
 
 bool SelectGui::initialize()
 {
-	this->buttonStart = new Button("Start Game", Vector2(System::theWindow.width / 2.0F - 300, System::theWindow.height / 2.0F + 300));
-	this->playerSelectors[0] = new PlayerSelector(FOX, RED, Vector2(System::theWindow.width / 2.0F - 775, System::theWindow.height / 2.0F - 300));
-	this->playerSelectors[1] = new PlayerSelector(FOX, BLUE, Vector2(System::theWindow.width / 2.0F - 375, System::theWindow.height / 2.0F - 300));
-	this->playerSelectors[2] = new PlayerSelector(FOX, GREEN, Vector2(System::theWindow.width / 2.0F + 25, System::theWindow.height / 2.0F - 300));
-	this->playerSelectors[3] = new PlayerSelector(FOX, YELLOW, Vector2(System::theWindow.width / 2.0F + 425, System::theWindow.height / 2.0F - 300));
+	this->buttonStart = new Button("Start Game", Vector2(1920 / 2.0F - 300, 1080 / 2.0F + 300));
+	this->playerSelectors[0] = new PlayerSelector(FOX, RED, Vector2(1920 / 2.0F - 775, 1080 / 2.0F - 300));
+	this->playerSelectors[1] = new PlayerSelector(FOX, BLUE, Vector2(1920 / 2.0F - 375, 1080 / 2.0F - 300));
+	this->playerSelectors[2] = new PlayerSelector(FOX, GREEN, Vector2(1920 / 2.0F + 25, 1080 / 2.0F - 300));
+	this->playerSelectors[3] = new PlayerSelector(FOX, YELLOW, Vector2(1920 / 2.0F + 425, 1080 / 2.0F - 300));
 
 	this->selectedElement = buttonStart;
 	this->buttonStart->setConnectedElements(nullptr, nullptr, nullptr, nullptr);
@@ -136,7 +136,7 @@ bool SelectGui::render()
 	System::getSpriteBatch()->Begin(DirectX::SpriteSortMode_Deferred, System::getCommonStates()->NonPremultiplied(), nullptr, nullptr, nullptr, nullptr, System::getSpritebatchMatrix());
 
 	Vector2 textWidth = System::getFontArial()->MeasureString("Player Select");
-	System::getFontArial()->DrawString(System::getSpriteBatch(), "Player Select", Vector2(System::theWindow.width / 2.0F, System::theWindow.height / 2.0F - 400), DirectX::Colors::Black, 0.0f, textWidth / 2.f, Vector2::One);
+	System::getFontArial()->DrawString(System::getSpriteBatch(), "Player Select", Vector2(1920 / 2.0F, 1080 / 2.0F - 400), DirectX::Colors::Black, 0.0f, textWidth / 2.f, Vector2::One);
 	this->buttonStart->render(this->selectedElement == buttonStart);
 	this->playerSelectors[0]->render(false);
 	this->playerSelectors[1]->render(false);

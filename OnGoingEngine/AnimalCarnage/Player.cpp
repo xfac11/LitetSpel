@@ -215,6 +215,9 @@ Player::Player()
 	nextAnimal = 0;
 	animSpeed = 1;
 	animName = "idle";
+	previousGrounded = false;
+	landingTimer = 0;
+	landingLag = false;
 	
 	currentAnimal = 0;
 	ArrayOfAnimals[0] = FOX;
@@ -314,10 +317,10 @@ void Player::update(float deltaTime, int id)
 	animSpeed = 1;
 
 	if (grounded == false && !canJump) {
-		if (playerObj->getRigidbody()->getLinearVelocity().getY() >= 0) {
+		if (playerObj->getRigidbody()->getLinearVelocity().getY() >= 1) {
 			animName = "jump_start";
 		}
-		else if (playerObj->getRigidbody()->getLinearVelocity().getY() < 0) {
+		else if (playerObj->getRigidbody()->getLinearVelocity().getY() < 1) {
 			animName = "jump_falling";
 		}
 	}
@@ -767,7 +770,7 @@ void Player::update(float deltaTime, int id)
 		this->playerObj->setRotationRollPitchYaw(this->playerObj->getRotation().x, facing, this->playerObj->getRotation().z);
 	}
 
-	grounded = false;
+	//grounded = false;
 
 	if (isDead()) {
 		//this->playerObj->getRigidbody()->setLinearFactor(btVector3(1, 1, 0));
@@ -799,12 +802,40 @@ void Player::update(float deltaTime, int id)
 			playerObj->getRigidbody()->setAngularFactor(btVector3(0, 0, 0));
 		}
 	}
+
+
+
 	//Fixar bug så att man inte kan hoppa på plattformar
 	groundTimer += deltaTime * 1000;
 	if (groundTimer >= 100) {
 		grounded = false;
 		groundTimer = 100;
 	}
+
+	//Landing Lag
+	if (grounded == true) {
+		landingLag = true;
+	}
+	if (landingLag == true)
+	{
+		landingTimer += 220 * deltaTime;
+
+		if (landingTimer <= 100 && grounded == true) {
+			animName = "jump_landing";
+			animSpeed = 1;
+			playerObj->getRigidbody()->setLinearVelocity(btVector3(playerObj->getRigidbody()->getLinearVelocity().getX() / 2, playerObj->getRigidbody()->getLinearVelocity().getY(), playerObj->getRigidbody()->getLinearVelocity().getZ()));
+		}
+		/*if (landingTimer >= 100 && canJump == true)
+		{
+			landingTimer = 100;
+			landingLag = false;
+		}*/
+	}
+	if (canJump == false) {
+		landingTimer = 0;
+	}
+
+	previousGrounded = canJump;
 
 	//playerObj->computeAnimationMatrix(deltaTime*animSpeed);
 }

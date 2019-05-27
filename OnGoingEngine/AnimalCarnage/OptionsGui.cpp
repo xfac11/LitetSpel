@@ -87,12 +87,12 @@ OptionsGui::~OptionsGui()
 
 bool OptionsGui::initialize()
 {
-	this->sliderMusic = new Slider(100, 100, 5, SimpleMath::Vector2(System::theWindow.width / 2.0F - 610 / 2, System::theWindow.height / 2.0F - 200));
-	this->sliderSound = new Slider(100, 100, 5, SimpleMath::Vector2(System::theWindow.width / 2.0F - 610 / 2, System::theWindow.height / 2.0F - 100));
-	this->checkBoxRumble1 = new CheckBox(true, SimpleMath::Vector2(System::theWindow.width / 2.0F - 350, System::theWindow.height / 2.0F + 100));
-	this->checkBoxRumble2 = new CheckBox(true, SimpleMath::Vector2(System::theWindow.width / 2.0F - 150, System::theWindow.height / 2.0F + 100));
-	this->checkBoxRumble3 = new CheckBox(true, SimpleMath::Vector2(System::theWindow.width / 2.0F + 50, System::theWindow.height / 2.0F + 100));
-	this->checkBoxRumble4 = new CheckBox(true, SimpleMath::Vector2(System::theWindow.width / 2.0F + 250, System::theWindow.height / 2.0F + 100));
+	this->sliderMusic = new Slider(100, 100, 5, SimpleMath::Vector2(1920 / 2.0F - 610 / 2, 1080 / 2.0F - 200));
+	this->sliderSound = new Slider(100, 100, 5, SimpleMath::Vector2(1920 / 2.0F - 610 / 2, 1080 / 2.0F - 100));
+	this->checkBoxRumble1 = new CheckBox(true, SimpleMath::Vector2(1920 / 2.0F - 350, 1080 / 2.0F + 100));
+	this->checkBoxRumble2 = new CheckBox(true, SimpleMath::Vector2(1920 / 2.0F - 150, 1080 / 2.0F + 100));
+	this->checkBoxRumble3 = new CheckBox(true, SimpleMath::Vector2(1920 / 2.0F + 50, 1080 / 2.0F + 100));
+	this->checkBoxRumble4 = new CheckBox(true, SimpleMath::Vector2(1920 / 2.0F + 250, 1080 / 2.0F + 100));
 
 	this->selectedElement = this->sliderMusic;
 	this->sliderMusic->setConnectedElements(nullptr, nullptr, checkBoxRumble1, sliderSound);
@@ -277,7 +277,7 @@ bool OptionsGui::update(float deltaTime)
 
 bool OptionsGui::render()
 {
-	System::getSpriteBatch()->Begin(DirectX::SpriteSortMode_Deferred, System::getCommonStates()->NonPremultiplied());
+	System::getSpriteBatch()->Begin(DirectX::SpriteSortMode_Deferred, System::getCommonStates()->NonPremultiplied(), nullptr, nullptr, nullptr, nullptr, System::getSpritebatchMatrix());
 	
 	System::getFontComicSans()->DrawString(System::getSpriteBatch(), "Options", DirectX::SimpleMath::Vector2(200, 200), DirectX::Colors::Black, 0.0f, DirectX::SimpleMath::Vector2::Zero, DirectX::SimpleMath::Vector2::One * 3);
 	this->sliderMusic->render(this->sliderMusic == this->selectedElement);

@@ -378,7 +378,7 @@ bool System::initialize()
 	System::getSoundManager()->loadEffect(L"Swing.wav", "5");
 
 	shaderManager->getParticleShader()->setCamera(SimpleMath::Vector3(this->theCamera->GetUp()));
-	shaderManager->getLightShader()->setWindow(this->theWindow);
+	shaderManager->getLightShader()->setWindow(this->theWindow.width, this->theWindow.height);
 	D3D11_VIEWPORT vp;
 	ZeroMemory(&vp, sizeof(D3D11_VIEWPORT));
 	vp.Height = (float)System::fusk->theWindow.height;
@@ -613,6 +613,10 @@ void System::update(float deltaTime)
 	if (theKeyboard->KeyIsPressed('O'))
 	{
 		this->resizeWindow(theWindow.width + 10, theWindow.height);
+	}
+	if (theKeyboard->KeyIsPressed('P'))
+	{
+		this->resizeWindow(1920, 540);
 	}
 
 	//theCamera->SetRotation(theMouse->GetPos().y, 0, 0);
@@ -856,26 +860,28 @@ State * System::getCurrentState()
 
 void System::resizeWindow(int width, int height)
 {
-	System::fusk->theWindow.width = width;
-	System::fusk->theWindow.height = height;
-
-	shaderManager->getDefShader()->gBuffer.resize(System::fusk->theWindow.height, System::fusk->theWindow.width);
-	theGraphicDevice->resize(System::fusk->theWindow.width, System::fusk->theWindow.height);
-	shaderManager->getLightShader()->setWindow(System::fusk->theWindow);
-	shaderManager->getHorBlur()->resize(System::fusk->theWindow.height, System::fusk->theWindow.width);
-	shaderManager->getVerBlur()->resize(System::fusk->theWindow.height, System::fusk->theWindow.width);
+	shaderManager->getDefShader()->gBuffer.resize(height, width);
+	theGraphicDevice->resize(width, height);
+	shaderManager->getLightShader()->setWindow(width, height);
+	shaderManager->getHorBlur()->resize(height, width);
+	shaderManager->getVerBlur()->resize(height, width);
 
 	D3D11_VIEWPORT vp;
 	ZeroMemory(&vp, sizeof(D3D11_VIEWPORT));
-	vp.Height =(float) System::fusk->theWindow.height;
-	vp.Width = (float)System::fusk->theWindow.width;
+	vp.Height = static_cast<float>(height);
+	vp.Width = static_cast<float>(width);
 	vp.MinDepth = 0.0f;
 	vp.MaxDepth = 1.0f;
 	spriteBatch->SetViewport(vp);
 
-	float scale = System::fusk->theWindow.height / 1080.0f;
-	System::matrixForSpritebatch = SimpleMath::Matrix::CreateScale(scale) * SimpleMath::Matrix::CreateTranslation(System::theWindow.width * 0.5f - System::theWindow.width * scale * 0.5f, System::theWindow.height * 0.25f, 0);
-	MoveWindow(System::fusk->hwnd, 0, 0, System::fusk->theWindow.width, System::fusk->theWindow.height, true);
+	System::matrixForSpritebatch = SimpleMath::Matrix::CreateTranslation(((width - 1920.0f * (height / 1080.0f)) * 0.5f) / (height / 1080.0f) , 0, 0) * SimpleMath::Matrix::CreateScale((height / 1080.0f));
+
+	RECT rect;
+	GetWindowRect(System::fusk->hwnd, &rect);
+	MoveWindow(System::fusk->hwnd, rect.left, rect.top, width, height, true);
+
+	System::fusk->theWindow.width = width;
+	System::fusk->theWindow.height = height;
 }
 
 const SimpleMath::Matrix & System::getSpritebatchMatrix()

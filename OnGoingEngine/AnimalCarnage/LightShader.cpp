@@ -282,9 +282,10 @@ void LightShader::setTypeOfLight(int type)
 	this->perFrameCB.applyChanges(System::getDevice(), System::getDeviceContext());
 }
 
-void LightShader::setWindow(WindowClient wc)
+void LightShader::setWindow(int width, int height)
 {
-	this->windowCB.data = wc;
+	this->windowCB.data.width = width;
+	this->windowCB.data.height = height;
 	this->windowCB.applyChanges(System::getDevice(), System::getDeviceContext());
 }
 

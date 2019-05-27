@@ -59,6 +59,9 @@ private:
 	int groundTimer;
 	float animSpeed;
 	string animName;
+	bool previousGrounded;
+	float landingTimer;
+	float landingLag;
 
 	bool canBeAnimal[4];
 	int randomNumberArray[4] = {0,1,2,3};

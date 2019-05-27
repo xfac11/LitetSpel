@@ -18,7 +18,7 @@ public:
 	void renderShaderDir(int vertexCount);
 	void renderShaderPoint(int vertexCount, ID3D11DepthStencilView* view);
 	void setTypeOfLight(int type);
-	void setWindow(WindowClient wc);
+	void setWindow(int width, int height);
 private:
 
 	ConstantBuffer<WorldMatrix> worldCB;

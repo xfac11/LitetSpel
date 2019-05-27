@@ -29,7 +29,7 @@ bool GunGameGui::initialize()
 	for (int i = 0; i < this->nrOfPlayers; i++)
 	{
 		this->playerHealthBars[i] = new HealthBar(/*state->getPlayer(id)->getHealth(), state->getPlayer(id)->getMaxHealth()*/100, 100, 
-			SimpleMath::Vector2(System::theWindow.width / 2 - ((this->nrOfPlayers * 300) / 2) - (((this->nrOfPlayers - 1) * 50) / 2) + i * 350.0F, System::theWindow.height - 150.0F));
+			SimpleMath::Vector2(1920 / 2 - ((this->nrOfPlayers * 300) / 2) - (((this->nrOfPlayers - 1) * 50) / 2) + i * 350.0F, 1080 - 150.0F));
 	}
 
 	return true;
@@ -88,14 +88,14 @@ bool GunGameGui::update(float deltaTime)
 
 bool GunGameGui::render()
 {
-	System::getSpriteBatch()->Begin(DirectX::SpriteSortMode_Deferred, System::getCommonStates()->NonPremultiplied());
+	System::getSpriteBatch()->Begin(DirectX::SpriteSortMode_Deferred, System::getCommonStates()->NonPremultiplied(), nullptr, nullptr, nullptr, nullptr, System::getSpritebatchMatrix());
 	
 	GunGameState* state = static_cast<GunGameState*>(this->myState);
 	for (int i = 0; i < this->nrOfPlayers; i++)
 	{
-		System::getFontArial()->DrawString(System::getSpriteBatch(), ("Next: " + std::to_string(state->getPlayer(i)->getNextAnimal())).c_str(), SimpleMath::Vector2(System::theWindow.width / 2.0F - ((this->nrOfPlayers * 300) / 2) - (((this->nrOfPlayers - 1) * 50) / 2) + i * 350.0F, System::theWindow.height - 210.0F - 35), Colors::Black, 0.0f, DirectX::SimpleMath::Vector2::Zero, DirectX::SimpleMath::Vector2::One / 2);
+		System::getFontArial()->DrawString(System::getSpriteBatch(), ("Next: " + std::to_string(state->getPlayer(i)->getNextAnimal())).c_str(), SimpleMath::Vector2(1920 / 2.0F - ((this->nrOfPlayers * 300) / 2) - (((this->nrOfPlayers - 1) * 50) / 2) + i * 350.0F, 1080 - 210.0F - 35), Colors::Black, 0.0f, DirectX::SimpleMath::Vector2::Zero, DirectX::SimpleMath::Vector2::One / 2);
 		
-		System::getFontArial()->DrawString(System::getSpriteBatch(), ("Player " + std::to_string(i + 1)).c_str(), SimpleMath::Vector2(System::theWindow.width / 2.0F - ((this->nrOfPlayers * 300) / 2) - (((this->nrOfPlayers - 1) * 50) / 2) + i * 350.0F, System::theWindow.height - 210.0F), Colors::Black, 0.0f, DirectX::SimpleMath::Vector2::Zero, DirectX::SimpleMath::Vector2::One / 2);
+		System::getFontArial()->DrawString(System::getSpriteBatch(), ("Player " + std::to_string(i + 1)).c_str(), SimpleMath::Vector2(1920 / 2.0F - ((this->nrOfPlayers * 300) / 2) - (((this->nrOfPlayers - 1) * 50) / 2) + i * 350.0F, 1080 - 210.0F), Colors::Black, 0.0f, DirectX::SimpleMath::Vector2::Zero, DirectX::SimpleMath::Vector2::One / 2);
 		this->playerHealthBars[i]->render(false);
 	}
 
