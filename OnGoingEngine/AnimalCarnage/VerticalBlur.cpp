@@ -67,8 +67,8 @@ bool VerticalBlur::initialize(int height, int width)
 	/*float4 Normal : SV_Target0;
 	float4 TexColor : SV_Target1;
 	float4 Pos : SV_Target2;*/
-	texDesc.Width = System::getWindowArea().width;
-	texDesc.Height = System::getWindowArea().height;
+	texDesc.Width = width;
+	texDesc.Height = height;
 	texDesc.Format = DXGI_FORMAT_R16G16B16A16_FLOAT;
 	texDesc.ArraySize = 1;
 	texDesc.MipLevels = 1;
@@ -143,8 +143,8 @@ bool VerticalBlur::resize(int height, int width)
 	D3D11_RENDER_TARGET_VIEW_DESC renTarViewDesc{};
 	D3D11_SHADER_RESOURCE_VIEW_DESC shaderResViewDesc{};
 	ZeroMemory(&texDesc, sizeof(texDesc));
-	texDesc.Width = System::getWindowArea().width;
-	texDesc.Height = System::getWindowArea().height;
+	texDesc.Width = width;
+	texDesc.Height = height;
 	texDesc.Format = DXGI_FORMAT_R16G16B16A16_FLOAT;
 	texDesc.ArraySize = 1;
 	texDesc.MipLevels = 1;

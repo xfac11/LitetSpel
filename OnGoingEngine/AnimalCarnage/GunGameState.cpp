@@ -123,7 +123,7 @@ bool GunGameState::callbackFunc(btManifoldPoint& cp, const btCollisionObjectWrap
 					((Player*)obj2->getCollisionObject()->getUserPointer())->takeDamage(25);
 					((Player*)obj2->getCollisionObject()->getUserPointer())->setHitStun(true);
 
-					System::getParticleManager()->addSimpleEffect(((Player*)obj2->getCollisionObject()->getUserPointer())->getPosition(),"splat");
+					System::getParticleManager()->addSimpleEffect(((Player*)obj2->getCollisionObject()->getUserPointer())->getPosition(),1.0f,"splat");
 
 					int randomNumber = (rand() % 4) + 0;
 					System::getSoundManager()->playEffect(to_string(randomNumber));
@@ -539,7 +539,7 @@ bool GunGameState::update(float deltaTime)
 					int tempHP = player[i]->getHealth();
 					//TAKE DAMAGE HERE
 					player[i]->takeDamage(player[j]->getStrength());
-					System::getParticleManager()->addSimpleEffect(player[i]->getPosition(),"splat");
+					System::getParticleManager()->addSimpleEffect(player[i]->getPosition(),3.0f,"splat");
 
 					int randomNumber = (rand() % 4) + 0;
 					System::getSoundManager()->playEffect(to_string(randomNumber));
