@@ -2,6 +2,7 @@
 #include "System.h"
 #include "GunGameGui.h"
 #include "PauseGui.h"
+#include "ResultGui.h"
 
 //GunGameState* GunGameState::shelf = nullptr;
 
@@ -81,8 +82,10 @@ GunGameState::GunGameState()
 {
 	this->testColBox = false;
 	this->paused = false;
+	this->resultsShown = false;
 	this->inGameGui = nullptr;
 	this->pauseGui = nullptr;
+	this->resultGui = nullptr;
 	this->cameraFocus = 0;
 	this->objectId = 1;
 	this->nrOfObjects = 0;
@@ -123,7 +126,7 @@ bool GunGameState::callbackFunc(btManifoldPoint& cp, const btCollisionObjectWrap
 					((Player*)obj2->getCollisionObject()->getUserPointer())->takeDamage(25);
 					((Player*)obj2->getCollisionObject()->getUserPointer())->setHitStun(true);
 
-					System::getParticleManager()->addSimpleEffect(((Player*)obj2->getCollisionObject()->getUserPointer())->getPosition(),1.0f,"splat");
+					System::getParticleManager()->addSimpleEffect(((Player*)obj2->getCollisionObject()->getUserPointer())->getPosition(),"splat",1.0f);
 
 					int randomNumber = (rand() % 4) + 0;
 					System::getSoundManager()->playEffect(to_string(randomNumber));
@@ -309,7 +312,9 @@ bool GunGameState::initailize()
 	System::handler->addObject(tree1);
 	tree1->setPosition(10, 0, 7.6);
 	tree1->setScale(1.6, 1.6, 1.6);
+
 	tree1->setRotationRollPitchYaw(0, -1, 0);*/
+
 	GameObject* tree2 = new GameObject;
 	System::theModelLoader->loadGO(tree2, "Resources/Models/tree2.lu");
 	System::handler->addObject(tree2);
@@ -392,7 +397,7 @@ bool GunGameState::initailize()
 	ray2->setPosition(15, 30, 0);
 	ray2->setRotationRollPitchYaw(0, 0, -0.5);
 
-	this->nrOfPlayers = 4;
+	this->nrOfPlayers = 2;
 	this->currentAnimSpeed.resize(this->nrOfPlayers);
 	this->currentAnimName.resize(this->nrOfPlayers);
 	player = new Player*[nrOfPlayers];
@@ -465,6 +470,10 @@ bool GunGameState::initailize()
 	this->inGameGui->initialize();
 	this->pauseGui = new PauseGui(this);
 	this->pauseGui->initialize();
+	this->resultGui = new ResultGui(this);
+	this->resultGui->initialize();
+
+	System::handler->sortBackToFront();
 
 	return true;
 }
@@ -492,11 +501,19 @@ bool GunGameState::render()
     System::getParticleManager()->render();
 
 	System::fusk->resetShaders();
-	this->inGameGui->render();
 
-	if (this->paused)
+	if (this->resultsShown)
 	{
-		this->pauseGui->render();
+		this->resultGui->render();
+	}
+	else
+	{
+		this->inGameGui->render();
+
+		if (this->paused)
+		{
+			this->pauseGui->render();
+		}
 	}
 
 	return true;
@@ -543,6 +560,18 @@ void GunGameState::renderImgui()
 
 bool GunGameState::update(float deltaTime)
 {
+	if (resultsShown)
+	{
+		this->resultGui->update(deltaTime);
+		
+		if (System::getCurrentState() != this)
+		{
+			reset();
+		}
+
+		return true;
+	}
+
 	if (paused)
 	{
 		this->pauseGui->update(deltaTime);
@@ -572,7 +601,7 @@ bool GunGameState::update(float deltaTime)
 					int tempHP = player[i]->getHealth();
 					//TAKE DAMAGE HERE
 					player[i]->takeDamage(player[j]->getStrength());
-					System::getParticleManager()->addSimpleEffect(player[i]->getPosition(),3.0f,"splat");
+					System::getParticleManager()->addSimpleEffect(player[i]->getPosition(), "splat",1.0f);
 
 					int randomNumber = (rand() % 4) + 0;
 					System::getSoundManager()->playEffect(to_string(randomNumber));
@@ -594,8 +623,9 @@ bool GunGameState::update(float deltaTime)
 							player[j]->changeCharacter();
 						else
 						{
-							reset();
-							System::setState(MAINMENU);
+							this->resultsShown = true;
+							this->paused = true;
+							this->pauseGui->activateDelay();
 						}
 					}
 
@@ -711,8 +741,10 @@ void GunGameState::shutDown()
 
 	delete this->inGameGui;
 	delete this->pauseGui;
+	delete this->resultGui;
 	this->inGameGui = nullptr;
 	this->pauseGui = nullptr;
+	this->resultGui = nullptr;
 }
 
 void GunGameState::reset()
@@ -726,6 +758,9 @@ void GunGameState::reset()
 	{
 		this->objects[i]->respawn();
 	}
+
+	this->paused = false;
+	this->resultsShown = false;
 }
 
 bool GunGameState::controllerIsConnected(int controllerPort)

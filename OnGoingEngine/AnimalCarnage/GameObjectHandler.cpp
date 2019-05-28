@@ -198,7 +198,7 @@ void GameObjectHandler::draw(float deltaTime, bool isPaused, std::vector<float> 
 
 	////Forward
 	//back to front sorting here
-	this->sortBackToFront();//do it every 30 frames
+	//this->sortBackToFront();//do it every 30 frames
 	if (this->nrOfTrans > 0)
 	{
 		for (int i = 0; i < this->nrOfTrans; i++)
@@ -402,6 +402,7 @@ void GameObjectHandler::deferredRender()
 
 void GameObjectHandler::sortBackToFront()
 {
+	System::theCamera->SetPosition(0, 10, -20);//
 	DirectX::XMFLOAT3 camPos=System::theCamera->GetPosition();
 	int low = 0;
 	for (int i = 0; i < nrOfTrans; i++)

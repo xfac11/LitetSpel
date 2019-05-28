@@ -17,11 +17,11 @@ void Objects::SimplePlatformMovement(float dt)
 			else {
 				XMFLOAT3 firstVector = MULT(current, firstriktningsVector);
 				XMFLOAT3 Vector = MULT(firstVector, dt / 5);
-
-				ObjectOBJ->getRigidbody()->setLinearVelocity(btVector3(Vector.x * 50, Vector.y * 50, 0));
+				ObjectOBJ->getRigidbody()->setLinearVelocity(btVector3(Vector.x * 50, Vector.y * 0, 0));
 				/*if (type == PLATFORM && state == DYNAMIC) {
 					ObjectOBJPlatform->getRigidbody()->setLinearVelocity(btVector3(Vector.x * 50, Vector.y * 50, 0));
 				}*/
+
 
 			}
 		}
@@ -39,9 +39,11 @@ void Objects::SimplePlatformMovement(float dt)
 					ObjectOBJPlatform->getRigidbody()->setLinearVelocity(btVector3(Vector.x * 50, Vector.y * 50, 0));
 				}*/
 			}
-		}
-	}
 
+		}
+
+
+	}
 }
 Objects::Objects()
 {
@@ -202,19 +204,21 @@ void Objects::update(float dt)
 	}
 
 	//Respawn when Stone is dead
+
 	if (state == TRUE_DYNAMIC) {
+		
 		if (this->health <= 0) {
 			if (respawnTimer <= 0) {
-				System::getParticleManager()->addSimpleEffect(DirectX::SimpleMath::Vector3(ObjectOBJ->getRigidbody()->getWorldTransform().getOrigin().getX(), ObjectOBJ->getRigidbody()->getWorldTransform().getOrigin().getY(), ObjectOBJ->getRigidbody()->getWorldTransform().getOrigin().getZ()), 3.0f, "rumble");
+				System::getParticleManager()->addSimpleEffect(DirectX::SimpleMath::Vector3(ObjectOBJ->getRigidbody()->getWorldTransform().getOrigin().getX(), ObjectOBJ->getRigidbody()->getWorldTransform().getOrigin().getY(), ObjectOBJ->getRigidbody()->getWorldTransform().getOrigin().getZ()), "rumble",3.0f,1.0f,10);
 			}
 			respawnTimer += 40 * dt;
 			this->ObjectOBJ->getRigidbody()->getWorldTransform().setOrigin(btVector3(this->position1.x, this->position1.y - 100, this->position1.z));
 
-			if (respawnTimer >= 100) {
-				respawnTimer = 0;
-				respawn();
+				if (respawnTimer >= 100) {
+					respawnTimer = 0;
+					respawn();
+				}
 			}
-		}
 		if (this->health >= 100) {
 			this->health = 100;
 		}

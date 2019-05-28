@@ -10,7 +10,7 @@ public:
 	void addObject(GameObject*& gameObject);
 	//void addObject(char *file);
 	GameObject& getObject(int id);
-	
+	void sortBackToFront();
 	void draw(float deltaTime, bool isPaused, std::vector<float> playerSpeed, std::vector<string> playerName);
 	void initialize();
 	void addLight(float pos[4], float dir[4], float color[4]);
@@ -90,7 +90,5 @@ private:
 	void expandOpaqueModels();
 	void renderToTexture(float* color);
 	void deferredRender();
-	void sortBackToFront();
 };
-
 #endif // !GAMEOBJECTHANDLER_H

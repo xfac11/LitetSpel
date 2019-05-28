@@ -16,7 +16,6 @@ void ModelLoader::loadAO(GameObject*& object, const char* characterName, int mip
 		object->getModel().reset();
 	//bool modelloaded = false;
 
-
 	Luna::Reader reader;
 	Luna::Skeleton skltn;
 	std::vector<Luna::Joint> joints;
