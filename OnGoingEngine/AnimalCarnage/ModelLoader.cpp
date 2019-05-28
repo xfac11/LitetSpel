@@ -10,7 +10,7 @@ ModelLoader::~ModelLoader()
 {
 }
 
-void ModelLoader::loadAO(GameObject*& object, const char* characterName, int mipLevels) //only for character_
+void ModelLoader::loadAO(GameObject*& object, const char* characterName, std::vector<std::string> animalAnimations, int mipLevels) //only for character_
 { 
 	if (object->getModel() != nullptr)
 		object->getModel().reset();
@@ -27,23 +27,23 @@ void ModelLoader::loadAO(GameObject*& object, const char* characterName, int mip
 
 	//filename paths
 	std::string lu = ".lu";
-	std::string animations[7];
-	animations[0] = "_idle";
-	animations[1] = "_run";
-	animations[2] = "_jump";
-	animations[3] = "_jump_falling";
-	animations[4] = "_jump_landing";
-	animations[5] = "_jump_start";
-	animations[6] = "_attack";
+	//std::string animations[7];
+	//animations[0] = "_idle";
+	//animations[1] = "_run";
+	//animations[2] = "_jump";
+	//animations[3] = "_jump_falling";
+	//animations[4] = "_jump_landing";
+	//animations[5] = "_jump_start";
+	//animations[6] = "_attack";
 	
 
-	std::string initPath = characterName + animations[0] + lu;
+	std::string initPath = characterName + animalAnimations[0] + lu;
 	shared_ptr<Model> model = System::assetMananger->GetModel(initPath);
 
 	std::string filePath = "";
-	for (int i = 0; i < 7; i++) //nrOfAnimations
+	for (int i = 0; i < animalAnimations.size(); i++) //nrOfAnimations
 	{
-		filePath = characterName + animations[i] + lu;
+		filePath = characterName + animalAnimations[i] + lu;
 		reader.readFile(filePath.c_str());
 
 		mat = reader.getMaterial(0);

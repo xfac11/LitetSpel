@@ -20,6 +20,7 @@ struct AnimalDef
 	int strength;
 	const char* modelPath;
 	const char* maskPath;
+	std::vector<std::string> animalAnimations;
 };
 
 class Animal

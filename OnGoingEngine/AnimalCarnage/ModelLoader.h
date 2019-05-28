@@ -11,7 +11,7 @@ public:
 	ModelLoader();
 	~ModelLoader();
 	
-	void loadAO(GameObject*& object, const char* filePath, int mipLevels = -1);
+	void loadAO(GameObject*& object, const char* filePath, std::vector<std::string> animalAnimations, int mipLevels = -1);
 	void loadGO(GameObject*& object, const char* filePath, int mipLevels = -1);
 	//void loadModel(Model **&model, const char* filePath);
 	std::string getPath() const;
