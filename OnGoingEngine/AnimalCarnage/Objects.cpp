@@ -178,22 +178,23 @@ Objects::~Objects()
 void Objects::update(float dt)
 {
 	if (type == GRASS) {
-		ObjectOBJ->setRotationRollPitchYaw(0, 0, ObjectOBJ->getRotation().z + rotationSpeed);
+		ObjectOBJ->setRotationRollPitchYaw(0.5, 0, ObjectOBJ->getRotation().z + rotationSpeed);
 	}
 	if (ObjectOBJ->getRotation().z > (3.14/2) -0.1) {
-		ObjectOBJ->setRotationRollPitchYaw(0, 0, (3.14 / 2) -0.1);
+		ObjectOBJ->setRotationRollPitchYaw(0.5, 0, (3.14 / 2) -0.1);
 	}
 	if (ObjectOBJ->getRotation().z < -1.57079633 +0.1) {
-		ObjectOBJ->setRotationRollPitchYaw(0, 0, -1.57079633 +0.1);
+		ObjectOBJ->setRotationRollPitchYaw(0.5, 0, -1.57079633 +0.1);
 	}
 
 
 	if (ObjectOBJ->getRotation().z < 0) {
-		rotationSpeed += 0.001 + (abs(rotationSpeed)/15);
+		rotationSpeed += 0.005 /*+ (abs(rotationSpeed)/25)*/;
 	}
 	else if (ObjectOBJ->getRotation().z >= 0) {
-		rotationSpeed -= 0.001 + (abs(rotationSpeed)/15);
+		rotationSpeed -= 0.005 /*+ (abs(rotationSpeed)/25)*/;
 	}
+	rotationSpeed /= 1.05;
 
 	this->activeTimer += 7500 * dt;
 	if (activeTimer >= 100) {
