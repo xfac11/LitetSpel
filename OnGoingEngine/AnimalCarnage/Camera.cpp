@@ -201,13 +201,16 @@ void Camera::calcCamera(std::vector<DirectX::XMFLOAT3> playerPos)
 		minY = fminf(playerPos[i].y, minY);
 		maxY = fmaxf(playerPos[i].y, maxY);
 
-		medX += playerPos[i].x;
-		medY += playerPos[i].y;
+		/*medX += playerPos[i].x;
+		medY += playerPos[i].y;*/
 	}
 
-	medX /= playerPos.size();
-	medY /= playerPos.size();
+	/*medX /= playerPos.size();
+	medY /= playerPos.size();*/
 
+	medX = max + min;
+
+	medX /= 2;
 
 
 	float length = 0;
@@ -224,7 +227,7 @@ void Camera::calcCamera(std::vector<DirectX::XMFLOAT3> playerPos)
 	if (minY < maxY)
 		lengthY = (minY - maxY);
 
-	lengthY *= 1.2;
+	lengthY *= 2.2;
 
 	//Zoom compensation
 	//medY = (medY - length/4);
@@ -232,20 +235,22 @@ void Camera::calcCamera(std::vector<DirectX::XMFLOAT3> playerPos)
 	if (length > lengthY) {
 		length = lengthY;
 	}
-	length *= 0.35;
-	length -= 5;
+	//length *= 0.35;
+	length *= 0.50;
+	//length -= 5;
+	//length -= 5;
 
 
-	if (length > 20) {
-		length = 20;
+	if (length > 40) {
+		length = 40;
 	}
-	if (length < -20) {
-		length = -20;
+	if (length < -40) {
+		length = -40;
 	}
 
 	medY = minY;
 	//Zoom compensation
-	medX = medX / fmaxf(1, -length/10);
+	//medX = medX / fmaxf(1, -length/10);
 	medY = (medY - length/1.2) + (length *0.3) +1.5; 
 
 	float distanceX;
@@ -310,13 +315,13 @@ void Camera::calcCamera(std::vector<DirectX::XMFLOAT3> playerPos)
 	if (length < this->position.z) {
 		distanceZ = (this->position.z - length);
 		this->tempPosZ -= distanceZ / 12.5;
-		this->tempPosZ = this->tempPosZ - 0.65;
+		this->tempPosZ = this->tempPosZ - 0.45;
 		accelerationZ -= 0.0005;
 	}
 	else if(length > this->position.z) {
 		distanceZ = (length - this->position.z);
 		this->tempPosZ += distanceZ / 12.5;
-		this->tempPosZ = this->tempPosZ - 0.65;
+		this->tempPosZ = this->tempPosZ - 0.45;
 		accelerationZ += 0.0005;
 	}
 

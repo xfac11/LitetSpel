@@ -841,6 +841,8 @@ void GunGameState::reset()
 
 	this->paused = false;
 	this->resultsShown = false;
+
+	System::getSoundManager()->playLooped(L"Battle_Theme_One_1.0.wav");
 }
 
 bool GunGameState::controllerIsConnected(int controllerPort)
