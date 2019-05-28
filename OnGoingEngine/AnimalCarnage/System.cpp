@@ -877,6 +877,8 @@ void System::resizeWindow(int width, int height)
 	vp.MaxDepth = 1.0f;
 	spriteBatch->SetViewport(vp);
 
+	ImGui::GetIO().DisplaySize = ImVec2(static_cast<float>(width), static_cast<float>(height));
+
 	System::matrixForSpritebatch = SimpleMath::Matrix::CreateTranslation(((width - 1920.0f * (height / 1080.0f)) * 0.5f) / (height / 1080.0f) , 0, 0) * SimpleMath::Matrix::CreateScale((height / 1080.0f));
 
 	RECT rect;

@@ -158,7 +158,7 @@ bool OptionsGui::initialize()
 	this->resolution = System::resolution;
 
 	this->sliderMusic = new Slider(100, 100, 5, SimpleMath::Vector2(1920 / 2.0F - 610 / 2, 1080 / 2.0F - 200));
-	this->buttonConfirm = new Button("Confirm", SimpleMath::Vector2(1920 / 2.0F + 10, 1080 / 2.0F - 50));
+	this->buttonConfirm = new Button("Apply", SimpleMath::Vector2(1920 / 2.0F + 10, 1080 / 2.0F - 50));
 	this->buttonResolution = new Button(this->getResolutionText(System::resolution), SimpleMath::Vector2(1920 / 2.0F - 610, 1080 / 2.0F - 50));
 	this->checkBoxRumble1 = new CheckBox(true, SimpleMath::Vector2(1920 / 2.0F - 350, 1080 / 2.0F + 100));
 	this->checkBoxRumble2 = new CheckBox(true, SimpleMath::Vector2(1920 / 2.0F - 150, 1080 / 2.0F + 100));
