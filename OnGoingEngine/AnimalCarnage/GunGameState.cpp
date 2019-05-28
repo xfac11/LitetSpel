@@ -273,7 +273,6 @@ bool GunGameState::initailize()
 
 	this->addObject("Resources/Models/platform2.lu", btVector3(-10, 5, 0), 3, 3, btVector3(0.6f, 0.8f, 0.6f), STATIC, PLATFORM, 1,true);
 
-
 	this->addObject("Resources/Models/tree1.lu", btVector3(10, 0, 7.6), 0, 0, btVector3(1.6, 1.6, 1.6), BACKGROUND, PLATFORM, 1, false);
 
 	//GRASS
@@ -478,7 +477,7 @@ bool GunGameState::initailize()
 	ray2->setPosition(15, 30, 0);
 	ray2->setRotationRollPitchYaw(0, 0, -0.5);
 
-	this->nrOfPlayers = 1;
+	this->nrOfPlayers = 4;
 	this->currentAnimSpeed.resize(this->nrOfPlayers);
 	this->currentAnimName.resize(this->nrOfPlayers);
 	player = new Player*[nrOfPlayers];
@@ -769,8 +768,8 @@ bool GunGameState::update(float deltaTime)
 		for (int i = 0; i < nrOfObjects; i++) {
 			for (int j = 0; j < nrOfPlayers; j++) {
 				if (objects[i]->GetType() == GRASS) {
-					if ((((objects[i]->getPosition().x - player[j]->getPosition().x) < 2) && ((objects[i]->getPosition().x - player[j]->getPosition().x) > -2))) {
-						objects[i]->addGrassRotation(0.02, player[j]->dir);
+					if ((((objects[i]->getPosition().x - player[j]->getPosition().x) < 2) && ((objects[i]->getPosition().x - player[j]->getPosition().x) > -2)) && player[j]->getPosition().y < 2) {
+						objects[i]->addGrassRotation(0.005, player[j]->dir);
 					}
 				}
 			}
