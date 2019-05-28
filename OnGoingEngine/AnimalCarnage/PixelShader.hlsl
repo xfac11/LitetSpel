@@ -60,7 +60,7 @@ float4 CalcLight(AnyLight light,  float3 normal, float3 wPos, float3 LightDirect
 		if (specularFactor > 0)
 		{
 			specularFactor = pow(specularFactor, 32);
-			float specularStrength = 0.5f;
+			float specularStrength = 0.0f;
 			specularColor = float4(light.color.xyz*specularStrength*specularFactor, 1.0f);
 		}
 	}

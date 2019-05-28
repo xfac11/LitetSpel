@@ -511,14 +511,14 @@ bool GunGameState::initailize()
 	float color2[4] = {
 		0.5f , 0.0f, 1.0f , 1.0f
 	};
-	//System::handler->addLight(pos, dir, color2);
+	System::handler->addLight(pos, dir, color2);
 	color2[0] = 0.0f;
 	color2[1] = 1.0f;
 	color2[2] = 1.0f;
 	pos[0] = -10.0f;
 	pos[1] = 4;
 	color2[3] = 3.0f;
-	//System::handler->addLight(pos, dir, color2);
+	System::handler->addLight(pos, dir, color2);
 
 
 	//Cool lights
@@ -528,7 +528,7 @@ bool GunGameState::initailize()
 	float pos2[4] = {
 	-18.f ,2.6f ,0.f,5.f
 	};
-	//System::handler->addLight(pos2, dir, color3);
+	System::handler->addLight(pos2, dir, color3);
 
 	float color4[4] = {
 		1.0f , 0.0f, 0.5f , 15.0f
@@ -536,7 +536,7 @@ bool GunGameState::initailize()
 	float pos3[4] = {
 	10.f ,5.6f ,0.f,5.f
 	};
-	//System::handler->addLight(pos3, dir, color4);
+	System::handler->addLight(pos3, dir, color4);
 
 	float color5[4] = {
 		0.0f , 0.5f, 1.0f , 25.0f
@@ -544,7 +544,7 @@ bool GunGameState::initailize()
 	float pos4[4] = {
 	-23.f ,7.6f ,0.f,5.f
 	};
-	//System::handler->addLight(pos4, dir, color5);
+	System::handler->addLight(pos4, dir, color5);
 
 	this->inGameGui = new GunGameGui(this);
 	this->inGameGui->initialize();
