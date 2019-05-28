@@ -1,6 +1,5 @@
 #ifndef PLAYER_H
 #define PLAYER_H
-
 #include "GamePad.h"
 #include "GameObject.h"
 #include "Animal.h"
@@ -142,7 +141,5 @@ public:
 	float getRoll(DirectX::XMVECTOR Quaternion);
 
 };
-
-
 #endif // ! PLAYER_H
 
