@@ -437,6 +437,7 @@ bool GameObject::checkIfAnimExist(std::string animName,std::string animalType)
 	if (animalType != this->lastAnimal)
 	{
 		anims.clear();
+		this->lastAnimal = animalType;
 	}
 	if (anims.find(animName)!=anims.end()) 
 		result = true;

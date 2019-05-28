@@ -332,13 +332,23 @@ void Player::update(float deltaTime, int id)
 	animName = "idle";
 	animSpeed = 1;
 
+
+
 	if (!canJump || canPressJump == false) {
-		if (playerObj->getRigidbody()->getLinearVelocity().getY() >= 1) {
-			animName = "jump_start";
-			animSpeed = 1.3;
+		if (playerObj->getRigidbody()->getLinearVelocity().getY() >= 1) 
+		{ 
+			if (std::find(Animal::getAnimal(type).animalAnimations.begin(), Animal::getAnimal(type).animalAnimations.end(), "_jump_start") != Animal::getAnimal(type).animalAnimations.end())
+			{
+				animName = "jump_start";
+				animSpeed = 1.3;
+			}
 		}
-		else if (playerObj->getRigidbody()->getLinearVelocity().getY() < 1) {
-			animName = "jump_falling";
+		else if (playerObj->getRigidbody()->getLinearVelocity().getY() < 1 )
+		{
+			if (std::find(Animal::getAnimal(type).animalAnimations.begin(), Animal::getAnimal(type).animalAnimations.end(), "_jump_falling") != Animal::getAnimal(type).animalAnimations.end())
+			{
+				animName = "jump_falling";
+			}
 		}
 	}
 
@@ -437,7 +447,8 @@ void Player::update(float deltaTime, int id)
 			//float dir = 2400.0f * state.thumbSticks.leftX  * getSpeed() * getWeight();
 
 			animSpeed = abs(state.thumbSticks.leftX);
-			animName = "run_cycle";
+			if(std::find(Animal::getAnimal(type).animalAnimations.begin(), Animal::getAnimal(type).animalAnimations.end(), "_run") != Animal::getAnimal(type).animalAnimations.end()) //
+				animName = "run_cycle";
 			System::getParticleManager()->addSimpleEffect(DirectX::SimpleMath::Vector3(playerObj->getRigidbody()->getWorldTransform().getOrigin().getX(), playerObj->getRigidbody()->getWorldTransform().getOrigin().getY()-1, playerObj->getRigidbody()->getWorldTransform().getOrigin().getZ()), "rumble", 0.5f,0.5f);
 
 			playerObj->getRigidbody()->setLinearVelocity(btVector3(dir, playerObj->getRigidbody()->getLinearVelocity().getY(), playerObj->getRigidbody()->getLinearVelocity().getZ()));
@@ -525,8 +536,11 @@ void Player::update(float deltaTime, int id)
 				jumpTimer += 205 * deltaTime;
 				playerObj->getRigidbody()->setLinearVelocity(btVector3(playerObj->getRigidbody()->getLinearVelocity().getX() / 2, playerObj->getRigidbody()->getLinearVelocity().getY(), playerObj->getRigidbody()->getLinearVelocity().getZ()));
 			}
-			animName = "jump_start";
-			animSpeed = 1.3;
+			if (std::find(Animal::getAnimal(type).animalAnimations.begin(), Animal::getAnimal(type).animalAnimations.end(), "_jump_start") != Animal::getAnimal(type).animalAnimations.end())//
+			{
+				animName = "jump_start";
+				animSpeed = 1.3;
+			}
 			grounded = false;
 			if (jumpTimer >= 60) {
 				this->playerObj->getRigidbody()->applyImpulse(btVector3(0, 205.0f * getJumpHeight() * getWeight() /**deltaTime * 60*/, 0), btVector3(0, 0, 0));
@@ -577,8 +591,11 @@ void Player::update(float deltaTime, int id)
 			//this->hitbox.hitbox->setPosition(this->getPosition().x +1.5*dir, this->getPosition().y, this->getPosition().z);
 			this->hitbox.hitbox->setMatrix(this->playerObj->getWorld()*this->playerObj->getJointPos());
 			//this->hitbox.hitbox->setPosition(this->getPosition().x, this->getPosition().y, this->getPosition().z);
-			animName = "attack";
-			animSpeed = 1.25;
+			if (std::find(Animal::getAnimal(type).animalAnimations.begin(), Animal::getAnimal(type).animalAnimations.end(), "_attack") != Animal::getAnimal(type).animalAnimations.end()) //remove this when animation exist
+			{
+				animName = "attack";
+				animSpeed = 1.25;
+			}
 			if (hitTimer >= 60) {
 				punching = false;
 				hitTimer = 0;
@@ -590,9 +607,11 @@ void Player::update(float deltaTime, int id)
 			}
 			canPressPunch = false;
 			hitTimer += 125 * deltaTime;
-
-			animName = "attack";
-			animSpeed = 1.25;
+			if (std::find(Animal::getAnimal(type).animalAnimations.begin(), Animal::getAnimal(type).animalAnimations.end(), "_attack") != Animal::getAnimal(type).animalAnimations.end()) //remove this when animation exist
+			{
+				animName = "attack";
+				animSpeed = 1.25;
+			}
 			//this->hitbox.hitbox->setPosition(this->getPosition().x, this->getPosition().y, this->getPosition().z);
 			if (hitTimer >30 && hitTimer < 50) {
 				playerObj->getRigidbody()->setLinearVelocity(btVector3(20*dir, playerObj->getRigidbody()->getLinearVelocity().getY(), playerObj->getRigidbody()->getLinearVelocity().getZ() / 2));
@@ -615,8 +634,11 @@ void Player::update(float deltaTime, int id)
 			//this->hitbox.hitbox->setPosition(this->getPosition().x + 1.5*dir, this->getPosition().y, this->getPosition().z);
 			this->hitbox.hitbox->setMatrix(this->playerObj->getWorld()*this->playerObj->getJointPos());
 			//this->hitbox.hitbox->setPosition(this->getPosition().x, this->getPosition().y, this->getPosition().z);
-			animName = "attack";
-			animSpeed = 2.0;
+			if (std::find(Animal::getAnimal(type).animalAnimations.begin(), Animal::getAnimal(type).animalAnimations.end(), "_attack") != Animal::getAnimal(type).animalAnimations.end()) //remove this when animation exist
+			{
+				animName = "attack";
+				animSpeed = 2.0;
+			}
 			if (hitTimer >= 60) {
 				punching = false;
 				hitTimer = 0;
@@ -640,8 +662,11 @@ void Player::update(float deltaTime, int id)
 			//this->hitbox.hitbox->setPosition(this->getPosition().x + 1.5*dir, this->getPosition().y, this->getPosition().z);
 			//this->hitbox.hitbox->setPosition(this->getPosition().x, this->getPosition().y, this->getPosition().z);
 			this->hitbox.hitbox->setMatrix(this->playerObj->getWorld()*this->playerObj->getJointPos());
-			animName = "attack";
-			animSpeed = 0.5;
+			if (std::find(Animal::getAnimal(type).animalAnimations.begin(), Animal::getAnimal(type).animalAnimations.end(), "_attack") != Animal::getAnimal(type).animalAnimations.end()) //remove this when animation exist
+			{
+				animName = "attack";
+				animSpeed = 0.5;
+			}
 			if (hitTimer >= 60) {
 				punching = false;
 				hitTimer = 0;
@@ -800,8 +825,11 @@ void Player::update(float deltaTime, int id)
 		landingTimer += 220 * deltaTime;
 
 		if (landingTimer <= 100 && grounded == true && jumping == false) {
-			animName = "jump_landing";
-			animSpeed = 1;
+			if (std::find(Animal::getAnimal(type).animalAnimations.begin(), Animal::getAnimal(type).animalAnimations.end(), "_jump_landing") != Animal::getAnimal(type).animalAnimations.end()) //remove this when animation exist
+			{
+				animName = "jump_landing";
+				animSpeed = 1;
+			}
 			playerObj->getRigidbody()->setLinearVelocity(btVector3(playerObj->getRigidbody()->getLinearVelocity().getX() / 1.5, playerObj->getRigidbody()->getLinearVelocity().getY(), playerObj->getRigidbody()->getLinearVelocity().getZ()));
 		}
 		/*if (landingTimer >= 100 && canJump == true)
