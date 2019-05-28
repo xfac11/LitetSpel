@@ -63,7 +63,6 @@
     </FxCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="BulletSDK\include\BulletCollision\CollisionDispatch\btActivatingCollisionAlgorithm.cpp">
       <Filter>Bullet SDK</Filter>
     </ClCompile>
@@ -676,14 +675,12 @@
     <ClCompile Include="Physics.cpp">
       <Filter>Engine</Filter>
     </ClCompile>
-    <ClCompile Include="Objects.cpp" />
     <ClCompile Include="GunGameGui.cpp">
       <Filter>Menu</Filter>
     </ClCompile>
     <ClCompile Include="PauseGui.cpp">
       <Filter>Menu</Filter>
     </ClCompile>
-    <ClCompile Include="AssetManager.cpp" />
     <ClCompile Include="ParticleManager.cpp">
       <Filter>Particle</Filter>
     </ClCompile>
@@ -708,19 +705,15 @@
     <ClCompile Include="HorizontalBlur.cpp">
       <Filter>Shader</Filter>
     </ClCompile>
-    <ClCompile Include="WinnerView.cpp">
-      <Filter>Menu</Filter>
+    <ClCompile Include="AssetManager.cpp">
+      <Filter>Engine</Filter>
     </ClCompile>
-    <ClCompile Include="ResultGui.cpp">
-      <Filter>Menu</Filter>
-    </ClCompile>
-    <ClCompile Include="LooserView.cpp">
-      <Filter>Menu</Filter>
+    <ClCompile Include="Objects.cpp">
+      <Filter>Source</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource1.h" />
-    <ClInclude Include="Sprite.h" />
     <ClInclude Include="BulletSDK\include\BulletDynamics\Dynamics\btActionInterface.h">
       <Filter>Bullet SDK</Filter>
     </ClInclude>
@@ -1582,14 +1575,12 @@
     <ClInclude Include="State.h">
       <Filter>Engine</Filter>
     </ClInclude>
-    <ClInclude Include="Objects.h" />
     <ClInclude Include="GunGameGui.h">
       <Filter>Menu</Filter>
     </ClInclude>
     <ClInclude Include="PauseGui.h">
       <Filter>Menu</Filter>
     </ClInclude>
-    <ClInclude Include="AssetManager.h" />
     <ClInclude Include="ParticleManager.h">
       <Filter>Particle</Filter>
     </ClInclude>
@@ -1611,14 +1602,11 @@
     <ClInclude Include="HorizontalBlur.h">
       <Filter>Shader</Filter>
     </ClInclude>
-    <ClInclude Include="WinnerView.h">
-      <Filter>Menu</Filter>
+    <ClInclude Include="AssetManager.h">
+      <Filter>Engine</Filter>
     </ClInclude>
-    <ClInclude Include="ResultGui.h">
-      <Filter>Menu</Filter>
-    </ClInclude>
-    <ClInclude Include="LooserView.h">
-      <Filter>Menu</Filter>
+    <ClInclude Include="Objects.h">
+      <Filter>Header</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
