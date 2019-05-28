@@ -45,7 +45,7 @@ public:
 	void computeAnimationMatrix(float deltaTime, std::string animName);
 	void setNewAnimation(float fps, float duration, std::string name, std::vector<std::vector<Luna::Keyframe>> keyframePack);
 	void setSkeleton(std::vector<Luna::Joint> theJoints);
-	void setCurrentAnimal(std::string animalName);
+	//void setCurrentAnimal(std::string animalName);
 
 	DirectX::XMFLOAT3 interpolate1(DirectX::XMFLOAT3 start, DirectX::XMFLOAT3 end, float progression);
 	DirectX::XMFLOAT3 interpolate2(DirectX::XMFLOAT3 start, DirectX::XMFLOAT3 end, float progression);

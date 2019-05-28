@@ -446,10 +446,22 @@ void Player::update(float deltaTime, int id)
 			float dir = 17.0f * state.thumbSticks.leftX  * getSpeed();// / stickAbsL;
 			//float dir = 2400.0f * state.thumbSticks.leftX  * getSpeed() * getWeight();
 
-			animSpeed = abs(state.thumbSticks.leftX);
-			if(std::find(Animal::getAnimal(type).animalAnimations.begin(), Animal::getAnimal(type).animalAnimations.end(), "_run") != Animal::getAnimal(type).animalAnimations.end()) //
+			
+
+			if (std::find(Animal::getAnimal(type).animalAnimations.begin(), Animal::getAnimal(type).animalAnimations.end(), "_run") != Animal::getAnimal(type).animalAnimations.end()) //
+			{
 				animName = "run_cycle";
+				animSpeed = abs(state.thumbSticks.leftX);
+			}
 			System::getParticleManager()->addSimpleEffect(DirectX::SimpleMath::Vector3(playerObj->getRigidbody()->getWorldTransform().getOrigin().getX(), playerObj->getRigidbody()->getWorldTransform().getOrigin().getY()-1, playerObj->getRigidbody()->getWorldTransform().getOrigin().getZ()), "rumble", 0.5f,0.5f);
+			if (playerObj->getPosition().y < 2) {
+				if (playerObj->getRigidbody()->getLinearVelocity().getX() > 10.0f * getSpeed()) {
+					System::getParticleManager()->addSimpleEffect(DirectX::SimpleMath::Vector3(playerObj->getRigidbody()->getWorldTransform().getOrigin().getX(), playerObj->getRigidbody()->getWorldTransform().getOrigin().getY() - 1, playerObj->getRigidbody()->getWorldTransform().getOrigin().getZ()), "rumble", 0.5f, 1.0f);
+				}
+				if (playerObj->getRigidbody()->getLinearVelocity().getX() < -10.0f * getSpeed()) {
+					System::getParticleManager()->addSimpleEffect(DirectX::SimpleMath::Vector3(playerObj->getRigidbody()->getWorldTransform().getOrigin().getX(), playerObj->getRigidbody()->getWorldTransform().getOrigin().getY() - 1, playerObj->getRigidbody()->getWorldTransform().getOrigin().getZ()), "rumble", 0.5f, 1.0f);
+				}
+			}
 
 			playerObj->getRigidbody()->setLinearVelocity(btVector3(dir, playerObj->getRigidbody()->getLinearVelocity().getY(), playerObj->getRigidbody()->getLinearVelocity().getZ()));
 			//playerObj->getRigidbody()->applyForce(btVector3(dir, 0, 0), btVector3(0, 0, 0));
@@ -936,6 +948,11 @@ void Player::setGrounded(bool grounded)
 	this->grounded = grounded;
 	this->groundTimer = 0;
 	//playerObj->getRigidbody()->applyImpulse(btVector3(0, 100.0f, 0), btVector3(0, 0, 0));
+}
+
+bool Player::getGrounded()
+{
+	return this->grounded;
 }
 
 void Player::setCanWallJump(bool canWallJump)

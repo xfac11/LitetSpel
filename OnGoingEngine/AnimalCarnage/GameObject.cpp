@@ -388,10 +388,10 @@ void GameObject::setSkeleton(std::vector<Luna::Joint> theJoints)
 	
 }
 
-void GameObject::setCurrentAnimal(std::string animalName)
-{
-	this->lastAnimal = animalName;
-}
+//void GameObject::setCurrentAnimal(std::string animalName)
+//{
+//	this->lastAnimal = animalName;
+//}
 
 DirectX::XMFLOAT3 GameObject::interpolate1(DirectX::XMFLOAT3 start, DirectX::XMFLOAT3 end, float progression)
 {
