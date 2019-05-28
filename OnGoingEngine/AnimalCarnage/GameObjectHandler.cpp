@@ -201,7 +201,7 @@ void GameObjectHandler::draw(float deltaTime, bool isPaused, std::vector<float> 
 	//this->sortBackToFront();//do it every 30 frames
 	System::shaderManager->getShadowMapping()->setCBViewAndProj();//sets the vertex constantbuffer (if no gs need to change this to two view and proj)
 	System::shaderManager->getShadowMapping()->setSampler();
-	System::getDeviceContext()->PSSetShaderResources(1, 1, &System::shaderManager->getShadowMapping()->getShadowMap());
+	System::getDeviceContext()->PSSetShaderResources(4, 1, &System::shaderManager->getShadowMapping()->getShadowMap());
 	if (this->nrOfTrans > 0)
 	{
 		for (int i = 0; i < this->nrOfTrans; i++)
@@ -210,7 +210,7 @@ void GameObjectHandler::draw(float deltaTime, bool isPaused, std::vector<float> 
 			this->transModels[i].modelPtr->draw();
 		}
 	}
-
+	
 
 
 	/*for (int i = 0; i < this->nrOfOpaque; i++)

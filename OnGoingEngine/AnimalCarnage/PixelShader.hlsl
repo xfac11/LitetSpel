@@ -94,7 +94,7 @@ float4 pointLight(int indexL, float3 normal, float3 wPos)
 }
 
 Texture2D Tex:register(t0);
-Texture2D ShadowMap:register(t1);
+Texture2D ShadowMap:register(t4);
 SamplerState SampSt :register(s0);
 SamplerState ShadowSamp :register(s1);
 float4 PS_main(VS_OUT input) : SV_Target
