@@ -37,7 +37,7 @@ public:
 	AABB getCollisionBox();
 	Primitives * CollisionShape;
 	btVector3 positionOffset;
-	/*DatForaObject data;*/
+	
 	//void initAnimationData(AnimationShader* animShader);
 	void setActiveDraw(bool arg);
 	bool getActiveDraw();
@@ -45,12 +45,13 @@ public:
 	void computeAnimationMatrix(float deltaTime, std::string animName);
 	void setNewAnimation(float fps, float duration, std::string name, std::vector<std::vector<Luna::Keyframe>> keyframePack);
 	void setSkeleton(std::vector<Luna::Joint> theJoints);
-	
+	void setCurrentAnimal(std::string animalName);
+
 	DirectX::XMFLOAT3 interpolate1(DirectX::XMFLOAT3 start, DirectX::XMFLOAT3 end, float progression);
 	DirectX::XMFLOAT3 interpolate2(DirectX::XMFLOAT3 start, DirectX::XMFLOAT3 end, float progression);
 	JointTransformation interpolate1(JointTransformation frameA, JointTransformation frameB, float progression);
 	JointTransformation interpolate2(JointTransformation frameA, JointTransformation frameB, float progression);
-	bool checkIfAnimExist(std::string animName);
+	bool checkIfAnimExist(std::string animName, std::string animalType);
 
 	DirectX::XMMATRIX getJointPos()const;
 
@@ -65,6 +66,7 @@ private:
 	std::vector<Joint> skeleton;
 	std::map<std::string,Animation> anims;
 	std::string lastAnimation;
+	std::string lastAnimal;
 	float timePassed;
 	int frameCounter;
 	int hitboxJointID; //testing indivdual joints
