@@ -363,7 +363,7 @@ bool GunGameState::initailize()
 	ray2->setPosition(15, 30, 0);
 	ray2->setRotationRollPitchYaw(0, 0, -0.5);
 
-	this->nrOfPlayers = 4;
+	this->nrOfPlayers = 2;
 	this->currentAnimSpeed.resize(this->nrOfPlayers);
 	this->currentAnimName.resize(this->nrOfPlayers);
 	player = new Player*[nrOfPlayers];

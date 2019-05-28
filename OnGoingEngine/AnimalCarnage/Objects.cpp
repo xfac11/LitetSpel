@@ -17,7 +17,7 @@ void Objects::SimplePlatformMovement(float dt)
 			XMFLOAT3 firstVector = MULT(current, firstriktningsVector);
 			XMFLOAT3 Vector = MULT(firstVector, dt/5);
 
-			ObjectOBJ->getRigidbody()->setLinearVelocity(btVector3(Vector.x * 50, Vector.y * 50,0));
+			ObjectOBJ->getRigidbody()->setLinearVelocity(btVector3(Vector.x * 50, Vector.y *0,0));
 			/*if (type == PLATFORM && state == DYNAMIC) {
 				ObjectOBJPlatform->getRigidbody()->setLinearVelocity(btVector3(Vector.x * 50, Vector.y * 50, 0));
 			}*/
@@ -33,7 +33,7 @@ void Objects::SimplePlatformMovement(float dt)
 		else {
 			XMFLOAT3 firstVector = MULT(current, secondriktningsVector);
 			XMFLOAT3 Vector = MULT(firstVector, dt/5);
-			ObjectOBJ->getRigidbody()->setLinearVelocity(btVector3(Vector.x*50, Vector.y*50, 0));
+			ObjectOBJ->getRigidbody()->setLinearVelocity(btVector3(Vector.x*50, Vector.y*0, 0));
 			/*if (type == PLATFORM && state == DYNAMIC) {
 				ObjectOBJPlatform->getRigidbody()->setLinearVelocity(btVector3(Vector.x * 50, Vector.y * 50, 0));
 			}*/
