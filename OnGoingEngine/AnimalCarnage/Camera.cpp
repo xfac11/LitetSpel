@@ -93,7 +93,7 @@ void Camera::rotate(float x, float y, float z)
 
 void Camera::rotate(DirectX::XMFLOAT3 rotation)
 {
-	if (abs(this->rotation.x) > 87.f)
+	if (abs(this->rotation.x) > 85.f)
 		rotation.x = -rotation.x;
 	if (abs(this->rotation.y + rotation.y) >= 90)
 		rotation.y = 0;

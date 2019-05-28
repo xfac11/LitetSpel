@@ -2,10 +2,11 @@
 #include "System.h"
 
 
-std::vector<std::string> rabbitV = { "_idle" };
+std::vector<std::string> rabbitV = { "_idle", "_run", };
 std::vector<std::string> foxV = { "_idle", "_run", "_jump","_jump_falling","_jump_landing","_jump_start","_attack" };
 std::vector<std::string> bear = {};
 std::vector<std::string> moose = {};
+
 
 // AnimalDef			   { maxHealh,	weight,	speed,	jumpHeight,	strength,	modelPath };
 AnimalDef Animal::fox =    { 100,		1.0F,	1.2F,	1.0F,		10,			"Resources/Models/fox_character", "fox_character_mask.tga",foxV };

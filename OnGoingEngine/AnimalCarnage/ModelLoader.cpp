@@ -76,7 +76,7 @@ void ModelLoader::loadAO(GameObject*& object, const char* characterName, std::ve
 				{
 					reader.getKeyframes(f, keyframePack[f]);
 				}
-				object->setCurrentAnimal(characterName);
+				//object->setCurrentAnimal(characterName);
 				object->setSkeleton(joints);
 				object->setNewAnimation(anims.fps, anims.duration, animName, keyframePack);//change to pack
 			}
@@ -106,8 +106,12 @@ void ModelLoader::loadAO(GameObject*& object, const char* characterName, std::ve
 			}
 
 			std::string animName(anims.animationName);
-			object->setSkeleton(joints);
-			object->setNewAnimation(anims.fps, anims.duration, animName, keyframePack);
+
+			if (!object->checkIfAnimExist(animName, characterName))
+			{
+				object->setSkeleton(joints);
+				object->setNewAnimation(anims.fps, anims.duration, animName, keyframePack);
+			}
 			for (int jw = 0; jw < weights.size(); jw++)
 			{
 				vertices3D[jw].Joint.x = weights[jw].jointIDs[0];
