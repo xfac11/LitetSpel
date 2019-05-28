@@ -22,9 +22,7 @@ Physics* System::physices = nullptr;
 DEBUG_DRAW* System::debugDraw = nullptr;
 Skybox* System::skybox = nullptr;
 SoundManager* System::soundManager = nullptr;
-WindowClient System::theWindow = { 1080, 1920};
-//SimpleMath::Matrix System::matrixForSpritebatch = SimpleMath::Matrix::CreateScale(System::fusk->theWindow.height / 1080.0f) * SimpleMath::Matrix::CreateTranslation(System::theWindow.width * 0.25f, System::theWindow.height * 0.25f, 0);
-//WindowClient System::theWindow = { 720, 1280 };
+WindowClient System::theWindow = { 720, 1280 };
 Resolution System::resolution = _1280x720;
 SimpleMath::Matrix System::matrixForSpritebatch = SimpleMath::Matrix::CreateTranslation(((System::theWindow.width - 1920.0f * (System::theWindow.height / 1080.0f)) * 0.5f) / (System::theWindow.height / 1080.0f), 0, 0) * SimpleMath::Matrix::CreateScale((System::theWindow.height / 1080.0f));
 Camera* System::theCamera = nullptr;
@@ -876,6 +874,8 @@ void System::resizeWindow(int width, int height)
 	vp.MinDepth = 0.0f;
 	vp.MaxDepth = 1.0f;
 	spriteBatch->SetViewport(vp);
+
+	ImGui::GetIO().DisplaySize = ImVec2(static_cast<float>(width), static_cast<float>(height));
 
 	System::matrixForSpritebatch = SimpleMath::Matrix::CreateTranslation(((width - 1920.0f * (height / 1080.0f)) * 0.5f) / (height / 1080.0f) , 0, 0) * SimpleMath::Matrix::CreateScale((height / 1080.0f));
 
