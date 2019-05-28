@@ -16,6 +16,7 @@ GameObject::GameObject()
 	this->activeDraw = true;
 	this->hitboxJointID = -1;
 	this->hitboxJointID = 21;
+	this->lastAnimal = "Default";
 }
 
 GameObject::GameObject(Shader * shader)
@@ -33,7 +34,7 @@ GameObject::GameObject(Shader * shader)
 	this->frameCounter=0;
 	this->hitboxJointID = -1;
 	this->hitboxJointID = 21;
-
+	this->lastAnimal = "Default";	
 	//this->gotSkeleton = false;
 	/*this->theModel[0] = new Model;
 	this->theModel[0]->setShader(shader);
@@ -387,6 +388,11 @@ void GameObject::setSkeleton(std::vector<Luna::Joint> theJoints)
 	
 }
 
+void GameObject::setCurrentAnimal(std::string animalName)
+{
+	this->lastAnimal = animalName;
+}
+
 DirectX::XMFLOAT3 GameObject::interpolate1(DirectX::XMFLOAT3 start, DirectX::XMFLOAT3 end, float progression)
 {
 	DirectX::XMFLOAT3 interpol = { 0,0,0 };
@@ -425,10 +431,14 @@ JointTransformation GameObject::interpolate2(JointTransformation frameA, JointTr
 	return JointTransformation(pos4, quaternion, scale);
 }
 
-bool GameObject::checkIfAnimExist(std::string animName)
+bool GameObject::checkIfAnimExist(std::string animName,std::string animalType)
 {
 	bool result = false;
-	if (anims.find(animName)!=anims.end())
+	if (animalType != this->lastAnimal)
+	{
+		anims.clear();
+	}
+	if (anims.find(animName)!=anims.end()) 
 		result = true;
 	return result;
 }
