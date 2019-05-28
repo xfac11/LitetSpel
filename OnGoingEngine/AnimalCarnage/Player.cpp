@@ -136,7 +136,7 @@ void Player::setAnimalTypeAndMass(AnimalType type)
 	this->type = type;
 	this->health = animal.maxHealh;
 	currentAnimal = this->type;
-	System::theModelLoader->loadAO(this->playerObj, Animal::getAnimal(ArrayOfAnimals[currentAnimal]).modelPath);
+	System::theModelLoader->loadAO(this->playerObj, Animal::getAnimal(ArrayOfAnimals[currentAnimal]).modelPath, Animal::getAnimal(ArrayOfAnimals[currentAnimal]).animalAnimations);
 
 	btVector3 inertia(0, 0, 0);
 	playerObj->getRigidbody()->setMassProps(10 * getWeight(), inertia);
@@ -168,7 +168,7 @@ void Player::changeCharacter()
 	}
 
 	this->setAnimalType(ArrayOfAnimals[currentAnimal]);
-	System::theModelLoader->loadAO(this->playerObj, Animal::getAnimal(ArrayOfAnimals[currentAnimal]).modelPath);
+	System::theModelLoader->loadAO(this->playerObj, Animal::getAnimal(ArrayOfAnimals[currentAnimal]).modelPath, Animal::getAnimal(ArrayOfAnimals[currentAnimal]).animalAnimations);
 	//System::theModelLoader->loadGO(this->playerObj, Animal::getAnimal(ArrayOfAnimals[currentAnimal]).modelPath);
 
 	//if (animal.maskPath != "empty" && !this->playerObj->getModel()->hasMaskColor())
@@ -295,7 +295,7 @@ void Player::initialize(AnimalType type, PlayerColor color)
 
 	//loads animal
 	//System::theModelLoader->loadGO(this->playerObj, Animal::getAnimal(type).modelPath);
-	System::theModelLoader->loadAO(this->playerObj, Animal::getAnimal(type).modelPath);
+	System::theModelLoader->loadAO(this->playerObj, Animal::getAnimal(type).modelPath, Animal::getAnimal(type).animalAnimations);
 	if(Animal::getAnimal(type).maskPath!="empty"&&!this->playerObj->getModel()->hasMaskColor())
 		this->playerObj->setMask(Animal::getAnimal(type).maskPath,0);//change to animal.maskPath
 	System::handler->addObject(this->playerObj);
