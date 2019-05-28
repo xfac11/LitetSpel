@@ -2,6 +2,7 @@
 #include "System.h"
 #include "GunGameGui.h"
 #include "PauseGui.h"
+#include "ResultGui.h"
 
 //GunGameState* GunGameState::shelf = nullptr;
 
@@ -81,8 +82,10 @@ GunGameState::GunGameState()
 {
 	this->testColBox = false;
 	this->paused = false;
+	this->resultsShown = false;
 	this->inGameGui = nullptr;
 	this->pauseGui = nullptr;
+	this->resultGui = nullptr;
 	this->cameraFocus = 0;
 	this->objectId = 1;
 	this->nrOfObjects = 0;
@@ -432,6 +435,8 @@ bool GunGameState::initailize()
 	this->inGameGui->initialize();
 	this->pauseGui = new PauseGui(this);
 	this->pauseGui->initialize();
+	this->resultGui = new ResultGui(this);
+	this->resultGui->initialize();
 
 	return true;
 }
@@ -459,11 +464,19 @@ bool GunGameState::render()
     System::getParticleManager()->render();
 
 	System::fusk->resetShaders();
-	this->inGameGui->render();
 
-	if (this->paused)
+	if (this->resultsShown)
 	{
-		this->pauseGui->render();
+		this->resultGui->render();
+	}
+	else
+	{
+		this->inGameGui->render();
+
+		if (this->paused)
+		{
+			this->pauseGui->render();
+		}
 	}
 
 	return true;
@@ -510,6 +523,18 @@ void GunGameState::renderImgui()
 
 bool GunGameState::update(float deltaTime)
 {
+	if (resultsShown)
+	{
+		this->resultGui->update(deltaTime);
+		
+		if (System::getCurrentState() != this)
+		{
+			reset();
+		}
+
+		return true;
+	}
+
 	if (paused)
 	{
 		this->pauseGui->update(deltaTime);
@@ -561,8 +586,9 @@ bool GunGameState::update(float deltaTime)
 							player[j]->changeCharacter();
 						else
 						{
-							reset();
-							System::setState(MAINMENU);
+							this->resultsShown = true;
+							this->paused = true;
+							this->pauseGui->activateDelay();
 						}
 					}
 
@@ -668,8 +694,10 @@ void GunGameState::shutDown()
 
 	delete this->inGameGui;
 	delete this->pauseGui;
+	delete this->resultGui;
 	this->inGameGui = nullptr;
 	this->pauseGui = nullptr;
+	this->resultGui = nullptr;
 }
 
 void GunGameState::reset()
@@ -683,6 +711,9 @@ void GunGameState::reset()
 	{
 		this->objects[i]->respawn();
 	}
+
+	this->paused = false;
+	this->resultsShown = false;
 }
 
 bool GunGameState::controllerIsConnected(int controllerPort)
