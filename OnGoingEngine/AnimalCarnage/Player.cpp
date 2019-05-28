@@ -135,6 +135,8 @@ void Player::setAnimalTypeAndMass(AnimalType type)
 	const AnimalDef& animal = Animal::getAnimal(type);
 	this->type = type;
 	this->health = animal.maxHealh;
+	currentAnimal = this->type;
+	System::theModelLoader->loadAO(this->playerObj, Animal::getAnimal(ArrayOfAnimals[currentAnimal]).modelPath);
 
 	btVector3 inertia(0, 0, 0);
 	playerObj->getRigidbody()->setMassProps(10 * getWeight(), inertia);
@@ -224,6 +226,8 @@ Player::Player()
 	previousGrounded = false;
 	landingTimer = 0;
 	landingLag = false;
+	jumpTimer = 0;
+	jumping = false;
 	
 	currentAnimal = 0;
 	ArrayOfAnimals[0] = FOX;
@@ -331,7 +335,7 @@ void Player::update(float deltaTime, int id)
 	if (!canJump || canPressJump == false) {
 		if (playerObj->getRigidbody()->getLinearVelocity().getY() >= 1) {
 			animName = "jump_start";
-			animSpeed = 0.9;
+			animSpeed = 1.3;
 		}
 		else if (playerObj->getRigidbody()->getLinearVelocity().getY() < 1) {
 			animName = "jump_falling";
@@ -434,6 +438,7 @@ void Player::update(float deltaTime, int id)
 
 			animSpeed = abs(state.thumbSticks.leftX);
 			animName = "run_cycle";
+			System::getParticleManager()->addSimpleEffect(DirectX::SimpleMath::Vector3(playerObj->getRigidbody()->getWorldTransform().getOrigin().getX(), playerObj->getRigidbody()->getWorldTransform().getOrigin().getY()-1, playerObj->getRigidbody()->getWorldTransform().getOrigin().getZ()), "rumble", 0.5f,0.5f);
 
 			playerObj->getRigidbody()->setLinearVelocity(btVector3(dir, playerObj->getRigidbody()->getLinearVelocity().getY(), playerObj->getRigidbody()->getLinearVelocity().getZ()));
 			//playerObj->getRigidbody()->applyForce(btVector3(dir, 0, 0), btVector3(0, 0, 0));
@@ -501,11 +506,11 @@ void Player::update(float deltaTime, int id)
 		//JUMP
 		if ((state.buttons.x) && canJump && canPressJump){
 			//this->playerObj->getRigidbody()->setLinearVelocity(btVector3(0,1, 0));
-			this->playerObj->getRigidbody()->applyImpulse(btVector3(0, 205.0f * getJumpHeight() * getWeight() /**deltaTime * 60*/,0),btVector3(0,0,0));
 			//playerObj->getRigidbody()->applyForce(btVector3(0, 4500.0f, 0), btVector3(0, 0, 0));
 			grounded = false;
 			canWallJump = false;
 			canPressJump = false;
+			jumping = true;
 		}
 		if (grounded == true) {
 			wallJumpReset = true;
@@ -513,6 +518,21 @@ void Player::update(float deltaTime, int id)
 		}
 		else if (grounded == false) {
 			canJump = false;
+		}
+
+		if (jumping == true || playerObj->getRigidbody()->getLinearVelocity().getY() >= 1) {
+			if (jumping == true) {
+				jumpTimer += 205 * deltaTime;
+				playerObj->getRigidbody()->setLinearVelocity(btVector3(playerObj->getRigidbody()->getLinearVelocity().getX() / 2, playerObj->getRigidbody()->getLinearVelocity().getY(), playerObj->getRigidbody()->getLinearVelocity().getZ()));
+			}
+			animName = "jump_start";
+			animSpeed = 1.3;
+			grounded = false;
+			if (jumpTimer >= 60) {
+				this->playerObj->getRigidbody()->applyImpulse(btVector3(0, 205.0f * getJumpHeight() * getWeight() /**deltaTime * 60*/, 0), btVector3(0, 0, 0));
+				jumpTimer = 0;
+				jumping = false;
+			}
 		}
 
 
@@ -553,12 +573,12 @@ void Player::update(float deltaTime, int id)
 				playerObj->getRigidbody()->setLinearVelocity(btVector3(playerObj->getRigidbody()->getLinearVelocity().getX() / 1.1, playerObj->getRigidbody()->getLinearVelocity().getY(), playerObj->getRigidbody()->getLinearVelocity().getZ() / 2));
 			}
 			canPressPunch = false;
-			hitTimer += 165 * deltaTime;
+			hitTimer += 119 * deltaTime;
 			//this->hitbox.hitbox->setPosition(this->getPosition().x +1.5*dir, this->getPosition().y, this->getPosition().z);
 			this->hitbox.hitbox->setMatrix(this->playerObj->getWorld()*this->playerObj->getJointPos());
 			//this->hitbox.hitbox->setPosition(this->getPosition().x, this->getPosition().y, this->getPosition().z);
 			animName = "attack";
-			animSpeed = 2.0;
+			animSpeed = 1.25;
 			if (hitTimer >= 60) {
 				punching = false;
 				hitTimer = 0;
@@ -572,7 +592,7 @@ void Player::update(float deltaTime, int id)
 			hitTimer += 125 * deltaTime;
 
 			animName = "attack";
-			animSpeed = 2.0;
+			animSpeed = 1.25;
 			//this->hitbox.hitbox->setPosition(this->getPosition().x, this->getPosition().y, this->getPosition().z);
 			if (hitTimer >30 && hitTimer < 50) {
 				playerObj->getRigidbody()->setLinearVelocity(btVector3(20*dir, playerObj->getRigidbody()->getLinearVelocity().getY(), playerObj->getRigidbody()->getLinearVelocity().getZ() / 2));
@@ -621,7 +641,7 @@ void Player::update(float deltaTime, int id)
 			//this->hitbox.hitbox->setPosition(this->getPosition().x, this->getPosition().y, this->getPosition().z);
 			this->hitbox.hitbox->setMatrix(this->playerObj->getWorld()*this->playerObj->getJointPos());
 			animName = "attack";
-			animSpeed = 2.0;
+			animSpeed = 0.5;
 			if (hitTimer >= 60) {
 				punching = false;
 				hitTimer = 0;
@@ -779,10 +799,10 @@ void Player::update(float deltaTime, int id)
 	{
 		landingTimer += 220 * deltaTime;
 
-		if (landingTimer <= 100 && grounded == true) {
+		if (landingTimer <= 100 && grounded == true && jumping == false) {
 			animName = "jump_landing";
 			animSpeed = 1;
-			playerObj->getRigidbody()->setLinearVelocity(btVector3(playerObj->getRigidbody()->getLinearVelocity().getX() / 2, playerObj->getRigidbody()->getLinearVelocity().getY(), playerObj->getRigidbody()->getLinearVelocity().getZ()));
+			//playerObj->getRigidbody()->setLinearVelocity(btVector3(playerObj->getRigidbody()->getLinearVelocity().getX() / 2, playerObj->getRigidbody()->getLinearVelocity().getY(), playerObj->getRigidbody()->getLinearVelocity().getZ()));
 		}
 		/*if (landingTimer >= 100 && canJump == true)
 		{

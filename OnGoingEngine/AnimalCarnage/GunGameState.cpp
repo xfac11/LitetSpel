@@ -126,7 +126,7 @@ bool GunGameState::callbackFunc(btManifoldPoint& cp, const btCollisionObjectWrap
 					((Player*)obj2->getCollisionObject()->getUserPointer())->takeDamage(25);
 					((Player*)obj2->getCollisionObject()->getUserPointer())->setHitStun(true);
 
-					System::getParticleManager()->addSimpleEffect(((Player*)obj2->getCollisionObject()->getUserPointer())->getPosition(),"splat");
+					System::getParticleManager()->addSimpleEffect(((Player*)obj2->getCollisionObject()->getUserPointer())->getPosition(),"splat",1.0f);
 
 					int randomNumber = (rand() % 4) + 0;
 					System::getSoundManager()->playEffect(to_string(randomNumber));
@@ -280,6 +280,7 @@ bool GunGameState::initailize()
 	tree1->setPosition(10, 0, 7.6);
 	tree1->setScale(1.6, 1.6, 1.6);
 	tree1->setRotationRollPitchYaw(0, -1, 0);
+
 	GameObject* tree2 = new GameObject;
 	System::theModelLoader->loadGO(tree2, "Resources/Models/tree2.lu");
 	System::handler->addObject(tree2);
@@ -438,6 +439,8 @@ bool GunGameState::initailize()
 	this->resultGui = new ResultGui(this);
 	this->resultGui->initialize();
 
+	System::handler->sortBackToFront();
+
 	return true;
 }
 
@@ -564,7 +567,7 @@ bool GunGameState::update(float deltaTime)
 					int tempHP = player[i]->getHealth();
 					//TAKE DAMAGE HERE
 					player[i]->takeDamage(player[j]->getStrength());
-					System::getParticleManager()->addSimpleEffect(player[i]->getPosition(),"splat");
+					System::getParticleManager()->addSimpleEffect(player[i]->getPosition(), "splat",1.0f);
 
 					int randomNumber = (rand() % 4) + 0;
 					System::getSoundManager()->playEffect(to_string(randomNumber));

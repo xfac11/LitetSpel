@@ -20,6 +20,15 @@ bool ParticleShader::initialize()
 			D3D11_APPEND_ALIGNED_ELEMENT, // offset of first element
 			D3D11_INPUT_PER_VERTEX_DATA, // specify data PER vertex
 			0							 // used for INSTANCING (ignore)
+	    },
+		{
+			"SIZE",		// "semantic" name in shader
+			0,				// "semantic" index (not used)
+			DXGI_FORMAT_R16_FLOAT, // size of ONE element (3 floats)
+			0,							 // input slot
+			D3D11_APPEND_ALIGNED_ELEMENT, // offset of first element
+			D3D11_INPUT_PER_VERTEX_DATA, // specify data PER vertex
+			0							 // used for INSTANCING (ignore)
 		}
 	};
 	
@@ -32,7 +41,17 @@ bool ParticleShader::initialize()
 	if (FAILED(this->cameraCB.initialize(System::getDevice())))
 		return false;
 
+	if (FAILED(this->particleConfigCB.initialize(System::getDevice())))
+		return false;
+
+
 	return true;
+}
+
+void ParticleShader::setSize(float size)
+{
+	this->particleConfigCB.data.size = size;
+	this->particleConfigCB.applyChanges(System::getDevice(), System::getDeviceContext());
 }
 
 void ParticleShader::setWorld(const DirectX::XMMATRIX& world)
@@ -60,4 +79,5 @@ void ParticleShader::setCBuffers()
 {
 	this->setConstanbuffer(GEOMETRY, 0, this->perFrameCB.getBuffer());
 	this->setConstanbuffer(GEOMETRY, 1, this->cameraCB.getBuffer());
+	this->setConstanbuffer(GEOMETRY, 2, this->particleConfigCB.getBuffer());
 }
