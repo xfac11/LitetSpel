@@ -12,6 +12,7 @@ struct VS_OUT
 	float4 Pos : SV_POSITION;
 	float2 Tex : TEXCOORD;
 	float4 Normal : NORMAL;
+	float4 ShadowPos : SHADOWPOS;
 	float4 Tangent : TANGENT;
 	float4 Binormal : BINORMAL;
 };
@@ -36,6 +37,9 @@ VS_OUT VS_main(VS_IN input)
 
 
 	output.Pos = float4(input.Pos, 1.0);
+	output.ShadowPos = mul(float4(input.Pos,1.0f), world);
+	output.ShadowPos = mul(output.ShadowPos, view);
+	output.ShadowPos = mul(output.ShadowPos, proj);
 	//output.WorldPos = mul((float3x3)worldMat, input.Pos.xyz);
 
 	//output.Color = input.Color;

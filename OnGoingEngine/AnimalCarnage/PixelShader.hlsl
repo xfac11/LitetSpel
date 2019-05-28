@@ -1,9 +1,10 @@
 struct VS_OUT
 {
-	float4 Pos : SV_POSITION;
+	float4 Pos: SV_POSITION;
 	float2 Tex : TEXCOORD;
 	float4 wPosition : POSITION;
 	float4 NormalWS : NORMAL;
+	float4 ShadowPos : SHADOWPOS;
 	float4 TangentWS : TANGENT;
 	float4 BinormalWS : BINORMAL;
 };
@@ -28,7 +29,7 @@ cbuffer Lights : register(b1)
 	AnyLight lights[16];
 }
 
-float4 CalcLight(AnyLight light,  float3 normal, float3 wPos, float3 LightDirection)
+float4 CalcLight(AnyLight light,  float3 normal, float3 wPos, float3 LightDirection,float visibility)
 {
 	//float3 LightDirection = light.direction.xyz;
 	float ambientAmount = 0.2f;
@@ -63,12 +64,13 @@ float4 CalcLight(AnyLight light,  float3 normal, float3 wPos, float3 LightDirect
 			specularColor = float4(light.color.xyz*specularStrength*specularFactor, 1.0f);
 		}
 	}
-	return (ambientColor + diffuseColor + specularColor);
+	
+	return (ambientColor + ((1 - visibility)*(diffuseColor + specularColor)));
 }
 
-float4 dirLight(float3 normal, AnyLight light, float3 wPos)
+float4 dirLight(float3 normal, AnyLight light, float3 wPos,float visibility)
 {
-	return CalcLight(light, normal, wPos, light.direction.xyz);
+	return CalcLight(light, normal, wPos, light.direction.xyz, visibility);
 }
 
 float4 pointLight(int indexL, float3 normal, float3 wPos)
@@ -80,7 +82,7 @@ float4 pointLight(int indexL, float3 normal, float3 wPos)
 
 	lightDir = normalize(lightDir);
 
-	float4 color = CalcLight(lights[indexL], normal, wPos,lightDir);
+	float4 color = CalcLight(lights[indexL], normal, wPos,lightDir,0);
 
 	float attenuation = max(0, 1.0f - (distance / lights[indexL].position.w));// from 3d project
 
@@ -92,13 +94,42 @@ float4 pointLight(int indexL, float3 normal, float3 wPos)
 }
 
 Texture2D Tex:register(t0);
+Texture2D ShadowMap:register(t1);
 SamplerState SampSt :register(s0);
+SamplerState ShadowSamp :register(s1);
 float4 PS_main(VS_OUT input) : SV_Target
 {
 
 	float3 normal = input.NormalWS.xyz;
 	float4 texColor = Tex.Sample(SampSt, input.Tex).xyzw;
-	float4 totalLight = dirLight(normal, lights[0],input.wPosition.xyz);
+
+	float4 shadowCoord = input.ShadowPos;
+	shadowCoord.z = shadowCoord.z / shadowCoord.w;
+	shadowCoord.xy = (0.5f*shadowCoord.xy) + 0.5f;
+	shadowCoord.y = abs(shadowCoord.y - 1);
+	float visibility = 0.0;
+	float bias;
+	bias = max(0.030 * (1.0 - dot(normal, lights[0].direction.xyz)), 0.005);
+	
+	int width;
+	int height;
+	int nrOfLevels;
+	ShadowMap.GetDimensions(0, width, height, nrOfLevels);
+	float2 textureSize = float2(width, height);
+	float2 texelSize = 1.0 / textureSize;
+	for (int x = -1; x <= 1; ++x)
+	{
+		for (int y = -1; y <= 1; ++y)
+		{
+			float pcfDepth = ShadowMap.Sample(ShadowSamp, shadowCoord.xy + float2(x, y) * texelSize).r;
+			visibility += shadowCoord.z - bias > pcfDepth ? 1.0f : 0.0;
+		}
+	}
+	visibility /= 14.0;
+	if (shadowCoord.z > 1.0)
+		visibility = 0.0f;
+
+	float4 totalLight = dirLight(normal, lights[0],input.wPosition.xyz, visibility);
 
 	for (int i = 1; i < nrOfLights; i++)
 	{

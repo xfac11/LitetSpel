@@ -3,6 +3,7 @@ struct GSInput
 	float4 Pos : SV_POSITION;
 	float2 Tex : TEXCOORD;
 	float4 Normal : NORMAL;
+	float4 ShadowPos : SHADOWPOS;
 	float4 Tangent : TANGENT;
 	float4 Binormal : BINORMAL;
 };
@@ -12,6 +13,7 @@ struct GSOutput
 	float2 Tex : TEXCOORD;
 	float4 wPosition : POSITION;
 	float4 NormalWS : NORMAL;
+	float4 ShadowPos : SHADOWPOS;
 	float4 TangentWS : TANGENT;
 	float4 BinormalWS : BINORMAL;
 };
@@ -59,7 +61,7 @@ void GS_main(triangle GSInput input[3], inout TriangleStream<GSOutput> theOutput
 			output.NormalWS = float4(normal, 1.0f);
 			output.TangentWS = input[i].Tangent;
 			output.BinormalWS = input[i].Binormal;
-
+			output.ShadowPos = input[i].ShadowPos;
 
 			theOutput.Append(output);
 		}

@@ -183,6 +183,11 @@ void ShadowMapping::setCBuffers()
 	this->setConstanbuffer(VERTEX, 1, this->worldCB.getBuffer());
 }
 
+void ShadowMapping::setCBViewAndProj()
+{
+	this->setConstanbuffer(VERTEX, 0, this->perFrameCB.getBuffer());
+}
+
 void ShadowMapping::prepare(DirectX::XMMATRIX &view)
 {
 	System::getDeviceContext()->RSSetViewports(1, &this->vp);
