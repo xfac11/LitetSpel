@@ -190,6 +190,8 @@ void ShadowMapping::setCBViewAndProj()
 
 void ShadowMapping::prepare(DirectX::XMMATRIX &view)
 {
+	ID3D11ShaderResourceView* fs = NULL;
+	System::getDeviceContext()->PSSetShaderResources(4, 1, &fs);
 	System::getDeviceContext()->RSSetViewports(1, &this->vp);
 	this->setShaders();
 	this->setCBuffers();
