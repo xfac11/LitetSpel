@@ -62,6 +62,8 @@ private:
 	bool previousGrounded;
 	float landingTimer;
 	float landingLag;
+	float jumpTimer;
+	bool jumping;
 
 	bool canBeAnimal[4];
 	int randomNumberArray[4] = {0,1,2,3};
