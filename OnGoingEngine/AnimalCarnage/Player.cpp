@@ -801,7 +801,7 @@ void Player::update(float deltaTime, int id)
 		if (landingTimer <= 100 && grounded == true && jumping == false) {
 			animName = "jump_landing";
 			animSpeed = 1;
-			//playerObj->getRigidbody()->setLinearVelocity(btVector3(playerObj->getRigidbody()->getLinearVelocity().getX() / 2, playerObj->getRigidbody()->getLinearVelocity().getY(), playerObj->getRigidbody()->getLinearVelocity().getZ()));
+			playerObj->getRigidbody()->setLinearVelocity(btVector3(playerObj->getRigidbody()->getLinearVelocity().getX() / 1.5, playerObj->getRigidbody()->getLinearVelocity().getY(), playerObj->getRigidbody()->getLinearVelocity().getZ()));
 		}
 		/*if (landingTimer >= 100 && canJump == true)
 		{

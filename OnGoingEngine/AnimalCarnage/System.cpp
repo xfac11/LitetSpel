@@ -705,7 +705,7 @@ void System::run()
 
 	if (this->hwnd)
 	{
-		theGraphicDevice->initialize(this->theWindow.width, this->theWindow.height, true, hwnd, false, 500.0f, 0.1f,90.0f);
+		theGraphicDevice->initialize(this->theWindow.width, this->theWindow.height, true, hwnd, false, 500.0f, 0.1f,60.0f);
 
 		ShowWindow(this->hwnd, this->nCMDShow);
 
