@@ -15,6 +15,7 @@ public:
 	//uses the rendershader in Shader
 	void setCamPosToMatricesPerFrame(DirectX::XMFLOAT3 campos);
 	void setCBuffers();
+	void setCBViewAndProj();
 	void prepare(DirectX::XMMATRIX& view);
 
 	void setPSDepthView();

@@ -246,7 +246,7 @@ void Camera::calcCamera(std::vector<DirectX::XMFLOAT3> playerPos)
 	medY = minY;
 	//Zoom compensation
 	medX = medX / fmaxf(1, -length/10);
-	medY = (medY - length/1.2) + (length *0.3);
+	medY = (medY - length/1.2) + (length *0.3) +3.5; 
 
 	float distanceX;
 	float distanceY;
@@ -304,18 +304,19 @@ void Camera::calcCamera(std::vector<DirectX::XMFLOAT3> playerPos)
 
 	}
 	if(){}*/
-	
 
 	float distanceZ;
 
 	if (length < this->position.z) {
-		distanceZ = this->position.z - length;
+		distanceZ = (this->position.z - length);
 		this->tempPosZ -= distanceZ / 12.5;
+		this->tempPosZ = this->tempPosZ - 0.65;
 		accelerationZ -= 0.0005;
 	}
 	else if(length > this->position.z) {
-		distanceZ = length - this->position.z;
+		distanceZ = (length - this->position.z);
 		this->tempPosZ += distanceZ / 12.5;
+		this->tempPosZ = this->tempPosZ - 0.65;
 		accelerationZ += 0.0005;
 	}
 
