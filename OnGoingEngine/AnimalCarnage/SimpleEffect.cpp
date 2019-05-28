@@ -1,7 +1,7 @@
 #include "SimpleEffect.h"
 #include "System.h"
 
-SimpleEffect::SimpleEffect(SimpleMath::Vector3 position, float lifeTime, int particleCount, float maxStartSpeed, std::string fileName) : EffectBase(lifeTime)
+SimpleEffect::SimpleEffect(SimpleMath::Vector3 position, float lifeTime, int particleCount, float size, float maxStartSpeed, std::string fileName) : EffectBase(lifeTime)
 {
 	this->particles = new Particle[particleCount];
 	this->velocities = new SimpleMath::Vector3[particleCount];
@@ -10,10 +10,11 @@ SimpleEffect::SimpleEffect(SimpleMath::Vector3 position, float lifeTime, int par
 	for (int i = 0; i < particleCount; i++)
 	{
 		this->particles[i].position = position;
+		//this->particles[i].size = size;
 		this->velocities[i] = SimpleMath::Vector3((rand() % 1001 - 500) / 500.0f, (rand() % 1001 - 500) / 500.0f, (rand() % 1001 - 500) / 500.0f);
 		this->velocities[i] *= maxStartSpeed;
 	}
-
+	System::shaderManager->getParticleShader()->setSize(size);
 	this->vertexBuffer.initializeDynamic(this->particles, static_cast<UINT>(particleCount), System::getDevice());
 	this->theShader = System::shaderManager->getParticleShader();
 
@@ -56,7 +57,6 @@ void SimpleEffect::update(float deltaTime)
 		//a = g
 		//v = v0 + a * t
 		//s = v * t
-
 		this->velocities[i] = this->velocities[i] + 9.82f * deltaTime * SimpleMath::Vector3::Down;
 		this->particles[i].position = this->particles[i].position + this->velocities[i] * deltaTime;
 	}
