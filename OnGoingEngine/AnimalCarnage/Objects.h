@@ -1,10 +1,10 @@
 #pragma once
 #include "GameObject.h"
 enum OBJECTYPE {
-	PLATFORM,STONE,TREE
+	PLATFORM,STONE,TREE,GRASS, GROUND
 };
 enum OBJECTSTATE {
-STATIC,DYNAMIC,TRUE_DYNAMIC
+STATIC,DYNAMIC,TRUE_DYNAMIC,BACKGROUND
 };
 class Objects
 {
@@ -24,6 +24,8 @@ private:
 	int health;
 	int maxHealth;
 	float respawnTimer;
+
+	float rotationSpeed;
 
 public:
 	Objects();
@@ -47,5 +49,8 @@ public:
 	void addImpulse(float impulse);
 	bool getCanGiveDmg() const;
 	void takeDmg(int damage);
+
+	void addGrassRotation(float addRotation, int dir);
+	XMFLOAT3 getPosition();
 };
 

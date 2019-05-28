@@ -19,12 +19,9 @@ void Texture::setTexture(std::string fileName, int mipLevels)
 	std::string fileTexture = "Textures/" + fileName;
 	//const char *file = fileTexture.c_str();
 
-	if (!testTexture.Initialize(fileTexture.c_str(),mipLevels))
+	if (!testTexture.Initialize(modelTexture.c_str(),mipLevels))
 	{
-		if (!testTexture.Initialize(modelTexture.c_str(),mipLevels))
-		{
-			testTexture.Initialize("Textures/foxTest.tga", mipLevels);
-		}
+		testTexture.Initialize("Resources/Textures/foxTest.tga", mipLevels);
 	}
 	/*if (!testTexture.Initialize(gDevice, gDeviceContext, fileName))
 	{

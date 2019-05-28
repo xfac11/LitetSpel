@@ -20,7 +20,10 @@ private:
 
 	GuiBase* inGameGui;
 	GuiBase* pauseGui;
+	GuiBase* resultGui;
 	bool paused;
+	bool resultsShown;
+
 	int cameraFocus;
 	int objectId;
 	btVector3 spawnPoints[4];//for players

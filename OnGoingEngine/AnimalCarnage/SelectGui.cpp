@@ -80,7 +80,7 @@ bool SelectGui::update(float deltaTime)
 	{
 		this->keyboardDelay -= deltaTime;
 	}
-
+	
 	for (int i = 0; i < 4; i++)
 	{
 		DirectX::GamePad::State gamepadState = System::theGamePad->GetState(i);

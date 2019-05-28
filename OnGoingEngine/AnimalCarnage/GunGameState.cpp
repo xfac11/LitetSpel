@@ -2,6 +2,7 @@
 #include "System.h"
 #include "GunGameGui.h"
 #include "PauseGui.h"
+#include "ResultGui.h"
 
 //GunGameState* GunGameState::shelf = nullptr;
 
@@ -81,8 +82,10 @@ GunGameState::GunGameState()
 {
 	this->testColBox = false;
 	this->paused = false;
+	this->resultsShown = false;
 	this->inGameGui = nullptr;
 	this->pauseGui = nullptr;
+	this->resultGui = nullptr;
 	this->cameraFocus = 0;
 	this->objectId = 1;
 	this->nrOfObjects = 0;
@@ -123,7 +126,7 @@ bool GunGameState::callbackFunc(btManifoldPoint& cp, const btCollisionObjectWrap
 					((Player*)obj2->getCollisionObject()->getUserPointer())->takeDamage(25);
 					((Player*)obj2->getCollisionObject()->getUserPointer())->setHitStun(true);
 
-					System::getParticleManager()->addSimpleEffect(((Player*)obj2->getCollisionObject()->getUserPointer())->getPosition(),1.0f,"splat");
+					System::getParticleManager()->addSimpleEffect(((Player*)obj2->getCollisionObject()->getUserPointer())->getPosition(),"splat",1.0f);
 
 					int randomNumber = (rand() % 4) + 0;
 					System::getSoundManager()->playEffect(to_string(randomNumber));
@@ -260,7 +263,7 @@ bool GunGameState::initailize()
 	this->addObject("Resources/Models/small_stone2.lu", btVector3(5, 6, 0), 4, 2, btVector3(7.5f, 7.5f, 7.5f), TRUE_DYNAMIC, PLATFORM, 1,true);
 	this->addObject("Resources/Models/small_stone3.lu", btVector3(12, 6, 0), 4, 2, btVector3(7.5f, 7.5f, 7.5f), TRUE_DYNAMIC, PLATFORM, 1,true);
 
-	this->addObject("Resources/Models/ground.lu", btVector3(16, 0, 20), 3, 3, btVector3(100.f, 4.f, 50.f), STATIC, STONE, false, -1, 10000, 10000, true);
+	this->addObject("Resources/Models/ground.lu", btVector3(16, 0, 20), 3, 3, btVector3(100.f, 4.f, 50.f), STATIC, GROUND, false, -1, 10000, 10000, true);
 
 	this->addObject("Resources/Models/platform1.lu", btVector3(12, 4, 0), 3, 3, btVector3(1.4f, 2.8f, 1.4f), DYNAMIC, PLATFORM, 1,true);
 	this->addObject("Resources/Models/platform1.lu", btVector3(5, 4, 0), 3, 3, btVector3(1.4f, 2.8f, 1.4f), DYNAMIC, PLATFORM, 1,true);
@@ -270,13 +273,48 @@ bool GunGameState::initailize()
 
 	this->addObject("Resources/Models/platform2.lu", btVector3(-10, 5, 0), 3, 3, btVector3(0.6f, 0.8f, 0.6f), STATIC, PLATFORM, 1,true);
 
+
+	this->addObject("Resources/Models/tree1.lu", btVector3(10, 0, 7.6), 0, 0, btVector3(1.6, 1.6, 1.6), BACKGROUND, PLATFORM, 1, false);
+
+	//GRASS
+	this->addObject("Resources/Models/grass1.lu", btVector3( 0.0, 0.4, -1.4), 0, 0, btVector3(1.0, 1.0, 1.0), BACKGROUND, GRASS, 1, false);
+	this->addObject("Resources/Models/grass2.lu", btVector3(-0.3, 0.4, -1.2), 0, 0, btVector3(1.0, 1.0, 1.0), BACKGROUND, GRASS, 1, false);
+	this->addObject("Resources/Models/grass1.lu", btVector3(-0.5, 0.4, -1.0), 0, 0, btVector3(1.0, 1.0, 1.0), BACKGROUND, GRASS, 1, false);
+	this->addObject("Resources/Models/grass1.lu", btVector3(-1.0, 0.4, -1.9), 0, 0, btVector3(1.0, 1.0, 1.0), BACKGROUND, GRASS, 1, false);
+	this->addObject("Resources/Models/grass2.lu", btVector3(-2.0, 0.4, -2.0), 0, 0, btVector3(1.0, 1.0, 1.0), BACKGROUND, GRASS, 1, false);
+	this->addObject("Resources/Models/grass1.lu", btVector3(-3.0, 0.4, -2.5), 0, 0, btVector3(1.0, 1.0, 1.0), BACKGROUND, GRASS, 1, false);
+	this->addObject("Resources/Models/grass1.lu", btVector3(-4.0, 0.4, -2.3), 0, 0, btVector3(1.0, 1.0, 1.0), BACKGROUND, GRASS, 1, false);
+	this->addObject("Resources/Models/grass2.lu", btVector3(-5.0, 0.4, -1.5), 0, 0, btVector3(1.0, 1.0, 1.0), BACKGROUND, GRASS, 1, false);
+	this->addObject("Resources/Models/grass2.lu", btVector3(-6.0, 0.4, -1.1), 0, 0, btVector3(1.0, 1.0, 1.0), BACKGROUND, GRASS, 1, false);
+	this->addObject("Resources/Models/grass1.lu", btVector3(-7.0, 0.4, -1.8), 0, 0, btVector3(1.0, 1.0, 1.0), BACKGROUND, GRASS, 1, false);
+	this->addObject("Resources/Models/grass1.lu", btVector3(-8.0, 0.4, -1.4), 0, 0, btVector3(1.0, 1.0, 1.0), BACKGROUND, GRASS, 1, false);
+	this->addObject("Resources/Models/grass1.lu", btVector3(-9.0, 0.4, -1.9), 0, 0, btVector3(1.0, 1.0, 1.0), BACKGROUND, GRASS, 1, false);
+	this->addObject("Resources/Models/grass2.lu", btVector3(-10., 0.4, -2.4), 0, 0, btVector3(1.0, 1.0, 1.0), BACKGROUND, GRASS, 1, false);
+	this->addObject("Resources/Models/grass1.lu", btVector3(-11., 0.4, -2.1), 0, 0, btVector3(1.0, 1.0, 1.0), BACKGROUND, GRASS, 1, false);
+	this->addObject("Resources/Models/grass2.lu", btVector3( 5.0, 0.4, -1.3), 0, 0, btVector3(1.0, 1.0, 1.0), BACKGROUND, GRASS, 1, false);
+	this->addObject("Resources/Models/grass1.lu", btVector3( 6.0, 0.4, -0.6), 0, 0, btVector3(1.0, 1.0, 1.0), BACKGROUND, GRASS, 1, false);
+	this->addObject("Resources/Models/grass2.lu", btVector3( 7.0, 0.4, -1.7), 0, 0, btVector3(1.0, 1.0, 1.0), BACKGROUND, GRASS, 1, false);
+	this->addObject("Resources/Models/grass2.lu", btVector3( 8.5, 0.4, -1.2), 0, 0, btVector3(1.0, 1.0, 1.0), BACKGROUND, GRASS, 1, false);
+	this->addObject("Resources/Models/grass1.lu", btVector3( 9.0, 0.4, -2.2), 0, 0, btVector3(1.0, 1.0, 1.0), BACKGROUND, GRASS, 1, false);
+	this->addObject("Resources/Models/grass1.lu", btVector3(10.5, 0.4, -2.8), 0, 0, btVector3(1.0, 1.0, 1.0), BACKGROUND, GRASS, 1, false);
+	this->addObject("Resources/Models/grass2.lu", btVector3(11.0, 0.4, -1.3), 0, 0, btVector3(1.0, 1.0, 1.0), BACKGROUND, GRASS, 1, false);
+	this->addObject("Resources/Models/grass1.lu", btVector3(12.5, 0.4, -1.8), 0, 0, btVector3(1.0, 1.0, 1.0), BACKGROUND, GRASS, 1, false);
+	this->addObject("Resources/Models/grass2.lu", btVector3(13.0, 0.4, -1.0), 0, 0, btVector3(1.0, 1.0, 1.0), BACKGROUND, GRASS, 1, false);
+	this->addObject("Resources/Models/grass2.lu", btVector3(14.5, 0.4, -1.3), 0, 0, btVector3(1.0, 1.0, 1.0), BACKGROUND, GRASS, 1, false);
+	this->addObject("Resources/Models/grass1.lu", btVector3(15.0, 0.4, -1.8), 0, 0, btVector3(1.0, 1.0, 1.0), BACKGROUND, GRASS, 1, false);
+	this->addObject("Resources/Models/grass2.lu", btVector3(16.5, 0.4, -2.9), 0, 0, btVector3(1.0, 1.0, 1.0), BACKGROUND, GRASS, 1, false);
+
+
+
 	//Background trees
-	GameObject* tree1 = new GameObject;
+	/*GameObject* tree1 = new GameObject;
 	System::theModelLoader->loadGO(tree1, "Resources/Models/tree1.lu");
 	System::handler->addObject(tree1);
 	tree1->setPosition(10, 0, 7.6);
 	tree1->setScale(1.6, 1.6, 1.6);
-	tree1->setRotationRollPitchYaw(0, -1, 0);
+
+	tree1->setRotationRollPitchYaw(0, -1, 0);*/
+
 	GameObject* tree2 = new GameObject;
 	System::theModelLoader->loadGO(tree2, "Resources/Models/tree2.lu");
 	System::handler->addObject(tree2);
@@ -323,7 +361,7 @@ bool GunGameState::initailize()
 */
 
 	//Miscellaneous objects
-	GameObject* grass1 = new GameObject;
+	/*GameObject* grass1 = new GameObject;
 	System::theModelLoader->loadGO(grass1, "Resources/Models/grass1.lu");
 	System::handler->addObject(grass1);
 	grass1->setPosition(-5, 0.6, -1);
@@ -346,7 +384,7 @@ bool GunGameState::initailize()
 	GameObject* grass6 = new GameObject;
 	System::theModelLoader->loadGO(grass6, "Resources/Models/grass2.lu");
 	System::handler->addObject(grass6);
-	grass6->setPosition(5.3, 0.6, -6);
+	grass6->setPosition(5.3, 0.6, -6);*/
 
 	GameObject* ray1 = new GameObject;
 	System::theModelLoader->loadGO(ray1, "Resources/Models/sun_ray1.lu");
@@ -359,7 +397,7 @@ bool GunGameState::initailize()
 	ray2->setPosition(15, 30, 0);
 	ray2->setRotationRollPitchYaw(0, 0, -0.5);
 
-	this->nrOfPlayers = 4;
+	this->nrOfPlayers = 2;
 	this->currentAnimSpeed.resize(this->nrOfPlayers);
 	this->currentAnimName.resize(this->nrOfPlayers);
 	player = new Player*[nrOfPlayers];
@@ -432,6 +470,10 @@ bool GunGameState::initailize()
 	this->inGameGui->initialize();
 	this->pauseGui = new PauseGui(this);
 	this->pauseGui->initialize();
+	this->resultGui = new ResultGui(this);
+	this->resultGui->initialize();
+
+	System::handler->sortBackToFront();
 
 	return true;
 }
@@ -459,11 +501,19 @@ bool GunGameState::render()
     System::getParticleManager()->render();
 
 	System::fusk->resetShaders();
-	this->inGameGui->render();
 
-	if (this->paused)
+	if (this->resultsShown)
 	{
-		this->pauseGui->render();
+		this->resultGui->render();
+	}
+	else
+	{
+		this->inGameGui->render();
+
+		if (this->paused)
+		{
+			this->pauseGui->render();
+		}
 	}
 
 	return true;
@@ -510,6 +560,18 @@ void GunGameState::renderImgui()
 
 bool GunGameState::update(float deltaTime)
 {
+	if (resultsShown)
+	{
+		this->resultGui->update(deltaTime);
+		
+		if (System::getCurrentState() != this)
+		{
+			reset();
+		}
+
+		return true;
+	}
+
 	if (paused)
 	{
 		this->pauseGui->update(deltaTime);
@@ -539,7 +601,7 @@ bool GunGameState::update(float deltaTime)
 					int tempHP = player[i]->getHealth();
 					//TAKE DAMAGE HERE
 					player[i]->takeDamage(player[j]->getStrength());
-					System::getParticleManager()->addSimpleEffect(player[i]->getPosition(),3.0f,"splat");
+					System::getParticleManager()->addSimpleEffect(player[i]->getPosition(), "splat",1.0f);
 
 					int randomNumber = (rand() % 4) + 0;
 					System::getSoundManager()->playEffect(to_string(randomNumber));
@@ -561,8 +623,9 @@ bool GunGameState::update(float deltaTime)
 							player[j]->changeCharacter();
 						else
 						{
-							reset();
-							System::setState(MAINMENU);
+							this->resultsShown = true;
+							this->paused = true;
+							this->pauseGui->activateDelay();
 						}
 					}
 
@@ -621,6 +684,16 @@ bool GunGameState::update(float deltaTime)
 				}
 			}
 		}
+		//GRASS ROTATION
+		for (int i = 0; i < nrOfObjects; i++) {
+			for (int j = 0; j < nrOfPlayers; j++) {
+				if (objects[i]->GetType() == GRASS) {
+					if ((((objects[i]->getPosition().x - player[j]->getPosition().x) < 2) && ((objects[i]->getPosition().x - player[j]->getPosition().x) > -2))) {
+						objects[i]->addGrassRotation(0.02, player[j]->dir);
+					}
+				}
+			}
+		}
 
 		//for(int k=0;k<nrOfObjects;k++){}
 
@@ -668,8 +741,10 @@ void GunGameState::shutDown()
 
 	delete this->inGameGui;
 	delete this->pauseGui;
+	delete this->resultGui;
 	this->inGameGui = nullptr;
 	this->pauseGui = nullptr;
+	this->resultGui = nullptr;
 }
 
 void GunGameState::reset()
@@ -683,6 +758,9 @@ void GunGameState::reset()
 	{
 		this->objects[i]->respawn();
 	}
+
+	this->paused = false;
+	this->resultsShown = false;
 }
 
 bool GunGameState::controllerIsConnected(int controllerPort)

@@ -334,6 +334,7 @@
     <ClCompile Include="KeyboardEvent.cpp" />
     <ClCompile Include="KeyFrame.cpp" />
     <ClCompile Include="LightShader.cpp" />
+    <ClCompile Include="LooserView.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainGui.cpp" />
     <ClCompile Include="MainMenu.cpp" />
@@ -350,6 +351,7 @@
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PlayerSelector.cpp" />
     <ClCompile Include="Primitives.cpp" />
+    <ClCompile Include="ResultGui.cpp" />
     <ClCompile Include="RulesGui.cpp" />
     <ClCompile Include="SelectGui.cpp" />
     <ClCompile Include="Shader.cpp" />
@@ -366,6 +368,7 @@
     <ClCompile Include="TextureLoad.cpp" />
     <ClCompile Include="Transform.cpp" />
     <ClCompile Include="VerticalBlur.cpp" />
+    <ClCompile Include="WinnerView.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animal.h" />
@@ -633,6 +636,7 @@
     <ClInclude Include="KeyboardEvent.h" />
     <ClInclude Include="KeyFrame.h" />
     <ClInclude Include="LightShader.h" />
+    <ClInclude Include="LooserView.h" />
     <ClInclude Include="MainGui.h" />
     <ClInclude Include="MainMenu.h" />
     <ClInclude Include="Model.h" />
@@ -649,6 +653,7 @@
     <ClInclude Include="PlayerSelector.h" />
     <ClInclude Include="Primitives.h" />
     <ClInclude Include="resource1.h" />
+    <ClInclude Include="ResultGui.h" />
     <ClInclude Include="RulesGui.h" />
     <ClInclude Include="SelectGui.h" />
     <ClInclude Include="Shader.h" />
@@ -667,6 +672,7 @@
     <ClInclude Include="Transform.h" />
     <ClInclude Include="VertexBuffer.h" />
     <ClInclude Include="VerticalBlur.h" />
+    <ClInclude Include="WinnerView.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="imgui\.gitkeep" />
