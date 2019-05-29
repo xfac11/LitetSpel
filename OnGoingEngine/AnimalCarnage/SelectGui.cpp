@@ -10,7 +10,7 @@ SelectGui::SelectGui(State * myState) : GuiBase(myState)
 
 	if (!SelectGui::texturesLoaded)
 	{
-		SelectGui::pressStart.setTexture("selector.tga");
+		SelectGui::pressStart.setTexture("PressStart.tga");
 		SelectGui::texturesLoaded = true;
 
 	}
@@ -218,9 +218,10 @@ bool SelectGui::render()
 	this->playerSelectors[1]->render(false);
 	this->playerSelectors[2]->render(false);
 	this->playerSelectors[3]->render(false);
-
+	Vector2 textWidth2 = System::getFontArial()->MeasureString("Press Start to Begin");
 	if (this->allReady)
-		System::getSpriteBatch()->Draw(SelectGui::pressStart.getTexture(), Vector2(300, 300), nullptr);
+		System::getFontArial()->DrawString(System::getSpriteBatch(), "Press Start to Begin", Vector2(1920 / 2.0F, 1080 / 2.0F - 100), Colors::Red,-3.14/8, textWidth2/2.0f);
+		//System::getSpriteBatch()->Draw(SelectGui::pressStart.getTexture(), Vector2(500, 500), nullptr);//texture would be nicer?
 
 	System::getSpriteBatch()->End();
 	return true;
