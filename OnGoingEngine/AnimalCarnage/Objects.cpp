@@ -65,7 +65,7 @@ Objects::Objects(std::string filepath, btVector3 position,int id,int friction, b
 	this->ObjectOBJ->setPosition(btVector3(position.getX(), position.getY()+0.57f, position.getZ()));
 	this->ObjectOBJ->setRepeat(x, y);//repeated texture
 	this->position1 = XMFLOAT3(position.getX(), position.getY(), position.getZ());
-	this->position2 = XMFLOAT3(position1.x + 5, position1.y/*+5*/, position1.z);
+	this->position2 = XMFLOAT3(position1.x + 5, position1.y +0.0005, position1.z);
 
 	firstriktningsVector = normalize(VECTORSUBTRACTION(position2,position1));
 	secondriktningsVector = normalize(VECTORSUBTRACTION(position1,position2));
@@ -178,7 +178,7 @@ Objects::~Objects()
 void Objects::update(float dt)
 {
 	if (type == GRASS) {
-		ObjectOBJ->setRotationRollPitchYaw(0.5, 0, ObjectOBJ->getRotation().z + rotationSpeed);
+		ObjectOBJ->setRotationRollPitchYaw(0.5, 0, ObjectOBJ->getRotation().z + (rotationSpeed * dt * 60));
 	}
 	if (ObjectOBJ->getRotation().z > (3.14/2) -0.1) {
 		ObjectOBJ->setRotationRollPitchYaw(0.5, 0, (3.14 / 2) -0.1);
@@ -189,10 +189,10 @@ void Objects::update(float dt)
 
 
 	if (ObjectOBJ->getRotation().z < 0) {
-		rotationSpeed += 0.005 /*+ (abs(rotationSpeed)/25)*/;
+		rotationSpeed += 0.005 * dt * 60 /*+ (abs(rotationSpeed)/25)*/;
 	}
 	else if (ObjectOBJ->getRotation().z >= 0) {
-		rotationSpeed -= 0.005 /*+ (abs(rotationSpeed)/25)*/;
+		rotationSpeed -= 0.005 * dt * 60 /*+ (abs(rotationSpeed)/25)*/;
 	}
 	rotationSpeed /= 1.05;
 

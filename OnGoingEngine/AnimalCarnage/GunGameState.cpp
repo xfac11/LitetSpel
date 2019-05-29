@@ -107,7 +107,7 @@ GunGameState::~GunGameState()
 
 bool GunGameState::callbackFunc(btManifoldPoint& cp, const btCollisionObjectWrapper* obj1, int id1, int index1, const btCollisionObjectWrapper* obj2, int id2, int index2)
 {
-
+	Player* PlrPointer = ((Player*)obj2->getCollisionObject()->getUserPointer());
 	if (obj1->getCollisionObject()->getUserPointer() == (Player*)obj1->getCollisionObject()->getUserPointer())
 	{
 		if (((Player*)obj1->getCollisionObject()->getUserPointer()) != nullptr) {
@@ -119,14 +119,14 @@ bool GunGameState::callbackFunc(btManifoldPoint& cp, const btCollisionObjectWrap
 		switch (pointer->getId())
 		{
 		case 4:
-			if (((Player*)obj2->getCollisionObject()->getUserPointer()) != nullptr && !((Player*)obj2->getCollisionObject()->getUserPointer())->getHitStun()) {
-				((Player*)obj2->getCollisionObject()->getUserPointer())->setGrounded(true);
+			if (PlrPointer != nullptr && !PlrPointer->getHitStun()) {
+				PlrPointer->setGrounded(true);
 				if ((pointer->getMovingSpeed().x > 20 || pointer->getMovingSpeed().y > 4) && pointer->getCanGiveDmg()) {
 					pointer->takeDmg(25);
-					((Player*)obj2->getCollisionObject()->getUserPointer())->takeDamage(25);
-					((Player*)obj2->getCollisionObject()->getUserPointer())->setHitStun(true);
+					PlrPointer->takeDamage(25);
+					PlrPointer->setHitStun(true);
 
-					System::getParticleManager()->addSimpleEffect(((Player*)obj2->getCollisionObject()->getUserPointer())->getPosition(),"splat",1.0f);
+					System::getParticleManager()->addSimpleEffect(PlrPointer->getPosition(),"splat",1.0f);
 
 					int randomNumber = (rand() % 4) + 0;
 					System::getSoundManager()->playEffect(to_string(randomNumber));
@@ -141,19 +141,19 @@ bool GunGameState::callbackFunc(btManifoldPoint& cp, const btCollisionObjectWrap
 						int randomNumber4 = (rand() % 3) - 1;
 					}
 
-					System::theCamera->cameraShake(0.1, DirectX::XMFLOAT3(((Player*)obj2->getCollisionObject()->getUserPointer())->dir, randomNumber3, randomNumber4));
+					System::theCamera->cameraShake(0.1, DirectX::XMFLOAT3(PlrPointer->dir, randomNumber3, randomNumber4));
 				}
 			}
 			break;
 		case 3:
-			if (((Player*)obj2->getCollisionObject()->getUserPointer()) != nullptr) {
-				((Player*)obj2->getCollisionObject()->getUserPointer())->setGrounded(true);
-				((Player*)obj2->getCollisionObject()->getUserPointer())->addGroundMovingSpeed(pointer->getMovingSpeed());
+			if (PlrPointer != nullptr) {
+				PlrPointer->setGrounded(true);
+				PlrPointer->addGroundMovingSpeed(pointer->getMovingSpeed());
 			}
 			break;
 		case 2:
-			if (((Player*)obj2->getCollisionObject()->getUserPointer()) != nullptr) {
-				((Player*)obj2->getCollisionObject()->getUserPointer())->setCanWallJump(true);
+			if (PlrPointer != nullptr) {
+				PlrPointer->setCanWallJump(true);
 			}
 			break;
 		}
@@ -470,11 +470,13 @@ bool GunGameState::initailize()
 	System::theModelLoader->loadGO(ray1, "Resources/Models/sun_ray1.lu");
 	System::handler->addObject(ray1);
 	ray1->setPosition(0, 30, 0);
+	ray1->setScale(1.5, 1.5, 1.5);
 	ray1->setRotationRollPitchYaw(0, 0, -0.5);
 	GameObject* ray2 = new GameObject;
 	System::theModelLoader->loadGO(ray2, "Resources/Models/sun_ray1.lu");
 	System::handler->addObject(ray2);
 	ray2->setPosition(15, 30, 0);
+	ray2->setScale(1.5, 1.5, 1.5);
 	ray2->setRotationRollPitchYaw(0, 0, -0.5);
 
 	this->nrOfPlayers = 4;
