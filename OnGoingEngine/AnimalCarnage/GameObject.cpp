@@ -352,7 +352,7 @@ void GameObject::computeAnimationMatrix(float deltaTime, std::string animName, b
 	
 
 			if(hitboxJointID!=-1)
-				this->hitboxJointPos = pose_global[hitboxJointID];
+				this->hitboxJointPos = pose_global[this->hitboxJointID];
 			System::shaderManager->getDefShader()->setJointData(matrixPallete);
 		//}
 		//else //if the frames is already calculated
@@ -391,11 +391,6 @@ void GameObject::setSkeleton(std::vector<Luna::Joint> theJoints)
 	this->matrixPallete.resize(skeleton.size());
 	
 }
-
-//void GameObject::setCurrentAnimal(std::string animalName)
-//{
-//	this->lastAnimal = animalName;
-//}
 
 DirectX::XMFLOAT3 GameObject::interpolate1(DirectX::XMFLOAT3 & start, DirectX::XMFLOAT3 &end, float & progression)
 {
