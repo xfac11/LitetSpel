@@ -21,9 +21,9 @@ public:
 	void operator=(const JointTransformation& obj);
 	DirectX::XMMATRIX getLocalTransform();
 
-	DirectX::XMFLOAT3 getPosition()const; //positon xyz w
-	DirectX::XMVECTOR getRotation()const; //quaternion xyzw
-	DirectX::XMFLOAT3 getScale()const;
+	DirectX::XMFLOAT3 & getPosition(); //positon xyz w
+	DirectX::XMVECTOR & getRotation(); //quaternion xyzw
+	DirectX::XMFLOAT3 & getScale();
 
 };
 #endif // !JOINTTRANSFORMATION

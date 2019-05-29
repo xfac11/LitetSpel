@@ -85,7 +85,7 @@ GameObject & GameObjectHandler::getObject(int id)
 	return *this->gameObjects[id];
 }
 
-void GameObjectHandler::draw(float deltaTime, bool isPaused, std::vector<float> playerSpeed, std::vector<string> playerName)
+void GameObjectHandler::draw(float deltaTime, bool isPaused, std::vector<float> & playerSpeed, std::vector<string> & playerName)
 {
 	//Shadow
 	System::theGraphicDevice->setRasterState();

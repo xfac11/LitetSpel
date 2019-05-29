@@ -511,10 +511,7 @@ void System::initImgui()
 
 void System::update(float deltaTime)
 {
-	if (theKeyboard->KeyIsPressed('R'))
-	{
-		theCamera->rotate(0, 1, 0);
-	}
+
 
 	GunGameState* ptr = nullptr;
 	if (ptr = dynamic_cast<GunGameState*>(states[System::currentState]))
@@ -544,8 +541,10 @@ void System::update(float deltaTime)
 		}
 	}
 
-	
-
+	//if (theKeyboard->KeyIsPressed('R'))
+	//{
+	//	theCamera->rotate(0, 1, 0);
+	//}
 	//if (theKeyboard->KeyIsPressed('W'))
 	//{
 	//	theCamera->move(0, 0, 10 * deltaTime);

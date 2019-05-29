@@ -359,7 +359,7 @@ void GameObject::computeAnimationMatrix(float deltaTime, std::string animName) /
 	}
 }
 
-void GameObject::setNewAnimation(float fps, float duration, std::string name, std::vector<std::vector<Luna::Keyframe>> keyframePack)
+void GameObject::setNewAnimation(float fps, float duration, std::string name, std::vector<std::vector<Luna::Keyframe>> & keyframePack)
 {
 
 	Animation newAnim(fps, duration, name, keyframePack.size(), keyframePack[0].size());
@@ -393,7 +393,7 @@ void GameObject::setSkeleton(std::vector<Luna::Joint> theJoints)
 //	this->lastAnimal = animalName;
 //}
 
-DirectX::XMFLOAT3 GameObject::interpolate1(DirectX::XMFLOAT3 start, DirectX::XMFLOAT3 end, float progression)
+DirectX::XMFLOAT3 GameObject::interpolate1(DirectX::XMFLOAT3 & start, DirectX::XMFLOAT3 &end, float & progression)
 {
 	DirectX::XMFLOAT3 interpol = { 0,0,0 };
 	interpol.x = start.x + (end.x - start.x)*progression;
@@ -411,7 +411,7 @@ DirectX::XMFLOAT3 GameObject::interpolate2(DirectX::XMFLOAT3 start, DirectX::XMF
 	return interpol;
 }
 
-JointTransformation GameObject::interpolate1(JointTransformation frameA, JointTransformation frameB, float progression)
+JointTransformation GameObject::interpolate1(JointTransformation & frameA, JointTransformation & frameB, float & progression)
 {
 	DirectX::XMFLOAT3 pos = this->interpolate1(frameA.getPosition(), frameB.getPosition(), progression);
 	DirectX::XMFLOAT4 pos4 = { pos.x, pos.y, pos.z, 1.f };

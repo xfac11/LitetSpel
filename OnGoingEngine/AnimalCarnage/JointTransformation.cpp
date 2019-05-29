@@ -106,17 +106,17 @@ DirectX::XMMATRIX JointTransformation::getLocalTransform()
 	return affine;									  
 }
 
-DirectX::XMFLOAT3 JointTransformation::getPosition() const
+DirectX::XMFLOAT3 & JointTransformation::getPosition() 
 {
 	return this->position;
 }
 
-DirectX::XMVECTOR JointTransformation::getRotation() const
+DirectX::XMVECTOR & JointTransformation::getRotation()
 {
 	return this->rotation;
 }
 
-DirectX::XMFLOAT3 JointTransformation::getScale() const
+DirectX::XMFLOAT3 & JointTransformation::getScale()
 {
 	return this->scale;
 }

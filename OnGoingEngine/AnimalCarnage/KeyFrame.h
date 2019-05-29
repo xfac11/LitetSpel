@@ -14,6 +14,6 @@ public:
 
 
 	float getLenght()const;
-	JointTransformation getJointKeyFrames()const;
+	JointTransformation & getJointKeyFrames();
 };
 #endif
