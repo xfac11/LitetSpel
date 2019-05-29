@@ -537,15 +537,21 @@ void Player::update(float deltaTime, int id)
 			canJump = false;
 		}
 
+		//Jumping Delay
 		if (jumping == true || playerObj->getRigidbody()->getLinearVelocity().getY() >= 1) {
 			if (jumping == true) {
 				jumpTimer += 205 * deltaTime;
 				playerObj->getRigidbody()->setLinearVelocity(btVector3(playerObj->getRigidbody()->getLinearVelocity().getX() / 2, playerObj->getRigidbody()->getLinearVelocity().getY(), playerObj->getRigidbody()->getLinearVelocity().getZ()));
 			}
-			if (std::find(Animal::getAnimal(type).animalAnimations.begin(), Animal::getAnimal(type).animalAnimations.end(), "_jump_start") != Animal::getAnimal(type).animalAnimations.end())//
+			if ((std::find(Animal::getAnimal(type).animalAnimations.begin(), Animal::getAnimal(type).animalAnimations.end(), "_jump_start") != Animal::getAnimal(type).animalAnimations.end()) && (type == FOX || type == BEAR))//
 			{
 				animName = "jump_start";
 				animSpeed = 1.3;
+			}
+			if ((std::find(Animal::getAnimal(type).animalAnimations.begin(), Animal::getAnimal(type).animalAnimations.end(), "_jump_start") != Animal::getAnimal(type).animalAnimations.end()) && (type == RABBIT || type == MOOSE))//
+			{
+				animName = "jump_start";
+				animSpeed = 0.5;
 			}
 			grounded = false;
 			if (jumpTimer >= 60) {
