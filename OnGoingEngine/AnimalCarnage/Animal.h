@@ -19,7 +19,7 @@ struct AnimalDef
 	float jumpHeight;
 	int strength;
 	const char* modelPath;
-	const char* maskPath;
+	std::string maskPath;
 	std::vector<std::string> animalAnimations;
 };
 
