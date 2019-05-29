@@ -10,16 +10,16 @@ private:
 	static bool texturesLoaded;
 	static Texture texture;
 	static Texture textureOutline;
-
+	static Texture textureBackground;
 	int health;
 	int maxHealth;
-
+	DirectX::XMVECTOR color;
 public:
 	HealthBar(int health, int maxHealth, DirectX::SimpleMath::Vector2 position = DirectX::SimpleMath::Vector2::Zero);
 	virtual ~HealthBar();
 
 	bool render(bool selected);
-
+	void setColor(float r, float g, float b);
 	void setHealth(int health);
 	int getHealth() const;
 	void setMaxHealth(int maxHealth);

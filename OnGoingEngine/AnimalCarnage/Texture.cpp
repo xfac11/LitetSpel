@@ -67,12 +67,12 @@ unsigned char * Texture::getTextureCharArray()
 
 int Texture::getWidth()
 {
-	return 0;
+	return testTexture.getWidth();
 }
 
 int Texture::getHeight()
 {
-	return 0;
+	return testTexture.getHeight();
 }
 
 bool Texture::isTransparent()
