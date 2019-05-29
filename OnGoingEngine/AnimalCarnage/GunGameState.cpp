@@ -121,12 +121,12 @@ bool GunGameState::callbackFunc(btManifoldPoint& cp, const btCollisionObjectWrap
 		case 4:
 			if (PlrPointer != nullptr && !PlrPointer->getHitStun()) {
 				PlrPointer->setGrounded(true);
-				if ((pointer->getMovingSpeed().x > 20 || pointer->getMovingSpeed().y > 4) && pointer->getCanGiveDmg()) {
+				if ((pointer->getMovingSpeed().x > 10 || pointer->getMovingSpeed().y > 3) && pointer->getCanGiveDmg()) {
 					pointer->takeDmg(25);
 					PlrPointer->takeDamage(25);
 					PlrPointer->setHitStun(true);
 
-					System::getParticleManager()->addSimpleEffect(PlrPointer->getPosition(),"splat",1.0f);
+					System::getParticleManager()->addSimpleEffect(PlrPointer->getPosition(),"hit_effect",0.5f,2,30,6);
 
 					int randomNumber = (rand() % 4) + 0;
 					System::getSoundManager()->playEffect(to_string(randomNumber));
@@ -142,6 +142,11 @@ bool GunGameState::callbackFunc(btManifoldPoint& cp, const btCollisionObjectWrap
 					}
 
 					System::theCamera->cameraShake(0.1, DirectX::XMFLOAT3(PlrPointer->dir, randomNumber3, randomNumber4));
+
+					if (PlrPointer->getHealth() <= 0){
+						PlrPointer->setDiedOfStone(true);
+						pointer->setPlayerKilled(true);
+					}
 				}
 			}
 			break;
@@ -643,6 +648,8 @@ void GunGameState::renderImgui()
 
 bool GunGameState::update(float deltaTime)
 {
+
+
 	if (resultsShown)
 	{
 		this->resultGui->update(deltaTime);
@@ -684,7 +691,7 @@ bool GunGameState::update(float deltaTime)
 					int tempHP = player[i]->getHealth();
 					//TAKE DAMAGE HERE
 					player[i]->takeDamage(player[j]->getStrength());
-					System::getParticleManager()->addSimpleEffect(player[i]->getPosition(), "splat",1.0f);
+					System::getParticleManager()->addSimpleEffect(player[i]->getPosition(), "hit_effect", 0.5f, 2, 30, 6);
 
 					int randomNumber = (rand() % 4) + 0;
 					System::getSoundManager()->playEffect(to_string(randomNumber));
@@ -736,34 +743,13 @@ bool GunGameState::update(float deltaTime)
 				maxTempObj = DirectX::XMFLOAT3(maxObj.getX(), maxObj.getY(), maxObj.getZ());
 				for (int j = 0; j < nrOfPlayers; j++) {
 					if (Intersects(minTempObj, maxTempObj, player[j]->hitbox.hitbox->getCollisionBox(), player[j]->hitbox.hitbox->getPosition()) && !player[j]->getHitStun()) {
-						objects[i]->addImpulse(player[j]->dir * 65 * player[j]->getWeight());
+						objects[i]->addImpulse(player[j]->dir * 65 * ((player[j]->getWeight()+1)/2), j);
 					}
-					//if (Intersects(minTempObj, maxTempObj, player[j]->getAABB(),player[j]->getPosition())) {
-					//	if (/*(object[i]->getMovingSpeed().x > 0.01 || object[i]->getMovingSpeed().y > 0.01) && !player[i]->getHitStun()*/true) {
-					//		player[j]->setHitStun(true);
-					//		//player[j]->playerObj->getRigidbody()->applyCentralImpulse(btVector3(player[j]->dir * 150 * ((player[j]->getWeight() + 2) / 3), 150 * ((player[j]->getWeight() + 2) / 3), 0));// , btVector3(1, 0, 0));
-
-					//		//int tempHP = player[i]->getHealth();
-					//		player[j]->takeDamage(10);
-					//		System::getParticleManager()->addSimpleEffect(player[i]->getPosition());
-
-					//		int randomNumber = (rand() % 4) + 0;
-					//		System::getSoundManager()->playEffect(to_string(randomNumber));
-
-					//		int randomNumber2 = (rand() % 3) - 1;
-					//		int randomNumber3 = (rand() % 3) - 1;
-					//		int randomNumber4 = (rand() % 3) - 1;
-
-					//		if (randomNumber2 == 0 && randomNumber3 == 0 && randomNumber4 == 0) {
-					//			int randomNumber2 = (rand() % 3) - 1;
-					//			int randomNumber3 = (rand() % 3) - 1;
-					//			int randomNumber4 = (rand() % 3) - 1;
-					//		}
-
-					//		System::theCamera->cameraShake(0.1, DirectX::XMFLOAT3(player[j]->dir, randomNumber3, randomNumber4));
-
-					//	}
-					//}
+					if (objects[i]->getPlayerKilled() == true && player[j]->getDiedOfStone() == true) {
+						player[objects[i]->getLastPlayerHit()]->changeCharacter();
+						objects[i]->setPlayerKilled(false);
+						player[j]->setDiedOfStone(false);
+					}
 				}
 			}
 		}
@@ -846,7 +832,7 @@ void GunGameState::reset()
 	}
 	for (int i = 0; i < this->nrOfObjects; i++)
 	{
-		this->objects[i]->respawn();
+		this->objects[i]->respawn(0);
 	}
 
 	this->paused = false;
