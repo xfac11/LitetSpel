@@ -99,7 +99,7 @@ bool GraphicsDevice::initialize(int screenWidth, int screenHeight, bool vsync, H
 		backBufferPtr->Release();
 		backBufferPtr = nullptr;
 
-
+		//swapChain->SetFullscreenState(true, nullptr);//testing fullscreen
 
 		D3D11_TEXTURE2D_DESC descDepth;
 		descDepth.Width = (UINT)screenWidth;

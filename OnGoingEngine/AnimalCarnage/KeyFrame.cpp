@@ -28,7 +28,7 @@ float KeyFrame::getLenght() const
 	return this->timeStamp;
 }
 
-JointTransformation KeyFrame::getJointKeyFrames() const
+JointTransformation & KeyFrame::getJointKeyFrames()
 {
 	return this->transform;
 }

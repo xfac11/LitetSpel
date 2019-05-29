@@ -362,7 +362,7 @@ void Player::update(float deltaTime, int id)
 	//check if player is dead and have any animals left to play
 	//changeCharacter();
 	string str = "Player next animal: " + to_string(nextAnimal) + "\n";
-	OutputDebugString( str.c_str() );
+	//OutputDebugString( str.c_str() );
 
 
 	//Cool rotation
