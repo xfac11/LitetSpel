@@ -453,6 +453,7 @@ void Player::update(float deltaTime, int id)
 				animName = "run_cycle";
 				animSpeed = abs(state.thumbSticks.leftX);
 			}
+			System::getParticleManager()->addSimpleEffect(DirectX::SimpleMath::Vector3(playerObj->getRigidbody()->getWorldTransform().getOrigin().getX(), playerObj->getRigidbody()->getWorldTransform().getOrigin().getY()-1, playerObj->getRigidbody()->getWorldTransform().getOrigin().getZ()), "rumble", 0.5f,0.5f);
 			if (playerObj->getPosition().y < 2) {
 				if (playerObj->getRigidbody()->getLinearVelocity().getX() > 10.0f * getSpeed()) {
 					System::getParticleManager()->addSimpleEffect(DirectX::SimpleMath::Vector3(playerObj->getRigidbody()->getWorldTransform().getOrigin().getX(), playerObj->getRigidbody()->getWorldTransform().getOrigin().getY() - 1, playerObj->getRigidbody()->getWorldTransform().getOrigin().getZ()), "rumble", 0.5f, 1.0f);
