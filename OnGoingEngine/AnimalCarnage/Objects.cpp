@@ -52,6 +52,7 @@ Objects::Objects()
 }
 Objects::Objects(std::string filepath, btVector3 position,int id,int friction, btVector3 size, OBJECTSTATE state, OBJECTYPE type,int mipLevels, float x, float y, bool changeOpacity,bool activeDraw) :state(state), type(type)
 {
+	this->direction = 0;
 	this->activeTimer = 0;
 	this->canGiveDmg = true;
 	this->id = id;
@@ -179,22 +180,28 @@ void Objects::update(float dt)
 {
 	if (type == GRASS) {
 		ObjectOBJ->setRotationRollPitchYaw(0.5, 0, ObjectOBJ->getRotation().z + (rotationSpeed * dt * 60));
-	}
-	if (ObjectOBJ->getRotation().z > (3.14/2) -0.1) {
-		ObjectOBJ->setRotationRollPitchYaw(0.5, 0, (3.14 / 2) -0.1);
-	}
-	if (ObjectOBJ->getRotation().z < -1.57079633 +0.1) {
-		ObjectOBJ->setRotationRollPitchYaw(0.5, 0, -1.57079633 +0.1);
-	}
+		if (ObjectOBJ->getRotation().z > (3.14 / 2) - 0.1) {
+			ObjectOBJ->setRotationRollPitchYaw(0.5, 0, (3.14 / 2) - 0.1);
+		}
+		if (ObjectOBJ->getRotation().z < -1.57079633 + 0.1) {
+			ObjectOBJ->setRotationRollPitchYaw(0.5, 0, -1.57079633 + 0.1);
+		}
+		if (ObjectOBJ->getRotation().z < 0) {
+			rotationSpeed += 0.005 * dt * 60 /*+ (abs(rotationSpeed)/25)*/;
+		}
+		else if (ObjectOBJ->getRotation().z >= 0) {
+			rotationSpeed -= 0.005 * dt * 60 /*+ (abs(rotationSpeed)/25)*/;
+		}
+		rotationSpeed /= 1.05;
+		if (rotationSpeed > 0.1) {
+			rotationSpeed = 0.1;
+		}
+		if (rotationSpeed < -0.1) {
+			rotationSpeed = -0.1;
+		}
 
-
-	if (ObjectOBJ->getRotation().z < 0) {
-		rotationSpeed += 0.005 * dt * 60 /*+ (abs(rotationSpeed)/25)*/;
+		ObjectOBJ->setPosition(position1.x, position1.y - (abs(ObjectOBJ->getRotation().z))/3 +0.57, position1.z);
 	}
-	else if (ObjectOBJ->getRotation().z >= 0) {
-		rotationSpeed -= 0.005 * dt * 60 /*+ (abs(rotationSpeed)/25)*/;
-	}
-	rotationSpeed /= 1.05;
 
 	this->activeTimer += 7500 * dt;
 	if (activeTimer >= 100) {
@@ -222,6 +229,11 @@ void Objects::update(float dt)
 			}
 		if (this->health >= 100) {
 			this->health = 100;
+		}
+		if (this->getMovingSpeed().x > 1.5) {
+			direction = 1;
+		}else if(this->getMovingSpeed().x < -1.5) {
+			direction = -1;
 		}
 	}
 
@@ -310,6 +322,11 @@ XMFLOAT3 Objects::getMovingSpeed()
 	return XMFLOAT3(this->ObjectOBJ->getRigidbody()->getLinearVelocity().getX(), this->ObjectOBJ->getRigidbody()->getLinearVelocity().getY(), this->ObjectOBJ->getRigidbody()->getLinearVelocity().getZ());
 }
 
+int Objects::getMovingDirection()
+{
+	return this->direction;
+}
+
 float Objects::getPitch(DirectX::XMVECTOR Quaternion)
 {
 	return atan2(2 * (Quaternion.m128_f32[1] * Quaternion.m128_f32[2] + Quaternion.m128_f32[3] * Quaternion.m128_f32[0]), Quaternion.m128_f32[3] * Quaternion.m128_f32[3] - Quaternion.m128_f32[0] * Quaternion.m128_f32[0] - Quaternion.m128_f32[1] * Quaternion.m128_f32[1] + Quaternion.m128_f32[2] * Quaternion.m128_f32[2]);
@@ -330,7 +347,7 @@ void Objects::addImpulse(float impulse)
 	if (state != BACKGROUND) {
 		canGiveDmg = false;
 		activeTimer = 0;
-		ObjectOBJ->getRigidbody()->applyImpulse(btVector3(impulse, 10, 0), btVector3(1, 0, 0));
+		ObjectOBJ->getRigidbody()->applyImpulse(btVector3(impulse, 0, 0), btVector3(1, 0, 0));
 	}
 }
 
@@ -346,15 +363,25 @@ void Objects::takeDmg(int damage)
 
 void Objects::addGrassRotation(float addRotation, int dir)
 {
-	if (dir == 1) {
-		rotationSpeed -= addRotation;
+	if (ObjectOBJ->getRotation().z > (3.14 / 2) - 0.2 || ObjectOBJ->getRotation().z < -1.57079633 + 0.2) {
+		rotationSpeed = rotationSpeed * 2;
 	}
-	if (dir == -1) {
-		rotationSpeed += addRotation;
+	else {
+		if (dir == 1) {
+			rotationSpeed -= addRotation;
+		}
+		if (dir == -1) {
+			rotationSpeed += addRotation;
+		}
 	}
 }
 
 XMFLOAT3 Objects::getPosition()
 {
 	return this->position1;
+}
+
+btVector3 Objects::getRigidBodyPosition()
+{
+	return this->ObjectOBJ->getRigidbody()->getWorldTransform().getOrigin();
 }

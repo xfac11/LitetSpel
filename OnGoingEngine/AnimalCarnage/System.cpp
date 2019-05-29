@@ -540,7 +540,7 @@ void System::update(float deltaTime)
 		{
 			physices->Update(deltaTime);
 			if (theCamera->GetRotation().x != 0 || theCamera->GetRotation().y != 0 || theCamera->GetRotation().z != 0)
-				theCamera->SetRotation(0, 0, 0);
+				theCamera->SetRotation(-5, 0, 0);
 		}
 	}
 

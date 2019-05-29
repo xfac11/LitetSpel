@@ -345,7 +345,7 @@ bool GunGameState::initailize()
 	this->addObject("Resources/Models/grass1.lu", btVector3(-12.2, 0.4, -0.4), 0, 0, btVector3(1.0, 1.0, 1.0), BACKGROUND, GRASS, 1, false);
 	this->addObject("Resources/Models/grass2.lu", btVector3(-13.3, 0.4, -0.1), 0, 0, btVector3(1.0, 1.0, 1.0), BACKGROUND, GRASS, 1, false);
 	this->addObject("Resources/Models/grass1.lu", btVector3(-14.8, 0.4, -0.3), 0, 0, btVector3(1.0, 1.0, 1.0), BACKGROUND, GRASS, 1, false);
-	this->addObject("Resources/Models/grass2.lu", btVector3(-15.4, 0.4, -0.6), 0, 0, btVector3(1.0, 1.0, 1.0), BACKGROUND, GRASS, 1, false);
+	this->addObject("Resources/Models/grass2.lu", btVector3(-15.4, 0.4, -0.8), 0, 0, btVector3(1.0, 1.0, 1.0), BACKGROUND, GRASS, 1, false);
 	this->addObject("Resources/Models/grass1.lu", btVector3(-16.5, 0.4, -0.7), 0, 0, btVector3(1.0, 1.0, 1.0), BACKGROUND, GRASS, 1, false);
 	this->addObject("Resources/Models/grass2.lu", btVector3(-17.8, 0.4, -0.2), 0, 0, btVector3(1.0, 1.0, 1.0), BACKGROUND, GRASS, 1, false);
 	this->addObject("Resources/Models/grass1.lu", btVector3(-18.2, 0.4, -0.2), 0, 0, btVector3(1.0, 1.0, 1.0), BACKGROUND, GRASS, 1, false);
@@ -519,7 +519,8 @@ bool GunGameState::initailize()
 	color2[2] = 1.0f;
 	pos[0] = -10.0f;
 	pos[1] = 4;
-	color2[3] = 3.0f;
+	pos[2] = -2;
+	color2[3] = 1.0f;
 	System::handler->addLight(pos, dir, color2);
 
 
@@ -772,6 +773,13 @@ bool GunGameState::update(float deltaTime)
 				if (objects[i]->GetType() == GRASS) {
 					if ((((objects[i]->getPosition().x - player[j]->getPosition().x) < 2) && ((objects[i]->getPosition().x - player[j]->getPosition().x) > -2)) && player[j]->getPosition().y < 2) {
 						objects[i]->addGrassRotation(0.005, player[j]->dir);
+					}
+				}
+			}
+			for (int j = 0; j < nrOfObjects; j++) {
+				if (objects[i]->GetType() == GRASS && objects[j]->GetState() == TRUE_DYNAMIC) {
+					if ((((objects[i]->getPosition().x - objects[j]->getRigidBodyPosition().getX()) < 1) && ((objects[i]->getPosition().x - objects[j]->getRigidBodyPosition().getX()) > -1)) && objects[j]->getRigidBodyPosition().getY() < 2) {
+						objects[i]->addGrassRotation(0.01, objects[j]->getMovingDirection());
 					}
 				}
 			}
