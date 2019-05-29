@@ -223,6 +223,7 @@ Player::Player()
 	landingLag = false;
 	jumpTimer = 0;
 	jumping = false;
+	deathOfStone = false;
 	
 	currentAnimal = 0;
 	ArrayOfAnimals[0] = FOX;
@@ -450,10 +451,10 @@ void Player::update(float deltaTime, int id)
 			}
 			if (playerObj->getPosition().y < 2) {
 				if (playerObj->getRigidbody()->getLinearVelocity().getX() > 10.0f * getSpeed()) {
-					System::getParticleManager()->addSimpleEffect(DirectX::SimpleMath::Vector3(playerObj->getRigidbody()->getWorldTransform().getOrigin().getX(), playerObj->getRigidbody()->getWorldTransform().getOrigin().getY() - 1, playerObj->getRigidbody()->getWorldTransform().getOrigin().getZ()), "rumble", 0.5f, 1.0f);
+					System::getParticleManager()->addSimpleEffect(DirectX::SimpleMath::Vector3(playerObj->getRigidbody()->getWorldTransform().getOrigin().getX(), playerObj->getRigidbody()->getWorldTransform().getOrigin().getY() - 1, playerObj->getRigidbody()->getWorldTransform().getOrigin().getZ()), "rumble", 0.5f, 1.2f, 5, 4.5);
 				}
 				if (playerObj->getRigidbody()->getLinearVelocity().getX() < -10.0f * getSpeed()) {
-					System::getParticleManager()->addSimpleEffect(DirectX::SimpleMath::Vector3(playerObj->getRigidbody()->getWorldTransform().getOrigin().getX(), playerObj->getRigidbody()->getWorldTransform().getOrigin().getY() - 1, playerObj->getRigidbody()->getWorldTransform().getOrigin().getZ()), "rumble", 0.5f, 1.0f);
+					System::getParticleManager()->addSimpleEffect(DirectX::SimpleMath::Vector3(playerObj->getRigidbody()->getWorldTransform().getOrigin().getX(), playerObj->getRigidbody()->getWorldTransform().getOrigin().getY() - 1, playerObj->getRigidbody()->getWorldTransform().getOrigin().getZ()), "rumble", 0.5f, 1.2f, 5, 4.5);
 				}
 			}
 
@@ -540,7 +541,7 @@ void Player::update(float deltaTime, int id)
 		//Jumping Delay
 		if (jumping == true || playerObj->getRigidbody()->getLinearVelocity().getY() >= 1) {
 			if (jumping == true) {
-				jumpTimer += 205 * deltaTime;
+				jumpTimer += 355 * deltaTime;
 				playerObj->getRigidbody()->setLinearVelocity(btVector3(playerObj->getRigidbody()->getLinearVelocity().getX() / 2, playerObj->getRigidbody()->getLinearVelocity().getY(), playerObj->getRigidbody()->getLinearVelocity().getZ()));
 			}
 			if ((std::find(Animal::getAnimal(type).animalAnimations.begin(), Animal::getAnimal(type).animalAnimations.end(), "_jump_start") != Animal::getAnimal(type).animalAnimations.end()) && (type == FOX || type == BEAR))//
@@ -551,7 +552,7 @@ void Player::update(float deltaTime, int id)
 			if ((std::find(Animal::getAnimal(type).animalAnimations.begin(), Animal::getAnimal(type).animalAnimations.end(), "_jump_start") != Animal::getAnimal(type).animalAnimations.end()) && (type == RABBIT || type == MOOSE))//
 			{
 				animName = "jump_start";
-				animSpeed = 0.5;
+				animSpeed = 0.75;
 			}
 			grounded = false;
 			if (jumpTimer >= 60) {
@@ -1015,4 +1016,14 @@ float Player::getYaw(DirectX::XMVECTOR Quaternion)
 float Player::getRoll(DirectX::XMVECTOR Quaternion)
 {
 	return atan2(2 * (Quaternion.m128_f32[0] * Quaternion.m128_f32[1] + Quaternion.m128_f32[3] * Quaternion.m128_f32[2]), Quaternion.m128_f32[3] * Quaternion.m128_f32[3] + Quaternion.m128_f32[0] * Quaternion.m128_f32[0] - Quaternion.m128_f32[1] * Quaternion.m128_f32[1] - Quaternion.m128_f32[2] * Quaternion.m128_f32[2]);
+}
+
+void Player::setDiedOfStone(bool death)
+{
+	this->deathOfStone = death;
+}
+
+bool Player::getDiedOfStone()
+{
+	return this->deathOfStone;
 }

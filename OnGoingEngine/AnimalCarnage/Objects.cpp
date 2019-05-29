@@ -52,6 +52,7 @@ Objects::Objects()
 }
 Objects::Objects(std::string filepath, btVector3 position,int id,int friction, btVector3 size, OBJECTSTATE state, OBJECTYPE type,int mipLevels, float x, float y, bool changeOpacity,bool activeDraw) :state(state), type(type)
 {
+	this->friction = friction;
 	this->direction = 0;
 	this->activeTimer = 0;
 	this->canGiveDmg = true;
@@ -92,7 +93,7 @@ Objects::Objects(std::string filepath, btVector3 position,int id,int friction, b
 	}
 	else if (state == TRUE_DYNAMIC) {
 		this->ObjectOBJ->getRigidbody() = System::getphysices()->addBox(btVector3(position),
-			btVector3(ObjectOBJ->getCollisionBox().width * 2, ObjectOBJ->getCollisionBox().height * 2, ObjectOBJ->getCollisionBox().depth * 2), 20.0f, this);
+			btVector3(ObjectOBJ->getCollisionBox().width * 2, ObjectOBJ->getCollisionBox().height * 2, ObjectOBJ->getCollisionBox().depth * 2), 100.0f, this);
 	}
 	else if (state == BACKGROUND) {
 
@@ -158,18 +159,21 @@ Objects::Objects(std::string filepath, btVector3 position,int id,int friction, b
 		this->ObjectOBJ->getRigidbody()->setRestitution(0);
 	}
 	else if (state == TRUE_DYNAMIC) {
-		this->ObjectOBJ->getRigidbody()->setActivationState(DISABLE_DEACTIVATION);
+		//this->ObjectOBJ->getRigidbody()->setActivationState(DISABLE_DEACTIVATION);
 		this->ObjectOBJ->getRigidbody()->setFriction(friction);
 		this->ObjectOBJ->getRigidbody()->setAngularFactor(btVector3(0, 0, 1));
 		this->ObjectOBJ->getRigidbody()->setLinearFactor(btVector3(1, 1, 0));
 		this->ObjectOBJ->getRigidbody()->setRestitution(0.5);
-		this->ObjectOBJ->getRigidbody()->setGravity(btVector3(0, -20, 0));
+		this->ObjectOBJ->getRigidbody()->setGravity(btVector3(0, -30, 0));
 	}
 	this->maxHealth = 100;
 	this->health = 100;
 	this->respawnTimer = 0;
+	this->hitTimer = 0;
+	this->cornerTimer = 0;
 	//this->ObjectOBJ->getRigidbody()->setAngularFactor(btVector3(0, 0, 0));
-
+	this->lastPlayerHit = -1;
+	this->playerKilled = -1;
 }
 
 Objects::~Objects()
@@ -203,28 +207,31 @@ void Objects::update(float dt)
 		ObjectOBJ->setPosition(position1.x, position1.y - (abs(ObjectOBJ->getRotation().z))/3 +0.57, position1.z);
 	}
 
-	this->activeTimer += 7500 * dt;
-	if (activeTimer >= 100) {
-		canGiveDmg = true;
-	}
-	else {
-		canGiveDmg = false;
-	}
-
 	//Respawn when Stone is dead
 
 	if (state == TRUE_DYNAMIC) {
 		
+		this->activeTimer += 3500 * dt;
+		if (activeTimer >= 100) {
+			canGiveDmg = true;
+			this->ObjectOBJ->getRigidbody()->setFriction(friction);
+		}
+		else {
+			canGiveDmg = false;
+			this->ObjectOBJ->getRigidbody()->setFriction(0);
+		}
+
+
 		if (this->health <= 0) {
 			if (respawnTimer <= 0) {
-				System::getParticleManager()->addSimpleEffect(DirectX::SimpleMath::Vector3(ObjectOBJ->getRigidbody()->getWorldTransform().getOrigin().getX(), ObjectOBJ->getRigidbody()->getWorldTransform().getOrigin().getY(), ObjectOBJ->getRigidbody()->getWorldTransform().getOrigin().getZ()), "rumble",3.0f,1.0f,10);
+				System::getParticleManager()->addSimpleEffect(DirectX::SimpleMath::Vector3(ObjectOBJ->getRigidbody()->getWorldTransform().getOrigin().getX(), ObjectOBJ->getRigidbody()->getWorldTransform().getOrigin().getY(), ObjectOBJ->getRigidbody()->getWorldTransform().getOrigin().getZ()), "rumble",1,2.0f,30);
 			}
 			respawnTimer += 40 * dt;
 			this->ObjectOBJ->getRigidbody()->getWorldTransform().setOrigin(btVector3(this->position1.x, this->position1.y - 100, this->position1.z));
 
 				if (respawnTimer >= 100) {
 					respawnTimer = 0;
-					respawn();
+					respawn(50);
 				}
 			}
 		if (this->health >= 100) {
@@ -234,6 +241,24 @@ void Objects::update(float dt)
 			direction = 1;
 		}else if(this->getMovingSpeed().x < -1.5) {
 			direction = -1;
+		}
+		
+		hitTimer += 700 * dt;
+		if (hitTimer >= 100) {
+			canBeHit = true;
+		}
+		else {
+			canBeHit = false;
+		}
+
+		if (getRigidBodyPosition().getX() > 28 || getRigidBodyPosition().getX() < -28) {
+			cornerTimer += 50 * dt;
+			if (cornerTimer >= 100) {
+				respawn(50);
+			}
+		}
+		else {
+			cornerTimer = 0;
 		}
 	}
 
@@ -296,11 +321,11 @@ void Objects::update(float dt)
 
 }
 
-void Objects::respawn()
+void Objects::respawn(float offset)
 {
 	if (state != BACKGROUND) {
 		this->ObjectOBJ->getRigidbody()->setLinearVelocity(btVector3(0, 0, 0));
-		this->ObjectOBJ->getRigidbody()->getWorldTransform().setOrigin(btVector3(this->position1.x, this->position1.y, this->position1.z));
+		this->ObjectOBJ->getRigidbody()->getWorldTransform().setOrigin(btVector3(this->position1.x, this->position1.y + offset, this->position1.z));
 		//this->health=maxHealth;
 			//this->respawnPoints[i].respawnObject->ObjectOBJ->getRigidbody()->getWorldTransform().setOrigin(this->respawnPoints[i].firstSpawn);
 		this->health = 100;
@@ -342,12 +367,16 @@ float Objects::getRoll(DirectX::XMVECTOR Quaternion)
 	return atan2(2 * (Quaternion.m128_f32[0] * Quaternion.m128_f32[1] + Quaternion.m128_f32[3] * Quaternion.m128_f32[2]), Quaternion.m128_f32[3] * Quaternion.m128_f32[3] + Quaternion.m128_f32[0] * Quaternion.m128_f32[0] - Quaternion.m128_f32[1] * Quaternion.m128_f32[1] - Quaternion.m128_f32[2] * Quaternion.m128_f32[2]);
 }
 
-void Objects::addImpulse(float impulse)
+void Objects::addImpulse(float impulse, int playerId)
 {
-	if (state != BACKGROUND) {
+	if (state != BACKGROUND && canBeHit == true) {
+		this->lastPlayerHit = playerId;
 		canGiveDmg = false;
 		activeTimer = 0;
-		ObjectOBJ->getRigidbody()->applyImpulse(btVector3(impulse, 0, 0), btVector3(1, 0, 0));
+		ObjectOBJ->getRigidbody()->activate();
+		ObjectOBJ->getRigidbody()->applyImpulse(btVector3(impulse*50, 0, 0), btVector3(0, 0, 0));
+		this->canBeHit = false;
+		this->hitTimer = 0;
 	}
 }
 
@@ -384,4 +413,24 @@ XMFLOAT3 Objects::getPosition()
 btVector3 Objects::getRigidBodyPosition()
 {
 	return this->ObjectOBJ->getRigidbody()->getWorldTransform().getOrigin();
+}
+
+void Objects::setLastPlayerHit(int lastPlayerHit)
+{
+	this->lastPlayerHit = lastPlayerHit;
+}
+
+int Objects::getLastPlayerHit()
+{
+	return lastPlayerHit;
+}
+
+void Objects::setPlayerKilled(bool playerKilled)
+{
+	this->playerKilled = playerKilled;
+}
+
+bool Objects::getPlayerKilled()
+{
+	return this->playerKilled;
 }
