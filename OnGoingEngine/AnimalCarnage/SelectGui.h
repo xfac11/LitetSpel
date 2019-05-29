@@ -9,14 +9,15 @@
 class SelectGui : public GuiBase
 {
 private:
+	static Texture pressStart;
+	static bool texturesLoaded;
 	GuiElement* selectedElement;
 	Button* buttonStart;
 	PlayerSelector* playerSelectors[4];
-
+	bool allReady;
 public:
 	SelectGui(State* myState);
 	virtual ~SelectGui();
-
 	bool initialize();
 	void shutDown();
 	bool update(float deltaTime);
