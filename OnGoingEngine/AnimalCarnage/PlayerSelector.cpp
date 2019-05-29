@@ -30,13 +30,15 @@ PlayerSelector::PlayerSelector(AnimalType animalType, PlayerColor color, DirectX
 		
 		PlayerSelector::texturesLoaded = true;
 	}
+	this->readyColor = Colors::Red;
+	this->ready = false;
 }
 
 PlayerSelector::~PlayerSelector()
 {
 }
 
-bool PlayerSelector::render(bool selected)
+bool PlayerSelector::render(bool selected,DirectX::XMVECTOR color)
 {
 	System::getSpriteBatch()->Draw(PlayerSelector::selectorBG.getTexture(), this->position, nullptr);
 
@@ -84,11 +86,16 @@ bool PlayerSelector::render(bool selected)
 		break;
 	}
 	
-	System::getSpriteBatch()->Draw(PlayerSelector::playerCircle.getTexture(), this->position + DirectX::SimpleMath::Vector2(10, 10), nullptr);
+	System::getSpriteBatch()->Draw(PlayerSelector::playerCircle.getTexture(), this->position + DirectX::SimpleMath::Vector2(10, 10), readyColor);
 	System::getSpriteBatch()->Draw(PlayerSelector::arrowLeft.getTexture(), this->position + DirectX::SimpleMath::Vector2(30, 145), nullptr);
 	System::getSpriteBatch()->Draw(PlayerSelector::arrowRight.getTexture(), this->position + DirectX::SimpleMath::Vector2(270, 145), nullptr);
 
 	return true;
+}
+
+bool PlayerSelector::getReady()
+{
+	return this->ready;
 }
 
 AnimalType PlayerSelector::getAnimalType() const
@@ -101,6 +108,15 @@ PlayerColor PlayerSelector::getPlayerColor() const
 	return this->color;
 }
 
+void PlayerSelector::setReady(bool arg)
+{
+	this->ready = arg;
+	if (arg)
+		this->readyColor = Colors::Green;
+	else
+		this->readyColor = Colors::Red;
+}
+
 void PlayerSelector::changeAnimalType(bool dir)
 {
 	int animalType = static_cast<int>(this->animalType) + (dir ? -1 : 1);
@@ -108,7 +124,7 @@ void PlayerSelector::changeAnimalType(bool dir)
 	if (animalType < 0)
 		animalType = 3;
 	else if (animalType > 3)
-		animalType = 0;
+		animalType = 0;//s
 
 	this->animalType = static_cast<AnimalType>(animalType);
 }
