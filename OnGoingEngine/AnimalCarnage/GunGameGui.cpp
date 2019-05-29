@@ -56,7 +56,6 @@ bool GunGameGui::update(float deltaTime)
 	{
 		this->playerHealthBars[i]->setHealth(state->getPlayer(i)->getHealth());
 		this->playerHealthBars[i]->setMaxHealth(state->getPlayer(i)->getMaxHealth());
-		this->playerHealthBars[i]->setColor(state->getPlayer(i)->playerObj->getColorMask().x, state->getPlayer(i)->playerObj->getColorMask().y, state->getPlayer(i)->playerObj->getColorMask().z);
 	}
 
 	if (System::theKeyboard->KeyIsPressed('Q'))
