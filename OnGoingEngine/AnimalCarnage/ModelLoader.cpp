@@ -14,7 +14,6 @@ void ModelLoader::loadAO(GameObject*& object, const char* characterName, std::ve
 { 
 	if (object->getModel() != nullptr)
 		object->getModel().reset();
-	//bool modelloaded = false;
 
 	Luna::Reader reader;
 	Luna::Skeleton skltn;
@@ -26,7 +25,6 @@ void ModelLoader::loadAO(GameObject*& object, const char* characterName, std::ve
 	std::vector<std::vector<Luna::Keyframe>> keyframePack; // pack of all joint - keyframes
 
 	std::string lu = ".lu";
-	
 	std::string initPath = characterName + animalAnimations[0] + lu;
 	shared_ptr<Model> model = System::assetMananger->GetModel(initPath);
 
@@ -202,7 +200,6 @@ void ModelLoader::loadGO(GameObject*& object, const char* filePath, int mipLevel
 		
 		System::assetMananger->LoadModel(filePath, model); 
 		object->addModel(System::assetMananger->GetModel(filePath), mesh.hasSkeleton); 
-
 		vertices3D.clear(); //
 	}
 	if (mesh.hasBoundingBox)

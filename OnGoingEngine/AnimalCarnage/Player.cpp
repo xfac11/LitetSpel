@@ -551,12 +551,12 @@ void Player::update(float deltaTime, int id)
 			if ((std::find(Animal::getAnimal(type).animalAnimations.begin(), Animal::getAnimal(type).animalAnimations.end(), "_jump_start") != Animal::getAnimal(type).animalAnimations.end()) && (type == FOX || type == BEAR))//
 			{
 				animName = "jump_start";
-				animSpeed = 1.3;
+				animSpeed = 1.299;
 			}
 			if ((std::find(Animal::getAnimal(type).animalAnimations.begin(), Animal::getAnimal(type).animalAnimations.end(), "_jump_start") != Animal::getAnimal(type).animalAnimations.end()) && (type == RABBIT || type == MOOSE))//
 			{
 				animName = "jump_start";
-				animSpeed = 0.5;
+				animSpeed = 0.466;
 			}
 			grounded = false;
 			if (jumpTimer >= 60) {
