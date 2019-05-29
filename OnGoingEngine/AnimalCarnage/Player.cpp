@@ -796,14 +796,6 @@ void Player::update(float deltaTime, int id)
 		//playerObj->setRotationRollPitchYaw(getRoll(temp) * -1, playerObj->getRotation().y, playerObj->getRotation().z);
 
 
-		//this->playerObj->setRotation(this->playerObj->getRigidbody()->getWorldTransform().getRotation().getX(), this->playerObj->getRigidbody()->getWorldTransform().getRotation().getY()*3.14 * 2, this->playerObj->getRigidbody()->getWorldTransform().getRotation().getZ()*3.14 * 2, this->playerObj->getRigidbody()->getWorldTransform().getRotation().getW()*3.14 * 2);
-		//this->playerObj->setRotationRollPitchYaw(this->playerObj->getRigidbody()->getWorldTransform().getRotation().getX() *3.14 * 2,
-		//this->playerObj->getRigidbody()->getWorldTransform().getRotation().getY() *3.14 * 2,
-		//this->playerObj->getRigidbody()->getWorldTransform().getRotation().getZ() *3.14 * 2);
-		//this->playerObj->getRigidbody()->getWorldTransform().getRotation().getW() *3.14 * 2);
-
-			//this->playerObj->setRotation(0, 0,1, this->playerObj->getRigidbody()->getWorldTransform().getRotation().getAngle());
-			//this->playerObj->setRotation(this->playerObj->getRigidbody()->getWorldTransform().getRotation().getX(), this->playerObj->getRotation().y, this->playerObj->getRotation().z, this->playerObj->getRigidbody()->getWorldTransform().getRotation().getAngle());
 		deathTimer += 60 * deltaTime;
 		if (deathTimer >= 100) {
 			health = getMaxHealth();
@@ -815,8 +807,8 @@ void Player::update(float deltaTime, int id)
 
 
 
-	//Fixar bug så att man inte kan hoppa på plattformar
-	groundTimer += deltaTime * 2700;
+	//Fixar bug då man inte kan hoppa på plattformar
+	groundTimer += deltaTime * 1700;
 	if (groundTimer >= 100) {
 		grounded = false;
 		groundTimer = 100;

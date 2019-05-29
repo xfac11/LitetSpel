@@ -26,6 +26,7 @@ private:
 	float respawnTimer;
 
 	float rotationSpeed;
+	int direction;
 
 public:
 	Objects();
@@ -39,6 +40,7 @@ public:
 	void setMovement(bool move =true);
 	int getId();
 	XMFLOAT3 getMovingSpeed();
+	int getMovingDirection();
 	OBJECTYPE GetType() { return this->type; }
 	OBJECTSTATE GetState() { return this->state; }
 	
@@ -52,5 +54,6 @@ public:
 
 	void addGrassRotation(float addRotation, int dir);
 	XMFLOAT3 getPosition();
+	btVector3 getRigidBodyPosition();
 };
 
