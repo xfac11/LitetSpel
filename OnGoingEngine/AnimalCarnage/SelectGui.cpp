@@ -96,7 +96,7 @@ bool SelectGui::update(float deltaTime)
 				AnimalType type[4];
 				PlayerColor color[4];
 
-				for (int i = 0; i < 4; i++)
+				for (int i = 0; i < dynamic_cast<GunGameState*>(System::getCurrentState())->getNrOfPlayers(); i++)
 				{
 					type[i] = this->playerSelectors[i]->getAnimalType();
 					color[i] = this->playerSelectors[i]->getPlayerColor();

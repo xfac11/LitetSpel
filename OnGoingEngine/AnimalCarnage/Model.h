@@ -40,6 +40,7 @@ public:
 	void setSampler(D3D11_TEXTURE_ADDRESS_MODE type, D3D11_FILTER filter, D3D11_COMPARISON_FUNC comFunc);
 	void drawOnlyVertex();
 	void draw();
+	void setMaskTexture(shared_ptr<Texture> texture);
 	void SetTexture(shared_ptr<Texture>);// { texture = t; }
 	void setGlowMap(shared_ptr<Texture> t);
 	
@@ -50,6 +51,7 @@ public:
 private:
 	shared_ptr<Texture> texture;// 
 	shared_ptr<Texture> glowMap;// 
+	shared_ptr<Texture> mask;
 	//skeleton
 	bool gotSkeleton;
 	
@@ -66,7 +68,7 @@ private:
 	//mask
 	Texture* normalMap;
 //	Texture* glowMap;
-	Texture* mask;
+	
 	bool hasGlowMap;
 	bool hasMask;
 	int vertexCount;

@@ -11,7 +11,6 @@ Model::Model()
 	this->normalMap = new Texture;
 	shared_ptr<Texture> glowtex;
 	glowMap = glowtex;
-	this->mask = new Texture;
 	this->type = Opaque;
 	this->hasMask = false;
 	this->hasGlowMap = false;
@@ -85,7 +84,7 @@ Model::~Model()
 	}
 	/*if (this->mask != nullptr)
 	{*/
-		delete this->mask;
+		this->mask = nullptr;
 	//}
 
 }
@@ -280,6 +279,12 @@ void Model::draw()
 	System::getDeviceContext()->PSSetSamplers(0, 1, &this->SamplerState);
 
 	this->theShader->renderShader((int)mesh.size(),indexBuffer.getBufferSize());
+}
+
+void Model::setMaskTexture(shared_ptr<Texture> texture)
+{
+	this->mask = texture;
+	this->hasMask = true;
 }
 
 void Model::SetTexture(shared_ptr<Texture> t)

@@ -137,7 +137,8 @@ void Player::setAnimalTypeAndMass(AnimalType type)
 	this->health = animal.maxHealh;
 	currentAnimal = this->type;
 	System::theModelLoader->loadAO(this->playerObj, Animal::getAnimal(ArrayOfAnimals[currentAnimal]).modelPath, Animal::getAnimal(ArrayOfAnimals[currentAnimal]).animalAnimations);
-
+	System::assetMananger->LoadTexture(Animal::getAnimal(type).maskPath, Animal::getAnimal(type).maskPath);
+	this->playerObj->getModel()->setMaskTexture(System::assetMananger->GetTexture(Animal::getAnimal(type).maskPath));
 	btVector3 inertia(0, 0, 0);
 	playerObj->getRigidbody()->setMassProps(10 * getWeight(), inertia);
 }
@@ -291,8 +292,12 @@ void Player::initialize(AnimalType type, PlayerColor color)
 	//loads animal
 	//System::theModelLoader->loadGO(this->playerObj, Animal::getAnimal(type).modelPath);
 	System::theModelLoader->loadAO(this->playerObj, Animal::getAnimal(type).modelPath, Animal::getAnimal(type).animalAnimations);
-	if(Animal::getAnimal(type).maskPath!="empty"&&!this->playerObj->getModel()->hasMaskColor())
-		this->playerObj->setMask(Animal::getAnimal(type).maskPath,0);//change to animal.maskPath
+	if (Animal::getAnimal(type).maskPath != "empty" && !this->playerObj->getModel()->hasMaskColor())
+	{
+		System::assetMananger->LoadTexture(Animal::getAnimal(type).maskPath, Animal::getAnimal(type).maskPath);
+		this->playerObj->getModel()->setMaskTexture(System::assetMananger->GetTexture(Animal::getAnimal(type).maskPath));	
+	}
+		//change to animal.maskPath
 	System::handler->addObject(this->playerObj);
 
 	AABB aabb = playerObj->getCollisionBox();
