@@ -265,8 +265,8 @@ bool GunGameState::initailize()
 
 	this->addObject("Resources/Models/ground.lu", btVector3(16, 0, 20), 3, 3, btVector3(100.f, 4.f, 50.f), STATIC, GROUND, false, -1, 10000, 10000, true);
 
-	//this->addObject("Resources/Models/platform1.lu", btVector3(12, 4, 0), 3, 3, btVector3(1.4f, 2.8f, 1.4f), DYNAMIC, PLATFORM, 1,true);
-	//this->addObject("Resources/Models/platform1.lu", btVector3(5, 4, 0), 3, 3, btVector3(1.4f, 2.8f, 1.4f), DYNAMIC, PLATFORM, 1,true);
+	this->addObject("Resources/Models/platform1.lu", btVector3(12, 4, 0), 3, 3, btVector3(1.4f, 2.8f, 1.4f), DYNAMIC, PLATFORM, 1,true);
+	this->addObject("Resources/Models/platform1.lu", btVector3(5, 4, 0), 3, 3, btVector3(1.4f, 2.8f, 1.4f), DYNAMIC, PLATFORM, 1,true);
 
 	this->addObject("Resources/Models/cube2.lu", btVector3(35, 17, 0), 2, 1, btVector3(10.f, 40.f, 10.f), STATIC, STONE,false, -1, 1, 1, false,false);
 	this->addObject("Resources/Models/cube2.lu", btVector3(-35, 17, 0), 2, 1, btVector3(10.f, 40.f, 10.f), STATIC, STONE,false, -1, 1, 1, false, false);
@@ -842,7 +842,8 @@ void GunGameState::reset()
 	this->paused = false;
 	this->resultsShown = false;
 
-	System::getSoundManager()->playLooped(L"Battle_Theme_One_1.0.wav");
+	//Musica
+	//System::getSoundManager()->playLooped(L"Battle_Theme_One_1.0.wav");
 }
 
 bool GunGameState::controllerIsConnected(int controllerPort)
