@@ -24,16 +24,22 @@ private:
 	int health;
 	int maxHealth;
 	float respawnTimer;
+	float hitTimer;
+	bool canBeHit;
+	float cornerTimer;
+	int lastPlayerHit;
+	bool playerKilled;
 
 	float rotationSpeed;
 	int direction;
+	float friction;
 
 public:
 	Objects();
 	Objects(std::string filepath ,btVector3 position, int id, int friction, btVector3 size = btVector3(1,1,1), OBJECTSTATE state = STATIC, OBJECTYPE type = STONE,int mipLevels=-1, float x=1, float y=1,bool changeOpacity=false,bool activeDraw=true);
 	~Objects();
 	void update(float dt);
-	void respawn();
+	void respawn(float offset);
 	GameObject* ObjectOBJ;
 	/*GameObject* ObjectOBJPlatform;*/
 	btRigidBody * GetRigidBody() { return this->ObjectOBJ->getRigidbody(); };
@@ -48,12 +54,16 @@ public:
 	float getYaw(DirectX::XMVECTOR Quaternion);
 	float getRoll(DirectX::XMVECTOR Quaternion);
 
-	void addImpulse(float impulse);
+	void addImpulse(float impulse, int playerId);
 	bool getCanGiveDmg() const;
 	void takeDmg(int damage);
 
 	void addGrassRotation(float addRotation, int dir);
 	XMFLOAT3 getPosition();
 	btVector3 getRigidBodyPosition();
+	void setLastPlayerHit(int lastPlayerHit);
+	int getLastPlayerHit();
+	void setPlayerKilled(bool playerKilled);
+	bool getPlayerKilled();
 };
 

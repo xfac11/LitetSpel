@@ -63,6 +63,7 @@ private:
 	float landingLag;
 	float jumpTimer;
 	bool jumping;
+	bool deathOfStone;
 
 	bool canBeAnimal[4];
 	int randomNumberArray[4] = {0,1,2,3};
@@ -140,6 +141,8 @@ public:
 	float getYaw(DirectX::XMVECTOR Quaternion);
 	float getRoll(DirectX::XMVECTOR Quaternion);
 
+	void setDiedOfStone(bool death);
+	bool getDiedOfStone();
 };
 #endif // ! PLAYER_H
 

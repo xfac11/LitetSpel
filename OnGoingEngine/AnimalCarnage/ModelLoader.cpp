@@ -26,9 +26,19 @@ void ModelLoader::loadAO(GameObject*& object, const char* characterName, std::ve
 
 	std::string lu = ".lu";
 	std::string initPath = characterName + animalAnimations[0] + lu;
-	shared_ptr<Model> model = System::assetMananger->GetModel(initPath);
-
 	std::string filePath = "";
+	std::string animName;
+	shared_ptr<Model> model = System::assetMananger->GetModel(initPath);
+	System::assetMananger->LoadTexture(mat.diffuseTexPath, mat.diffuseTexPath);
+	shared_ptr<Texture> texture = System::assetMananger->GetTexture(mat.diffuseTexPath);
+	shared_ptr<Texture> glowmap;
+
+	if (mat.hasGlowMap)
+	{
+		System::assetMananger->LoadGlowMap(mat.glowTexPath, mat.glowTexPath); //load texture
+		glowmap = System::assetMananger->GetTexture(mat.glowTexPath); //set glow texture
+	}
+
 	for (int i = 0; i < animalAnimations.size(); i++) //nrOfAnimations
 	{
 		filePath = characterName + animalAnimations[i] + lu;
@@ -43,37 +53,21 @@ void ModelLoader::loadAO(GameObject*& object, const char* characterName, std::ve
 
 		if (model != nullptr)
 		{
-			System::assetMananger->LoadTexture(mat.diffuseTexPath, mat.diffuseTexPath);
-			shared_ptr<Texture> texture = System::assetMananger->GetTexture(mat.diffuseTexPath);
 			model->SetTexture(texture);
-
 			if (mat.hasGlowMap)
-			{
-				shared_ptr<Texture> glowmap;
-				System::assetMananger->LoadGlowMap(mat.glowTexPath, mat.glowTexPath); //load texture
-				glowmap = System::assetMananger->GetTexture(mat.glowTexPath); //set glow texture
 				model->setGlowMap(glowmap);
-			}
-			
-			std::string animName(anims.animationName);
-	
+
+			animName = std::string(anims.animationName);
 			if (!object->checkIfAnimExist(animName, characterName))
 			{
 				for (int f = 0; f < joints.size(); f++)
-				{
 					reader.getKeyframes(f, keyframePack[f]);
-				}
-				//object->setCurrentAnimal(characterName);
+
 				object->setSkeleton(joints);
 				object->setNewAnimation(anims.fps, anims.duration, animName, keyframePack);//change to pack
 			}
-			//if (mesh.hasBoundingBox)
-			//	object->setHalfSize(reader.getBoundingBox(0).halfSize, reader.getBoundingBox(0).pos);
-			//if (i == 0)
-			//	object->addModel(model, mesh.hasSkeleton); //
-
 		}
-		else if(model == nullptr)
+		else if (model == nullptr)
 		{
 			std::vector<Luna::Vertex> vertices;
 			std::vector<Vertex3D> vertices3D;
@@ -88,12 +82,9 @@ void ModelLoader::loadAO(GameObject*& object, const char* characterName, std::ve
 			reader.getWeights(mesh.id, weights);
 			keyframePack.resize(joints.size());
 			for (int k = 0; k < joints.size(); k++)
-			{
 				reader.getKeyframes(k, keyframePack[k]);
-			}
 
-			std::string animName(anims.animationName);
-
+			animName = std::string(anims.animationName);
 			if (!object->checkIfAnimExist(animName, characterName))
 			{
 				object->setSkeleton(joints);
@@ -111,42 +102,23 @@ void ModelLoader::loadAO(GameObject*& object, const char* characterName, std::ve
 				vertices3D[jw].Weights.z = weights[jw].weights[2];
 				vertices3D[jw].Weights.w = weights[jw].weights[3];
 			}
-
-			model= shared_ptr<Model>(new Model());
-			shared_ptr<Texture> texture;
+			model = shared_ptr<Model>(new Model());
 			model->setMesh(vertices3D);
-
-			System::assetMananger->LoadTexture(mat.diffuseTexPath, mat.diffuseTexPath); //load texture
-			texture = System::assetMananger->GetTexture(mat.diffuseTexPath);
 			model->SetTexture(texture); 	//set the texture to the model
 			if (mat.hasGlowMap)
-			{
-				shared_ptr<Texture> glowmap;
-
-				System::assetMananger->LoadGlowMap(mat.glowTexPath, mat.glowTexPath); //load texture
-				glowmap = System::assetMananger->GetTexture(mat.glowTexPath); //set glow texture
 				model->setGlowMap(glowmap);
-			}
+
 			System::assetMananger->LoadModel(filePath, model); //load model
-			//if (mesh.hasBoundingBox)
-			//	object->setHalfSize(reader.getBoundingBox(0).halfSize, reader.getBoundingBox(0).pos);
-			//if(i==0)
-			//	object->addModel(System::assetMananger->GetModel(filePath), mesh.hasSkeleton); //mesh.hasSkeleton			
 			vertices3D.clear();
 		}
-
 	}
 
 	object->addModel(model, mesh.hasSkeleton);
 	
-
 	//set half size pushes in a array 
 	reader.readFile(initPath.c_str());
 	if (mesh.hasBoundingBox)
 		object->setHalfSize(reader.getBoundingBox(0).halfSize, reader.getBoundingBox(0).pos);
-	//if (mesh.hasBoundingBox)
-	//	object->setHalfSize(reader.getBoundingBox(0).halfSize, reader.getBoundingBox(0).pos);
-	//object->addModel(System::assetMananger->GetModel(filePath), mesh.hasSkeleton);
 }
 
 void ModelLoader::loadGO(GameObject*& object, const char* filePath, int mipLevels)
