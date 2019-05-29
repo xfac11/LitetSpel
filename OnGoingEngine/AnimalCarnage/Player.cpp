@@ -144,6 +144,7 @@ void Player::setAnimalTypeAndMass(AnimalType type)
 
 void Player::changeCharacter()
 {
+	
 	int noNewAnimal = true;
 	for (int i = 0; i < 4; i++) 
 	{
@@ -163,6 +164,7 @@ void Player::changeCharacter()
 		}
 
 
+
 	}
 
 	this->setAnimalType(ArrayOfAnimals[currentAnimal]);
@@ -172,10 +174,13 @@ void Player::changeCharacter()
 	//if (animal.maskPath != "empty" && !this->playerObj->getModel()->hasMaskColor())
 	//	this->playerObj->setMask(animal.maskPath, 0);//change to animal.maskPath
 	//System::handler->addObject(this->playerObj);
+	
+
 
 	btVector3 inertia(0, 0, 0);
 	playerObj->getRigidbody()->setMassProps(10*getWeight(), inertia);
-	animName = "idle";
+
+
 }
 
 bool Player::getHitStun()
