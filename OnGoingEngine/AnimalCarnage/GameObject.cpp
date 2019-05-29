@@ -299,16 +299,20 @@ bool GameObject::haveAnimation() const
 	return result;
 }
 
-void GameObject::computeAnimationMatrix(float deltaTime, std::string animName) //include float to multiply timePassed to make speed of animation (den ska gå från 0 - 1)
+void GameObject::computeAnimationMatrix(float deltaTime, std::string animName, bool isLooping ) //include float to multiply timePassed to make speed of animation (den ska gå från 0 - 1)
 {
-	this->timePassed += deltaTime;
+	if(timePassed < anims[animName].getDuration())
+		this->timePassed += deltaTime;
+
 	if (this->lastAnimation != animName)
 	{
 		this->timePassed = 0;
 		this->lastAnimation = animName;
 	}
-	if (this->timePassed >= anims[animName].getDuration())
-		this->timePassed = fmodf(this->timePassed,anims[animName].getDuration());
+	if (this->timePassed >= anims[animName].getDuration() && isLooping==true)
+		this->timePassed = fmodf(this->timePassed, anims[animName].getDuration());
+	
+
 
 	this->frameCounter++;
 

@@ -126,7 +126,8 @@ bool SelectGui::update(float deltaTime)
 
 			if (System::theTracker->a == DirectX::GamePad::ButtonStateTracker::PRESSED)
 			{
-				this->playerSelectors[i]->setReady(true);
+				/*if(this->playerSelectors[0]->getPlayerColor()== this->playerSelectors[]->getPlayerColor())*/
+					this->playerSelectors[i]->setReady(true);
 			}
 			else if (System::theTracker->b == DirectX::GamePad::ButtonStateTracker::PRESSED)
 			{
@@ -146,10 +147,24 @@ bool SelectGui::update(float deltaTime)
 				if (System::theTracker->dpadDown == DirectX::GamePad::ButtonStateTracker::PRESSED)
 				{
 					this->playerSelectors[i]->changePlayerColor(false);
+					while ((i != 0 && this->playerSelectors[i]->getPlayerColor() == this->playerSelectors[0]->getPlayerColor()) ||
+						(i != 1 && this->playerSelectors[i]->getPlayerColor() == this->playerSelectors[1]->getPlayerColor()) ||
+						(i != 2 && this->playerSelectors[i]->getPlayerColor() == this->playerSelectors[2]->getPlayerColor()) ||
+						(i != 3 && this->playerSelectors[i]->getPlayerColor() == this->playerSelectors[3]->getPlayerColor()))
+					{
+						this->playerSelectors[i]->changePlayerColor(false);
+					}
 				}
 				else if (System::theTracker->dpadUp == DirectX::GamePad::ButtonStateTracker::PRESSED)
 				{
 					this->playerSelectors[i]->changePlayerColor(true);
+					while ((i != 0 && this->playerSelectors[i]->getPlayerColor() == this->playerSelectors[0]->getPlayerColor())||
+						(i != 1 && this->playerSelectors[i]->getPlayerColor() == this->playerSelectors[1]->getPlayerColor())||
+						(i != 2 && this->playerSelectors[i]->getPlayerColor() == this->playerSelectors[2]->getPlayerColor())||
+						(i != 3 && this->playerSelectors[i]->getPlayerColor() == this->playerSelectors[3]->getPlayerColor()))
+					{
+						this->playerSelectors[i]->changePlayerColor(true);
+					}
 				}
 				else if (System::theTracker->dpadLeft == DirectX::GamePad::ButtonStateTracker::PRESSED)
 				{
@@ -191,7 +206,7 @@ bool SelectGui::update(float deltaTime)
 							type[i] = this->playerSelectors[i]->getAnimalType();
 							color[i] = this->playerSelectors[i]->getPlayerColor();
 						}
-
+						this->allReady = false;
 						dynamic_cast<GunGameState*>(System::getCurrentState())->initPlayers(type, color);
 				}
 			}

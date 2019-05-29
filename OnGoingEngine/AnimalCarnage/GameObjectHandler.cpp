@@ -104,10 +104,11 @@ void GameObjectHandler::draw(float deltaTime, bool isPaused, std::vector<float> 
 	System::theGraphicDevice->setViewPort();
 	//System::theGraphicDevice->setRasterState();// om shadow mapping körs med front så
 	System::getDeviceContext()->OMSetBlendState(nullptr, blendFactor, 0xffffffff);
-
+	
 	System::shaderManager->getDefShader()->prepDeferredRendering(color);
 	//sets the constantbuffer set shaders set rendertargets to gbuffer and clear with color
 
+	System::theGraphicDevice->setRasterBack();
 	int index = 0;
 	for (int i = 0; i < this->nrOfOpaque; i++)
 	{
@@ -116,11 +117,11 @@ void GameObjectHandler::draw(float deltaTime, bool isPaused, std::vector<float> 
 			//has skeleton? then calculate matrix  anim
 			GameObject* gameObjectPtr = this->opaqueModels[i].selfPtr;
 			shared_ptr<Model> ptr = gameObjectPtr->getModel();
-			if (isPaused == false && this->opaqueModels[i].selfPtr->haveAnimation() == true && index < playerSpeed.size())
+			if (this->opaqueModels[i].selfPtr->haveAnimation() == true && index < playerSpeed.size()) //isPaused == false && 
 			{
 				//this->timePassed += deltaTime;
 				
-				this->opaqueModels[i].selfPtr->computeAnimationMatrix(deltaTime*playerSpeed[index], playerName[index]);//playerName[index] //run_cycle, idle
+				this->opaqueModels[i].selfPtr->computeAnimationMatrix(deltaTime*playerSpeed[index]*!isPaused, playerName[index]);//playerName[index] //run_cycle, idle
 			    index++;
 			}
 

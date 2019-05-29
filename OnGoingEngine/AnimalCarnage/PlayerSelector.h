@@ -18,7 +18,7 @@ private:
 	AnimalType animalType;
 	PlayerColor color;
 	DirectX::XMVECTOR readyColor;
-	bool ready;
+	bool ready;//s
 public:
 	PlayerSelector(AnimalType animalType = FOX, PlayerColor color = RED, DirectX::SimpleMath::Vector2 position = DirectX::SimpleMath::Vector2::Zero);
 	virtual ~PlayerSelector();

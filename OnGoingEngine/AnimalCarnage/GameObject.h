@@ -42,7 +42,7 @@ public:
 	void setActiveDraw(bool arg);
 	bool getActiveDraw();
 	bool haveAnimation()const;
-	void computeAnimationMatrix(float deltaTime, std::string animName);
+	void computeAnimationMatrix(float deltaTime, std::string animName, bool isLooping = true);
 	void setNewAnimation(float fps, float duration, std::string name, std::vector<std::vector<Luna::Keyframe>> & keyframePack);
 	void setSkeleton(std::vector<Luna::Joint> theJoints);
 	//void setCurrentAnimal(std::string animalName);

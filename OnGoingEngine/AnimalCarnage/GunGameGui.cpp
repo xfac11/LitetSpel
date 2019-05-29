@@ -51,7 +51,7 @@ void GunGameGui::shutDown()
 bool GunGameGui::update(float deltaTime)
 {
 	GunGameState* state = static_cast<GunGameState*>(this->myState);
-
+	//Reminder : insert next to playerhealth so it displays the right paws/crown
 	for (int i = 0; i < this->nrOfPlayers; i++)
 	{
 		this->playerHealthBars[i]->setHealth(state->getPlayer(i)->getHealth());
