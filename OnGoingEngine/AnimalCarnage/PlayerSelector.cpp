@@ -124,7 +124,7 @@ void PlayerSelector::changeAnimalType(bool dir)
 	if (animalType < 0)
 		animalType = 3;
 	else if (animalType > 3)
-		animalType = 0;
+		animalType = 0;//s
 
 	this->animalType = static_cast<AnimalType>(animalType);
 }
