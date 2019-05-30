@@ -270,22 +270,6 @@ bool GunGameState::initailize()
 
 	this->addObject("Resources/Models/ground.lu", btVector3(16, 0, 20), 3, 3, btVector3(100.f, 4.f, 50.f), STATIC, GROUND, false, -1, 10000, 10000, true);
 
-	this->nrOfPlayers = 4;
-	this->currentAnimSpeed.resize(this->nrOfPlayers);
-	this->currentAnimName.resize(this->nrOfPlayers);
-	player = new Player*[nrOfPlayers];
-	this->spawnPoints[0] = btVector3(5, 3, 0);
-	this->spawnPoints[1] = btVector3(-5, 3, 0);
-	this->spawnPoints[2] = btVector3(15, 3, 0);
-	this->spawnPoints[3] = btVector3(-15, 3, 0);
-	for (int i = 0; i < nrOfPlayers; i++)
-	{
-		player[i] = new Player();
-		player[i]->initialize(FOX, RED);
-		player[i]->setRigidbodyPosition(this->spawnPoints[i].getX(), this->spawnPoints[i].getY(), this->spawnPoints[i].getZ());
-		this->player[i]->setDirection(-1);//everyone should look towards the middle
-
-	}
 	this->addObject("Resources/Models/platform1.lu", btVector3(12, 4, 0), 3, 3, btVector3(1.4f, 2.8f, 1.4f), DYNAMIC, PLATFORM, 1,true);
 	this->addObject("Resources/Models/platform1.lu", btVector3(5, 4, 0), 3, 3, btVector3(1.4f, 2.8f, 1.4f), DYNAMIC, PLATFORM, 1,true);
 
