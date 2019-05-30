@@ -14,7 +14,8 @@ SelectGui::SelectGui(State * myState) : GuiBase(myState)
 		SelectGui::texturesLoaded = true;
 
 	}
-
+	this->nrOfPlayers = 0;
+	this->playersColor = new PlayerColor[4];
 	this->selectedElement = nullptr;
 	this->buttonStart = nullptr;
 	this->playerSelectors[0] = nullptr;
@@ -30,18 +31,23 @@ SelectGui::~SelectGui()
 	delete this->playerSelectors[1];
 	delete this->playerSelectors[2];
 	delete this->playerSelectors[3];
+	delete[] this->playersColor;
 	delete this->buttonStart;
 }
 
 bool SelectGui::initialize()
 {
 	this->buttonStart = new Button("Press start to enter game", Vector2(1920 / 2.0F - 300, 1080 / 2.0F + 300));
-	this->playerSelectors[0] = new PlayerSelector(FOX, RED, Vector2(1920 / 2.0F - 775, 1080 / 2.0F - 300));
-	this->playerSelectors[1] = new PlayerSelector(FOX, BLUE, Vector2(1920 / 2.0F - 375, 1080 / 2.0F - 300));
-	this->playerSelectors[2] = new PlayerSelector(FOX, GREEN, Vector2(1920 / 2.0F + 25, 1080 / 2.0F - 300));
-	this->playerSelectors[3] = new PlayerSelector(FOX, YELLOW, Vector2(1920 / 2.0F + 425, 1080 / 2.0F - 300));
-
+	this->playerSelectors[0] = new PlayerSelector(FOX, RED,0, Vector2(1920 / 2.0F - 775, 1080 / 2.0F - 300));
+	this->playerSelectors[1] = new PlayerSelector(FOX, BLUE,1, Vector2(1920 / 2.0F - 375, 1080 / 2.0F - 300));
+	this->playerSelectors[2] = new PlayerSelector(FOX, GREEN,2, Vector2(1920 / 2.0F + 25, 1080 / 2.0F - 300));
+	this->playerSelectors[3] = new PlayerSelector(FOX, YELLOW,3, Vector2(1920 / 2.0F + 425, 1080 / 2.0F - 300));
+	for (int i = 0; i < 4; i++)
+	{
+		this->playersColor[i] = this->playerSelectors[i]->getPlayerColor();
+	}
 	this->selectedElement = buttonStart;
+	System::theTracker->Reset();
 	this->buttonStart->setConnectedElements(nullptr, nullptr, nullptr, nullptr);
 	return true;
 }
@@ -118,82 +124,90 @@ bool SelectGui::update(float deltaTime)
 	int nrOfConnected = 0;
 	for (int i = 0; i < 4; i++)
 	{
-		DirectX::GamePad::State gamepadState = System::theGamePad->GetState(i);
-		if (gamepadState.IsConnected())
-		{
-			nrOfConnected++;
-			System::theTracker->Update(gamepadState);
-
-			if (System::theTracker->a == DirectX::GamePad::ButtonStateTracker::PRESSED)
-			{
-				/*if(this->playerSelectors[0]->getPlayerColor()== this->playerSelectors[]->getPlayerColor())*/
-					this->playerSelectors[i]->setReady(true);
-			}
-			else if (System::theTracker->b == DirectX::GamePad::ButtonStateTracker::PRESSED)
-			{
-				if (this->playerSelectors[i]->getReady())
-				{
-					this->playerSelectors[i]->setReady(false);
-				}
-				else if (!this->playerSelectors[i]->getReady())
-				{
-					MainMenu* state = dynamic_cast<MainMenu*>(this->myState);
-					state->setCurrentMenu(MAIN/*RULES*/);
-					return true;
-				}
-			}
-			if (!this->playerSelectors[i]->getReady())
-			{
-				if (System::theTracker->dpadDown == DirectX::GamePad::ButtonStateTracker::PRESSED)
-				{
-					this->playerSelectors[i]->changePlayerColor(false);
-					while ((i != 0 && this->playerSelectors[i]->getPlayerColor() == this->playerSelectors[0]->getPlayerColor()) ||
-						(i != 1 && this->playerSelectors[i]->getPlayerColor() == this->playerSelectors[1]->getPlayerColor()) ||
-						(i != 2 && this->playerSelectors[i]->getPlayerColor() == this->playerSelectors[2]->getPlayerColor()) ||
-						(i != 3 && this->playerSelectors[i]->getPlayerColor() == this->playerSelectors[3]->getPlayerColor()))
-					{
-						this->playerSelectors[i]->changePlayerColor(false);
-					}
-				}
-				else if (System::theTracker->dpadUp == DirectX::GamePad::ButtonStateTracker::PRESSED)
-				{
-					this->playerSelectors[i]->changePlayerColor(true);
-					while ((i != 0 && this->playerSelectors[i]->getPlayerColor() == this->playerSelectors[0]->getPlayerColor())||
-						(i != 1 && this->playerSelectors[i]->getPlayerColor() == this->playerSelectors[1]->getPlayerColor())||
-						(i != 2 && this->playerSelectors[i]->getPlayerColor() == this->playerSelectors[2]->getPlayerColor())||
-						(i != 3 && this->playerSelectors[i]->getPlayerColor() == this->playerSelectors[3]->getPlayerColor()))
-					{
-						this->playerSelectors[i]->changePlayerColor(true);
-					}
-				}
-				else if (System::theTracker->dpadLeft == DirectX::GamePad::ButtonStateTracker::PRESSED)
-				{
-					this->playerSelectors[i]->changeAnimalType(true);
-				}
-				else if (System::theTracker->dpadRight == DirectX::GamePad::ButtonStateTracker::PRESSED)
-				{
-					this->playerSelectors[i]->changeAnimalType(false);
-				}
-			}
-		}
+		this->playerSelectors[i]->update(this->playersColor, this->nrOfPlayers);
 	}
-	
+	//for (int i = 0; i < 4; i++)
+	//{
+	//	DirectX::GamePad::State gamepadState = System::theGamePad->GetState(i);
+	//	
+	//	if (gamepadState.IsConnected())
+	//	{
+	//		nrOfConnected++;
+	//		System::theTracker->Update(gamepadState);
+
+	//		if (System::theTracker->a == DirectX::GamePad::ButtonStateTracker::RELEASED)
+	//		{
+	//			/*if(this->playerSelectors[0]->getPlayerColor()== this->playerSelectors[]->getPlayerColor())*/
+	//				this->playerSelectors[i]->setReady(true);
+	//		}
+	//		else if (System::theTracker->b == DirectX::GamePad::ButtonStateTracker::RELEASED)
+	//		{
+	//			if (this->playerSelectors[i]->getReady())
+	//			{
+	//				this->playerSelectors[i]->setReady(false);
+	//			}
+	//			else if (!this->playerSelectors[i]->getReady())
+	//			{
+	//				MainMenu* state = dynamic_cast<MainMenu*>(this->myState);
+	//				state->setCurrentMenu(MAIN/*RULES*/);
+	//				return true;
+	//			}
+	//		}
+	//		else if (!this->playerSelectors[i]->getReady()&&System::theTracker->dpadDown == DirectX::GamePad::ButtonStateTracker::RELEASED)
+	//		{
+	//				this->playerSelectors[i]->changePlayerColor(false);
+	//				while ((i != 0 && this->playerSelectors[i]->getPlayerColor() == this->playerSelectors[0]->getPlayerColor()) ||
+	//					(i != 1 && this->playerSelectors[i]->getPlayerColor() == this->playerSelectors[1]->getPlayerColor()) ||
+	//					(i != 2 && this->playerSelectors[i]->getPlayerColor() == this->playerSelectors[2]->getPlayerColor()) ||
+	//					(i != 3 && this->playerSelectors[i]->getPlayerColor() == this->playerSelectors[3]->getPlayerColor()))
+	//				{
+	//					this->playerSelectors[i]->changePlayerColor(false);
+	//				}
+	//		}
+	//		else if (!this->playerSelectors[i]->getReady() &&System::theTracker->dpadUp == DirectX::GamePad::ButtonStateTracker::RELEASED)
+	//		{
+	//				this->playerSelectors[i]->changePlayerColor(true);
+	//				while ((i != 0 && this->playerSelectors[i]->getPlayerColor() == this->playerSelectors[0]->getPlayerColor())||
+	//					(i != 1 && this->playerSelectors[i]->getPlayerColor() == this->playerSelectors[1]->getPlayerColor())||
+	//					(i != 2 && this->playerSelectors[i]->getPlayerColor() == this->playerSelectors[2]->getPlayerColor())||
+	//					(i != 3 && this->playerSelectors[i]->getPlayerColor() == this->playerSelectors[3]->getPlayerColor()))
+	//				{
+	//					this->playerSelectors[i]->changePlayerColor(true);
+	//				}
+	//		}
+	//		else if (!this->playerSelectors[i]->getReady()&&System::theTracker->dpadLeft == DirectX::GamePad::ButtonStateTracker::PRESSED)
+	//		{
+	//				this->playerSelectors[i]->changeAnimalType(true);
+	//		}
+	//		else if (!this->playerSelectors[i]->getReady()&&System::theTracker->dpadRight == DirectX::GamePad::ButtonStateTracker::PRESSED)
+	//		{
+	//				this->playerSelectors[i]->changeAnimalType(false);
+	//		}
+	//	
+	//	}
+	//}
+	//
 	int ready = 0;
-	for (int i = 0; i < nrOfConnected; i++)
+	for (int i = 0; i < this->nrOfPlayers; i++)
 	{
 		if (this->playerSelectors[i]->getReady())
 			ready++;
 	}
-	if (nrOfConnected == ready)
+	
+		
+	for (int i = 0; i < nrOfPlayers; i++)
 	{
-		this->allReady = true;
-		for (int i = 0; i < ready; i++)
+		DirectX::GamePad::State gamepadState = System::theGamePad->GetState(i);
+		if (gamepadState.IsConnected())
 		{
-			DirectX::GamePad::State gamepadState = System::theGamePad->GetState(i);
-
-			if (gamepadState.IsConnected())
+			System::theTracker->Update(gamepadState);
+			if (this->nrOfPlayers == ready)
 			{
-				System::theTracker->Update(gamepadState);
+				this->allReady = true;
+
+
+
+
 				if (System::theTracker->start)
 				{
 					System::setState(GUNGAME);
@@ -201,23 +215,34 @@ bool SelectGui::update(float deltaTime)
 					AnimalType type[4];
 					PlayerColor color[4];
 
-						for (int i = 0; i < dynamic_cast<GunGameState*>(System::getCurrentState())->getNrOfPlayers(); i++)
-						{
-							type[i] = this->playerSelectors[i]->getAnimalType();
-							color[i] = this->playerSelectors[i]->getPlayerColor();
-						}
-						this->allReady = false;
-						dynamic_cast<GunGameState*>(System::getCurrentState())->initPlayers(type, color);
+					for (int i = 0; i < dynamic_cast<GunGameState*>(System::getCurrentState())->getNrOfPlayers(); i++)
+					{
+						type[i] = this->playerSelectors[i]->getAnimalType();
+						color[i] = this->playerSelectors[i]->getPlayerColor();
+					}
+					this->allReady = false;
+					dynamic_cast<GunGameState*>(System::getCurrentState())->initPlayers(type, color);
+				}
+
+			}
+			else
+			{
+				if (System::theTracker->view)
+				{
+					MainMenu* state = dynamic_cast<MainMenu*>(this->myState);
+					state->setCurrentMenu(MAIN/*RULES*/);
+					return true;
 				}
 			}
 		}
 	}
-	else
+	
+	if (this->nrOfPlayers > ready)
 	{
 		this->allReady = false;
 	}
 	
-
+	this->nrOfPlayers = 0;
 	return true;
 }
 
@@ -237,7 +262,8 @@ bool SelectGui::render()
 	if (this->allReady)
 		System::getFontArial()->DrawString(System::getSpriteBatch(), "Press Start to Begin", Vector2(1920 / 2.0F, 1080 / 2.0F - 100), Colors::Red,-3.14/8, textWidth2/2.0f);
 		//System::getSpriteBatch()->Draw(SelectGui::pressStart.getTexture(), Vector2(500, 500), nullptr);//texture would be nicer?
-
+	Vector2 textWidth3 = System::getFontArial()->MeasureString("Press Select to go to  Main Menu");
+	System::getFontArial()->DrawString(System::getSpriteBatch(), "Press Select to go to Main Menu", Vector2(250, 1080 / 2.0F+400), Colors::BurlyWood, 0, textWidth3 / 2.0f,Vector2(0.25,0.25));
 	System::getSpriteBatch()->End();
 	return true;
 }

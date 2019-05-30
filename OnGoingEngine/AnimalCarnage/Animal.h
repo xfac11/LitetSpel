@@ -21,6 +21,7 @@ struct AnimalDef
 	const char* modelPath;
 	const char* maskPath;
 	std::vector<std::string> animalAnimations;
+	std::string attackJoint;
 };
 
 class Animal
