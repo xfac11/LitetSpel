@@ -10,7 +10,7 @@ ModelLoader::~ModelLoader()
 {
 }
 
-void ModelLoader::loadAO(GameObject*& object, const char* characterName, std::vector<std::string> animalAnimations, int mipLevels) //only for character_
+void ModelLoader::loadAO(GameObject*& object, const char* characterName, std::vector<std::string> animalAnimations, std::string attackJoint, int mipLevels) //only for character_
 { 
 	if (object->getModel() != nullptr)
 		object->getModel().reset();
@@ -64,7 +64,7 @@ void ModelLoader::loadAO(GameObject*& object, const char* characterName, std::ve
 				for (int f = 0; f < joints.size(); f++)
 					reader.getKeyframes(f, keyframePack[f]);
 
-				object->setSkeleton(joints);
+				object->setSkeleton(joints, attackJoint);
 				object->setNewAnimation(anims.fps, anims.duration, animName, keyframePack);//change to pack
 			}
 		}
@@ -88,7 +88,7 @@ void ModelLoader::loadAO(GameObject*& object, const char* characterName, std::ve
 			animName = std::string(anims.animationName);
 			if (!object->checkIfAnimExist(animName, characterName))
 			{
-				object->setSkeleton(joints);
+				object->setSkeleton(joints, attackJoint);
 				object->setNewAnimation(anims.fps, anims.duration, animName, keyframePack);
 			}
 			for (int jw = 0; jw < weights.size(); jw++)
