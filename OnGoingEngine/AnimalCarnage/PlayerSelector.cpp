@@ -1,6 +1,7 @@
 #include "PlayerSelector.h"
 #include "System.h"
-
+#include "MainMenu.h"
+#include "Player.h"
 bool PlayerSelector::texturesLoaded = false;
 Texture PlayerSelector::selectorBG = Texture();
 Texture PlayerSelector::playerCircle = Texture();
@@ -14,7 +15,7 @@ Texture PlayerSelector::players[4] = { Texture(), Texture(), Texture(), Texture(
 //RABBIT,
 //MOOSE
 
-PlayerSelector::PlayerSelector(AnimalType animalType, PlayerColor color, DirectX::SimpleMath::Vector2 position) : GuiElement(position), animalType(animalType), color(color)
+PlayerSelector::PlayerSelector(AnimalType animalType, PlayerColor color,int id, DirectX::SimpleMath::Vector2 position) : GuiElement(position), animalType(animalType), color(color)
 {
 	if (!PlayerSelector::texturesLoaded)
 	{
@@ -30,6 +31,8 @@ PlayerSelector::PlayerSelector(AnimalType animalType, PlayerColor color, DirectX
 		
 		PlayerSelector::texturesLoaded = true;
 	}
+
+	this->controllerID = id;
 	this->readyColor = Colors::Red;
 	this->ready = false;
 }
@@ -106,6 +109,65 @@ AnimalType PlayerSelector::getAnimalType() const
 PlayerColor PlayerSelector::getPlayerColor() const
 {
 	return this->color;
+}
+
+void PlayerSelector::update(PlayerColor *& arr, int& nrOfPlayers)
+{
+	DirectX::GamePad::State gamepadState = System::theGamePad->GetState(this->controllerID);
+	int i = 0;
+	if (gamepadState.IsConnected())
+	{
+		mButtons.Update(gamepadState);
+		using ButtonState = GamePad::ButtonStateTracker::ButtonState;
+		arr[controllerID] = getPlayerColor();
+		nrOfPlayers++;
+		System::theTracker->Update(gamepadState);
+		if (mButtons.a == ButtonState::PRESSED)// == DirectX::GamePad::ButtonStateTracker::RELEASED)
+		{
+			/*if(this->playerSelectors[0]->getPlayerColor()== this->playerSelectors[]->getPlayerColor())*/
+			setReady(true);
+		}
+		else if (mButtons.b==ButtonState::PRESSED)//System::theTracker->b == DirectX::GamePad::ButtonStateTracker::RELEASED)
+		{
+			//move to selectgui? or return something that tells this has pressed b and is not ready
+			if (getReady())
+			{
+				setReady(false);
+			}
+		}
+		else if (!getReady() && mButtons.dpadDown==ButtonState::PRESSED)//(gamepadState.IsDPadDownPressed()&&(System::theTracker->dpadDown == DirectX::GamePad::ButtonStateTracker::RELEASED)))// == DirectX::GamePad::ButtonStateTracker::RELEASED)
+		{
+			changePlayerColor(false);
+			while ((this->controllerID != 0 && getPlayerColor() == arr[0]) ||
+				(this->controllerID != 1 && getPlayerColor() == arr[1]) ||
+				(this->controllerID != 2 && getPlayerColor() == arr[2]) ||
+				(this->controllerID != 3 && getPlayerColor() == arr[3]))
+			{
+				changePlayerColor(false);
+			}
+		}
+		else if (!getReady() && mButtons.dpadUp == ButtonState::PRESSED)//System::theTracker->dpadUp == DirectX::GamePad::ButtonStateTracker::RELEASED)
+		{
+			changePlayerColor(true);
+			while ((this->controllerID != 0 && getPlayerColor() == arr[0]) ||
+				(this->controllerID != 1 && getPlayerColor() == arr[1]) ||
+				(this->controllerID != 2 && getPlayerColor() == arr[2]) ||
+				(this->controllerID != 3 && getPlayerColor() == arr[3]))
+			{
+				changePlayerColor(true);
+			}
+		}
+		else if (!getReady() && mButtons.dpadLeft == ButtonState::PRESSED)//System::theTracker->dpadLeft == DirectX::GamePad::ButtonStateTracker::PRESSED)
+		{
+			changeAnimalType(true);
+		}
+		else if (!getReady() && mButtons.dpadRight == ButtonState::PRESSED)//System::theTracker->dpadRight == DirectX::GamePad::ButtonStateTracker::PRESSED)
+		{
+			changeAnimalType(false);
+		}
+
+	}
+	arr[controllerID] = getPlayerColor();
 }
 
 void PlayerSelector::setReady(bool arg)

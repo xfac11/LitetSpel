@@ -173,8 +173,8 @@ void Player::changeCharacter()
 
 	this->setAnimalType(ArrayOfAnimals[currentAnimal]);
 	System::theModelLoader->loadAO(this->playerObj, Animal::getAnimal(ArrayOfAnimals[currentAnimal]).modelPath, Animal::getAnimal(ArrayOfAnimals[currentAnimal]).animalAnimations);
-	System::assetMananger->LoadTexture(Animal::getAnimal(type).maskPath, Animal::getAnimal(type).maskPath);
-	this->playerObj->getModel()->setMaskTexture(System::assetMananger->GetTexture(Animal::getAnimal(type).maskPath));
+	System::assetMananger->LoadTexture(Animal::getAnimal(ArrayOfAnimals[currentAnimal]).maskPath, Animal::getAnimal(ArrayOfAnimals[currentAnimal]).maskPath);
+	this->playerObj->getModel()->setMaskTexture(System::assetMananger->GetTexture(Animal::getAnimal(ArrayOfAnimals[currentAnimal]).maskPath));
 	//System::theModelLoader->loadGO(this->playerObj, Animal::getAnimal(ArrayOfAnimals[currentAnimal]).modelPath);
 
 	//if (animal.maskPath != "empty" && !this->playerObj->getModel()->hasMaskColor())

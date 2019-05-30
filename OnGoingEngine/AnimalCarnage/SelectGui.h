@@ -14,7 +14,10 @@ private:
 	GuiElement* selectedElement;
 	Button* buttonStart;
 	PlayerSelector* playerSelectors[4];
+	PlayerColor* playersColor;
 	bool allReady;
+	int nrOfPlayers;
+	DirectX::GamePad::ButtonStateTracker mButtons;
 public:
 	SelectGui(State* myState);
 	virtual ~SelectGui();

@@ -690,7 +690,8 @@ bool GunGameState::update(float deltaTime)
 		player[i]->playerObj->getRigidbody()->getAabb(min, max);
 		minTemp = DirectX::XMFLOAT3(min.getX(), min.getY(), min.getZ());
 		maxTemp = DirectX::XMFLOAT3(max.getX(), max.getY(), max.getZ());
-		for (int j = 0; j < nrOfPlayers; j++) {
+		for (int j = 0; j < nrOfPlayers; j++) 
+		{
 			//Collision with Player Hitbox
 			if (i != j)
 			{
@@ -754,16 +755,20 @@ bool GunGameState::update(float deltaTime)
 				minTempObj = DirectX::XMFLOAT3(minObj.getX(), minObj.getY(), minObj.getZ());
 				maxTempObj = DirectX::XMFLOAT3(maxObj.getX(), maxObj.getY(), maxObj.getZ());
 				for (int j = 0; j < nrOfPlayers; j++) {
-					if (Intersects(minTempObj, maxTempObj, player[j]->hitbox.hitbox->getCollisionBox(), player[j]->hitbox.hitbox->getPosition()) && !player[j]->getHitStun()) {
+					if (Intersects(minTempObj, maxTempObj, player[j]->hitbox.hitbox->getCollisionBox(), player[j]->hitbox.hitbox->getPosition()) && !player[j]->getHitStun()) 
+					{
 						objects[i]->addImpulse(player[j]->dir * 65 * ((player[j]->getWeight()+1)/2), j);
 					}
-					if (objects[i]->getPlayerKilled() == true && player[j]->getDiedOfStone() == true) {
-						if (player[objects[i]->getLastPlayerHit()] != nullptr) {
+					if (objects[i]->getPlayerKilled() == true && player[j]->getDiedOfStone() == true) 
+					{
+						if (player[objects[i]->getLastPlayerHit()] != nullptr)
+						{ 
 							player[objects[i]->getLastPlayerHit()]->changeCharacter();
 							objects[i]->setPlayerKilled(false);
 							player[j]->setDiedOfStone(false);
 						}
-						else {
+						else 
+						{
 							objects[i]->setPlayerKilled(false);
 							player[j]->setDiedOfStone(false);
 						}
