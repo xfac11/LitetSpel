@@ -121,8 +121,11 @@ bool GunGameState::callbackFunc(btManifoldPoint& cp, const btCollisionObjectWrap
 		case 4:
 			if (PlrPointer != nullptr && !PlrPointer->getHitStun()) {
 				PlrPointer->setGrounded(true);
-				if ((pointer->getMovingSpeed().x > 10 || pointer->getMovingSpeed().y < -5) && pointer->getCanGiveDmg()) {
+				if ((abs(pointer->getMovingSpeed().x) > 10 || pointer->getMovingSpeed().y < -5) && pointer->getCanGiveDmg()) {
 					pointer->takeDmg(25);
+					if (pointer->getHealth() <= 0) {
+						System::getSoundManager()->playEffect("Stone_Getting_Destroyed");
+					}
 					PlrPointer->takeDamage(25);
 					PlrPointer->setHitStun(true);
 
@@ -146,6 +149,7 @@ bool GunGameState::callbackFunc(btManifoldPoint& cp, const btCollisionObjectWrap
 					if (PlrPointer->getHealth() <= 0){
 						PlrPointer->setDiedOfStone(true);
 						pointer->setPlayerKilled(true);
+						System::getSoundManager()->playEffect("Death");
 					}
 				}
 			}
@@ -174,6 +178,14 @@ bool GunGameState::callbackFunc(btManifoldPoint& cp, const btCollisionObjectWrap
 			break;
 		}
 
+	}
+	if ((obj1->getCollisionObject()->getUserPointer() == (Objects*)obj1->getCollisionObject()->getUserPointer()) && ((Objects*)obj1->getCollisionObject()->getUserPointer() != nullptr)) {
+		Objects* pointer = (Objects*)obj1->getCollisionObject()->getUserPointer();
+		if (pointer != nullptr && pointer->GetState() == TRUE_DYNAMIC) {
+			if ((abs(pointer->getMovingSpeed().x) > 5 || abs(pointer->getMovingSpeed().y) > 5)) {
+				pointer->impactSoundEffect();
+			}
+		}
 	}
 	return false;
 }
@@ -722,8 +734,10 @@ bool GunGameState::update(float deltaTime)
 					System::theCamera->cameraShake(0.1,DirectX::XMFLOAT3(player[j]->dir, randomNumber3, randomNumber4));
 
 					if(player[i]->getHealth() <= 0 && tempHP > 0) {
-						if(player[j]->canChange())
+						if(player[j]->canChange()){
 							player[j]->changeCharacter();
+							System::getSoundManager()->playEffect("Death");
+						}
 						else
 						{
 							this->resultsShown = true;

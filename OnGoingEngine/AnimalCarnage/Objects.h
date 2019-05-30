@@ -27,12 +27,15 @@ private:
 	float hitTimer;
 	bool canBeHit;
 	float cornerTimer;
+	float impactTimer;
+	bool canBeImpacted;
 	int lastPlayerHit;
 	bool playerKilled;
 
 	float rotationSpeed;
 	int direction;
 	float friction;
+	
 
 public:
 	Objects();
@@ -65,5 +68,8 @@ public:
 	int getLastPlayerHit();
 	void setPlayerKilled(bool playerKilled);
 	bool getPlayerKilled();
+	void impactSoundEffect();
+
+	int getHealth();
 };
 

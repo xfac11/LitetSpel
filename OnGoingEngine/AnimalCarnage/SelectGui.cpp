@@ -39,9 +39,9 @@ bool SelectGui::initialize()
 {
 	this->buttonStart = new Button("Press start to enter game", Vector2(1920 / 2.0F - 300, 1080 / 2.0F + 300));
 	this->playerSelectors[0] = new PlayerSelector(FOX, RED,0, Vector2(1920 / 2.0F - 775, 1080 / 2.0F - 300));
-	this->playerSelectors[1] = new PlayerSelector(FOX, BLUE,1, Vector2(1920 / 2.0F - 375, 1080 / 2.0F - 300));
-	this->playerSelectors[2] = new PlayerSelector(FOX, GREEN,2, Vector2(1920 / 2.0F + 25, 1080 / 2.0F - 300));
-	this->playerSelectors[3] = new PlayerSelector(FOX, YELLOW,3, Vector2(1920 / 2.0F + 425, 1080 / 2.0F - 300));
+	this->playerSelectors[1] = new PlayerSelector(FOX, GOLDEN,1, Vector2(1920 / 2.0F - 375, 1080 / 2.0F - 300));
+	this->playerSelectors[2] = new PlayerSelector(FOX, BROWN,2, Vector2(1920 / 2.0F + 25, 1080 / 2.0F - 300));
+	this->playerSelectors[3] = new PlayerSelector(FOX, GREY,3, Vector2(1920 / 2.0F + 425, 1080 / 2.0F - 300));
 	for (int i = 0; i < 4; i++)
 	{
 		this->playersColor[i] = this->playerSelectors[i]->getPlayerColor();

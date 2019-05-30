@@ -22,9 +22,9 @@ struct Hitbox
 enum PlayerColor
 {
 	RED,
-	BLUE,
-	GREEN,
-	YELLOW,
+	GOLDEN,
+	BROWN,
+	GREY,
 	CYAN,
 	PINK,
 	BLACK,

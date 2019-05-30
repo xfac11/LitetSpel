@@ -100,25 +100,25 @@ void Player::setColorMask(PlayerColor color)
 	switch (color)
 	{
 	case RED:
-		colorMask = XMFLOAT4(Colors::Red);
+		colorMask = XMFLOAT4(1, 0.067, 0, 1);
 		break;
-	case BLUE:
-		colorMask = XMFLOAT4(Colors::Blue);
+	case GOLDEN:
+		colorMask = XMFLOAT4(0.82, 0.788, 0.22, 1);
 		break;
-	case GREEN:
-		colorMask = XMFLOAT4(Colors::Green);
+	case BROWN:
+		colorMask = XMFLOAT4(0.392, 0.235, 0, 1);
 		break;
-	case YELLOW:
-		colorMask = XMFLOAT4(Colors::Yellow);
+	case GREY:
+		colorMask = XMFLOAT4(0.459, 0.459, 0.459, 1);
 		break;
 	case CYAN:
 		colorMask = XMFLOAT4(Colors::Cyan);
 		break;
 	case PINK:
-		colorMask = XMFLOAT4(Colors::Pink);
+		colorMask = XMFLOAT4(1, 0.239, 0.624, 1);
 		break;
 	case BLACK:
-		colorMask = XMFLOAT4(Colors::Black);
+		colorMask = XMFLOAT4(0.071, 0.071, 0.071, 1);
 		break;
 	case WHITE:
 		colorMask = XMFLOAT4(Colors::White);
@@ -126,6 +126,7 @@ void Player::setColorMask(PlayerColor color)
 	}
 
 	this->playerObj->setColorMask(colorMask);
+	//this->playerObj->setGlowMap("brickwall_glow.tga",0);
 }
 
 void Player::setAnimalType(AnimalType type)
@@ -533,7 +534,7 @@ void Player::update(float deltaTime, int id)
 			
 			float dir = 17.0f * state.thumbSticks.leftX  * getSpeed();
 			playerObj->getRigidbody()->setLinearVelocity(btVector3(dir, playerObj->getRigidbody()->getLinearVelocity().getY(), playerObj->getRigidbody()->getLinearVelocity().getZ()));
-			
+			System::getSoundManager()->playEffect("Double_Jump");
 			//playerObj->getRigidbody()->applyForce(btVector3(0, 4500.0f, 0), btVector3(0, 0, 0));
 			grounded = false;
 			canDoubleJump = false;
@@ -580,6 +581,7 @@ void Player::update(float deltaTime, int id)
 			}
 			grounded = false;
 			if (jumpTimer >= 60) {
+				System::getSoundManager()->playEffect("Jump");
 				this->playerObj->getRigidbody()->applyImpulse(btVector3(0, 205.0f * getJumpHeight() * getWeight() /**deltaTime * 60*/, 0), btVector3(0, 0, 0));
 				jumpTimer = 0;
 				jumping = false;
@@ -597,6 +599,7 @@ void Player::update(float deltaTime, int id)
 			canWallJump = false;
 			wallJumpReset = false;
 			System::getSoundManager()->playEffect("4");
+			System::getSoundManager()->playEffect("Double_Jump");
 
 			float dir = 17.0f * state.thumbSticks.leftX;// / stickAbsL;
 			//this->playerObj->getRigidbody()->setLinearVelocity(btVector3(dir, 0, 0));

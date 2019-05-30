@@ -41,32 +41,32 @@ PlayerSelector::~PlayerSelector()
 {
 }
 
-bool PlayerSelector::render(bool selected,DirectX::XMVECTOR color)
+bool PlayerSelector::render(bool selected, DirectX::XMVECTOR color)
 {
 	System::getSpriteBatch()->Draw(PlayerSelector::selectorBG.getTexture(), this->position, nullptr);
 
 	switch (this->color)
 	{
 	case RED:
-		System::getSpriteBatch()->Draw(PlayerSelector::backGroundLayer.getTexture(), this->position + DirectX::SimpleMath::Vector2(25, 20), DirectX::Colors::Red);
+		System::getSpriteBatch()->Draw(PlayerSelector::backGroundLayer.getTexture(), this->position + DirectX::SimpleMath::Vector2(25, 20), DirectX::XMVECTORF32({ { {1,0.067, 0, 1 } } }));
 		break;
-	case BLUE:
-		System::getSpriteBatch()->Draw(PlayerSelector::backGroundLayer.getTexture(), this->position + DirectX::SimpleMath::Vector2(25, 20), DirectX::Colors::Blue);
+	case GOLDEN:
+		System::getSpriteBatch()->Draw(PlayerSelector::backGroundLayer.getTexture(), this->position + DirectX::SimpleMath::Vector2(25, 20), DirectX::XMVECTORF32({ { {0.82, 0.788, 0.22, 1 } } }));
 		break;
-	case GREEN:
-		System::getSpriteBatch()->Draw(PlayerSelector::backGroundLayer.getTexture(), this->position + DirectX::SimpleMath::Vector2(25, 20), DirectX::Colors::Green);
+	case BROWN:
+		System::getSpriteBatch()->Draw(PlayerSelector::backGroundLayer.getTexture(), this->position + DirectX::SimpleMath::Vector2(25, 20), DirectX::XMVECTORF32({ { {0.392, 0.235, 0, 1 } } }));
 		break;
-	case YELLOW:
-		System::getSpriteBatch()->Draw(PlayerSelector::backGroundLayer.getTexture(), this->position + DirectX::SimpleMath::Vector2(25, 20), DirectX::Colors::Yellow);
+	case GREY:
+		System::getSpriteBatch()->Draw(PlayerSelector::backGroundLayer.getTexture(), this->position + DirectX::SimpleMath::Vector2(25, 20), DirectX::XMVECTORF32({ { {0.459, 0.459, 0.459, 1 } } }));
 		break;
 	case CYAN:
 		System::getSpriteBatch()->Draw(PlayerSelector::backGroundLayer.getTexture(), this->position + DirectX::SimpleMath::Vector2(25, 20), DirectX::Colors::Cyan);
 		break;
 	case PINK:
-		System::getSpriteBatch()->Draw(PlayerSelector::backGroundLayer.getTexture(), this->position + DirectX::SimpleMath::Vector2(25, 20), DirectX::Colors::Pink);
+		System::getSpriteBatch()->Draw(PlayerSelector::backGroundLayer.getTexture(), this->position + DirectX::SimpleMath::Vector2(25, 20), DirectX::XMVECTORF32({ { {1, 0.239, 0.624, 1 } } }));
 		break;
 	case BLACK:
-		System::getSpriteBatch()->Draw(PlayerSelector::backGroundLayer.getTexture(), this->position + DirectX::SimpleMath::Vector2(25, 20), DirectX::Colors::Black);
+		System::getSpriteBatch()->Draw(PlayerSelector::backGroundLayer.getTexture(), this->position + DirectX::SimpleMath::Vector2(25, 20), DirectX::XMVECTORF32({ { {0.071, 0.071, 0.071, 1 } } }));
 		break;
 	case WHITE:
 		System::getSpriteBatch()->Draw(PlayerSelector::backGroundLayer.getTexture(), this->position + DirectX::SimpleMath::Vector2(25, 20));

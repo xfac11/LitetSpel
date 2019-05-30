@@ -379,6 +379,13 @@ bool System::initialize()
 	System::getSoundManager()->loadEffect(L"Getting_Hit_Punch_4.wav", "3");
 	System::getSoundManager()->loadEffect(L"Wall_Jump_Crash.wav", "4");
 	System::getSoundManager()->loadEffect(L"Swing.wav", "5");
+	System::getSoundManager()->loadEffect(L"Death.wav", "Death");
+	System::getSoundManager()->loadEffect(L"Double_Jump.wav", "Double_Jump");
+	System::getSoundManager()->loadEffect(L"Jump.wav", "Jump");
+	System::getSoundManager()->loadEffect(L"Stone_Soft_Impact.wav", "Stone_Soft_Impact");
+	System::getSoundManager()->loadEffect(L"Stone_Hard_Impact.wav", "Stone_Hard_Impact");
+	System::getSoundManager()->loadEffect(L"Stone_Getting_Hit.wav", "Stone_Getting_Hit");
+	System::getSoundManager()->loadEffect(L"Stone_Getting_Destroyed.wav", "Stone_Getting_Destroyed");
 
 	shaderManager->getParticleShader()->setCamera(SimpleMath::Vector3(this->theCamera->GetUp()));
 	shaderManager->getLightShader()->setWindow(this->theWindow.width, this->theWindow.height);
@@ -601,7 +608,7 @@ void System::update(float deltaTime)
 
 	if (theKeyboard->KeyIsPressed('M'))
 	{
-		this->soundManager->playLooped(L"Main_Theme_2.0.wav");
+		this->soundManager->playLooped(L"Main_Theme_2.1.wav");
 	}
 	if (theKeyboard->KeyIsPressed('N'))
 	{

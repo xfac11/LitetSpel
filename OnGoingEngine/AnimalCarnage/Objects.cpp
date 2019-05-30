@@ -171,6 +171,8 @@ Objects::Objects(std::string filepath, btVector3 position,int id,int friction, b
 	this->respawnTimer = 0;
 	this->hitTimer = 0;
 	this->cornerTimer = 0;
+	this->impactTimer = 0;
+	this->canBeImpacted = true;
 	//this->ObjectOBJ->getRigidbody()->setAngularFactor(btVector3(0, 0, 0));
 	this->lastPlayerHit = -1;
 	this->playerKilled = -1;
@@ -182,6 +184,7 @@ Objects::~Objects()
 
 void Objects::update(float dt)
 {
+
 	if (type == GRASS) {
 		ObjectOBJ->setRotationRollPitchYaw(0.5, 0, ObjectOBJ->getRotation().z + (rotationSpeed * dt * 60));
 		if (ObjectOBJ->getRotation().z > (3.14 / 2) - 0.1) {
@@ -210,7 +213,7 @@ void Objects::update(float dt)
 	//Respawn when Stone is dead
 
 	if (state == TRUE_DYNAMIC) {
-		
+		this->impactTimer += 1000 * dt;
 		this->activeTimer += 700 * dt;
 		if (activeTimer >= 100) {
 			canGiveDmg = true;
@@ -375,6 +378,7 @@ void Objects::addImpulse(float impulse, int playerId)
 		activeTimer = 0;
 		ObjectOBJ->getRigidbody()->activate();
 		ObjectOBJ->getRigidbody()->applyImpulse(btVector3(impulse*50, 0, 0), btVector3(0, 0, 0));
+		System::getSoundManager()->playEffect("Stone_Getting_Hit");
 		this->canBeHit = false;
 		this->hitTimer = 0;
 	}
@@ -433,4 +437,23 @@ void Objects::setPlayerKilled(bool playerKilled)
 bool Objects::getPlayerKilled()
 {
 	return this->playerKilled;
+}
+
+void Objects::impactSoundEffect()
+{
+	if (impactTimer >= 100) {
+		if ((abs(getMovingSpeed().x) > 10 || abs(getMovingSpeed().y) > 10)) {
+			System::getSoundManager()->playEffect("Stone_Hard_Impact");
+			System::getParticleManager()->addSimpleEffect(DirectX::SimpleMath::Vector3(ObjectOBJ->getRigidbody()->getWorldTransform().getOrigin().getX(), ObjectOBJ->getRigidbody()->getWorldTransform().getOrigin().getY() - 0.2, ObjectOBJ->getRigidbody()->getWorldTransform().getOrigin().getZ()), "rumble", 0.5f, 1.2f, 5, 4.5);
+		}
+		else if ((abs(getMovingSpeed().x) > 5 || abs(getMovingSpeed().y) > 5)) {
+			System::getSoundManager()->playEffect("Stone_Soft_Impact");
+		}
+		impactTimer = 0;
+	}
+}
+
+int Objects::getHealth()
+{
+	return this->health;
 }
