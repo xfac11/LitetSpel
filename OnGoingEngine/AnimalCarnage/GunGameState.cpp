@@ -392,8 +392,6 @@ bool GunGameState::initailize()
 	this->addObject("Resources/Models/grass2.lu", btVector3(25.5, 0.4, -1.8), 0, 0, btVector3(1.0, 1.0, 1.0), BACKGROUND, GRASS, 1, false);
 	this->addObject("Resources/Models/grass1.lu", btVector3(26.5, 0.4, -2.9), 0, 0, btVector3(1.0, 1.0, 1.0), BACKGROUND, GRASS, 1, false);
 
-
-
 	//Background trees
 	/*GameObject* tree1 = new GameObject;
 	System::theModelLoader->loadGO(tree1, "Resources/Models/tree1.lu");
@@ -422,6 +420,11 @@ bool GunGameState::initailize()
 	System::handler->addObject(cliff1);
 	cliff1->setPosition(35, 0, 7.6);
 	cliff1->setScale(10, 10, 10);
+
+	GameObject* mushrooms1 = new GameObject;
+	System::theModelLoader->loadGO(mushrooms1, "Resources/Models/mushroom_group.lu");
+	System::handler->addObject(mushrooms1);
+	mushrooms1->setPosition(7, 1, 6.0);
 
 	//Trees at the border of the stage
 	GameObject* rBorderTree1 = new GameObject;
