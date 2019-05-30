@@ -58,6 +58,7 @@ private:
 	int groundTimer;
 	float animSpeed;
 	string animName;
+	bool animLoop;
 	bool previousGrounded;
 	float landingTimer;
 	float landingLag;
@@ -81,6 +82,7 @@ private:
 public:
 	float getAnimSpeed() const;
 	string getAnimName() const;
+	bool getAnimLoop() const;
 	float getJumpHeight() const;
 	int getStrength() const;
 	float getSpeed() const;

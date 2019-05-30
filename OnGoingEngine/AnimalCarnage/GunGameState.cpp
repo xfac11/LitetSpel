@@ -487,6 +487,7 @@ bool GunGameState::initailize()
 	this->nrOfPlayers = 4;
 	this->currentAnimSpeed.resize(this->nrOfPlayers);
 	this->currentAnimName.resize(this->nrOfPlayers);
+	this->currentAnimLoop.resize(this->nrOfPlayers);
 	player = new Player*[nrOfPlayers];
 	this->spawnPoints[0] = btVector3(5, 3, 0);
 	this->spawnPoints[1] = btVector3(-5, 3, 0);
@@ -578,10 +579,15 @@ bool GunGameState::render()
 		currentAnimName[pNm] = player[pNm]->getAnimName();
 
 	}
+	for (int pLp = 0; pLp < nrOfPlayers; pLp++)
+	{
+		currentAnimLoop[pLp] = player[pLp]->getAnimLoop();
+
+	}
 
 
 	renderImgui();
-	System::handler->draw(System::fusk->getDeltaTime(), this->paused, currentAnimSpeed, currentAnimName);
+	System::handler->draw(System::fusk->getDeltaTime(), this->paused, currentAnimSpeed, currentAnimName, currentAnimLoop);
 
 	System::shaderManager->getParticleShader()->setCBuffers();
 	System::shaderManager->getParticleShader()->setShaders();
