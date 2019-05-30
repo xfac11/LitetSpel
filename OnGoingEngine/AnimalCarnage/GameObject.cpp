@@ -318,6 +318,7 @@ void GameObject::computeAnimationMatrix(float deltaTime, std::string animName, b
 	{
 		if (this->timePassed >= anims[animName].getDuration())
 			this->timePassed = anims[animName].getDuration()-0.00001f;
+
 	}
 	
 
