@@ -301,16 +301,24 @@ bool GameObject::haveAnimation() const
 
 void GameObject::computeAnimationMatrix(float deltaTime, std::string animName, bool isLooping ) //include float to multiply timePassed to make speed of animation (den ska gå från 0 - 1)
 {
-	if(timePassed < anims[animName].getDuration())
-		this->timePassed += deltaTime;
 
 	if (this->lastAnimation != animName)
 	{
 		this->timePassed = 0;
 		this->lastAnimation = animName;
 	}
-	if (this->timePassed >= anims[animName].getDuration() && isLooping==true)
-		this->timePassed = fmodf(this->timePassed, anims[animName].getDuration());
+
+	this->timePassed += deltaTime;
+	if (isLooping == true)
+	{
+		if (this->timePassed >= anims[animName].getDuration())
+			this->timePassed = fmodf(this->timePassed, anims[animName].getDuration());
+	}
+	else if(isLooping == false)
+	{
+		if (this->timePassed >= anims[animName].getDuration())
+			this->timePassed = anims[animName].getDuration();
+	}
 	
 
 
@@ -352,7 +360,7 @@ void GameObject::computeAnimationMatrix(float deltaTime, std::string animName, b
 	
 
 			if(hitboxJointID!=-1)
-				this->hitboxJointPos = pose_global[hitboxJointID];
+				this->hitboxJointPos = pose_global[this->hitboxJointID];
 			System::shaderManager->getDefShader()->setJointData(matrixPallete);
 		//}
 		//else //if the frames is already calculated
@@ -391,11 +399,6 @@ void GameObject::setSkeleton(std::vector<Luna::Joint> theJoints)
 	this->matrixPallete.resize(skeleton.size());
 	
 }
-
-//void GameObject::setCurrentAnimal(std::string animalName)
-//{
-//	this->lastAnimal = animalName;
-//}
 
 DirectX::XMFLOAT3 GameObject::interpolate1(DirectX::XMFLOAT3 & start, DirectX::XMFLOAT3 &end, float & progression)
 {
