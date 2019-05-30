@@ -15,7 +15,7 @@ GameObject::GameObject()
 	this->frameCounter = 0;
 	this->activeDraw = true;
 	this->hitboxJointID = -1;
-	this->hitboxJointID = 21;
+	//this->hitboxJointID = 21;
 	this->lastAnimal = "Default";
 }
 
@@ -33,7 +33,7 @@ GameObject::GameObject(Shader * shader)
 	//this->gotAnimation = false;
 	this->frameCounter=0;
 	this->hitboxJointID = -1;
-	this->hitboxJointID = 21;
+	//this->hitboxJointID = 21;
 	this->lastAnimal = "Default";	
 	//this->gotSkeleton = false;
 	/*this->theModel[0] = new Model;
@@ -43,14 +43,11 @@ GameObject::GameObject(Shader * shader)
 	//this->worldConstBuffer.initialize();
 }
 
-
 GameObject::~GameObject()
 {
-
 	if (theModel != NULL)
 		this->theModel = nullptr;
 }
-
 
 int GameObject::getNrOfModels()
 {
@@ -61,11 +58,6 @@ shared_ptr<Model>  GameObject::getModel()
 {
 	return this->theModel;
 }
-
-//Model **& GameObject::getTheModelPtr()
-//{
-//	return this->theModel;
-//}
 
 void GameObject::setHalfSize(float halfSize[3], float posOffset[3])
 {
@@ -89,7 +81,7 @@ void GameObject::setHalfSize(float halfSize[3], float posOffset[3])
 	
 	//DirectX::XMMatrixTranslation(this->Position.x+posOffset[0])
 	this->CollisionShape->SetWorld(&this->getWorld());
-	System::getDebugDraw()->addPrimitives(this->CollisionShape);
+	System::getDebugDraw()->addPrimitives(this->CollisionShape); //
 }
 
 void GameObject::calcAABB(std::vector<Vertex3D> mesh)
@@ -168,24 +160,6 @@ void GameObject::addModel(shared_ptr<Model> m, bool gotSkeleton)
 	nrOfModels = 1;
 }
 
-//void GameObject::addModel(std::vector<Vertex3D> mesh, DWORD * indices, int numberOfIndices, bool hasSkeleton)
-//{ //not using this???
-//	shared_ptr<Model> m;
-//	this->theModel = m;
-//	this->theModel->setMesh(mesh, indices, numberOfIndices);
-//	//if(this->colBox.Max.x == 1.0f)
-//	this->calcAABB(mesh);
-//	//this->theModel[nrOfModels]->setSampler();
-//	this->theModel->setGotSkeleton(hasSkeleton);
-//	nrOfModels = 1;
-//
-//}
-
-//void GameObject::setMesh(std::vector<Vertex3D> mesh, DWORD * indices, int numberOfIndices, int id)
-//{
-//	this->theModel->setMesh(mesh);
-//}
-
 void GameObject::setTexture(std::string file, int id, int mipLevels)
 {									
 	this->theModel->setTexture(file, mipLevels);
@@ -221,28 +195,6 @@ DirectX::XMFLOAT4 & GameObject::getRepeat()
 {
 	return this->repeat;
 }
-
-//void GameObject::draw()
-//{
-//	/*ForwardShader* ptr = nullptr;
-//	ptr = dynamic_cast<ForwardShader*>(this->theModel->getShader());
-//	if (ptr != nullptr)
-//	{
-//		ptr->setWorld(this->theTransforms.getWorld());
-//		this->theModel->draw();
-//	}*/
-//	/*for (int i = 0; i < this->nrOfModels; i++)
-//	{
-//		this->theModel[0]->getShader()->setWorld(this->theTransforms.getWorld());
-//		this->theModel[0]->draw();
-//	}*/
-//
-//
-//
-//	this->theModel->getShader()->setWorld(this->getWorld());
-//	this->theModel->draw();
-//
-//}
 
 AABB GameObject::getCollisionBox()
 {
@@ -381,7 +333,7 @@ void GameObject::setNewAnimation(float fps, float duration, std::string name, st
 
 }
 
-void GameObject::setSkeleton(std::vector<Luna::Joint> theJoints)
+void GameObject::setSkeleton(std::vector<Luna::Joint> theJoints, std::string attackJoint)
 {
 	//this->
 	this->skeleton.resize(theJoints.size());
@@ -391,7 +343,7 @@ void GameObject::setSkeleton(std::vector<Luna::Joint> theJoints)
 		if (theJoints[i].parentID != -1)
 			this->skeleton[i].setParent(&this->skeleton[theJoints[i].parentID]);
 
-		if (this->skeleton[i].getName() == "name_of_joint") //get animation hitbox joint
+		if (this->skeleton[i].getName() == attackJoint) //get animation hitbox joint
 			this->hitboxJointID = i;
 	
 	}

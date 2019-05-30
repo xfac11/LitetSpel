@@ -141,7 +141,7 @@ void Player::setAnimalTypeAndMass(AnimalType type)
 	this->type = type;
 	this->health = animal.maxHealh;
 	currentAnimal = this->type;
-	System::theModelLoader->loadAO(this->playerObj, Animal::getAnimal(ArrayOfAnimals[currentAnimal]).modelPath, Animal::getAnimal(ArrayOfAnimals[currentAnimal]).animalAnimations);
+	System::theModelLoader->loadAO(this->playerObj, Animal::getAnimal(ArrayOfAnimals[currentAnimal]).modelPath, Animal::getAnimal(ArrayOfAnimals[currentAnimal]).animalAnimations, Animal::getAnimal(ArrayOfAnimals[currentAnimal]).attackJoint);
 	System::assetMananger->LoadTexture(Animal::getAnimal(type).maskPath, Animal::getAnimal(type).maskPath);
 	this->playerObj->getModel()->setMaskTexture(System::assetMananger->GetTexture(Animal::getAnimal(type).maskPath));
 	btVector3 inertia(0, 0, 0);
@@ -175,6 +175,9 @@ void Player::changeCharacter()
 	System::theModelLoader->loadAO(this->playerObj, Animal::getAnimal(ArrayOfAnimals[currentAnimal]).modelPath, Animal::getAnimal(ArrayOfAnimals[currentAnimal]).animalAnimations);
 	System::assetMananger->LoadTexture(Animal::getAnimal(ArrayOfAnimals[currentAnimal]).maskPath, Animal::getAnimal(ArrayOfAnimals[currentAnimal]).maskPath);
 	this->playerObj->getModel()->setMaskTexture(System::assetMananger->GetTexture(Animal::getAnimal(ArrayOfAnimals[currentAnimal]).maskPath));
+	System::theModelLoader->loadAO(this->playerObj, Animal::getAnimal(ArrayOfAnimals[currentAnimal]).modelPath, Animal::getAnimal(ArrayOfAnimals[currentAnimal]).animalAnimations, Animal::getAnimal(ArrayOfAnimals[currentAnimal]).attackJoint);
+	System::assetMananger->LoadTexture(Animal::getAnimal(type).maskPath, Animal::getAnimal(type).maskPath);
+	this->playerObj->getModel()->setMaskTexture(System::assetMananger->GetTexture(Animal::getAnimal(type).maskPath));
 	//System::theModelLoader->loadGO(this->playerObj, Animal::getAnimal(ArrayOfAnimals[currentAnimal]).modelPath);
 
 	//if (animal.maskPath != "empty" && !this->playerObj->getModel()->hasMaskColor())
@@ -299,7 +302,7 @@ void Player::initialize(AnimalType type, PlayerColor color)
 
 	//loads animal
 	//System::theModelLoader->loadGO(this->playerObj, Animal::getAnimal(type).modelPath);
-	System::theModelLoader->loadAO(this->playerObj, Animal::getAnimal(type).modelPath, Animal::getAnimal(type).animalAnimations);
+	System::theModelLoader->loadAO(this->playerObj, Animal::getAnimal(type).modelPath, Animal::getAnimal(type).animalAnimations,  Animal::getAnimal(ArrayOfAnimals[currentAnimal]).attackJoint);
 	if (Animal::getAnimal(type).maskPath != "empty" && !this->playerObj->getModel()->hasMaskColor())
 	{
 		System::assetMananger->LoadTexture(Animal::getAnimal(type).maskPath, Animal::getAnimal(type).maskPath);
