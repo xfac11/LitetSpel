@@ -65,6 +65,7 @@ private:
 
 	std::vector<float>currentAnimSpeed;// = { 0,0,0,0 };
 	std::vector<string>currentAnimName;// = { 0,0,0,0 };
+	std::vector<bool>currentAnimLoop;// = { 0,0,0,0 };
 
 	btVector3 min;
 	btVector3 max;
