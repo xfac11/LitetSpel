@@ -122,9 +122,7 @@ void GameObjectHandler::draw(float deltaTime, bool isPaused, std::vector<float> 
 				//this->timePassed += deltaTime;
 				
 
-				this->opaqueModels[i].selfPtr->computeAnimationMatrix(deltaTime*playerSpeed[index]*!isPaused, playerName[index],false);//playerName[index] //run_cycle, idle
-
-				//this->opaqueModels[i].selfPtr->computeAnimationMatrix(deltaTime*playerSpeed[index]*!isPaused, playerName[index], playerLoop[index]);//playerName[index] //run_cycle, idle
+				this->opaqueModels[i].selfPtr->computeAnimationMatrix(deltaTime*playerSpeed[index]*!isPaused, playerName[index], playerLoop[index]);//playerName[index] //run_cycle, idle
 
 			    index++;
 			}
