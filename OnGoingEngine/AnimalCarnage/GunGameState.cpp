@@ -500,7 +500,23 @@ bool GunGameState::initailize()
 	ray2->setScale(1.5, 1.5, 1.5);
 	ray2->setRotationRollPitchYaw(0, 0, -0.5);
 
-	
+	this->nrOfPlayers = 4;
+	this->currentAnimSpeed.resize(this->nrOfPlayers);
+	this->currentAnimName.resize(this->nrOfPlayers);
+	this->currentAnimLoop.resize(this->nrOfPlayers);
+	player = new Player*[nrOfPlayers];
+	this->spawnPoints[0] = btVector3(5, 3, 0);
+	this->spawnPoints[1] = btVector3(-5, 3, 0);
+	this->spawnPoints[2] = btVector3(15, 3, 0);
+	this->spawnPoints[3] = btVector3(-15, 3, 0);
+	for (int i = 0; i < nrOfPlayers; i++)
+	{
+		player[i] = new Player();
+		player[i]->initialize(FOX, RED);
+		player[i]->setRigidbodyPosition(this->spawnPoints[i].getX(), this->spawnPoints[i].getY(), this->spawnPoints[i].getZ());
+		this->player[i]->setDirection(-1);//everyone should look towards the middle
+		
+	}
 	//this->player[2]->playerObj->setRotationRollPitchYaw(0.f, 1.5*(3.14f), 0.f);
 
 	//player[1]->setRigidbodyPosition(-10,10, 0.f);
@@ -579,10 +595,15 @@ bool GunGameState::render()
 		currentAnimName[pNm] = player[pNm]->getAnimName();
 
 	}
+	for (int pLp = 0; pLp < nrOfPlayers; pLp++)
+	{
+		currentAnimLoop[pLp] = player[pLp]->getAnimLoop();
+
+	}
 
 
 	renderImgui();
-	System::handler->draw(System::fusk->getDeltaTime(), this->paused, currentAnimSpeed, currentAnimName);
+	System::handler->draw(System::fusk->getDeltaTime(), this->paused, currentAnimSpeed, currentAnimName, currentAnimLoop);
 
 	System::shaderManager->getParticleShader()->setCBuffers();
 	System::shaderManager->getParticleShader()->setShaders();
