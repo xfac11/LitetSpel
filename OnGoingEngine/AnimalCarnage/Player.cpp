@@ -11,6 +11,11 @@ string Player::getAnimName() const
 	return this->animName;
 }
 
+bool Player::getAnimLoop() const
+{
+	return this->animLoop;
+}
+
 float Player::getJumpHeight() const
 {
 	return Animal::getAnimal(this->type).jumpHeight;
@@ -334,7 +339,7 @@ void Player::update(float deltaTime, int id)
 {
 	animName = "idle";
 	animSpeed = 1;
-
+	animLoop = true;
 
 
 	if (!canJump || canPressJump == false) {
@@ -344,6 +349,7 @@ void Player::update(float deltaTime, int id)
 			{
 				animName = "jump_start";
 				animSpeed = 1.3;
+				animLoop = false;
 			}
 		}
 		else if (playerObj->getRigidbody()->getLinearVelocity().getY() < 1 )
@@ -351,6 +357,7 @@ void Player::update(float deltaTime, int id)
 			if (std::find(Animal::getAnimal(type).animalAnimations.begin(), Animal::getAnimal(type).animalAnimations.end(), "_jump_falling") != Animal::getAnimal(type).animalAnimations.end())
 			{
 				animName = "jump_falling";
+				animLoop = true;
 			}
 		}
 	}
@@ -455,6 +462,7 @@ void Player::update(float deltaTime, int id)
 			{
 				animName = "run_cycle";
 				animSpeed = abs(state.thumbSticks.leftX);
+				animLoop = true;
 			}
 			if (playerObj->getPosition().y < 2) {
 				if (playerObj->getRigidbody()->getLinearVelocity().getX() > 10.0f * getSpeed()) {
@@ -555,11 +563,13 @@ void Player::update(float deltaTime, int id)
 			{
 				animName = "jump_start";
 				animSpeed = 1.299;
+				animLoop = false;
 			}
 			if ((std::find(Animal::getAnimal(type).animalAnimations.begin(), Animal::getAnimal(type).animalAnimations.end(), "_jump_start") != Animal::getAnimal(type).animalAnimations.end()) && (type == RABBIT || type == MOOSE))//
 			{
 				animName = "jump_start";
 				animSpeed = 0.466;
+				animLoop = false;
 
 			}
 			grounded = false;
@@ -616,6 +626,7 @@ void Player::update(float deltaTime, int id)
 			{
 				animName = "attack";
 				animSpeed = 1.25;
+				animLoop = false;
 			}
 			if (hitTimer >= 60) {
 				punching = false;
@@ -632,6 +643,7 @@ void Player::update(float deltaTime, int id)
 			{
 				animName = "attack";
 				animSpeed = 1.25;
+				animLoop = false;
 			}
 			//this->hitbox.hitbox->setPosition(this->getPosition().x, this->getPosition().y, this->getPosition().z);
 			if (hitTimer >30 && hitTimer < 50) {
@@ -659,6 +671,7 @@ void Player::update(float deltaTime, int id)
 			{
 				animName = "attack";
 				animSpeed = 2.0;
+				animLoop = false;
 			}
 			if (hitTimer >= 60) {
 				punching = false;
@@ -687,6 +700,7 @@ void Player::update(float deltaTime, int id)
 			{
 				animName = "attack";
 				animSpeed = 0.5;
+				animLoop = false;
 			}
 			if (hitTimer >= 60) {
 				punching = false;
@@ -842,6 +856,7 @@ void Player::update(float deltaTime, int id)
 			{
 				animName = "jump_landing";
 				animSpeed = 1;
+				animLoop = false;
 			}
 			playerObj->getRigidbody()->setLinearVelocity(btVector3(playerObj->getRigidbody()->getLinearVelocity().getX() / 1.5, playerObj->getRigidbody()->getLinearVelocity().getY(), playerObj->getRigidbody()->getLinearVelocity().getZ()));
 		}

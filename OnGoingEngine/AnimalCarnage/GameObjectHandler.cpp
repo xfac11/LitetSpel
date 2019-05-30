@@ -85,7 +85,7 @@ GameObject & GameObjectHandler::getObject(int id)
 	return *this->gameObjects[id];
 }
 
-void GameObjectHandler::draw(float deltaTime, bool isPaused, std::vector<float> & playerSpeed, std::vector<string> & playerName)
+void GameObjectHandler::draw(float deltaTime, bool isPaused, std::vector<float> & playerSpeed, std::vector<string> & playerName, std::vector<bool> & playerLoop)
 {
 	//Shadow
 	System::theGraphicDevice->setRasterState();
@@ -121,7 +121,11 @@ void GameObjectHandler::draw(float deltaTime, bool isPaused, std::vector<float> 
 			{
 				//this->timePassed += deltaTime;
 				
+
 				this->opaqueModels[i].selfPtr->computeAnimationMatrix(deltaTime*playerSpeed[index]*!isPaused, playerName[index],false);//playerName[index] //run_cycle, idle
+
+				//&this->opaqueModels[i].selfPtr->computeAnimationMatrix(deltaTime*playerSpeed[index]*!isPaused, playerName[index], playerLoop[index]);//playerName[index] //run_cycle, idle
+
 			    index++;
 			}
 
