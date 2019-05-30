@@ -663,14 +663,14 @@ void Player::update(float deltaTime, int id)
 				playerObj->getRigidbody()->setLinearVelocity(btVector3(playerObj->getRigidbody()->getLinearVelocity().getX() / 1.01, playerObj->getRigidbody()->getLinearVelocity().getY(), playerObj->getRigidbody()->getLinearVelocity().getZ() / 2));
 			}
 			canPressPunch = false;
-			hitTimer += 200 * deltaTime;
+			hitTimer += 119 * deltaTime;
 			//this->hitbox.hitbox->setPosition(this->getPosition().x + 1.5*dir, this->getPosition().y, this->getPosition().z);
 			this->hitbox.hitbox->setMatrix(this->playerObj->getWorld()*this->playerObj->getJointPos());
 			//this->hitbox.hitbox->setPosition(this->getPosition().x, this->getPosition().y, this->getPosition().z);
 			if (std::find(Animal::getAnimal(type).animalAnimations.begin(), Animal::getAnimal(type).animalAnimations.end(), "_attack") != Animal::getAnimal(type).animalAnimations.end()) //remove this when animation exist
 			{
 				animName = "attack";
-				animSpeed = 2.0;
+				animSpeed = 1.25;
 				animLoop = false;
 			}
 			if (hitTimer >= 60) {

@@ -211,7 +211,7 @@ void Objects::update(float dt)
 
 	if (state == TRUE_DYNAMIC) {
 		
-		this->activeTimer += 3500 * dt;
+		this->activeTimer += 1500 * dt;
 		if (activeTimer >= 100) {
 			canGiveDmg = true;
 			this->ObjectOBJ->getRigidbody()->setFriction(friction);

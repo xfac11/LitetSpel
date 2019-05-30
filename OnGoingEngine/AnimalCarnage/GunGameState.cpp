@@ -121,7 +121,7 @@ bool GunGameState::callbackFunc(btManifoldPoint& cp, const btCollisionObjectWrap
 		case 4:
 			if (PlrPointer != nullptr && !PlrPointer->getHitStun()) {
 				PlrPointer->setGrounded(true);
-				if ((pointer->getMovingSpeed().x > 10 || pointer->getMovingSpeed().y > 3) && pointer->getCanGiveDmg()) {
+				if ((pointer->getMovingSpeed().x > 10 || pointer->getMovingSpeed().y < -5) && pointer->getCanGiveDmg()) {
 					pointer->takeDmg(25);
 					PlrPointer->takeDamage(25);
 					PlrPointer->setHitStun(true);
@@ -279,6 +279,9 @@ bool GunGameState::initailize()
 	this->addObject("Resources/Models/platform2.lu", btVector3(-10, 5, 0), 3, 3, btVector3(0.6f, 0.8f, 0.6f), STATIC, PLATFORM, 1,true);
 
 	this->addObject("Resources/Models/tree1.lu", btVector3(10, 0, 7.6), 0, 0, btVector3(1.6, 1.6, 1.6), BACKGROUND, PLATFORM, 1, false);
+
+	this->addObject("Resources/Models/bush1.lu", btVector3(-12, 1.3, 0), 0, 0, btVector3(1.6, 1.6, 1.6), BACKGROUND, STONE, 1, false);
+	this->addObject("Resources/Models/bush1.lu", btVector3(-17, 0.8, 0), 0, 0, btVector3(1.0, 1.0, 1.0), BACKGROUND, STONE, 1, false);
 
 	//GRASS
 	this->addObject("Resources/Models/grass1.lu", btVector3( 0.0, 0.4, -1.4), 0, 0, btVector3(1.0, 1.0, 1.0), BACKGROUND, GRASS, 1, false);
@@ -752,9 +755,15 @@ bool GunGameState::update(float deltaTime)
 						objects[i]->addImpulse(player[j]->dir * 65 * ((player[j]->getWeight()+1)/2), j);
 					}
 					if (objects[i]->getPlayerKilled() == true && player[j]->getDiedOfStone() == true) {
-						player[objects[i]->getLastPlayerHit()]->changeCharacter();
-						objects[i]->setPlayerKilled(false);
-						player[j]->setDiedOfStone(false);
+						if (player[objects[i]->getLastPlayerHit()] != nullptr) {
+							player[objects[i]->getLastPlayerHit()]->changeCharacter();
+							objects[i]->setPlayerKilled(false);
+							player[j]->setDiedOfStone(false);
+						}
+						else {
+							objects[i]->setPlayerKilled(false);
+							player[j]->setDiedOfStone(false);
+						}
 					}
 				}
 			}
