@@ -4,7 +4,7 @@ TextureLoad::TextureLoad()
 {
 	m_targaData = 0;
 	m_texture = 0;
-	m_textureView = 0;
+	m_textureView = nullptr;
 
 	width = 0;
 	height = 0;
