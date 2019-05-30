@@ -312,7 +312,7 @@ void GameObject::computeAnimationMatrix(float deltaTime, std::string animName, b
 	if (isLooping == true)
 	{
 		if (this->timePassed >= anims[animName].getDuration())
-			this->timePassed = fmodf(this->timePassed, anims[animName].getDuration());
+			this->timePassed = fmodf(this->timePassed, anims[animName].getDuration())-0.000001f;
 	}
 	else if(isLooping == false)
 	{
