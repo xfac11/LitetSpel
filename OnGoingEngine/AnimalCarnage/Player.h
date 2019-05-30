@@ -102,6 +102,8 @@ public:
 	void setAnimalType(AnimalType type);
 	void setAnimalTypeAndMass(AnimalType type);
 	
+	DirectX::XMMATRIX sclMtx = DirectX::XMMatrixScaling(2.0f, 2.0f, 2.0f);
+
 	Player();
 	~Player();
 
@@ -145,6 +147,8 @@ public:
 
 	void setDiedOfStone(bool death);
 	bool getDiedOfStone();
+
+	bool operator==(const Player& p);
 };
 #endif // ! PLAYER_H
 

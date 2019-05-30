@@ -191,10 +191,10 @@ void Objects::update(float dt)
 			ObjectOBJ->setRotationRollPitchYaw(0.5, 0, -1.57079633 + 0.1);
 		}
 		if (ObjectOBJ->getRotation().z < 0) {
-			rotationSpeed += 0.005 * dt * 60 /*+ (abs(rotationSpeed)/25)*/;
+			rotationSpeed += 0.005 /*+ (abs(rotationSpeed)/25)*/;
 		}
 		else if (ObjectOBJ->getRotation().z >= 0) {
-			rotationSpeed -= 0.005 * dt * 60 /*+ (abs(rotationSpeed)/25)*/;
+			rotationSpeed -= 0.005 /*+ (abs(rotationSpeed)/25)*/;
 		}
 		rotationSpeed /= 1.05;
 		if (rotationSpeed > 0.1) {
@@ -211,7 +211,7 @@ void Objects::update(float dt)
 
 	if (state == TRUE_DYNAMIC) {
 		
-		this->activeTimer += 1500 * dt;
+		this->activeTimer += 700 * dt;
 		if (activeTimer >= 100) {
 			canGiveDmg = true;
 			this->ObjectOBJ->getRigidbody()->setFriction(friction);
