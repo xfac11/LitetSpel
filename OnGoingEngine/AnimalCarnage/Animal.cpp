@@ -2,8 +2,8 @@
 #include "System.h"
 
 
-std::vector<std::string> rabbitV = { "_idle", "_run","_jump_falling","_jump_landing","_jump_start", };
-std::vector<std::string> foxV = { "_idle", "_run", "_jump","_jump_falling","_jump_landing","_jump_start","_attack" };
+std::vector<std::string> rabbitV = { "_idle", "_run","_jump_falling","_jump_landing","_jump_start","_attack", };
+std::vector<std::string> foxV = { "_idle", "_run", "_jump","_jump_falling","_jump_landing","_jump_start","_attack", };
 std::vector<std::string> bear = {};
 std::vector<std::string> moose = {};
 
