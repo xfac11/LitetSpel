@@ -314,14 +314,14 @@ void Camera::calcCamera(std::vector<DirectX::XMFLOAT3> playerPos)
 
 	if (length < this->position.z) {
 		distanceZ = (this->position.z - length);
-		this->tempPosZ -= distanceZ / 12.5;
-		this->tempPosZ = this->tempPosZ - 0.45;
+		this->tempPosZ -= distanceZ / 8.5;
+		this->tempPosZ = this->tempPosZ - 0.65;
 		accelerationZ -= 0.0005;
 	}
 	else if(length > this->position.z) {
 		distanceZ = (length - this->position.z);
-		this->tempPosZ += distanceZ / 12.5;
-		this->tempPosZ = this->tempPosZ - 0.45;
+		this->tempPosZ += distanceZ / 8.5;
+		this->tempPosZ = this->tempPosZ - 0.65;
 		accelerationZ += 0.0005;
 	}
 
