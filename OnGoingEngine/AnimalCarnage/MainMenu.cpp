@@ -3,9 +3,12 @@
 #include "OptionsGui.h"
 #include "RulesGui.h"
 #include "SelectGui.h"
-#include"System.h"
+#include "StartGui.h"
+#include "System.h"
+
 MainMenu::MainMenu()
 {
+	this->start = nullptr;
 	this->main = nullptr;
 	this->options = nullptr;
 	this->rules = nullptr;
@@ -19,6 +22,7 @@ MainMenu::MainMenu()
 
 MainMenu::~MainMenu()
 {
+	delete this->start;
 	delete this->main;
 	delete this->options;
 	delete this->rules;
@@ -27,12 +31,13 @@ MainMenu::~MainMenu()
 
 bool MainMenu::initailize()
 {
+	this->start = new StartGui(this);
 	this->main = new MainGui(this);
 	this->options = new OptionsGui(this);
 	this->rules = new RulesGui(this);
 	this->select = new SelectGui(this);
 
-	this->gui = main;
+	this->gui = start;
 	this->gui->initialize();
 
 	return true;
@@ -70,6 +75,7 @@ bool MainMenu::update(float deltaTime)
 
 void MainMenu::shutDown()
 {
+	delete this->start;
 	delete this->main;
 	delete this->options;
 	delete this->rules;
@@ -83,6 +89,9 @@ void MainMenu::setCurrentMenu(MainMenuGui menu, bool alwaysActivateDelay)
 
 	switch (menu)
 	{
+	case START:
+		this->gui = start;
+		break;
 	case MAIN:
 		this->gui = main;
 		break;
