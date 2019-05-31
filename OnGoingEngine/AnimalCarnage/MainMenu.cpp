@@ -73,6 +73,7 @@ void MainMenu::shutDown()
 
 void MainMenu::setCurrentMenu(MainMenuGui menu, bool alwaysActivateDelay)
 {
+	System::theTracker->Reset();
 	GuiBase* oldGui = this->gui;
 
 	switch (menu)

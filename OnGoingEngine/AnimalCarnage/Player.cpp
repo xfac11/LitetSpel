@@ -843,7 +843,9 @@ void Player::update(float deltaTime, int id)
 		temp.m128_f32[3] = this->playerObj->getRigidbody()->getWorldTransform().getRotation().getW();
 
 		//playerObj->setRotationRollPitchYaw(getRoll(temp) * -1, playerObj->getRotation().y, playerObj->getRotation().z);
-
+		animName = "death";
+		animSpeed = 1;
+		animLoop = false;
 
 		deathTimer += 60 * deltaTime;
 		if (deathTimer >= 100) {

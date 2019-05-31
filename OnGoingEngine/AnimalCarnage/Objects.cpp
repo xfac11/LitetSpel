@@ -50,7 +50,7 @@ Objects::Objects()
 	this->id = 1;
 	this->rotationSpeed = 0;
 }
-Objects::Objects(std::string filepath, btVector3 position,int id,int friction, btVector3 size, OBJECTSTATE state, OBJECTYPE type,int mipLevels, float x, float y, bool changeOpacity,bool activeDraw) :state(state), type(type)
+Objects::Objects(std::string filepath, btVector3 position,int id,int friction, btVector3 size, btVector3 rotation, OBJECTSTATE state, OBJECTYPE type,int mipLevels, float x, float y, bool changeOpacity,bool activeDraw) :state(state), type(type)
 {
 	this->friction = friction;
 	this->direction = 0;
@@ -65,6 +65,7 @@ Objects::Objects(std::string filepath, btVector3 position,int id,int friction, b
 	this->ObjectOBJ->setActiveDraw(activeDraw);
 	System::handler->addObject(this->ObjectOBJ);
 	this->ObjectOBJ->setPosition(btVector3(position.getX(), position.getY()+0.57f, position.getZ()));
+	this->ObjectOBJ->setRotationRollPitchYaw(DirectX::XMConvertToRadians(rotation.getX()), DirectX::XMConvertToRadians(rotation.getY()), DirectX::XMConvertToRadians(rotation.getZ()));
 	this->ObjectOBJ->setRepeat(x, y);//repeated texture
 	this->position1 = XMFLOAT3(position.getX(), position.getY(), position.getZ());
 	this->position2 = XMFLOAT3(position1.x + 5, position1.y +0.0005, position1.z);
