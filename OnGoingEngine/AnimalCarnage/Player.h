@@ -37,7 +37,8 @@ struct PlayerStats
 	int playerID = 0;
 	int kills = 0;
 	int deaths = 0;
-	int damage = 0;
+	int damageTaken = 0;
+	int damageDealt = 0;
 };
 class Player
 {
