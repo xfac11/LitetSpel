@@ -51,6 +51,7 @@ void GunGameGui::shutDown()
 
 bool GunGameGui::update(float deltaTime)
 {
+	bool result = false;
 	GunGameState* state = static_cast<GunGameState*>(this->myState);
 	//Reminder : insert next to playerhealth so it displays the right paws/crown
 	for (int i = 0; i < this->nrOfPlayers; i++)
@@ -64,11 +65,12 @@ bool GunGameGui::update(float deltaTime)
 	if (System::theKeyboard->KeyIsPressed('Q'))
 	{
 		state->pause(true);
+		result = true;
 	}
-	if (System::theKeyboard->KeyIsPressed('P'))
-	{
-		state->pause(false);
-	}
+	//if (System::theKeyboard->KeyIsPressed('P'))
+	//{
+	//	state->pause(false);
+	//}
 
 	for (int i = 0; i < 4; i++)
 	{
@@ -76,17 +78,19 @@ bool GunGameGui::update(float deltaTime)
 
 		if (gamepadState.IsConnected())
 		{
-			//System::theTracker->Update(gamepadState);
+			System::theTracker->Update(gamepadState);
 
 			if (System::theTracker->start == DirectX::GamePad::ButtonStateTracker::PRESSED)
 			{
 				state->pause(true);
+				result = true;
+
 			}
-			break;
+			//break;
 		}
 	}
 
-	return true;
+	return result;
 }
 
 bool GunGameGui::render()

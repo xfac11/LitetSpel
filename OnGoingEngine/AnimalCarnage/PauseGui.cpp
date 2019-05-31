@@ -141,6 +141,7 @@ void PauseGui::shutDown()
 
 bool PauseGui::update(float deltaTime)
 {
+	bool result = true;
 	GunGameState* state = dynamic_cast<GunGameState*>(this->myState);
 
 	if (this->keyboardDelay <= 0.0F)
@@ -166,9 +167,11 @@ bool PauseGui::update(float deltaTime)
 			if (this->selectedElement == this->resumeButton)
 			{
 				state->pause(false);
+				result = false;
 			}
 			else
 			{
+				result = false;
 				state->pause(false);
 				System::setState(MAINMENU);
 			}
@@ -190,6 +193,7 @@ bool PauseGui::update(float deltaTime)
 
 			if (checkReset(gamepadState) == true) //L + R + A + Start
 			{
+				result = false;
 				state->pause(false);
 				System::setState(MAINMENU);
 			}
@@ -197,26 +201,29 @@ bool PauseGui::update(float deltaTime)
 			if (System::theTracker->start == DirectX::GamePad::ButtonStateTracker::PRESSED) // start
 			{
 				state->pause(false);
+				result = false;
 			}
 
 			if (System::theTracker->a == DirectX::GamePad::ButtonStateTracker::PRESSED)
 			{
 				if (this->selectedElement == this->resumeButton)
 				{
+					result = false;
 					state->pause(false);
 				}
 				else
 				{
+					result = false;
 					state->pause(false);
 					System::setState(MAINMENU);
 				}
 			}
 
-			break;
+			//break;
 		}
 	}
 
-	return true;
+	return result;
 }
 
 bool PauseGui::render()

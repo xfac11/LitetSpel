@@ -83,6 +83,8 @@ GunGameState::GunGameState()
 	this->testColBox = false;
 	this->uiEnable = true;
 	this->paused = false;
+	this->pauseDelay = 0.f;
+	this->unPauseDelay = 0.f;
 	this->resultsShown = false;
 	this->inGameGui = nullptr;
 	this->pauseGui = nullptr;
@@ -878,197 +880,166 @@ void GunGameState::renderImgui()
 
 bool GunGameState::update(float deltaTime)
 {
-
-	
-
 	if (resultsShown)
 	{
 		this->resultGui->update(deltaTime);
-		
 		if (System::getCurrentState() != this)
 		{
 			reset();
 		}
-
 		return true;
 	}
 
-	if (paused)
+	if (this->localPause==true && this->pauseDelay >=0.2f)
 	{
-		this->pauseGui->update(deltaTime);
-		return true;
-	}
-
-	for (int i = 0; i < this->nrOfObjects; i++)
-	{
-		this->objects[i]->update(deltaTime);
-	}
-
-	for (int i = 0; i < nrOfPlayers; i++)
-	{
-		player[i]->playerObj->getRigidbody()->getAabb(min, max);
-		minTemp = DirectX::XMFLOAT3(min.getX(), min.getY(), min.getZ());
-		maxTemp = DirectX::XMFLOAT3(max.getX(), max.getY(), max.getZ());
-		for (int j = 0; j < nrOfPlayers; j++) 
+		if (this->pauseGui->update(deltaTime) == false)
 		{
-			//Collision with Player Hitbox
-			if (i != j)
+			this->pauseDelay = 0.f;
+			this->localPause = false;
+		}
+
+		this->paused = true;
+	}
+	else if (this->localPause == false && this->unPauseDelay >= 0.2f)
+	{
+		for (int i = 0; i < this->nrOfObjects; i++)
+		{
+			this->objects[i]->update(deltaTime);
+		}
+
+		for (int i = 0; i < nrOfPlayers; i++)
+		{
+			player[i]->playerObj->getRigidbody()->getAabb(min, max);
+			minTemp = DirectX::XMFLOAT3(min.getX(), min.getY(), min.getZ());
+			maxTemp = DirectX::XMFLOAT3(max.getX(), max.getY(), max.getZ());
+			for (int j = 0; j < nrOfPlayers; j++)
 			{
-				if (Intersects(minTemp, maxTemp, player[j]->hitbox.hitbox->getCollisionBox(), player[j]->hitbox.hitbox->getPosition()) && !player[i]->getHitStun())
+				//Collision with Player Hitbox
+				if (i != j)
 				{
-					player[i]->setHitStun(true);
-					this->testColBox = true;
-					player[i]->playerObj->getRigidbody()->applyCentralImpulse(btVector3(player[j]->dir * 150 * ((player[j]->getWeight() + 2) /3), 150 * ((player[j]->getWeight() + 2) / 3), 0));// , btVector3(1, 0, 0));
-					
-					int tempHP = player[i]->getHealth();
+					if (Intersects(minTemp, maxTemp, player[j]->hitbox.hitbox->getCollisionBox(), player[j]->hitbox.hitbox->getPosition()) && !player[i]->getHitStun())
+					{
+						player[i]->setHitStun(true);
+						this->testColBox = true;
+						player[i]->playerObj->getRigidbody()->applyCentralImpulse(btVector3(player[j]->dir * 150 * ((player[j]->getWeight() + 2) / 3), 150 * ((player[j]->getWeight() + 2) / 3), 0));// , btVector3(1, 0, 0));
 
-					//TAKE DAMAGE HERE
-					player[i]->takeDamage(player[j]->getStrength());
-					player[i]->stats.damageTaken += player[j]->getStrength();
-					player[j]->stats.damageDealt += player[j]->getStrength();
-					System::getParticleManager()->addSimpleEffect(player[i]->getPosition(), "hit_effect", 0.5f, 2,false, 30, 6);
+						int tempHP = player[i]->getHealth();
 
-					int randomNumber = (rand() % 4) + 0;
-					System::getSoundManager()->playEffect(to_string(randomNumber));
+						//TAKE DAMAGE HERE
+						player[i]->takeDamage(player[j]->getStrength());
+						player[i]->stats.damageTaken += player[j]->getStrength();
+						player[j]->stats.damageDealt += player[j]->getStrength();
+						System::getParticleManager()->addSimpleEffect(player[i]->getPosition(), "hit_effect", 0.5f, 2, false, 30, 6);
 
-					int randomNumber2 = (rand() % 3) - 1;
-					int randomNumber3 = (rand() % 3) - 1;
-					int randomNumber4 = (rand() % 3) - 1;
+						int randomNumber = (rand() % 4) + 0;
+						System::getSoundManager()->playEffect(to_string(randomNumber));
 
-					if (randomNumber2 == 0 && randomNumber3 == 0 && randomNumber4 == 0) {
 						int randomNumber2 = (rand() % 3) - 1;
 						int randomNumber3 = (rand() % 3) - 1;
 						int randomNumber4 = (rand() % 3) - 1;
-					}
 
-					System::theCamera->cameraShake(0.1,DirectX::XMFLOAT3(player[j]->dir, randomNumber3, randomNumber4));
-
-					if(player[i]->getHealth() <= 0 && tempHP > 0) {
-						
-						player[i]->stats.deaths++;
-						player[j]->stats.kills++;
-
-						if(player[j]->canChange()){
-							player[j]->changeCharacter();
-							System::getSoundManager()->playEffect("Death");
+						if (randomNumber2 == 0 && randomNumber3 == 0 && randomNumber4 == 0) {
+							int randomNumber2 = (rand() % 3) - 1;
+							int randomNumber3 = (rand() % 3) - 1;
+							int randomNumber4 = (rand() % 3) - 1;
 						}
-						else
-						{
-							this->resultsShown = true;
-							static_cast<ResultGui*>(this->resultGui)->initializePlayerStats();
 
-							this->paused = true;
-							this->pauseGui->activateDelay();
+						System::theCamera->cameraShake(0.1, DirectX::XMFLOAT3(player[j]->dir, randomNumber3, randomNumber4));
+						if (player[i]->getHealth() <= 0 && tempHP > 0) {
+
+							player[i]->stats.deaths++;
+							player[j]->stats.kills++;
+
+							if (player[j]->canChange()) {
+								player[j]->changeCharacter();
+								System::getSoundManager()->playEffect("Death");
+							}
+							else
+							{
+								this->resultsShown = true;
+								static_cast<ResultGui*>(this->resultGui)->initializePlayerStats();
+
+								this->paused = true;
+								this->pauseGui->activateDelay();
+							}
 						}
 					}
-
-					//player[i]->setGrounded(true);
+					else
+					{
+						this->testColBox = false;
+					}
 				}
-				else
-				{
-					this->testColBox = false;
-				}
-				
-
 			}
-		}
-		//Collision with Object Hitbox
-		for (int i = 0; i < 6; i++) {
-			if (objects[i]->GetState() == TRUE_DYNAMIC) {
-				
-				btVector3 minObj;
-				btVector3 maxObj;
+			//Collision with Object Hitbox
+			for (int i = 0; i < 6; i++) {
+				if (objects[i]->GetState() == TRUE_DYNAMIC) {
 
-				DirectX::XMFLOAT3 minTempObj;
-				DirectX::XMFLOAT3 maxTempObj;
-				objects[i]->ObjectOBJ->getRigidbody()->getAabb(minObj, maxObj);
-				minTempObj = DirectX::XMFLOAT3(minObj.getX(), minObj.getY(), minObj.getZ());
-				maxTempObj = DirectX::XMFLOAT3(maxObj.getX(), maxObj.getY(), maxObj.getZ());
+					btVector3 minObj;
+					btVector3 maxObj;
+
+					DirectX::XMFLOAT3 minTempObj;
+					DirectX::XMFLOAT3 maxTempObj;
+					objects[i]->ObjectOBJ->getRigidbody()->getAabb(minObj, maxObj);
+					minTempObj = DirectX::XMFLOAT3(minObj.getX(), minObj.getY(), minObj.getZ());
+					maxTempObj = DirectX::XMFLOAT3(maxObj.getX(), maxObj.getY(), maxObj.getZ());
+					for (int j = 0; j < nrOfPlayers; j++) {
+						if (Intersects(minTempObj, maxTempObj, player[j]->hitbox.hitbox->getCollisionBox(), player[j]->hitbox.hitbox->getPosition()) && !player[j]->getHitStun())
+						{
+							objects[i]->addImpulse(player[j]->dir * 65 * ((player[j]->getWeight() + 1) / 2), j);
+							objects[i]->setLastPlayerHit(j);
+						}
+						if (objects[i]->getPlayerKilled() == true && player[j]->getDiedOfStone() == true)
+						{
+							if (player[objects[i]->getLastPlayerHit()] != nullptr)
+							{
+								player[objects[i]->getLastPlayerHit()]->changeCharacter();
+								objects[i]->setPlayerKilled(false);
+								player[j]->setDiedOfStone(false);
+							}
+							else
+							{
+								objects[i]->setPlayerKilled(false);
+								player[j]->setDiedOfStone(false);
+							}
+						}
+					}
+				}
+			}
+			//GRASS ROTATION
+			for (int i = 13; i < 115; i++)
+			{
 				for (int j = 0; j < nrOfPlayers; j++) {
-					if (Intersects(minTempObj, maxTempObj, player[j]->hitbox.hitbox->getCollisionBox(), player[j]->hitbox.hitbox->getPosition()) && !player[j]->getHitStun()) 
-					{
-						objects[i]->addImpulse(player[j]->dir * 65 * ((player[j]->getWeight()+1)/2), j);
-						objects[i]->setLastPlayerHit(j);
-					}
-					if (objects[i]->getPlayerKilled() == true && player[j]->getDiedOfStone() == true) 
-					{
-						if (player[objects[i]->getLastPlayerHit()] != nullptr)
-						{ 
-							player[objects[i]->getLastPlayerHit()]->changeCharacter();
-							objects[i]->setPlayerKilled(false);
-							player[j]->setDiedOfStone(false);
+					if (objects[i]->GetType() == GRASS) {
+						if ((((objects[i]->getPosition().x - player[j]->getPosition().x) < 2) && ((objects[i]->getPosition().x - player[j]->getPosition().x) > -2)) && player[j]->getPosition().y < 2) {
+							objects[i]->addGrassRotation(0.005, player[j]->dir);
+							break;
 						}
-						else 
-						{
-							objects[i]->setPlayerKilled(false);
-							player[j]->setDiedOfStone(false);
+					}
+				}
+				for (int j = 0; j < 6; j++) {
+					if (objects[i]->GetType() == GRASS && objects[j]->GetState() == TRUE_DYNAMIC) {
+						if ((((objects[i]->getPosition().x - objects[j]->getRigidBodyPosition().getX()) < 1) && ((objects[i]->getPosition().x - objects[j]->getRigidBodyPosition().getX()) > -1)) && objects[j]->getRigidBodyPosition().getY() < 2) {
+							objects[i]->addGrassRotation(0.01, objects[j]->getMovingDirection());
+							break;
 						}
 					}
 				}
 			}
+			player[i]->update(deltaTime, i);
+			player[i]->updateRumble(deltaTime, i);
+			this->paused = false;
 		}
-		//GRASS ROTATION
-		for (int i = 13; i < 115; i++)
+		if (this->inGameGui->update(deltaTime) == true)
 		{
-			for (int j = 0; j < nrOfPlayers; j++) {
-				if (objects[i]->GetType() == GRASS) {
-					if ((((objects[i]->getPosition().x - player[j]->getPosition().x) < 2) && ((objects[i]->getPosition().x - player[j]->getPosition().x) > -2)) && player[j]->getPosition().y < 2) {
-						objects[i]->addGrassRotation(0.005, player[j]->dir);
-						break;
-					}
-				}
-			}
-			for (int j = 0; j < 6; j++) {
-				if (objects[i]->GetType() == GRASS && objects[j]->GetState() == TRUE_DYNAMIC) {
-					if ((((objects[i]->getPosition().x - objects[j]->getRigidBodyPosition().getX()) < 1) && ((objects[i]->getPosition().x - objects[j]->getRigidBodyPosition().getX()) > -1)) && objects[j]->getRigidBodyPosition().getY() < 2) {
-						objects[i]->addGrassRotation(0.01, objects[j]->getMovingDirection());
-						break;
-					}
-				}
-			}
+			this->unPauseDelay = 0.f;
+			this->localPause = true;
 		}
-
-
-		////GRASS ROTATION
-		//for (int i = 0; i < dynamicObjects.size(); i++) {
-		//	for (int j = 0; j < nrOfPlayers; j++) {
-		//		if (dynamicObjects[i]->GetType() == GRASS) {
-		//			if ((((dynamicObjects[i]->getPosition().x - player[j]->getPosition().x) < 2) && ((dynamicObjects[i]->getPosition().x - player[j]->getPosition().x) > -2)) && player[j]->getPosition().y < 2) {
-		//				dynamicObjects[i]->addGrassRotation(0.005, player[j]->dir);
-		//			}
-		//		}
-		//	}
-		//	for (int j = 0; j < dynamicObjects.size(); j++) {
-		//		if (dynamicObjects[i]->GetType() == GRASS && dynamicObjects[j]->GetState() == TRUE_DYNAMIC) {
-		//			if ((((dynamicObjects[i]->getPosition().x - dynamicObjects[j]->getRigidBodyPosition().getX()) < 1) && ((dynamicObjects[i]->getPosition().x - dynamicObjects[j]->getRigidBodyPosition().getX()) > -1)) && dynamicObjects[j]->getRigidBodyPosition().getY() < 2) {
-		//				dynamicObjects[i]->addGrassRotation(0.01, dynamicObjects[j]->getMovingDirection());
-		//			}
-		//		}
-		//	}
-		//}
-
-		//for(int k=0;k<nrOfObjects;k++){}
-
-		//if(Intersect())
-
-
-
-		player[i]->update(deltaTime, i);
-		player[i]->updateRumble(deltaTime, i);
-
-		//if (/*System::getphysices()->getPlaneRigidBody()->getPlaneConstant()*/  max.getY() < 1.2f){
-		////	//DirectX::XMFLOAT3 aabbmin, DirectX::XMFLOAT3 aabbMax,const AABB b, XMFLOAT3 posB
-		//	player[i]->setGrounded(true);
-		//}
+		System::getParticleManager()->update(deltaTime);
 	}
-	//System::getphysices()->getPlaneRigidBody()->getpl().getY();
-	//if (Intersects(System::handler->getObject(2).getCollisionBox(), System::handler->getObject(2).getPosition(), System::handler->getObject(3).getCollisionBox(), System::handler->getObject(3).getPosition()))
-	//{
-
-	//}
-
-	this->inGameGui->update(deltaTime);
-	System::getParticleManager()->update(deltaTime);
+	else if (this->localPause == true)
+		this->pauseDelay += deltaTime;
+	else if (this->localPause == false)
+		this->unPauseDelay += deltaTime;
 	return true;
 }
 
