@@ -10,6 +10,10 @@ Texture* HealthBar::textureRabbit = nullptr;
 Texture* HealthBar::textureMoose = nullptr;
 Texture* HealthBar::textureBear = nullptr;
 Texture* HealthBar::textureCrown = nullptr;
+Texture* HealthBar::foxPortait = nullptr;
+Texture* HealthBar::bearPortrait = nullptr;
+Texture* HealthBar::rabbitPortrait = nullptr;
+Texture* HealthBar::moosePortrait = nullptr;
 
 HealthBar::HealthBar(int health, int maxHealth, DirectX::SimpleMath::Vector2 position) : GuiElement(position), health(health), maxHealth(maxHealth)
 {
@@ -23,7 +27,10 @@ HealthBar::HealthBar(int health, int maxHealth, DirectX::SimpleMath::Vector2 pos
 		HealthBar::textureCrown = new Texture;
 		HealthBar::textureMoose = new Texture;
 		HealthBar::textureBear = new Texture;
-
+		HealthBar::bearPortrait = new Texture;
+		HealthBar::foxPortait = new Texture;
+		HealthBar::moosePortrait = new Texture;
+		HealthBar::rabbitPortrait = new Texture;
 		HealthBar::texture->setTexture("healthBar2.tga");
 		HealthBar::textureOutline->setTexture("healthBarOutline2.tga");
 		HealthBar::textureBackground->setTexture("healthBarBackground.tga");
@@ -32,10 +39,13 @@ HealthBar::HealthBar(int health, int maxHealth, DirectX::SimpleMath::Vector2 pos
 		HealthBar::textureBear->setTexture("paw_bear.tga");
 		HealthBar::textureMoose->setTexture("paw_moose.tga");
 		HealthBar::textureCrown->setTexture("paw_crown.tga");
-
-		this->color = DirectX::XMVectorSet(0, 1, 0, 1);
+		HealthBar::bearPortrait->setTexture("paw_bear.tga");
+		HealthBar::foxPortait->setTexture("paw_fox.tga");
+		HealthBar::moosePortrait->setTexture("paw_moose.tga");
+		HealthBar::rabbitPortrait->setTexture("paw_rabbit.tga");
 		HealthBar::texturesLoaded = true;
 	}
+	this->color = DirectX::XMVectorSet(0, 1, 0, 1);
 }
 
 HealthBar::~HealthBar()
@@ -50,6 +60,10 @@ HealthBar::~HealthBar()
 		delete HealthBar::textureMoose;
 		delete HealthBar::textureBear;
 		delete HealthBar::textureCrown;
+		delete HealthBar::bearPortrait;
+		delete HealthBar::foxPortait;
+		delete HealthBar::moosePortrait;
+		delete HealthBar::rabbitPortrait;
 		HealthBar::texturesLoaded = false;
 	}
 }
@@ -72,6 +86,8 @@ bool HealthBar::render(bool selected)
 	float scalePaw = 0.3f;
 	ID3D11ShaderResourceView* test = nullptr;
 	System::getSpriteBatch()->Draw(HealthBar::textureBackground->getTexture(), this->position+ DirectX::SimpleMath::Vector2(5, 0), nullptr, this->color, 0, SimpleMath::Vector2(0, 0), SimpleMath::Vector2(scale, scale));
+	System::getSpriteBatch()->Draw(this->currentTexture->getTexture(), this->position + DirectX::SimpleMath::Vector2(5, 0), nullptr,Colors::White, 0, SimpleMath::Vector2(0, 0), SimpleMath::Vector2(scalePaw, scalePaw));
+
 	System::getSpriteBatch()->Draw(HealthBar::textureOutline->getTexture(), this->position + DirectX::SimpleMath::Vector2(5, HealthBar::textureBackground->getHeight()*scale), &source, color, 0, SimpleMath::Vector2(0, 0), SimpleMath::Vector2(scale, scale));
 	System::getSpriteBatch()->Draw(HealthBar::texture->getTexture(), this->position+DirectX::SimpleMath::Vector2(5, HealthBar::textureBackground->getHeight()*scale),nullptr, Colors::White, 0, SimpleMath::Vector2(0, 0), SimpleMath::Vector2(scale, scale));
 	System::getSpriteBatch()->Draw(this->nextTexture->getTexture(), this->position + DirectX::SimpleMath::Vector2(HealthBar::textureOutline->getWidth(),5),nullptr,Colors::White,0,SimpleMath::Vector2(0,0),SimpleMath::Vector2(scalePaw, scalePaw));
@@ -116,6 +132,18 @@ void HealthBar::setNextAnimal(int next)
 	else if (next == -1)
 		this->nextTexture = this->textureCrown;
 
+}
+
+void HealthBar::setCurrentAnimal(int current)
+{
+	if (current == 0)
+		this->currentTexture = this->foxPortait;
+	else if (current == 1)
+		this->currentTexture = this->bearPortrait;
+	else if (current == 2)
+		this->currentTexture = this->rabbitPortrait;
+	else if (current == 3)
+		this->currentTexture = this->moosePortrait;
 }
 
 
