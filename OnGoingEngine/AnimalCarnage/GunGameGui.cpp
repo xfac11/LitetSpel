@@ -101,7 +101,7 @@ bool GunGameGui::render()
 		const char* output = ("P " + std::to_string(i + 1)).c_str();
 		SimpleMath::Vector2 origin = System::getFontArial()->MeasureString("P2") / 2.f;
 
-		SimpleMath::Vector2 pos = SimpleMath::Vector2(1920 / 2.0F - ((this->nrOfPlayers * 300) / 2) - (((this->nrOfPlayers - 1) * 50) / 2) + i * 350.0F, 150.0F);
+		SimpleMath::Vector2 pos = SimpleMath::Vector2(1920 / 2.0F - ((this->nrOfPlayers * 300) / 2) - (((this->nrOfPlayers - 1) * 50) / 2) + i * 350.0F, 200.0f);
 
 		//SimpleMath::Vector2 pos = SimpleMath::Vector2(300, 300);
 		this->playerHealthBars[i]->render(false);
