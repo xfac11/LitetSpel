@@ -84,8 +84,8 @@ bool ShadowMapping::initialize()
 
 	D3D11_TEXTURE2D_DESC depthStencilDesc;
 
-	depthStencilDesc.Width = 1024/*System::getWindowArea().width*/;
-	depthStencilDesc.Height = 1024/*System::getWindowArea().height*/;
+	depthStencilDesc.Width = 2000/*System::getWindowArea().width*/;
+	depthStencilDesc.Height = 2000/*System::getWindowArea().height*/;
 	depthStencilDesc.MipLevels = 1;
 	depthStencilDesc.ArraySize = 1;
 	depthStencilDesc.Format = DXGI_FORMAT_R32_TYPELESS;
@@ -96,8 +96,8 @@ bool ShadowMapping::initialize()
 	depthStencilDesc.CPUAccessFlags = 0;
 	depthStencilDesc.MiscFlags = 0;
 
-	this->vp.Width = (float)1024/*System::getWindowArea().width*/;
-	this->vp.Height = (float)1024/*System::getWindowArea().height*/;
+	this->vp.Width = (float)depthStencilDesc.Width/*System::getWindowArea().width*/;
+	this->vp.Height = (float)depthStencilDesc.Height/*System::getWindowArea().height*/;
 	this->vp.MinDepth = 0.0f;
 	this->vp.MaxDepth = 1.0f;
 	this->vp.TopLeftX = 0;
