@@ -288,6 +288,22 @@ void GameObjectHandler::setSunDir(DirectX::XMFLOAT3 dir)
 	this->lightsCB.applyChanges(System::getDevice(), System::getDeviceContext());
 
 }
+void GameObjectHandler::setLightPos(int id, btVector3 pos)
+{
+	
+	DirectX::XMMATRIX worldPos = DirectX::XMMatrixTranslation(pos[0], pos[1], pos[2]);
+	
+	for (int i = 0; i < 3; i++)
+	{
+		this->lightsCB.data.lights[id].position[i] = pos[i];
+	}
+	this->lightsCB.data.lights[id].worldLight = worldPos;
+	
+	lightSphereWorld[id] = DirectX::XMMatrixTranspose(XMMatrixScaling(this->lightsCB.data.lights[id].position[3] * 10, this->lightsCB.data.lights[id].position[3] * 10, this->lightsCB.data.lights[id].position[3] * 10)*
+		this->lightsCB.data.lights[id].worldLight);
+
+	this->lightsCB.applyChanges(System::getDevice(), System::getDeviceContext());
+}
 void GameObjectHandler::addLight(float pos[4], float dir[4], float color[4])
 {
 	if (nrOfLights != 16)

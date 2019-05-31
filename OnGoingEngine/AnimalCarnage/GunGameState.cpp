@@ -886,6 +886,12 @@ void GunGameState::renderImgui()
 
 bool GunGameState::update(float deltaTime)
 {
+	System::handler->setLightPos(3,objects[4]->getRigidBodyPosition());
+	/*System::handler->setLightPos(1, objects[4]->getRigidBodyPosition());
+	System::handler->setLightPos(2, objects[4]->getRigidBodyPosition());
+	System::handler->setLightPos(4, objects[4]->getRigidBodyPosition());
+	System::handler->setLightPos(5, objects[4]->getRigidBodyPosition());*/
+
 	if (resultsShown)
 	{
 		this->resultGui->update(deltaTime);
