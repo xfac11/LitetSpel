@@ -119,7 +119,7 @@ public:
 
 	Player();
 	~Player();
-
+	void ResetRigidBody();
 	bool canChange();
 	void initialize(AnimalType type, PlayerColor color);
 	void update(float dt, int id);

@@ -260,6 +260,7 @@ bool GunGameState::initPlayers(AnimalType type[], PlayerColor color[])
 	return true;
 }
 
+
 bool GunGameState::initailize()
 {
 	gContactAddedCallback = callbackFunc;
