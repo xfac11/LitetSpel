@@ -516,6 +516,16 @@ bool GunGameState::initailize()
 	System::handler->addObject(mushroom7);
 	mushroom7->setPosition(-17, 0.9, 4.0);
 	mushroom7->setScale(2, 2, 2);
+	GameObject* mushroom8 = new GameObject;
+	System::theModelLoader->loadGO(mushroom8, "Resources/Models/mushroom3.lu");
+	System::handler->addObject(mushroom8);
+	mushroom8->setPosition(-14, 0.9, 8.0);
+	mushroom8->setScale(0.8, 0.8, 0.8);
+	GameObject* mushroom9 = new GameObject;
+	System::theModelLoader->loadGO(mushroom9, "Resources/Models/mushroom3.lu");
+	System::handler->addObject(mushroom9);
+	mushroom9->setPosition(-20, 0.9, 8.1);
+	mushroom9->setScale(0.8, 0.8, 0.8);
 
 	//Bushes
 	GameObject* bush1 = new GameObject;
