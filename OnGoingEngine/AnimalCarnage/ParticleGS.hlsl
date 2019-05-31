@@ -35,8 +35,8 @@ void GS_main(point OUTPUT input[1], inout TriangleStream<GSOutput> theOutput)
 	float3 vert[4];
 	vert[0] = input[0].position - right* size; // Bottom left
 	vert[1] = input[0].position + right* size; // Bottom right
-	vert[2] = input[0].position - right* size + up* size; // Top left
-	vert[3] = input[0].position + right* size + up* size; // Top right
+	vert[2] = input[0].position - right* size + up; // Top left
+	vert[3] = input[0].position + right* size + up; // Top right
 
 	float2 texCoord[4];
 	texCoord[0] = float2(0, 1);

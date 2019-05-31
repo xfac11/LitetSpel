@@ -129,7 +129,7 @@ bool GunGameState::callbackFunc(btManifoldPoint& cp, const btCollisionObjectWrap
 					PlrPointer->takeDamage(25);
 					PlrPointer->setHitStun(true);
 
-					System::getParticleManager()->addSimpleEffect(PlrPointer->getPosition(),"hit_effect",0.5f,2,30,6);
+					System::getParticleManager()->addSimpleEffect(PlrPointer->getPosition(),"hit_effect",0.5f,2,false,30,6);
 
 					int randomNumber = (rand() % 4) + 0;
 					System::getSoundManager()->playEffect(to_string(randomNumber));
@@ -672,12 +672,11 @@ bool GunGameState::render()
 
 
 	renderImgui();
+	System::shaderManager->getParticleShader()->setViewProj(System::theCamera->GetViewMatrix(), System::theGraphicDevice->getProj(), DirectX::XMFLOAT4(System::theCamera->GetPosition().x, System::theCamera->GetPosition().y, System::theCamera->GetPosition().z, 1.0f));
+
 	System::handler->draw(System::fusk->getDeltaTime(), this->paused, currentAnimSpeed, currentAnimName, currentAnimLoop);
 
-	System::shaderManager->getParticleShader()->setCBuffers();
-	System::shaderManager->getParticleShader()->setShaders();
-	System::shaderManager->getParticleShader()->setViewProj(System::theCamera->GetViewMatrix(), System::theGraphicDevice->getProj(), DirectX::XMFLOAT4(System::theCamera->GetPosition().x, System::theCamera->GetPosition().y, System::theCamera->GetPosition().z, 1.0f));
-    System::getParticleManager()->render();
+	
 
 	System::fusk->resetShaders();
 
@@ -783,7 +782,7 @@ bool GunGameState::update(float deltaTime)
 					int tempHP = player[i]->getHealth();
 					//TAKE DAMAGE HERE
 					player[i]->takeDamage(player[j]->getStrength());
-					System::getParticleManager()->addSimpleEffect(player[i]->getPosition(), "hit_effect", 0.5f, 2, 30, 6);
+					System::getParticleManager()->addSimpleEffect(player[i]->getPosition(), "hit_effect", 0.5f, 2,false, 30, 6);
 
 					int randomNumber = (rand() % 4) + 0;
 					System::getSoundManager()->playEffect(to_string(randomNumber));

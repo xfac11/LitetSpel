@@ -1,12 +1,12 @@
 #include "SimpleEffect.h"
 #include "System.h"
 
-SimpleEffect::SimpleEffect(SimpleMath::Vector3 position, float lifeTime, int particleCount, float size, float maxStartSpeed, std::string fileName) : EffectBase(lifeTime)
+SimpleEffect::SimpleEffect(SimpleMath::Vector3 position, float lifeTime,bool gravity, int particleCount, float size, float maxStartSpeed, std::string fileName) : EffectBase(lifeTime)
 {
 	this->particles = new Particle[particleCount];
 	this->velocities = new SimpleMath::Vector3[particleCount];
 	this->particleCount = particleCount;
-
+	this->gravity = gravity;
 	for (int i = 0; i < particleCount; i++)
 	{
 		this->particles[i].position = position;
@@ -57,7 +57,7 @@ void SimpleEffect::update(float deltaTime)
 		//a = g
 		//v = v0 + a * t
 		//s = v * t
-		this->velocities[i] = this->velocities[i] + 9.82f * deltaTime * SimpleMath::Vector3::Down;
+		this->velocities[i] = this->velocities[i] + 9.82f * this->gravity * deltaTime * SimpleMath::Vector3::Down;
 		this->particles[i].position = this->particles[i].position + this->velocities[i] * deltaTime;
 	}
 
