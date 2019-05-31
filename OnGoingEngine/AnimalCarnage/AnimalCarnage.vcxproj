@@ -362,6 +362,7 @@
     <ClCompile Include="Skybox.cpp" />
     <ClCompile Include="Slider.cpp" />
     <ClCompile Include="SoundManager.cpp" />
+    <ClCompile Include="StartGui.cpp" />
     <ClCompile Include="State.cpp" />
     <ClCompile Include="System.cpp" />
     <ClCompile Include="Texture.cpp" />
@@ -664,6 +665,7 @@
     <ClInclude Include="Skybox.h" />
     <ClInclude Include="Slider.h" />
     <ClInclude Include="SoundManager.h" />
+    <ClInclude Include="StartGui.h" />
     <ClInclude Include="State.h" />
     <ClInclude Include="Structs.h" />
     <ClInclude Include="System.h" />

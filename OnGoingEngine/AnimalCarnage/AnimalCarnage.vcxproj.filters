@@ -720,6 +720,9 @@
     <ClCompile Include="WinnerView.cpp">
       <Filter>Menu</Filter>
     </ClCompile>
+    <ClCompile Include="StartGui.cpp">
+      <Filter>Menu</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource1.h" />
@@ -1624,6 +1627,9 @@
       <Filter>Menu</Filter>
     </ClInclude>
     <ClInclude Include="WinnerView.h">
+      <Filter>Menu</Filter>
+    </ClInclude>
+    <ClInclude Include="StartGui.h">
       <Filter>Menu</Filter>
     </ClInclude>
   </ItemGroup>
