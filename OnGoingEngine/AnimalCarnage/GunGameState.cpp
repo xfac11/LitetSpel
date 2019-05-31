@@ -222,30 +222,30 @@ void GunGameState::expandObjects()
 	this->objects = temp;
 }
 
-void GunGameState::addObject(std::string filePath, btVector3 pos, int id, int friction, btVector3 size, bool canBeDrawn, bool shouldRespawn)
+void GunGameState::addObject(std::string filePath, btVector3 pos, int id, int friction, btVector3 size, btVector3 rotation, bool canBeDrawn, bool shouldRespawn)
 {
 	if (this->nrOfObjects == this->capOfObjects)
 		this->expandObjects();
-	this->objects[this->nrOfObjects] = new Objects(filePath, pos, id, friction, size, STATIC, STONE, -1, 1, 1, false, canBeDrawn);
+	this->objects[this->nrOfObjects] = new Objects(filePath, pos, id, friction, size,rotation, STATIC, STONE, -1, 1, 1, false, canBeDrawn);
 	this->nrOfObjects++;
 	
 }
 
-void GunGameState::addObject(std::string filePath, btVector3 pos, int id, int friction, btVector3 size, OBJECTSTATE state, OBJECTYPE type, int mipLevels, bool shouldRespawn)
+void GunGameState::addObject(std::string filePath, btVector3 pos, int id, int friction, btVector3 size, btVector3 rotation, OBJECTSTATE state, OBJECTYPE type, int mipLevels, bool shouldRespawn)
 {
 
 	if (this->nrOfObjects == this->capOfObjects)
 		this->expandObjects();
-	this->objects[this->nrOfObjects] = new Objects(filePath, pos, id, friction, size, state, type, mipLevels);
+	this->objects[this->nrOfObjects] = new Objects(filePath, pos, id, friction, size,rotation, state, type, mipLevels);
 
 	this->nrOfObjects++;
 }
 
-void GunGameState::addObject(std::string filePath, btVector3 pos, int id, int friction, btVector3 size, OBJECTSTATE state, OBJECTYPE type, bool shouldRespawn, int mipLevels, int xRepeated, int yRepeated, bool changeOpacity, bool canBeDrawn)
+void GunGameState::addObject(std::string filePath, btVector3 pos, int id, int friction, btVector3 size, btVector3 rotation, OBJECTSTATE state, OBJECTYPE type, bool shouldRespawn, int mipLevels, int xRepeated, int yRepeated, bool changeOpacity, bool canBeDrawn)
 {
 	if (this->nrOfObjects == this->capOfObjects)
 		this->expandObjects();
-	this->objects[this->nrOfObjects] = new Objects(filePath, pos, id, friction, size, state, type, mipLevels, xRepeated, yRepeated, changeOpacity, canBeDrawn);
+	this->objects[this->nrOfObjects] = new Objects(filePath, pos, id, friction, size,rotation, state, type, mipLevels, xRepeated, yRepeated, changeOpacity, canBeDrawn);
 	this->nrOfObjects++;
 }
 
@@ -276,138 +276,138 @@ bool GunGameState::initailize()
 
 	this->nrOfObjects = 9;*/
 
-	this->addObject("Resources/Models/small_stone1.lu", btVector3(-10, 7, 0), 4, 2, btVector3(7.5f, 7.5f, 7.5f), TRUE_DYNAMIC, PLATFORM, 1,true);
-	this->addObject("Resources/Models/small_stone2.lu", btVector3(5, 6, 0), 4, 2, btVector3(7.5f, 7.5f, 7.5f), TRUE_DYNAMIC, PLATFORM, 1,true);
-	this->addObject("Resources/Models/small_stone3.lu", btVector3(12, 6, 0), 4, 2, btVector3(7.5f, 7.5f, 7.5f), TRUE_DYNAMIC, PLATFORM, 1,true);
+	this->addObject("Resources/Models/small_stone1.lu", btVector3(-10, 7, 0), 4, 2, btVector3(7.5f, 7.5f, 7.5f), btVector3(0.0, 0.0, 0.0), TRUE_DYNAMIC, PLATFORM, 1,true);
+	this->addObject("Resources/Models/small_stone2.lu", btVector3(5, 6, 0), 4, 2, btVector3(7.5f, 7.5f, 7.5f), btVector3(0.0, 0.0, 0.0), TRUE_DYNAMIC, PLATFORM, 1,true);
+	this->addObject("Resources/Models/small_stone3.lu", btVector3(12, 6, 0), 4, 2, btVector3(7.5f, 7.5f, 7.5f), btVector3(0.0, 0.0, 0.0), TRUE_DYNAMIC, PLATFORM, 1,true);
 
-	this->addObject("Resources/Models/ground.lu", btVector3(16, 0, 20), 3, 3, btVector3(100.f, 4.f, 50.f), STATIC, GROUND, false, -1, 10000, 10000, true);
+	this->addObject("Resources/Models/ground.lu", btVector3(16, 0, 20), 3, 3, btVector3(100.f, 4.f, 50.f), btVector3(0.0, 0.0, 0.0), STATIC, GROUND, false, -1, 10000, 10000, true);
 
-	this->addObject("Resources/Models/platform1.lu", btVector3(12, 4, 0), 3, 3, btVector3(1.4f, 2.8f, 1.4f), DYNAMIC, PLATFORM, 1,true);
-	this->addObject("Resources/Models/platform1.lu", btVector3(5, 8, 0), 3, 3, btVector3(1.4f, 2.8f, 1.4f), DYNAMIC, PLATFORM, 1,true);
+	this->addObject("Resources/Models/platform1.lu", btVector3(12, 4, 0), 3, 3, btVector3(1.4f, 2.8f, 1.4f), btVector3(0.0, 0.0, 0.0), DYNAMIC, PLATFORM, 1,true);
+	this->addObject("Resources/Models/platform1.lu", btVector3(5, 8, 0), 3, 3, btVector3(1.4f, 2.8f, 1.4f), btVector3(0.0, 0.0, 0.0), DYNAMIC, PLATFORM, 1,true);
 
-	this->addObject("Resources/Models/cube2.lu", btVector3(35, 17, 0), 2, 1, btVector3(10.f, 40.f, 10.f), STATIC, STONE,false, -1, 1, 1, false,false);
-	this->addObject("Resources/Models/cube2.lu", btVector3(-35, 17, 0), 2, 1, btVector3(10.f, 40.f, 10.f), STATIC, STONE,false, -1, 1, 1, false, false);
+	this->addObject("Resources/Models/cube2.lu", btVector3(35, 17, 0), 2, 1, btVector3(10.f, 40.f, 10.f), btVector3(0.0, 0.0, 0.0), STATIC, STONE,false, -1, 1, 1, false,false);
+	this->addObject("Resources/Models/cube2.lu", btVector3(-35, 17, 0), 2, 1, btVector3(10.f, 40.f, 10.f), btVector3(0.0, 0.0, 0.0), STATIC, STONE,false, -1, 1, 1, false, false);
 
-	this->addObject("Resources/Models/platform2.lu", btVector3(-17, 9, 0), 3, 3, btVector3(1.0f, 1.0f, 1.0f), STATIC, PLATFORM, 1,true);
-	this->addObject("Resources/Models/platform1.lu", btVector3(-3, 10, 0), 3, 3, btVector3(2.0f, 2.0f, 2.0f), STATIC, PLATFORM, 1, true);
+	this->addObject("Resources/Models/platform2.lu", btVector3(-17, 9, 0), 3, 3, btVector3(1.0f, 1.0f, 1.0f), btVector3(0.0, 0.0, 0.0), STATIC, PLATFORM, 1,true);
+	this->addObject("Resources/Models/platform1.lu", btVector3(-3, 10, 0), 3, 3, btVector3(2.0f, 2.0f, 2.0f), btVector3(0.0, 0.0, 0.0), STATIC, PLATFORM, 1, true);
 
-	this->addObject("Resources/Models/tree1.lu", btVector3(10, 0, 7.6), 0, 0, btVector3(1.6, 1.6, 1.6), BACKGROUND, PLATFORM, 1, false);
+	this->addObject("Resources/Models/tree1.lu", btVector3(10, 0, 7.6), 0, 0, btVector3(1.6, 1.6, 1.6), btVector3(0.0, 0.0, 0.0), BACKGROUND, PLATFORM, 1, false);
 
-	this->addObject("Resources/Models/bush1.lu", btVector3(-20, 1.5, -0.1), 0, 0, btVector3(2.6, 1.7, 1.7), BACKGROUND, STONE, 1, false);
-	this->addObject("Resources/Models/bush1.lu", btVector3(-23, 1.1, -0.1), 0, 0, btVector3(1.3, 1.1, 1.1), BACKGROUND, STONE, 1, false);
+	this->addObject("Resources/Models/bush1.lu", btVector3(-20, 1.5, -0.1), 0, 0, btVector3(2.6, 1.7, 1.7), btVector3(0.0, 0.0, 0.0), BACKGROUND, STONE, 1, false);
+	this->addObject("Resources/Models/bush1.lu", btVector3(-23, 1.1, -0.1), 0, 0, btVector3(1.3, 1.1, 1.1), btVector3(0.0, 0.0, 0.0), BACKGROUND, STONE, 1, false);
 
 	//GRASS
-	this->addObject("Resources/Models/grass1.lu", btVector3( 0.0, 0.4, -1.4), 0, 0, btVector3(1.0, 1.0, 1.0), BACKGROUND, GRASS, 1, false);
-	this->addObject("Resources/Models/grass2.lu", btVector3(-1.0, 0.4, -1.2), 0, 0, btVector3(1.0, 1.0, 1.0), BACKGROUND, GRASS, 1, false);
-	this->addObject("Resources/Models/grass1.lu", btVector3(-2.0, 0.4, -1.0), 0, 0, btVector3(1.0, 1.0, 1.0), BACKGROUND, GRASS, 1, false);
-	this->addObject("Resources/Models/grass1.lu", btVector3(-3.0, 0.4, -1.9), 0, 0, btVector3(1.0, 1.0, 1.0), BACKGROUND, GRASS, 1, false);
-	this->addObject("Resources/Models/grass2.lu", btVector3(-4.0, 0.4, -2.0), 0, 0, btVector3(1.0, 1.0, 1.0), BACKGROUND, GRASS, 1, false);
-	this->addObject("Resources/Models/grass1.lu", btVector3(-5.0, 0.4, -2.5), 0, 0, btVector3(1.0, 1.0, 1.0), BACKGROUND, GRASS, 1, false);
-	this->addObject("Resources/Models/grass1.lu", btVector3(-6.0, 0.4, -2.3), 0, 0, btVector3(1.0, 1.0, 1.0), BACKGROUND, GRASS, 1, false);
-	this->addObject("Resources/Models/grass2.lu", btVector3(-7.0, 0.4, -1.5), 0, 0, btVector3(1.0, 1.0, 1.0), BACKGROUND, GRASS, 1, false);
-	this->addObject("Resources/Models/grass2.lu", btVector3(-8.0, 0.4, -1.1), 0, 0, btVector3(1.0, 1.0, 1.0), BACKGROUND, GRASS, 1, false);
-	this->addObject("Resources/Models/grass1.lu", btVector3(-9.0, 0.4, -1.8), 0, 0, btVector3(1.0, 1.0, 1.0), BACKGROUND, GRASS, 1, false);
-	this->addObject("Resources/Models/grass1.lu", btVector3(-10.0, 0.4, -1.4), 0, 0, btVector3(1.0, 1.0, 1.0), BACKGROUND, GRASS, 1, false);
-	this->addObject("Resources/Models/grass1.lu", btVector3(-11.0, 0.4, -1.9), 0, 0, btVector3(1.0, 1.0, 1.0), BACKGROUND, GRASS, 1, false);
-	this->addObject("Resources/Models/grass2.lu", btVector3(-12., 0.4, -2.4), 0, 0, btVector3(1.0, 1.0, 1.0), BACKGROUND, GRASS, 1, false);
-	this->addObject("Resources/Models/grass1.lu", btVector3(-13., 0.4, -2.1), 0, 0, btVector3(1.0, 1.0, 1.0), BACKGROUND, GRASS, 1, false);
-	this->addObject("Resources/Models/grass2.lu", btVector3(-14.0, 0.4, -1.3), 0, 0, btVector3(1.0, 1.0, 1.0), BACKGROUND, GRASS, 1, false);
-	this->addObject("Resources/Models/grass1.lu", btVector3(-15.0, 0.4, -0.6), 0, 0, btVector3(1.0, 1.0, 1.0), BACKGROUND, GRASS, 1, false);
-	this->addObject("Resources/Models/grass2.lu", btVector3(-16.0, 0.4, -1.7), 0, 0, btVector3(1.0, 1.0, 1.0), BACKGROUND, GRASS, 1, false);
-	this->addObject("Resources/Models/grass2.lu", btVector3(-17.0, 0.4, -1.2), 0, 0, btVector3(1.0, 1.0, 1.0), BACKGROUND, GRASS, 1, false);
-	this->addObject("Resources/Models/grass1.lu", btVector3(-18.0, 0.4, -2.2), 0, 0, btVector3(1.0, 1.0, 1.0), BACKGROUND, GRASS, 1, false);
-	this->addObject("Resources/Models/grass1.lu", btVector3(-19.0, 0.4, -2.8), 0, 0, btVector3(1.0, 1.0, 1.0), BACKGROUND, GRASS, 1, false);
-	this->addObject("Resources/Models/grass2.lu", btVector3(-20.0, 0.4, -1.3), 0, 0, btVector3(1.0, 1.0, 1.0), BACKGROUND, GRASS, 1, false);
-	this->addObject("Resources/Models/grass1.lu", btVector3(-21.0, 0.4, -1.8), 0, 0, btVector3(1.0, 1.0, 1.0), BACKGROUND, GRASS, 1, false);
-	this->addObject("Resources/Models/grass2.lu", btVector3(-22.0, 0.4, -1.0), 0, 0, btVector3(1.0, 1.0, 1.0), BACKGROUND, GRASS, 1, false);
-	this->addObject("Resources/Models/grass2.lu", btVector3(-23.0, 0.4, -1.3), 0, 0, btVector3(1.0, 1.0, 1.0), BACKGROUND, GRASS, 1, false);
-	this->addObject("Resources/Models/grass1.lu", btVector3(-24.0, 0.4, -1.8), 0, 0, btVector3(1.0, 1.0, 1.0), BACKGROUND, GRASS, 1, false);
-	this->addObject("Resources/Models/grass2.lu", btVector3(-25.0, 0.4, -2.9), 0, 0, btVector3(1.0, 1.0, 1.0), BACKGROUND, GRASS, 1, false);
+	this->addObject("Resources/Models/grass1.lu", btVector3( 0.0, 0.4, -1.4), 0, 0, btVector3(1.0, 1.0, 1.0), btVector3(0.0, 0.0, 0.0), BACKGROUND, GRASS, 1, false);
+	this->addObject("Resources/Models/grass2.lu", btVector3(-1.0, 0.4, -1.2), 0, 0, btVector3(1.0, 1.0, 1.0), btVector3(0.0, 0.0, 0.0), BACKGROUND, GRASS, 1, false);
+	this->addObject("Resources/Models/grass1.lu", btVector3(-2.0, 0.4, -1.0), 0, 0, btVector3(1.0, 1.0, 1.0), btVector3(0.0, 0.0, 0.0), BACKGROUND, GRASS, 1, false);
+	this->addObject("Resources/Models/grass1.lu", btVector3(-3.0, 0.4, -1.9), 0, 0, btVector3(1.0, 1.0, 1.0), btVector3(0.0, 0.0, 0.0), BACKGROUND, GRASS, 1, false);
+	this->addObject("Resources/Models/grass2.lu", btVector3(-4.0, 0.4, -2.0), 0, 0, btVector3(1.0, 1.0, 1.0), btVector3(0.0, 0.0, 0.0), BACKGROUND, GRASS, 1, false);
+	this->addObject("Resources/Models/grass1.lu", btVector3(-5.0, 0.4, -2.5), 0, 0, btVector3(1.0, 1.0, 1.0), btVector3(0.0, 0.0, 0.0), BACKGROUND, GRASS, 1, false);
+	this->addObject("Resources/Models/grass1.lu", btVector3(-6.0, 0.4, -2.3), 0, 0, btVector3(1.0, 1.0, 1.0), btVector3(0.0, 0.0, 0.0), BACKGROUND, GRASS, 1, false);
+	this->addObject("Resources/Models/grass2.lu", btVector3(-7.0, 0.4, -1.5), 0, 0, btVector3(1.0, 1.0, 1.0), btVector3(0.0, 0.0, 0.0), BACKGROUND, GRASS, 1, false);
+	this->addObject("Resources/Models/grass2.lu", btVector3(-8.0, 0.4, -1.1), 0, 0, btVector3(1.0, 1.0, 1.0), btVector3(0.0, 0.0, 0.0), BACKGROUND, GRASS, 1, false);
+	this->addObject("Resources/Models/grass1.lu", btVector3(-9.0, 0.4, -1.8), 0, 0, btVector3(1.0, 1.0, 1.0), btVector3(0.0, 0.0, 0.0), BACKGROUND, GRASS, 1, false);
+	this->addObject("Resources/Models/grass1.lu", btVector3(-10.0, 0.4, -1.4), 0, 0, btVector3(1.0, 1.0, 1.0), btVector3(0.0, 0.0, 0.0), BACKGROUND, GRASS, 1, false);
+	this->addObject("Resources/Models/grass1.lu", btVector3(-11.0, 0.4, -1.9), 0, 0, btVector3(1.0, 1.0, 1.0), btVector3(0.0, 0.0, 0.0), BACKGROUND, GRASS, 1, false);
+	this->addObject("Resources/Models/grass2.lu", btVector3(-12., 0.4, -2.4), 0, 0, btVector3(1.0, 1.0, 1.0), btVector3(0.0, 0.0, 0.0), BACKGROUND, GRASS, 1, false);
+	this->addObject("Resources/Models/grass1.lu", btVector3(-13., 0.4, -2.1), 0, 0, btVector3(1.0, 1.0, 1.0), btVector3(0.0, 0.0, 0.0), BACKGROUND, GRASS, 1, false);
+	this->addObject("Resources/Models/grass2.lu", btVector3(-14.0, 0.4, -1.3), 0, 0, btVector3(1.0, 1.0, 1.0), btVector3(0.0, 0.0, 0.0), BACKGROUND, GRASS, 1, false);
+	this->addObject("Resources/Models/grass1.lu", btVector3(-15.0, 0.4, -0.6), 0, 0, btVector3(1.0, 1.0, 1.0), btVector3(0.0, 0.0, 0.0), BACKGROUND, GRASS, 1, false);
+	this->addObject("Resources/Models/grass2.lu", btVector3(-16.0, 0.4, -1.7), 0, 0, btVector3(1.0, 1.0, 1.0), btVector3(0.0, 0.0, 0.0), BACKGROUND, GRASS, 1, false);
+	this->addObject("Resources/Models/grass2.lu", btVector3(-17.0, 0.4, -1.2), 0, 0, btVector3(1.0, 1.0, 1.0), btVector3(0.0, 0.0, 0.0), BACKGROUND, GRASS, 1, false);
+	this->addObject("Resources/Models/grass1.lu", btVector3(-18.0, 0.4, -2.2), 0, 0, btVector3(1.0, 1.0, 1.0), btVector3(0.0, 0.0, 0.0), BACKGROUND, GRASS, 1, false);
+	this->addObject("Resources/Models/grass1.lu", btVector3(-19.0, 0.4, -2.8), 0, 0, btVector3(1.0, 1.0, 1.0), btVector3(0.0, 0.0, 0.0), BACKGROUND, GRASS, 1, false);
+	this->addObject("Resources/Models/grass2.lu", btVector3(-20.0, 0.4, -1.3), 0, 0, btVector3(1.0, 1.0, 1.0), btVector3(0.0, 0.0, 0.0), BACKGROUND, GRASS, 1, false);
+	this->addObject("Resources/Models/grass1.lu", btVector3(-21.0, 0.4, -1.8), 0, 0, btVector3(1.0, 1.0, 1.0), btVector3(0.0, 0.0, 0.0), BACKGROUND, GRASS, 1, false);
+	this->addObject("Resources/Models/grass2.lu", btVector3(-22.0, 0.4, -1.0), 0, 0, btVector3(1.0, 1.0, 1.0), btVector3(0.0, 0.0, 0.0), BACKGROUND, GRASS, 1, false);
+	this->addObject("Resources/Models/grass2.lu", btVector3(-23.0, 0.4, -1.3), 0, 0, btVector3(1.0, 1.0, 1.0), btVector3(0.0, 0.0, 0.0), BACKGROUND, GRASS, 1, false);
+	this->addObject("Resources/Models/grass1.lu", btVector3(-24.0, 0.4, -1.8), 0, 0, btVector3(1.0, 1.0, 1.0), btVector3(0.0, 0.0, 0.0), BACKGROUND, GRASS, 1, false);
+	this->addObject("Resources/Models/grass2.lu", btVector3(-25.0, 0.4, -2.9), 0, 0, btVector3(1.0, 1.0, 1.0), btVector3(0.0, 0.0, 0.0), BACKGROUND, GRASS, 1, false);
 
-	this->addObject("Resources/Models/grass2.lu", btVector3(1.0, 0.4, -0.4), 0, 0, btVector3(1.0, 1.0, 1.0), BACKGROUND, GRASS, 1, false);
-	this->addObject("Resources/Models/grass2.lu", btVector3(2.0, 0.4, -0.2), 0, 0, btVector3(1.0, 1.0, 1.0), BACKGROUND, GRASS, 1, false);
-	this->addObject("Resources/Models/grass1.lu", btVector3(3.0, 0.4, -0.0), 0, 0, btVector3(1.0, 1.0, 1.0), BACKGROUND, GRASS, 1, false);
-	this->addObject("Resources/Models/grass2.lu", btVector3(4, 0.4, -0.9), 0, 0, btVector3(1.0, 1.0, 1.0), BACKGROUND, GRASS, 1, false);
-	this->addObject("Resources/Models/grass1.lu", btVector3(5, 0.4, -0.0), 0, 0, btVector3(1.0, 1.0, 1.0), BACKGROUND, GRASS, 1, false);
-	this->addObject("Resources/Models/grass1.lu", btVector3(6, 0.4, -0.5), 0, 0, btVector3(1.0, 1.0, 1.0), BACKGROUND, GRASS, 1, false);
-	this->addObject("Resources/Models/grass2.lu", btVector3(7, 0.4, -0.3), 0, 0, btVector3(1.0, 1.0, 1.0), BACKGROUND, GRASS, 1, false);
-	this->addObject("Resources/Models/grass1.lu", btVector3(8, 0.4, -0.5), 0, 0, btVector3(1.0, 1.0, 1.0), BACKGROUND, GRASS, 1, false);
-	this->addObject("Resources/Models/grass2.lu", btVector3(9, 0.4, -0.1), 0, 0, btVector3(1.0, 1.0, 1.0), BACKGROUND, GRASS, 1, false);
-	this->addObject("Resources/Models/grass1.lu", btVector3(10, 0.4, -0.8), 0, 0, btVector3(1.0, 1.0, 1.0), BACKGROUND, GRASS, 1, false);
-	this->addObject("Resources/Models/grass2.lu", btVector3(11, 0.4, -0.4), 0, 0, btVector3(1.0, 1.0, 1.0), BACKGROUND, GRASS, 1, false);
-	this->addObject("Resources/Models/grass1.lu", btVector3(12, 0.4, -0.9), 0, 0, btVector3(1.0, 1.0, 1.0), BACKGROUND, GRASS, 1, false);
-	this->addObject("Resources/Models/grass1.lu", btVector3(13., 0.4, -0.4), 0, 0, btVector3(1.0, 1.0, 1.0), BACKGROUND, GRASS, 1, false);
-	this->addObject("Resources/Models/grass2.lu", btVector3(14., 0.4, -0.1), 0, 0, btVector3(1.0, 1.0, 1.0), BACKGROUND, GRASS, 1, false);
-	this->addObject("Resources/Models/grass2.lu", btVector3(15, 0.4, -0.3), 0, 0, btVector3(1.0, 1.0, 1.0), BACKGROUND, GRASS, 1, false);
-	this->addObject("Resources/Models/grass1.lu", btVector3(16, 0.4, 0.6), 0, 0, btVector3(1.0, 1.0, 1.0), BACKGROUND, GRASS, 1, false);
-	this->addObject("Resources/Models/grass1.lu", btVector3(17, 0.4, -0.7), 0, 0, btVector3(1.0, 1.0, 1.0), BACKGROUND, GRASS, 1, false);
-	this->addObject("Resources/Models/grass2.lu", btVector3(18, 0.4, -0.2), 0, 0, btVector3(1.0, 1.0, 1.0), BACKGROUND, GRASS, 1, false);
-	this->addObject("Resources/Models/grass1.lu", btVector3(19, 0.4, -0.2), 0, 0, btVector3(1.0, 1.0, 1.0), BACKGROUND, GRASS, 1, false);
-	this->addObject("Resources/Models/grass2.lu", btVector3(20, 0.4, -0.8), 0, 0, btVector3(1.0, 1.0, 1.0), BACKGROUND, GRASS, 1, false);
-	this->addObject("Resources/Models/grass1.lu", btVector3(21, 0.4, -0.3), 0, 0, btVector3(1.0, 1.0, 1.0), BACKGROUND, GRASS, 1, false);
-	this->addObject("Resources/Models/grass1.lu", btVector3(22, 0.4, -0.8), 0, 0, btVector3(1.0, 1.0, 1.0), BACKGROUND, GRASS, 1, false);
-	this->addObject("Resources/Models/grass2.lu", btVector3(23, 0.4, -0.0), 0, 0, btVector3(1.0, 1.0, 1.0), BACKGROUND, GRASS, 1, false);
-	this->addObject("Resources/Models/grass1.lu", btVector3(24, 0.4, -0.3), 0, 0, btVector3(1.0, 1.0, 1.0), BACKGROUND, GRASS, 1, false);
-	this->addObject("Resources/Models/grass2.lu", btVector3(25, 0.4, -0.8), 0, 0, btVector3(1.0, 1.0, 1.0), BACKGROUND, GRASS, 1, false);
-	this->addObject("Resources/Models/grass1.lu", btVector3(26, 0.4, -0.9), 0, 0, btVector3(1.0, 1.0, 1.0), BACKGROUND, GRASS, 1, false);
+	this->addObject("Resources/Models/grass2.lu", btVector3(1.0, 0.4, -0.4), 0, 0, btVector3(1.0, 1.0, 1.0), btVector3(0.0, 0.0, 0.0), BACKGROUND, GRASS, 1, false);
+	this->addObject("Resources/Models/grass2.lu", btVector3(2.0, 0.4, -0.2), 0, 0, btVector3(1.0, 1.0, 1.0), btVector3(0.0, 0.0, 0.0), BACKGROUND, GRASS, 1, false);
+	this->addObject("Resources/Models/grass1.lu", btVector3(3.0, 0.4, -0.0), 0, 0, btVector3(1.0, 1.0, 1.0), btVector3(0.0, 0.0, 0.0), BACKGROUND, GRASS, 1, false);
+	this->addObject("Resources/Models/grass2.lu", btVector3(4, 0.4, -0.9), 0, 0, btVector3(1.0, 1.0, 1.0), btVector3(0.0, 0.0, 0.0), BACKGROUND, GRASS, 1, false);
+	this->addObject("Resources/Models/grass1.lu", btVector3(5, 0.4, -0.0), 0, 0, btVector3(1.0, 1.0, 1.0), btVector3(0.0, 0.0, 0.0), BACKGROUND, GRASS, 1, false);
+	this->addObject("Resources/Models/grass1.lu", btVector3(6, 0.4, -0.5), 0, 0, btVector3(1.0, 1.0, 1.0), btVector3(0.0, 0.0, 0.0), BACKGROUND, GRASS, 1, false);
+	this->addObject("Resources/Models/grass2.lu", btVector3(7, 0.4, -0.3), 0, 0, btVector3(1.0, 1.0, 1.0), btVector3(0.0, 0.0, 0.0), BACKGROUND, GRASS, 1, false);
+	this->addObject("Resources/Models/grass1.lu", btVector3(8, 0.4, -0.5), 0, 0, btVector3(1.0, 1.0, 1.0), btVector3(0.0, 0.0, 0.0), BACKGROUND, GRASS, 1, false);
+	this->addObject("Resources/Models/grass2.lu", btVector3(9, 0.4, -0.1), 0, 0, btVector3(1.0, 1.0, 1.0), btVector3(0.0, 0.0, 0.0), BACKGROUND, GRASS, 1, false);
+	this->addObject("Resources/Models/grass1.lu", btVector3(10, 0.4, -0.8), 0, 0, btVector3(1.0, 1.0, 1.0), btVector3(0.0, 0.0, 0.0), BACKGROUND, GRASS, 1, false);
+	this->addObject("Resources/Models/grass2.lu", btVector3(11, 0.4, -0.4), 0, 0, btVector3(1.0, 1.0, 1.0), btVector3(0.0, 0.0, 0.0), BACKGROUND, GRASS, 1, false);
+	this->addObject("Resources/Models/grass1.lu", btVector3(12, 0.4, -0.9), 0, 0, btVector3(1.0, 1.0, 1.0), btVector3(0.0, 0.0, 0.0), BACKGROUND, GRASS, 1, false);
+	this->addObject("Resources/Models/grass1.lu", btVector3(13., 0.4, -0.4), 0, 0, btVector3(1.0, 1.0, 1.0), btVector3(0.0, 0.0, 0.0), BACKGROUND, GRASS, 1, false);
+	this->addObject("Resources/Models/grass2.lu", btVector3(14., 0.4, -0.1), 0, 0, btVector3(1.0, 1.0, 1.0), btVector3(0.0, 0.0, 0.0), BACKGROUND, GRASS, 1, false);
+	this->addObject("Resources/Models/grass2.lu", btVector3(15, 0.4, -0.3), 0, 0, btVector3(1.0, 1.0, 1.0), btVector3(0.0, 0.0, 0.0), BACKGROUND, GRASS, 1, false);
+	this->addObject("Resources/Models/grass1.lu", btVector3(16, 0.4, 0.6), 0, 0, btVector3(1.0, 1.0, 1.0), btVector3(0.0, 0.0, 0.0), BACKGROUND, GRASS, 1, false);
+	this->addObject("Resources/Models/grass1.lu", btVector3(17, 0.4, -0.7), 0, 0, btVector3(1.0, 1.0, 1.0), btVector3(0.0, 0.0, 0.0), BACKGROUND, GRASS, 1, false);
+	this->addObject("Resources/Models/grass2.lu", btVector3(18, 0.4, -0.2), 0, 0, btVector3(1.0, 1.0, 1.0), btVector3(0.0, 0.0, 0.0), BACKGROUND, GRASS, 1, false);
+	this->addObject("Resources/Models/grass1.lu", btVector3(19, 0.4, -0.2), 0, 0, btVector3(1.0, 1.0, 1.0), btVector3(0.0, 0.0, 0.0), BACKGROUND, GRASS, 1, false);
+	this->addObject("Resources/Models/grass2.lu", btVector3(20, 0.4, -0.8), 0, 0, btVector3(1.0, 1.0, 1.0), btVector3(0.0, 0.0, 0.0), BACKGROUND, GRASS, 1, false);
+	this->addObject("Resources/Models/grass1.lu", btVector3(21, 0.4, -0.3), 0, 0, btVector3(1.0, 1.0, 1.0), btVector3(0.0, 0.0, 0.0), BACKGROUND, GRASS, 1, false);
+	this->addObject("Resources/Models/grass1.lu", btVector3(22, 0.4, -0.8), 0, 0, btVector3(1.0, 1.0, 1.0), btVector3(0.0, 0.0, 0.0), BACKGROUND, GRASS, 1, false);
+	this->addObject("Resources/Models/grass2.lu", btVector3(23, 0.4, -0.0), 0, 0, btVector3(1.0, 1.0, 1.0), btVector3(0.0, 0.0, 0.0), BACKGROUND, GRASS, 1, false);
+	this->addObject("Resources/Models/grass1.lu", btVector3(24, 0.4, -0.3), 0, 0, btVector3(1.0, 1.0, 1.0), btVector3(0.0, 0.0, 0.0), BACKGROUND, GRASS, 1, false);
+	this->addObject("Resources/Models/grass2.lu", btVector3(25, 0.4, -0.8), 0, 0, btVector3(1.0, 1.0, 1.0), btVector3(0.0, 0.0, 0.0), BACKGROUND, GRASS, 1, false);
+	this->addObject("Resources/Models/grass1.lu", btVector3(26, 0.4, -0.9), 0, 0, btVector3(1.0, 1.0, 1.0), btVector3(0.0, 0.0, 0.0), BACKGROUND, GRASS, 1, false);
 
-	this->addObject("Resources/Models/grass2.lu", btVector3( 0.4, 0.4, -0.4), 0, 0, btVector3(1.0, 1.0, 1.0), BACKGROUND, GRASS, 1, false);
-	this->addObject("Resources/Models/grass1.lu", btVector3(-1.7, 0.4, -0.2), 0, 0, btVector3(1.0, 1.0, 1.0), BACKGROUND, GRASS, 1, false);
-	this->addObject("Resources/Models/grass1.lu", btVector3(-2.4, 0.4, -0.0), 0, 0, btVector3(1.0, 1.0, 1.0), BACKGROUND, GRASS, 1, false);
-	this->addObject("Resources/Models/grass2.lu", btVector3(-3.6, 0.4, -0.9), 0, 0, btVector3(1.0, 1.0, 1.0), BACKGROUND, GRASS, 1, false);
-	this->addObject("Resources/Models/grass2.lu", btVector3(-4.2, 0.4, -0.0), 0, 0, btVector3(1.0, 1.0, 1.0), BACKGROUND, GRASS, 1, false);
-	this->addObject("Resources/Models/grass2.lu", btVector3(-5.8, 0.4, -0.5), 0, 0, btVector3(1.0, 1.0, 1.0), BACKGROUND, GRASS, 1, false);
-	this->addObject("Resources/Models/grass1.lu", btVector3(-6.5, 0.4, -0.3), 0, 0, btVector3(1.0, 1.0, 1.0), BACKGROUND, GRASS, 1, false);
-	this->addObject("Resources/Models/grass2.lu", btVector3(-7.3, 0.4, -0.5), 0, 0, btVector3(1.0, 1.0, 1.0), BACKGROUND, GRASS, 1, false);
-	this->addObject("Resources/Models/grass1.lu", btVector3(-8.6, 0.4, -0.1), 0, 0, btVector3(1.0, 1.0, 1.0), BACKGROUND, GRASS, 1, false);
-	this->addObject("Resources/Models/grass2.lu", btVector3(-9.8, 0.4, -0.8), 0, 0, btVector3(1.0, 1.0, 1.0), BACKGROUND, GRASS, 1, false);
-	this->addObject("Resources/Models/grass2.lu", btVector3(-10.4, 0.4, -0.4), 0, 0, btVector3(1.0, 1.0, 1.0), BACKGROUND, GRASS, 1, false);
-	this->addObject("Resources/Models/grass1.lu", btVector3(-11.7, 0.4, -0.9), 0, 0, btVector3(1.0, 1.0, 1.0), BACKGROUND, GRASS, 1, false);
-	this->addObject("Resources/Models/grass1.lu", btVector3(-12.2, 0.4, -0.4), 0, 0, btVector3(1.0, 1.0, 1.0), BACKGROUND, GRASS, 1, false);
-	this->addObject("Resources/Models/grass2.lu", btVector3(-13.3, 0.4, -0.1), 0, 0, btVector3(1.0, 1.0, 1.0), BACKGROUND, GRASS, 1, false);
-	this->addObject("Resources/Models/grass1.lu", btVector3(-14.8, 0.4, -0.3), 0, 0, btVector3(1.0, 1.0, 1.0), BACKGROUND, GRASS, 1, false);
-	this->addObject("Resources/Models/grass2.lu", btVector3(-15.4, 0.4, -0.8), 0, 0, btVector3(1.0, 1.0, 1.0), BACKGROUND, GRASS, 1, false);
-	this->addObject("Resources/Models/grass1.lu", btVector3(-16.5, 0.4, -0.7), 0, 0, btVector3(1.0, 1.0, 1.0), BACKGROUND, GRASS, 1, false);
-	this->addObject("Resources/Models/grass2.lu", btVector3(-17.8, 0.4, -0.2), 0, 0, btVector3(1.0, 1.0, 1.0), BACKGROUND, GRASS, 1, false);
-	this->addObject("Resources/Models/grass1.lu", btVector3(-18.2, 0.4, -0.2), 0, 0, btVector3(1.0, 1.0, 1.0), BACKGROUND, GRASS, 1, false);
-	this->addObject("Resources/Models/grass2.lu", btVector3(-19.6, 0.4, -0.8), 0, 0, btVector3(1.0, 1.0, 1.0), BACKGROUND, GRASS, 1, false);
-	this->addObject("Resources/Models/grass1.lu", btVector3(-20.3, 0.4, -0.3), 0, 0, btVector3(1.0, 1.0, 1.0), BACKGROUND, GRASS, 1, false);
-	this->addObject("Resources/Models/grass2.lu", btVector3(-21.6, 0.4, -0.8), 0, 0, btVector3(1.0, 1.0, 1.0), BACKGROUND, GRASS, 1, false);
-	this->addObject("Resources/Models/grass1.lu", btVector3(-22.9, 0.4, -0.0), 0, 0, btVector3(1.0, 1.0, 1.0), BACKGROUND, GRASS, 1, false);
-	this->addObject("Resources/Models/grass2.lu", btVector3(-23.3, 0.4, -0.3), 0, 0, btVector3(1.0, 1.0, 1.0), BACKGROUND, GRASS, 1, false);
-	this->addObject("Resources/Models/grass1.lu", btVector3(-24.4, 0.4, -0.8), 0, 0, btVector3(1.0, 1.0, 1.0), BACKGROUND, GRASS, 1, false);
-	this->addObject("Resources/Models/grass2.lu", btVector3(-25.2, 0.4, -0.9), 0, 0, btVector3(1.0, 1.0, 1.0), BACKGROUND, GRASS, 1, false);
+	this->addObject("Resources/Models/grass2.lu", btVector3( 0.4, 0.4, -0.4), 0, 0, btVector3(1.0, 1.0, 1.0), btVector3(0.0, 0.0, 0.0), BACKGROUND, GRASS, 1, false);
+	this->addObject("Resources/Models/grass1.lu", btVector3(-1.7, 0.4, -0.2), 0, 0, btVector3(1.0, 1.0, 1.0), btVector3(0.0, 0.0, 0.0), BACKGROUND, GRASS, 1, false);
+	this->addObject("Resources/Models/grass1.lu", btVector3(-2.4, 0.4, -0.0), 0, 0, btVector3(1.0, 1.0, 1.0), btVector3(0.0, 0.0, 0.0), BACKGROUND, GRASS, 1, false);
+	this->addObject("Resources/Models/grass2.lu", btVector3(-3.6, 0.4, -0.9), 0, 0, btVector3(1.0, 1.0, 1.0), btVector3(0.0, 0.0, 0.0), BACKGROUND, GRASS, 1, false);
+	this->addObject("Resources/Models/grass2.lu", btVector3(-4.2, 0.4, -0.0), 0, 0, btVector3(1.0, 1.0, 1.0), btVector3(0.0, 0.0, 0.0), BACKGROUND, GRASS, 1, false);
+	this->addObject("Resources/Models/grass2.lu", btVector3(-5.8, 0.4, -0.5), 0, 0, btVector3(1.0, 1.0, 1.0), btVector3(0.0, 0.0, 0.0), BACKGROUND, GRASS, 1, false);
+	this->addObject("Resources/Models/grass1.lu", btVector3(-6.5, 0.4, -0.3), 0, 0, btVector3(1.0, 1.0, 1.0), btVector3(0.0, 0.0, 0.0), BACKGROUND, GRASS, 1, false);
+	this->addObject("Resources/Models/grass2.lu", btVector3(-7.3, 0.4, -0.5), 0, 0, btVector3(1.0, 1.0, 1.0), btVector3(0.0, 0.0, 0.0), BACKGROUND, GRASS, 1, false);
+	this->addObject("Resources/Models/grass1.lu", btVector3(-8.6, 0.4, -0.1), 0, 0, btVector3(1.0, 1.0, 1.0), btVector3(0.0, 0.0, 0.0), BACKGROUND, GRASS, 1, false);
+	this->addObject("Resources/Models/grass2.lu", btVector3(-9.8, 0.4, -0.8), 0, 0, btVector3(1.0, 1.0, 1.0), btVector3(0.0, 0.0, 0.0), BACKGROUND, GRASS, 1, false);
+	this->addObject("Resources/Models/grass2.lu", btVector3(-10.4, 0.4, -0.4), 0, 0, btVector3(1.0, 1.0, 1.0), btVector3(0.0, 0.0, 0.0), BACKGROUND, GRASS, 1, false);
+	this->addObject("Resources/Models/grass1.lu", btVector3(-11.7, 0.4, -0.9), 0, 0, btVector3(1.0, 1.0, 1.0), btVector3(0.0, 0.0, 0.0), BACKGROUND, GRASS, 1, false);
+	this->addObject("Resources/Models/grass1.lu", btVector3(-12.2, 0.4, -0.4), 0, 0, btVector3(1.0, 1.0, 1.0), btVector3(0.0, 0.0, 0.0), BACKGROUND, GRASS, 1, false);
+	this->addObject("Resources/Models/grass2.lu", btVector3(-13.3, 0.4, -0.1), 0, 0, btVector3(1.0, 1.0, 1.0), btVector3(0.0, 0.0, 0.0), BACKGROUND, GRASS, 1, false);
+	this->addObject("Resources/Models/grass1.lu", btVector3(-14.8, 0.4, -0.3), 0, 0, btVector3(1.0, 1.0, 1.0), btVector3(0.0, 0.0, 0.0), BACKGROUND, GRASS, 1, false);
+	this->addObject("Resources/Models/grass2.lu", btVector3(-15.4, 0.4, -0.8), 0, 0, btVector3(1.0, 1.0, 1.0), btVector3(0.0, 0.0, 0.0), BACKGROUND, GRASS, 1, false);
+	this->addObject("Resources/Models/grass1.lu", btVector3(-16.5, 0.4, -0.7), 0, 0, btVector3(1.0, 1.0, 1.0), btVector3(0.0, 0.0, 0.0), BACKGROUND, GRASS, 1, false);
+	this->addObject("Resources/Models/grass2.lu", btVector3(-17.8, 0.4, -0.2), 0, 0, btVector3(1.0, 1.0, 1.0), btVector3(0.0, 0.0, 0.0), BACKGROUND, GRASS, 1, false);
+	this->addObject("Resources/Models/grass1.lu", btVector3(-18.2, 0.4, -0.2), 0, 0, btVector3(1.0, 1.0, 1.0), btVector3(0.0, 0.0, 0.0), BACKGROUND, GRASS, 1, false);
+	this->addObject("Resources/Models/grass2.lu", btVector3(-19.6, 0.4, -0.8), 0, 0, btVector3(1.0, 1.0, 1.0), btVector3(0.0, 0.0, 0.0), BACKGROUND, GRASS, 1, false);
+	this->addObject("Resources/Models/grass1.lu", btVector3(-20.3, 0.4, -0.3), 0, 0, btVector3(1.0, 1.0, 1.0), btVector3(0.0, 0.0, 0.0), BACKGROUND, GRASS, 1, false);
+	this->addObject("Resources/Models/grass2.lu", btVector3(-21.6, 0.4, -0.8), 0, 0, btVector3(1.0, 1.0, 1.0), btVector3(0.0, 0.0, 0.0), BACKGROUND, GRASS, 1, false);
+	this->addObject("Resources/Models/grass1.lu", btVector3(-22.9, 0.4, -0.0), 0, 0, btVector3(1.0, 1.0, 1.0), btVector3(0.0, 0.0, 0.0), BACKGROUND, GRASS, 1, false);
+	this->addObject("Resources/Models/grass2.lu", btVector3(-23.3, 0.4, -0.3), 0, 0, btVector3(1.0, 1.0, 1.0), btVector3(0.0, 0.0, 0.0), BACKGROUND, GRASS, 1, false);
+	this->addObject("Resources/Models/grass1.lu", btVector3(-24.4, 0.4, -0.8), 0, 0, btVector3(1.0, 1.0, 1.0), btVector3(0.0, 0.0, 0.0), BACKGROUND, GRASS, 1, false);
+	this->addObject("Resources/Models/grass2.lu", btVector3(-25.2, 0.4, -0.9), 0, 0, btVector3(1.0, 1.0, 1.0), btVector3(0.0, 0.0, 0.0), BACKGROUND, GRASS, 1, false);
 
-	this->addObject("Resources/Models/grass2.lu", btVector3(1.5, 0.4, -1.4), 0, 0, btVector3(1.0, 1.0, 1.0), BACKGROUND, GRASS, 1, false);
-	this->addObject("Resources/Models/grass2.lu", btVector3(2.5, 0.4, -1.2), 0, 0, btVector3(1.0, 1.0, 1.0), BACKGROUND, GRASS, 1, false);
-	this->addObject("Resources/Models/grass1.lu", btVector3(3.5, 0.4, -1.0), 0, 0, btVector3(1.0, 1.0, 1.0), BACKGROUND, GRASS, 1, false);
-	this->addObject("Resources/Models/grass2.lu", btVector3(4.5, 0.4, -2.9), 0, 0, btVector3(1.0, 1.0, 1.0), BACKGROUND, GRASS, 1, false);
-	this->addObject("Resources/Models/grass1.lu", btVector3(5.5, 0.4, -1.0), 0, 0, btVector3(1.0, 1.0, 1.0), BACKGROUND, GRASS, 1, false);
-	this->addObject("Resources/Models/grass1.lu", btVector3(6.5, 0.4, -2.5), 0, 0, btVector3(1.0, 1.0, 1.0), BACKGROUND, GRASS, 1, false);
-	this->addObject("Resources/Models/grass2.lu", btVector3(7.5, 0.4, -1.3), 0, 0, btVector3(1.0, 1.0, 1.0), BACKGROUND, GRASS, 1, false);
-	this->addObject("Resources/Models/grass1.lu", btVector3(8.5, 0.4, -2.5), 0, 0, btVector3(1.0, 1.0, 1.0), BACKGROUND, GRASS, 1, false);
-	this->addObject("Resources/Models/grass2.lu", btVector3(9.5, 0.4, -1.1), 0, 0, btVector3(1.0, 1.0, 1.0), BACKGROUND, GRASS, 1, false);
-	this->addObject("Resources/Models/grass1.lu", btVector3(10.5, 0.4, -2.8), 0, 0, btVector3(1.0, 1.0, 1.0), BACKGROUND, GRASS, 1, false);
-	this->addObject("Resources/Models/grass2.lu", btVector3(11.5, 0.4, -1.4), 0, 0, btVector3(1.0, 1.0, 1.0), BACKGROUND, GRASS, 1, false);
-	this->addObject("Resources/Models/grass1.lu", btVector3(12.5, 0.4, -2.9), 0, 0, btVector3(1.0, 1.0, 1.0), BACKGROUND, GRASS, 1, false);
-	this->addObject("Resources/Models/grass1.lu", btVector3(13.5, 0.4, -1.4), 0, 0, btVector3(1.0, 1.0, 1.0), BACKGROUND, GRASS, 1, false);
-	this->addObject("Resources/Models/grass2.lu", btVector3(14.5, 0.4, -2.1), 0, 0, btVector3(1.0, 1.0, 1.0), BACKGROUND, GRASS, 1, false);
-	this->addObject("Resources/Models/grass2.lu", btVector3(15.5, 0.4, -2.3), 0, 0, btVector3(1.0, 1.0, 1.0), BACKGROUND, GRASS, 1, false);
-	this->addObject("Resources/Models/grass1.lu", btVector3(16.5, 0.4, 1.6), 0, 0, btVector3(1.0, 1.0, 1.0), BACKGROUND, GRASS, 1, false);
-	this->addObject("Resources/Models/grass1.lu", btVector3(17.5, 0.4, -1.7), 0, 0, btVector3(1.0, 1.0, 1.0), BACKGROUND, GRASS, 1, false);
-	this->addObject("Resources/Models/grass2.lu", btVector3(18.5, 0.4, -1.2), 0, 0, btVector3(1.0, 1.0, 1.0), BACKGROUND, GRASS, 1, false);
-	this->addObject("Resources/Models/grass1.lu", btVector3(19.5, 0.4, -1.2), 0, 0, btVector3(1.0, 1.0, 1.0), BACKGROUND, GRASS, 1, false);
-	this->addObject("Resources/Models/grass2.lu", btVector3(20.5, 0.4, -2.8), 0, 0, btVector3(1.0, 1.0, 1.0), BACKGROUND, GRASS, 1, false);
-	this->addObject("Resources/Models/grass1.lu", btVector3(21.5, 0.4, -2.3), 0, 0, btVector3(1.0, 1.0, 1.0), BACKGROUND, GRASS, 1, false);
-	this->addObject("Resources/Models/grass1.lu", btVector3(22.5, 0.4, -1.8), 0, 0, btVector3(1.0, 1.0, 1.0), BACKGROUND, GRASS, 1, false);
-	this->addObject("Resources/Models/grass2.lu", btVector3(23.5, 0.4, -2.0), 0, 0, btVector3(1.0, 1.0, 1.0), BACKGROUND, GRASS, 1, false);
-	this->addObject("Resources/Models/grass1.lu", btVector3(24.5, 0.4, -1.3), 0, 0, btVector3(1.0, 1.0, 1.0), BACKGROUND, GRASS, 1, false);
-	this->addObject("Resources/Models/grass2.lu", btVector3(25.5, 0.4, -1.8), 0, 0, btVector3(1.0, 1.0, 1.0), BACKGROUND, GRASS, 1, false);
-	this->addObject("Resources/Models/grass1.lu", btVector3(26.5, 0.4, -2.9), 0, 0, btVector3(1.0, 1.0, 1.0), BACKGROUND, GRASS, 1, false);
+	this->addObject("Resources/Models/grass2.lu", btVector3(1.5, 0.4, -1.4), 0, 0, btVector3(1.0, 1.0, 1.0), btVector3(0.0, 0.0, 0.0), BACKGROUND, GRASS, 1, false);
+	this->addObject("Resources/Models/grass2.lu", btVector3(2.5, 0.4, -1.2), 0, 0, btVector3(1.0, 1.0, 1.0), btVector3(0.0, 0.0, 0.0), BACKGROUND, GRASS, 1, false);
+	this->addObject("Resources/Models/grass1.lu", btVector3(3.5, 0.4, -1.0), 0, 0, btVector3(1.0, 1.0, 1.0), btVector3(0.0, 0.0, 0.0), BACKGROUND, GRASS, 1, false);
+	this->addObject("Resources/Models/grass2.lu", btVector3(4.5, 0.4, -2.9), 0, 0, btVector3(1.0, 1.0, 1.0), btVector3(0.0, 0.0, 0.0), BACKGROUND, GRASS, 1, false);
+	this->addObject("Resources/Models/grass1.lu", btVector3(5.5, 0.4, -1.0), 0, 0, btVector3(1.0, 1.0, 1.0), btVector3(0.0, 0.0, 0.0), BACKGROUND, GRASS, 1, false);
+	this->addObject("Resources/Models/grass1.lu", btVector3(6.5, 0.4, -2.5), 0, 0, btVector3(1.0, 1.0, 1.0), btVector3(0.0, 0.0, 0.0), BACKGROUND, GRASS, 1, false);
+	this->addObject("Resources/Models/grass2.lu", btVector3(7.5, 0.4, -1.3), 0, 0, btVector3(1.0, 1.0, 1.0), btVector3(0.0, 0.0, 0.0), BACKGROUND, GRASS, 1, false);
+	this->addObject("Resources/Models/grass1.lu", btVector3(8.5, 0.4, -2.5), 0, 0, btVector3(1.0, 1.0, 1.0), btVector3(0.0, 0.0, 0.0), BACKGROUND, GRASS, 1, false);
+	this->addObject("Resources/Models/grass2.lu", btVector3(9.5, 0.4, -1.1), 0, 0, btVector3(1.0, 1.0, 1.0), btVector3(0.0, 0.0, 0.0), BACKGROUND, GRASS, 1, false);
+	this->addObject("Resources/Models/grass1.lu", btVector3(10.5, 0.4, -2.8), 0, 0, btVector3(1.0, 1.0, 1.0), btVector3(0.0, 0.0, 0.0), BACKGROUND, GRASS, 1, false);
+	this->addObject("Resources/Models/grass2.lu", btVector3(11.5, 0.4, -1.4), 0, 0, btVector3(1.0, 1.0, 1.0), btVector3(0.0, 0.0, 0.0), BACKGROUND, GRASS, 1, false);
+	this->addObject("Resources/Models/grass1.lu", btVector3(12.5, 0.4, -2.9), 0, 0, btVector3(1.0, 1.0, 1.0), btVector3(0.0, 0.0, 0.0), BACKGROUND, GRASS, 1, false);
+	this->addObject("Resources/Models/grass1.lu", btVector3(13.5, 0.4, -1.4), 0, 0, btVector3(1.0, 1.0, 1.0), btVector3(0.0, 0.0, 0.0), BACKGROUND, GRASS, 1, false);
+	this->addObject("Resources/Models/grass2.lu", btVector3(14.5, 0.4, -2.1), 0, 0, btVector3(1.0, 1.0, 1.0), btVector3(0.0, 0.0, 0.0), BACKGROUND, GRASS, 1, false);
+	this->addObject("Resources/Models/grass2.lu", btVector3(15.5, 0.4, -2.3), 0, 0, btVector3(1.0, 1.0, 1.0), btVector3(0.0, 0.0, 0.0), BACKGROUND, GRASS, 1, false);
+	this->addObject("Resources/Models/grass1.lu", btVector3(16.5, 0.4, 1.6), 0, 0, btVector3(1.0, 1.0, 1.0), btVector3(0.0, 0.0, 0.0), BACKGROUND, GRASS, 1, false);
+	this->addObject("Resources/Models/grass1.lu", btVector3(17.5, 0.4, -1.7), 0, 0, btVector3(1.0, 1.0, 1.0), btVector3(0.0, 0.0, 0.0), BACKGROUND, GRASS, 1, false);
+	this->addObject("Resources/Models/grass2.lu", btVector3(18.5, 0.4, -1.2), 0, 0, btVector3(1.0, 1.0, 1.0), btVector3(0.0, 0.0, 0.0), BACKGROUND, GRASS, 1, false);
+	this->addObject("Resources/Models/grass1.lu", btVector3(19.5, 0.4, -1.2), 0, 0, btVector3(1.0, 1.0, 1.0), btVector3(0.0, 0.0, 0.0), BACKGROUND, GRASS, 1, false);
+	this->addObject("Resources/Models/grass2.lu", btVector3(20.5, 0.4, -2.8), 0, 0, btVector3(1.0, 1.0, 1.0), btVector3(0.0, 0.0, 0.0), BACKGROUND, GRASS, 1, false);
+	this->addObject("Resources/Models/grass1.lu", btVector3(21.5, 0.4, -2.3), 0, 0, btVector3(1.0, 1.0, 1.0), btVector3(0.0, 0.0, 0.0), BACKGROUND, GRASS, 1, false);
+	this->addObject("Resources/Models/grass1.lu", btVector3(22.5, 0.4, -1.8), 0, 0, btVector3(1.0, 1.0, 1.0), btVector3(0.0, 0.0, 0.0), BACKGROUND, GRASS, 1, false);
+	this->addObject("Resources/Models/grass2.lu", btVector3(23.5, 0.4, -2.0), 0, 0, btVector3(1.0, 1.0, 1.0), btVector3(0.0, 0.0, 0.0), BACKGROUND, GRASS, 1, false);
+	this->addObject("Resources/Models/grass1.lu", btVector3(24.5, 0.4, -1.3), 0, 0, btVector3(1.0, 1.0, 1.0), btVector3(0.0, 0.0, 0.0), BACKGROUND, GRASS, 1, false);
+	this->addObject("Resources/Models/grass2.lu", btVector3(25.5, 0.4, -1.8), 0, 0, btVector3(1.0, 1.0, 1.0), btVector3(0.0, 0.0, 0.0), BACKGROUND, GRASS, 1, false);
+	this->addObject("Resources/Models/grass1.lu", btVector3(26.5, 0.4, -2.9), 0, 0, btVector3(1.0, 1.0, 1.0), btVector3(0.0, 0.0, 0.0), BACKGROUND, GRASS, 1, false);
 
-	this->addObject("Resources/Models/grass2.lu", btVector3(0, 0.4, 4.9), 0, 0, btVector3(1.0, 1.0, 1.0), BACKGROUND, GRASS, 1, false);
-	this->addObject("Resources/Models/grass2.lu", btVector3(-2, 0.4, 3.9), 0, 0, btVector3(0.9, 0.9, 0.9), BACKGROUND, GRASS, 1, false);
-	this->addObject("Resources/Models/grass_patch1.lu", btVector3(0, 0.4, 4.9), 0, 0, btVector3(1.0, 1.0, 1.0), BACKGROUND, STONE, 1, false);
+	this->addObject("Resources/Models/grass2.lu", btVector3(0, 0.4, 4.9), 0, 0, btVector3(1.0, 1.0, 1.0), btVector3(0.0, 0.0, 0.0), BACKGROUND, GRASS, 1, false);
+	this->addObject("Resources/Models/grass2.lu", btVector3(-2, 0.4, 3.9), 0, 0, btVector3(0.9, 0.9, 0.9), btVector3(0.0, 0.0, 0.0), BACKGROUND, GRASS, 1, false);
+	this->addObject("Resources/Models/grass_patch1.lu", btVector3(0, 0.4, 4.9), 0, 0, btVector3(1.0, 1.0, 1.0), btVector3(0.0, 0.0, 0.0), BACKGROUND, STONE, 1, false);
 
 
 	//Background trees
@@ -516,6 +516,16 @@ bool GunGameState::initailize()
 	System::handler->addObject(mushroom7);
 	mushroom7->setPosition(-17, 0.9, 4.0);
 	mushroom7->setScale(2, 2, 2);
+	GameObject* mushroom8 = new GameObject;
+	System::theModelLoader->loadGO(mushroom8, "Resources/Models/mushroom3.lu");
+	System::handler->addObject(mushroom8);
+	mushroom8->setPosition(-14, 0.9, 8.0);
+	mushroom8->setScale(0.8, 0.8, 0.8);
+	GameObject* mushroom9 = new GameObject;
+	System::theModelLoader->loadGO(mushroom9, "Resources/Models/mushroom3.lu");
+	System::handler->addObject(mushroom9);
+	mushroom9->setPosition(-20, 0.9, 8.1);
+	mushroom9->setScale(0.8, 0.8, 0.8);
 
 	//Bushes
 	GameObject* bush1 = new GameObject;

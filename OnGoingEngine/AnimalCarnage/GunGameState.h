@@ -83,9 +83,9 @@ public:
 	int getNrOfPlayers() const;
 	Player* getPlayer(int id) const;
 	void expandObjects();
-	void addObject(std::string filePath, btVector3 pos, int id, int friction, btVector3 size = btVector3(1, 1, 1), bool canBeDrawn=true, bool shouldRespawn = false);
-	void addObject(std::string filePath, btVector3 pos, int id, int friction,btVector3 size,OBJECTSTATE state=STATIC, OBJECTYPE type=STONE, int mipLevels=-1,bool shouldRespawn=false);
-	void addObject(std::string filePath, btVector3 pos, int id, int friction, btVector3 size = btVector3(1, 1, 1), OBJECTSTATE state = STATIC, OBJECTYPE type = STONE, bool shouldRespawn = false,int mipLevels=-1,int xRepeated=1, int yRepeated=1, bool changeOpacity=false, bool canBeDrawn=true);
+	void addObject(std::string filePath, btVector3 pos, int id, int friction, btVector3 size = btVector3(1, 1, 1), btVector3 rotation = btVector3(0, 0, 0), bool canBeDrawn=true, bool shouldRespawn = false);
+	void addObject(std::string filePath, btVector3 pos, int id, int friction,btVector3 size, btVector3 rotation = btVector3(0, 0, 0),OBJECTSTATE state=STATIC, OBJECTYPE type=STONE, int mipLevels=-1,bool shouldRespawn=false);
+	void addObject(std::string filePath, btVector3 pos, int id, int friction, btVector3 size = btVector3(1, 1, 1), btVector3 rotation = btVector3(0, 0, 0), OBJECTSTATE state = STATIC, OBJECTYPE type = STONE, bool shouldRespawn = false,int mipLevels=-1,int xRepeated=1, int yRepeated=1, bool changeOpacity=false, bool canBeDrawn=true);
 	//std::string filepath, btVector3 position, int id, int friction, btVector3 size, OBJECTSTATE state, OBJECTYPE type, int mipLevels, float x, float y, bool changeOpacity, bool activeDraw
 	bool initPlayers(AnimalType type[], PlayerColor color[]);
 	bool initailize();
