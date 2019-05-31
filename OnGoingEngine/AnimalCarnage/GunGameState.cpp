@@ -861,6 +861,7 @@ void GunGameState::renderImgui()
 	}
 	ImGui::CaptureKeyboardFromApp(true);
 	ImGui::Checkbox("Debug Draw",&System::getDebugDraw()->DebugDraw);
+	ImGui::Checkbox("UI disable", &this->uiEnable);
 	ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
 	ImGui::TextColored(ImVec4(1, 1, 0, 1), "Controllers");
 	ImGui::BeginChild("Scrolling");
@@ -878,17 +879,7 @@ void GunGameState::renderImgui()
 bool GunGameState::update(float deltaTime)
 {
 
-	if (System::theKeyboard->KeyIsPressed('U'))
-	{
-		if (!this->uiEnable)
-		{
-			this->uiEnable = true;
-		}
-		else if(this->uiEnable)
-		{
-			this->uiEnable = false;
-		}
-	}
+	
 
 	if (resultsShown)
 	{
