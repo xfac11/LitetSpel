@@ -246,7 +246,7 @@ float4 PS_main(VS_OUT input) : SV_Target
 		
 	}
 	if (index == 0)
-		colorT.xyz = saturate(colorT.xyz + float3(glow.x*1.2f,glow.y*2.0f,glow.z*3.0f));// glow.xyz*2.0f;
+		colorT.xyz = saturate(colorT.xyz + float3(glow.x*2.0f,glow.y*2.0f,glow.z*2.0f));// glow.xyz*2.0f;
 	/*if (index > 0)
 		return float4(1, 0, 0, 1);*/
 	return float4(colorT.xyz,1.0f);
