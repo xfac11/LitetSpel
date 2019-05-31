@@ -31,6 +31,7 @@ bool GunGameGui::initialize()
 		this->playerHealthBars[i] = new HealthBar(state->getPlayer(i)->getHealth(), state->getPlayer(i)->getMaxHealth(), 
 			SimpleMath::Vector2(1920 / 2 - ((this->nrOfPlayers * 300) / 2) - (((this->nrOfPlayers - 1) * 50) / 2) + i * 350.0F, 10.0F));
 		this->playerHealthBars[i]->setNextAnimal(state->getPlayer(i)->getNextAnimal());
+		this->playerHealthBars[i]->setCurrentAnimal(state->getPlayer(i)->getAnimalType());
 	}
 
 	return true;
@@ -58,6 +59,7 @@ bool GunGameGui::update(float deltaTime)
 		this->playerHealthBars[i]->setHealth(state->getPlayer(i)->getHealth());
 		this->playerHealthBars[i]->setMaxHealth(state->getPlayer(i)->getMaxHealth());
 		this->playerHealthBars[i]->setNextAnimal(state->getPlayer(i)->getNextAnimal());
+		this->playerHealthBars[i]->setCurrentAnimal(state->getPlayer(i)->getAnimalType());
 		this->playerHealthBars[i]->setColor(state->getPlayer(i)->playerObj->getColorMask().x, state->getPlayer(i)->playerObj->getColorMask().y, state->getPlayer(i)->playerObj->getColorMask().z);
 	}
 

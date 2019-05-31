@@ -807,7 +807,6 @@ bool GunGameState::render()
 	}
 
 
-	renderImgui();
 	System::shaderManager->getParticleShader()->setViewProj(System::theCamera->GetViewMatrix(), System::theGraphicDevice->getProj(), DirectX::XMFLOAT4(System::theCamera->GetPosition().x, System::theCamera->GetPosition().y, System::theCamera->GetPosition().z, 1.0f));
 
 	System::handler->draw(System::fusk->getDeltaTime(), this->paused, currentAnimSpeed, currentAnimName, currentAnimLoop);
@@ -832,6 +831,7 @@ bool GunGameState::render()
 			}
 		}
 	}
+	renderImgui();
 
 	return true;
 }
@@ -865,6 +865,7 @@ void GunGameState::renderImgui()
 	ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
 	ImGui::TextColored(ImVec4(1, 1, 0, 1), "Controllers");
 	ImGui::BeginChild("Scrolling");
+	
 	for (int n = 0; n < 4; n++)
 	{
 		if (controllerIsConnected(n) == true)
