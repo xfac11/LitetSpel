@@ -1,6 +1,16 @@
 #include "Player.h"
 #include "System.h"
 
+PlayerColor Player::getColor() const
+{
+	return this->color;
+}
+
+AnimalType Player::getAnimalType() const
+{
+	return this->type;
+}
+
 float Player::getAnimSpeed() const
 {
 	return this->animSpeed;
@@ -74,12 +84,34 @@ void Player::reset()
 		}
 	}
 
+	//if (this->playerObj->getRigidbody() != nullptr)
+	//{
+	//	System::getphysices()->DeleteRigidBody(this->playerObj->getRigidbody());
+	//	this->playerObj->getRigidbody() = nullptr;
+	//}
+
+	//AABB aabb = playerObj->getCollisionBox();
+	//XMFLOAT3 scale = playerObj->getScale();
+
+	//btVector3 size = btVector3(1 + aabb.width * scale.x, aabb.height * scale.y * 2, 1);
+	//playerObj->getRigidbody() = System::getphysices()->addPlayer(btVector3(aabb.offset.x, aabb.offset.y, aabb.offset.z), size, 10.0f * getWeight(), this);
+
+	//playerObj->getRigidbody()->setWorldTransform(XMMATRIX_to_btTransform(this->playerObj->getWorld()));
+	//this->playerObj->setRotationRollPitchYaw(0.f, 3.14f / 2.f, 0.f);
+
+	//playerObj->getRigidbody()->setActivationState(DISABLE_DEACTIVATION);
+	//playerObj->getRigidbody()->setFriction(0.5);
+	//playerObj->getRigidbody()->setRestitution(0);
+	//playerObj->getRigidbody()->setAngularFactor(btVector3(0, 0, 0));
+
+	this->stats = PlayerStats();
 
 }
 
 void Player::takeDamage(int damage)
 {
 	this->health -= damage;
+	this->stats.damage += damage;
 	
 	if (this->health < 0)
 	{
@@ -145,6 +177,8 @@ void Player::setAnimalTypeAndMass(AnimalType type)
 	System::theModelLoader->loadAO(this->playerObj, Animal::getAnimal(ArrayOfAnimals[currentAnimal]).modelPath, Animal::getAnimal(ArrayOfAnimals[currentAnimal]).animalAnimations, Animal::getAnimal(ArrayOfAnimals[currentAnimal]).attackJoint);
 	System::assetMananger->LoadTexture(Animal::getAnimal(type).maskPath, Animal::getAnimal(type).maskPath);
 	this->playerObj->getModel()->setMaskTexture(System::assetMananger->GetTexture(Animal::getAnimal(type).maskPath));
+
+	ResetRigidBody();
 	btVector3 inertia(0, 0, 0);
 	playerObj->getRigidbody()->setMassProps(10 * getWeight(), inertia);
 }
@@ -185,6 +219,9 @@ void Player::changeCharacter()
 	//if (animal.maskPath != "empty" && !this->playerObj->getModel()->hasMaskColor())
 	//	this->playerObj->setMask(animal.maskPath, 0);//change to animal.maskPath
 	//System::handler->addObject(this->playerObj);
+
+
+	ResetRigidBody();
 
 	btVector3 inertia(0, 0, 0);
 	playerObj->getRigidbody()->setMassProps(10*getWeight(), inertia);
@@ -266,6 +303,31 @@ Player::~Player()
 	//delete this->hitbox.hitbox;
 }
 
+void Player::ResetRigidBody()
+{
+
+	if (this->playerObj->getRigidbody() != nullptr)
+	{
+		System::getphysices()->DeleteRigidBody(playerObj->getRigidbody());
+		delete this->playerObj->getRigidbody();
+	}
+
+	AABB aabb = playerObj->getCollisionBox();
+	XMFLOAT3 scale = playerObj->getScale();
+
+	btVector3 size = btVector3(1 + aabb.width * scale.x, aabb.height * scale.y * 2, 1);
+	playerObj->getRigidbody() = System::getphysices()->addPlayer(btVector3(aabb.offset.x, aabb.offset.y, aabb.offset.z), size, 10.0f * getWeight(), this);
+
+	playerObj->getRigidbody()->setWorldTransform(XMMATRIX_to_btTransform(this->playerObj->getWorld()));
+	this->playerObj->setRotationRollPitchYaw(0.f, 3.14f / 2.f, 0.f);
+
+	playerObj->getRigidbody()->setActivationState(DISABLE_DEACTIVATION);
+	playerObj->getRigidbody()->setFriction(0.5);
+	playerObj->getRigidbody()->setRestitution(0);
+	playerObj->getRigidbody()->setAngularFactor(btVector3(0, 0, 0));
+
+}
+
 void Player::initialize(AnimalType type, PlayerColor color)
 {
 	this->setAnimalType(type);
@@ -313,26 +375,28 @@ void Player::initialize(AnimalType type, PlayerColor color)
 		//change to animal.maskPath
 	System::handler->addObject(this->playerObj);
 
-	AABB aabb = playerObj->getCollisionBox();
-	XMFLOAT3 scale = playerObj->getScale();
+	//if (this->playerObj->getRigidbody() != nullptr)
+	//{
+	//	System::getphysices()->DeleteRigidBody(this->playerObj->getRigidbody());
+	//	this->playerObj->getRigidbody() = nullptr;
+	//}
+
+	this->ResetRigidBody();
+
+	//AABB aabb = playerObj->getCollisionBox();
+	/*XMFLOAT3 scale = playerObj->getScale();
 	
 	btVector3 size = btVector3(1+ aabb.width*scale.x,aabb.height*scale.y*2,1);
 	playerObj->getRigidbody() = System::getphysices()->addPlayer(btVector3(aabb.offset.x, aabb.offset.y, aabb.offset.z), size, 10.0f * getWeight(),this);
-
-	playerObj->getRigidbody()->setWorldTransform(XMMATRIX_to_btTransform(this->playerObj->getWorld()));
+*/
+	//playerObj->getRigidbody()->setWorldTransform(XMMATRIX_to_btTransform(this->playerObj->getWorld()));
 	this->playerObj->setRotationRollPitchYaw(0.f,3.14f/2.f,0.f);
 
 
-	/*Primitives *CollisionShape;
-	CollisionShape = new Primitives();
-	CollisionShape->Initialize(1, btVector3(0,0,0), btVector3(0, 0, 0));
-	CollisionShape->SetWorld(&this->hitbox.hitbox->getWorld());
-	System::getDebugDraw()->addPrimitives(CollisionShape);*/
-
-	playerObj->getRigidbody()->setActivationState(DISABLE_DEACTIVATION);
-	playerObj->getRigidbody()->setFriction(0.5);
-	playerObj->getRigidbody()->setRestitution(0);
-	playerObj->getRigidbody()->setAngularFactor(btVector3(0, 0, 0));
+	//playerObj->getRigidbody()->setActivationState(DISABLE_DEACTIVATION);
+	//playerObj->getRigidbody()->setFriction(0.5);
+	//playerObj->getRigidbody()->setRestitution(0);
+	//playerObj->getRigidbody()->setAngularFactor(btVector3(0, 0, 0));
 
 	this->setColorMask(color);
 	

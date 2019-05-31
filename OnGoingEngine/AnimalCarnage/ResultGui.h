@@ -6,22 +6,14 @@
 #include "WinnerView.h"
 #include "LooserView.h"
 
-struct PlayerResultInfo
-{
-	int playerID;
-	int kills;
-	int deaths;
-	int damage;
-};
-
 using namespace DirectX::SimpleMath;
 
 class ResultGui : public GuiBase
 {
 private:
 	Button* buttonMenu;
-	WinnerView* winnerView;
-	LooserView* looserView[3];
+	LooserView* statsView[4];
+	int nrOfPlayers;
 
 	float buttonDelay;
 
@@ -33,6 +25,8 @@ public:
 	void shutDown();
 	bool update(float deltaTime);
 	bool render();
+
+	void initializePlayerStats();
 };
 
 #endif // !RESULT_GUI_H

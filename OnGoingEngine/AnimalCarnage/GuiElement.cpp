@@ -21,6 +21,11 @@ void GuiElement::setConnectedElements(GuiElement * left, GuiElement * right, Gui
 	this->down = down;
 }
 
+void GuiElement::setPosition(DirectX::SimpleMath::Vector2 position)
+{
+	this->position = position;
+}
+
 DirectX::SimpleMath::Vector2 GuiElement::getPosition() const
 {
 	return this->position;

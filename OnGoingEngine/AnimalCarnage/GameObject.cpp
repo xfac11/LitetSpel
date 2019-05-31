@@ -69,11 +69,11 @@ void GameObject::setHalfSize(float halfSize[3], float posOffset[3])
 	this->colBox.offset = XMFLOAT3(posOffset[0], posOffset[1], posOffset[2]);
 	
 	/*check if collisionshape exist*/
-	/*if (this->CollisionShape != nullptr)
+	if (this->CollisionShape != nullptr)
 	{
 		System::getDebugDraw()->DeletePrimitiv(this->CollisionShape);
 		delete	this->CollisionShape;
-	}*/
+	}
 
 	this->CollisionShape = new Primitives();
 	this->CollisionShape->Initialize(1,btVector3(posOffset[0], posOffset[1], posOffset[2]), btVector3(halfSize[0]*2, halfSize[1]*2, halfSize[2]*2));
