@@ -74,6 +74,7 @@ private:
 	DirectX::XMFLOAT3 maxTemp;
 
 	void expandRespawns();
+	std::vector<Objects*> dynamicObjects;
 
 public:
 	GunGameState();

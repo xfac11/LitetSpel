@@ -68,7 +68,8 @@ bool WinnerView::render(bool selected)
 	System::getFontArial()->DrawString(System::getSpriteBatch(), "Winner", this->position + SimpleMath::Vector2(175.0F, 80.0F), Colors::Black, 0, SimpleMath::Vector2(System::getFontArial()->MeasureString("Winner") / 2.0F), 1);
 	System::getFontArial()->DrawString(System::getSpriteBatch(), ("Kills: " + std::to_string(stats.kills)).c_str(), this->position + SimpleMath::Vector2(30.0F, 340.0F + 105.0F), Colors::Black, 0, SimpleMath::Vector2::Zero, SimpleMath::Vector2::One * 0.5F);
 	System::getFontArial()->DrawString(System::getSpriteBatch(), ("Deaths: " + std::to_string(stats.deaths)).c_str(), this->position + SimpleMath::Vector2(30.0F, 340.0F + 105.0F + 40.0F), Colors::Black, 0, SimpleMath::Vector2::Zero, SimpleMath::Vector2::One * 0.5F);
-	System::getFontArial()->DrawString(System::getSpriteBatch(), ("Damage: " + std::to_string(stats.damage)).c_str(), this->position + SimpleMath::Vector2(30.0F, 340.0F + 105.0F + 80.0F), Colors::Black, 0, SimpleMath::Vector2::Zero, SimpleMath::Vector2::One * 0.5F);
+	System::getFontArial()->DrawString(System::getSpriteBatch(), "Damage", this->position + SimpleMath::Vector2(350 / 2.0F, 340.0F + 105.0F + 120.0F), Colors::Black, 0, System::getFontArial()->MeasureString("Damage") / 2.0F, SimpleMath::Vector2::One * 0.5F);
+	System::getFontArial()->DrawString(System::getSpriteBatch(), ("Taken: " + std::to_string(stats.damageTaken) + "  Dealt: " + std::to_string(stats.damageDealt)).c_str(), this->position + SimpleMath::Vector2(30.0F, 340.0F + 105.0F + 150.0F), Colors::Black, 0, SimpleMath::Vector2::Zero, SimpleMath::Vector2::One * 0.28F);
 
 	return true;
 }
