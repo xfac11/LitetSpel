@@ -39,7 +39,7 @@ private:
 
 public:
 	Objects();
-	Objects(std::string filepath ,btVector3 position, int id, int friction, btVector3 size = btVector3(1,1,1), OBJECTSTATE state = STATIC, OBJECTYPE type = STONE,int mipLevels=-1, float x=1, float y=1,bool changeOpacity=false,bool activeDraw=true);
+	Objects(std::string filepath ,btVector3 position, int id, int friction, btVector3 size = btVector3(1,1,1), btVector3 rotation = btVector3(0, 0, 0), OBJECTSTATE state = STATIC, OBJECTYPE type = STONE,int mipLevels=-1, float x=1, float y=1,bool changeOpacity=false,bool activeDraw=true);
 	~Objects();
 	void update(float dt);
 	void respawn(float offset);
