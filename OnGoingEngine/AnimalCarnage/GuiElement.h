@@ -22,6 +22,7 @@ public:
 	virtual bool render(bool selected);
 
 	void setConnectedElements(GuiElement* left, GuiElement* right, GuiElement* up, GuiElement* down);
+	void setPosition(DirectX::SimpleMath::Vector2 position);
 
 	DirectX::SimpleMath::Vector2 getPosition() const;
 	GuiElement* getLeft() const;

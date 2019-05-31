@@ -6,8 +6,7 @@
 #include "Slider.h"
 #include "CheckBox.h"
 #include "Button.h"
-
-enum Resolution;
+#include "System.h"
 
 class OptionsGui : public GuiBase
 {

@@ -127,6 +127,26 @@ btRigidBody* Physics::addPlayer(btVector3 Origin, btVector3 size, float mass, Pl
 	return body;
 }
 
+bool Physics::DeleteRigidBody(btRigidBody * rb)
+{
+	
+		for (int i = 0; i < this->bodies.size(); i++)
+		{
+			if (bodies[i] == rb)
+			{
+				this->world->removeRigidBody(bodies[i]);
+				btMotionState* motionState = bodies[i]->getMotionState();
+				btCollisionShape* shape = bodies[i]->getCollisionShape();
+				this->bodies.erase(this->bodies.begin() + i);
+				//delete bodies[i];
+				delete shape;
+				delete motionState;
+				return true;
+			}
+		}
+	return false;
+}
+
 //bool Physics::callbackFunc(btManifoldPoint& cp, const btCollisionObjectWrapper* obj1, int id1, int index1, const btCollisionObjectWrapper* obj2, int id2, int index2)
 //{
 //	

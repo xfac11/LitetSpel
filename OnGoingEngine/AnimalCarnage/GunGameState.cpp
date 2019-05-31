@@ -865,6 +865,10 @@ bool GunGameState::update(float deltaTime)
 					System::theCamera->cameraShake(0.1,DirectX::XMFLOAT3(player[j]->dir, randomNumber3, randomNumber4));
 
 					if(player[i]->getHealth() <= 0 && tempHP > 0) {
+						
+						player[i]->stats.deaths++;
+						player[j]->stats.kills++;
+
 						if(player[j]->canChange()){
 							player[j]->changeCharacter();
 							System::getSoundManager()->playEffect("Death");
@@ -872,6 +876,8 @@ bool GunGameState::update(float deltaTime)
 						else
 						{
 							this->resultsShown = true;
+							static_cast<ResultGui*>(this->resultGui)->initializePlayerStats();
+
 							this->paused = true;
 							this->pauseGui->activateDelay();
 						}
