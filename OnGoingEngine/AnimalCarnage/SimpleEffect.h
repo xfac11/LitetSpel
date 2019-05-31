@@ -18,12 +18,12 @@ private:
 	VertexBuffer<Particle> vertexBuffer;
 	Shader* theShader;
 	std::shared_ptr<Texture> particleTexture;
-
+	bool gravity;
 	int particleCount;
 	SimpleMath::Vector3* velocities;
 	Particle* particles;
 public:
-	SimpleEffect(SimpleMath::Vector3 position = SimpleMath::Vector3(), float lifeTime = 10.0f, int particleCount = 10,float size=1.0f, float maxStartSpeed = 5.0f, std::string fileName = "");
+	SimpleEffect(SimpleMath::Vector3 position = SimpleMath::Vector3(), float lifeTime = 10.0f,bool gravity=true, int particleCount = 10,float size=1.0f, float maxStartSpeed = 5.0f, std::string fileName = "");
 	virtual ~SimpleEffect();
 
 	virtual void update(float deltaTime);

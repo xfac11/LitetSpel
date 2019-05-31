@@ -1,6 +1,16 @@
 #include "Player.h"
 #include "System.h"
 
+PlayerColor Player::getColor() const
+{
+	return this->color;
+}
+
+AnimalType Player::getAnimalType() const
+{
+	return this->type;
+}
+
 float Player::getAnimSpeed() const
 {
 	return this->animSpeed;
@@ -74,7 +84,6 @@ void Player::reset()
 		}
 	}
 
-
 	//if (this->playerObj->getRigidbody() != nullptr)
 	//{
 	//	System::getphysices()->DeleteRigidBody(this->playerObj->getRigidbody());
@@ -95,11 +104,14 @@ void Player::reset()
 	//playerObj->getRigidbody()->setRestitution(0);
 	//playerObj->getRigidbody()->setAngularFactor(btVector3(0, 0, 0));
 
+	this->stats = PlayerStats();
+
 }
 
 void Player::takeDamage(int damage)
 {
 	this->health -= damage;
+	this->stats.damage += damage;
 	
 	if (this->health < 0)
 	{
@@ -861,7 +873,9 @@ void Player::update(float deltaTime, int id)
 		temp.m128_f32[3] = this->playerObj->getRigidbody()->getWorldTransform().getRotation().getW();
 
 		//playerObj->setRotationRollPitchYaw(getRoll(temp) * -1, playerObj->getRotation().y, playerObj->getRotation().z);
-
+		animName = "death";
+		animSpeed = 1;
+		animLoop = false;
 
 		deathTimer += 60 * deltaTime;
 		if (deathTimer >= 100) {
