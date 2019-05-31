@@ -75,6 +75,26 @@ void Player::reset()
 	}
 
 
+	//if (this->playerObj->getRigidbody() != nullptr)
+	//{
+	//	System::getphysices()->DeleteRigidBody(this->playerObj->getRigidbody());
+	//	this->playerObj->getRigidbody() = nullptr;
+	//}
+
+	//AABB aabb = playerObj->getCollisionBox();
+	//XMFLOAT3 scale = playerObj->getScale();
+
+	//btVector3 size = btVector3(1 + aabb.width * scale.x, aabb.height * scale.y * 2, 1);
+	//playerObj->getRigidbody() = System::getphysices()->addPlayer(btVector3(aabb.offset.x, aabb.offset.y, aabb.offset.z), size, 10.0f * getWeight(), this);
+
+	//playerObj->getRigidbody()->setWorldTransform(XMMATRIX_to_btTransform(this->playerObj->getWorld()));
+	//this->playerObj->setRotationRollPitchYaw(0.f, 3.14f / 2.f, 0.f);
+
+	//playerObj->getRigidbody()->setActivationState(DISABLE_DEACTIVATION);
+	//playerObj->getRigidbody()->setFriction(0.5);
+	//playerObj->getRigidbody()->setRestitution(0);
+	//playerObj->getRigidbody()->setAngularFactor(btVector3(0, 0, 0));
+
 }
 
 void Player::takeDamage(int damage)
@@ -185,6 +205,9 @@ void Player::changeCharacter()
 	//if (animal.maskPath != "empty" && !this->playerObj->getModel()->hasMaskColor())
 	//	this->playerObj->setMask(animal.maskPath, 0);//change to animal.maskPath
 	//System::handler->addObject(this->playerObj);
+
+
+
 
 	btVector3 inertia(0, 0, 0);
 	playerObj->getRigidbody()->setMassProps(10*getWeight(), inertia);
@@ -312,6 +335,12 @@ void Player::initialize(AnimalType type, PlayerColor color)
 	}
 		//change to animal.maskPath
 	System::handler->addObject(this->playerObj);
+
+	//if (this->playerObj->getRigidbody() != nullptr)
+	//{
+	//	System::getphysices()->DeleteRigidBody(this->playerObj->getRigidbody());
+	//	this->playerObj->getRigidbody() = nullptr;
+	//}
 
 	AABB aabb = playerObj->getCollisionBox();
 	XMFLOAT3 scale = playerObj->getScale();
