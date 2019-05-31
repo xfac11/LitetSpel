@@ -21,6 +21,11 @@ HealthBar::~HealthBar()
 {
 }
 
+const DirectX::XMVECTOR & HealthBar::getColor()
+{
+	return this->color;
+}
+
 bool HealthBar::render(bool selected)
 {
 	RECT source; source.top = 0; source.left = 0; source.bottom = HealthBar::textureOutline.getHeight();

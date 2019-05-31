@@ -17,7 +17,7 @@ private:
 public:
 	HealthBar(int health, int maxHealth, DirectX::SimpleMath::Vector2 position = DirectX::SimpleMath::Vector2::Zero);
 	virtual ~HealthBar();
-
+	const DirectX::XMVECTOR& getColor();
 	bool render(bool selected);
 	void setColor(float r, float g, float b);
 	void setHealth(int health);
