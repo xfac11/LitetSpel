@@ -1,6 +1,16 @@
 #include "Player.h"
 #include "System.h"
 
+PlayerColor Player::getColor() const
+{
+	return this->color;
+}
+
+AnimalType Player::getAnimalType() const
+{
+	return this->type;
+}
+
 float Player::getAnimSpeed() const
 {
 	return this->animSpeed;
@@ -74,12 +84,13 @@ void Player::reset()
 		}
 	}
 
-
+	this->stats = PlayerStats();
 }
 
 void Player::takeDamage(int damage)
 {
 	this->health -= damage;
+	this->stats.damage += damage;
 	
 	if (this->health < 0)
 	{

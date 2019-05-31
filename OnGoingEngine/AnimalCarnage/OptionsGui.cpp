@@ -1,5 +1,4 @@
 #include "OptionsGui.h"
-#include "System.h"
 #include "MainMenu.h"
 
 void OptionsGui::changeSelected_Keyboard()

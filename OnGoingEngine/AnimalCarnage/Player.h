@@ -30,6 +30,15 @@ enum PlayerColor
 	BLACK,
 	WHITE
 };
+struct PlayerStats
+{
+	AnimalType type = FOX;
+	PlayerColor color = RED;
+	int playerID = 0;
+	int kills = 0;
+	int deaths = 0;
+	int damage = 0;
+};
 class Player
 {
 private:
@@ -80,6 +89,10 @@ private:
 
 	/*Primitives *CollisionShape;*/
 public:
+	PlayerStats stats;
+
+	PlayerColor getColor() const;
+	AnimalType getAnimalType() const;
 	float getAnimSpeed() const;
 	string getAnimName() const;
 	bool getAnimLoop() const;
