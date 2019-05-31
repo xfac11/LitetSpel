@@ -57,7 +57,7 @@ void SimpleEffect::update(float deltaTime)
 		//a = g
 		//v = v0 + a * t
 		//s = v * t
-		this->velocities[i] = this->velocities[i] + 9.82f * this->gravity * deltaTime * SimpleMath::Vector3::Down;
+		this->velocities[i] = this->velocities[i]*0.5f + 9.82f * this->gravity * deltaTime * SimpleMath::Vector3::Down;
 		this->particles[i].position = this->particles[i].position + this->velocities[i] * deltaTime;
 	}
 

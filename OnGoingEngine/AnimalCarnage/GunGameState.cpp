@@ -913,6 +913,7 @@ bool GunGameState::update(float deltaTime)
 					if (Intersects(minTempObj, maxTempObj, player[j]->hitbox.hitbox->getCollisionBox(), player[j]->hitbox.hitbox->getPosition()) && !player[j]->getHitStun()) 
 					{
 						objects[i]->addImpulse(player[j]->dir * 65 * ((player[j]->getWeight()+1)/2), j);
+						objects[i]->setLastPlayerHit(j);
 					}
 					if (objects[i]->getPlayerKilled() == true && player[j]->getDiedOfStone() == true) 
 					{
