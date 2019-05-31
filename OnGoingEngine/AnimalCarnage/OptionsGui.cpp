@@ -156,13 +156,16 @@ bool OptionsGui::initialize()
 {
 	this->resolution = System::resolution;
 
+	bool rumble[4];
+	dynamic_cast<MainMenu*>(this->myState)->getRumble(rumble);
+
 	this->sliderMusic = new Slider(100, 100, 5, SimpleMath::Vector2(1920 / 2.0F - 610 / 2, 1080 / 2.0F - 200));
 	this->buttonConfirm = new Button("Apply", SimpleMath::Vector2(1920 / 2.0F + 10, 1080 / 2.0F - 50));
 	this->buttonResolution = new Button(this->getResolutionText(System::resolution), SimpleMath::Vector2(1920 / 2.0F - 610, 1080 / 2.0F - 50));
-	this->checkBoxRumble1 = new CheckBox(true, SimpleMath::Vector2(1920 / 2.0F - 350, 1080 / 2.0F + 100));
-	this->checkBoxRumble2 = new CheckBox(true, SimpleMath::Vector2(1920 / 2.0F - 150, 1080 / 2.0F + 100));
-	this->checkBoxRumble3 = new CheckBox(true, SimpleMath::Vector2(1920 / 2.0F + 50, 1080 / 2.0F + 100));
-	this->checkBoxRumble4 = new CheckBox(true, SimpleMath::Vector2(1920 / 2.0F + 250, 1080 / 2.0F + 100));
+	this->checkBoxRumble1 = new CheckBox(rumble[0], SimpleMath::Vector2(1920 / 2.0F - 350, 1080 / 2.0F + 100));
+	this->checkBoxRumble2 = new CheckBox(rumble[1], SimpleMath::Vector2(1920 / 2.0F - 150, 1080 / 2.0F + 100));
+	this->checkBoxRumble3 = new CheckBox(rumble[2], SimpleMath::Vector2(1920 / 2.0F + 50, 1080 / 2.0F + 100));
+	this->checkBoxRumble4 = new CheckBox(rumble[3], SimpleMath::Vector2(1920 / 2.0F + 250, 1080 / 2.0F + 100));
 
 	this->selectedElement = this->sliderMusic;
 	this->sliderMusic->setConnectedElements(nullptr, nullptr, checkBoxRumble1, buttonResolution);
@@ -382,6 +385,13 @@ bool OptionsGui::update(float deltaTime)
 				else if (System::theTracker->b == DirectX::GamePad::ButtonStateTracker::PRESSED)
 				{
 					MainMenu* state = dynamic_cast<MainMenu*>(this->myState);
+					bool rumble[4] = {
+						this->checkBoxRumble1->isChecked(),
+						this->checkBoxRumble2->isChecked(),
+						this->checkBoxRumble3->isChecked(),
+						this->checkBoxRumble4->isChecked()
+					};
+					state->setRumble(rumble);
 					state->setCurrentMenu(MAIN);
 				}
 			}

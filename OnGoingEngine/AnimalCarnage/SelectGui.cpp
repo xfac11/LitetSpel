@@ -101,6 +101,7 @@ bool SelectGui::update(float deltaTime)
 
 			AnimalType type[4];
 			PlayerColor color[4];
+			bool rumble[4];
 
 			for (int i = 0; i < 4; i++)
 			{
@@ -108,7 +109,9 @@ bool SelectGui::update(float deltaTime)
 				color[i] = this->playerSelectors[i]->getPlayerColor();
 			}
 
-			dynamic_cast<GunGameState*>(System::getCurrentState())->initPlayers(type, color);
+			MainMenu* state = dynamic_cast<MainMenu*>(this->myState);
+			state->getRumble(rumble);
+			dynamic_cast<GunGameState*>(System::getCurrentState())->initPlayers(type, color, rumble);
 		}
 		else if (System::theKeyboard->KeyIsPressed('Q'))
 		{
@@ -205,6 +208,7 @@ bool SelectGui::update(float deltaTime)
 
 						AnimalType type[4];
 						PlayerColor color[4];
+						bool rumble[4];
 
 						for (int i = 0; i < dynamic_cast<GunGameState*>(System::getCurrentState())->getNrOfPlayers(); i++)
 						{
@@ -212,7 +216,9 @@ bool SelectGui::update(float deltaTime)
 							color[i] = this->playerSelectors[i]->getPlayerColor();
 						}
 						this->allReady = false;
-						dynamic_cast<GunGameState*>(System::getCurrentState())->initPlayers(type, color);
+						MainMenu* state = dynamic_cast<MainMenu*>(this->myState);
+						state->getRumble(rumble);
+						dynamic_cast<GunGameState*>(System::getCurrentState())->initPlayers(type, color, rumble);
 					}
 
 				}

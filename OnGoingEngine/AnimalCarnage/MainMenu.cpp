@@ -10,6 +10,11 @@ MainMenu::MainMenu()
 	this->options = nullptr;
 	this->rules = nullptr;
 	this->select = nullptr;
+
+	for (int i = 0; i < 4; i++)
+	{
+		this->rumbleEnabled[i] = true;
+	}
 }
 
 MainMenu::~MainMenu()
@@ -102,5 +107,21 @@ void MainMenu::setCurrentMenu(MainMenuGui menu, bool alwaysActivateDelay)
 	else if (alwaysActivateDelay)
 	{
 		this->gui->activateDelay();
+	}
+}
+
+void MainMenu::getRumble(bool rumbleEnabled[])
+{
+	for (int i = 0; i < 4; i++)
+	{
+		rumbleEnabled[i] = this->rumbleEnabled[i];
+	}
+}
+
+void MainMenu::setRumble(bool rumbleEnabled[])
+{
+	for (int i = 0; i < 4; i++)
+	{
+		this->rumbleEnabled[i] = rumbleEnabled[i];
 	}
 }

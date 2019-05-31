@@ -74,6 +74,7 @@ private:
 	DirectX::XMFLOAT3 maxTemp;
 
 	void expandRespawns();
+	std::vector<Objects*> dynamicObjects;
 
 public:
 	GunGameState();
@@ -87,7 +88,7 @@ public:
 	void addObject(std::string filePath, btVector3 pos, int id, int friction,btVector3 size, btVector3 rotation = btVector3(0, 0, 0),OBJECTSTATE state=STATIC, OBJECTYPE type=STONE, int mipLevels=-1,bool shouldRespawn=false);
 	void addObject(std::string filePath, btVector3 pos, int id, int friction, btVector3 size = btVector3(1, 1, 1), btVector3 rotation = btVector3(0, 0, 0), OBJECTSTATE state = STATIC, OBJECTYPE type = STONE, bool shouldRespawn = false,int mipLevels=-1,int xRepeated=1, int yRepeated=1, bool changeOpacity=false, bool canBeDrawn=true);
 	//std::string filepath, btVector3 position, int id, int friction, btVector3 size, OBJECTSTATE state, OBJECTYPE type, int mipLevels, float x, float y, bool changeOpacity, bool activeDraw
-	bool initPlayers(AnimalType type[], PlayerColor color[]);
+	bool initPlayers(AnimalType type[], PlayerColor color[], bool rumbleEnabled[]);
 	void ResetRigidBody();
 	bool initailize();
 	bool render();
