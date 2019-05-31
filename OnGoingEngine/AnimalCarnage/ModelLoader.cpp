@@ -28,7 +28,14 @@ void ModelLoader::loadAO(GameObject*& object, const char* characterName, std::ve
 	std::string filePath = "";
 	std::string animName;
 	reader.readFile(initPath.c_str());
+	std::vector<Luna::Vertex> vertices;
+	std::vector<Vertex3D> vertices3D;
+	reader.getVertices(0, vertices); //init to resize
+	vertices3D.resize(vertices.size());
 	mat = reader.getMaterial(0);
+	reader.getJoints(joints);
+	keyframePack.resize(joints.size());
+	object->setSkeleton(joints, attackJoint);
 	shared_ptr<Model> model = System::assetMananger->GetModel(initPath);
 	System::assetMananger->LoadTexture(mat.diffuseTexPath, mat.diffuseTexPath);
 	shared_ptr<Texture> texture = System::assetMananger->GetTexture(mat.diffuseTexPath);
@@ -39,19 +46,13 @@ void ModelLoader::loadAO(GameObject*& object, const char* characterName, std::ve
 		System::assetMananger->LoadGlowMap(mat.glowTexPath, mat.glowTexPath); //load texture
 		glowmap = System::assetMananger->GetTexture(mat.glowTexPath); //set glow texture
 	}
-
 	for (int i = 0; i < animalAnimations.size(); i++) //nrOfAnimations
 	{
 		filePath = characterName + animalAnimations[i] + lu;
 		reader.readFile(filePath.c_str());
-
 		mat = reader.getMaterial(0);
 		mesh = reader.getMesh(0);
 		anims = reader.getAnimation();
-		reader.getJoints(joints);
-		keyframePack.resize(joints.size());
-		skltn = reader.getSkeleton();
-
 		if (model != nullptr)
 		{
 			model->SetTexture(texture);
@@ -63,32 +64,23 @@ void ModelLoader::loadAO(GameObject*& object, const char* characterName, std::ve
 			{
 				for (int f = 0; f < joints.size(); f++)
 					reader.getKeyframes(f, keyframePack[f]);
-
-				object->setSkeleton(joints, attackJoint);
 				object->setNewAnimation(anims.fps, anims.duration, animName, keyframePack);//change to pack
 			}
 		}
 		else if (model == nullptr)
 		{
-			std::vector<Luna::Vertex> vertices;
-			std::vector<Vertex3D> vertices3D;
 			reader.getVertices(0, vertices);
-			vertices3D.resize(vertices.size());
 			for (int vrt = 0; vrt < vertices.size(); vrt++)
 			{
 				vertices3D[vrt] = vertices[vrt];
 				vertices3D[vrt].uv.y = abs(1 - vertices3D[vrt].uv.y);
 			}
-
 			reader.getWeights(mesh.id, weights);
-			keyframePack.resize(joints.size());
-			for (int k = 0; k < joints.size(); k++)
-				reader.getKeyframes(k, keyframePack[k]);
-
 			animName = std::string(anims.animationName);
 			if (!object->checkIfAnimExist(animName, characterName))
 			{
-				object->setSkeleton(joints, attackJoint);
+				for (int k = 0; k < joints.size(); k++)
+					reader.getKeyframes(k, keyframePack[k]);
 				object->setNewAnimation(anims.fps, anims.duration, animName, keyframePack);
 			}
 			for (int jw = 0; jw < weights.size(); jw++)
@@ -113,9 +105,7 @@ void ModelLoader::loadAO(GameObject*& object, const char* characterName, std::ve
 			vertices3D.clear();
 		}
 	}
-
 	object->addModel(model, mesh.hasSkeleton);
-	
 	//set half size pushes in a array 
 	reader.readFile(initPath.c_str());
 	if (mesh.hasBoundingBox)

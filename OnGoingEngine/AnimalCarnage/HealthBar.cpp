@@ -5,6 +5,8 @@ bool HealthBar::texturesLoaded = false;
 Texture HealthBar::texture = Texture();
 Texture HealthBar::textureOutline = Texture();
 Texture HealthBar::textureBackground = Texture();
+Texture HealthBar::textureFox = Texture();
+Texture HealthBar::textureRabbit = Texture();
 HealthBar::HealthBar(int health, int maxHealth, DirectX::SimpleMath::Vector2 position) : GuiElement(position), health(health), maxHealth(maxHealth)
 {
 	if (!HealthBar::texturesLoaded)
@@ -12,6 +14,8 @@ HealthBar::HealthBar(int health, int maxHealth, DirectX::SimpleMath::Vector2 pos
 		HealthBar::texture.setTexture("healthBar2.tga");
 		HealthBar::textureOutline.setTexture("healthBarOutline2.tga");
 		HealthBar::textureBackground.setTexture("healthBarBackground.tga");
+		//HealthBar::textureFox.setTexture();
+		//HealthBar::textureRabbit.setTexture();
 		this->color = DirectX::XMVectorSet(0, 1, 0, 1);
 		HealthBar::texturesLoaded = true;
 	}
@@ -39,7 +43,6 @@ bool HealthBar::render(bool selected)
 	System::getSpriteBatch()->Draw(HealthBar::textureBackground.getTexture(), this->position+ DirectX::SimpleMath::Vector2(5, 0), this->color);
 	System::getSpriteBatch()->Draw(HealthBar::textureOutline.getTexture(), this->position + DirectX::SimpleMath::Vector2(5, 0), &source, color);
 	System::getSpriteBatch()->Draw(HealthBar::texture.getTexture(), this->position+DirectX::SimpleMath::Vector2(5, 0));
-	
 	
 	return true;
 }

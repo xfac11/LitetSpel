@@ -11,6 +11,8 @@ private:
 	static Texture texture;
 	static Texture textureOutline;
 	static Texture textureBackground;
+	static Texture textureFox;
+	static Texture textureRabbit;
 	int health;
 	int maxHealth;
 	DirectX::XMVECTOR color;
