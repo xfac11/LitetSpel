@@ -182,6 +182,12 @@ bool MainGui::update(float deltaTime)
 					state->setCurrentMenu(OPTIONS);
 				}
 			}
+			if (System::theTracker->y == DirectX::GamePad::ButtonStateTracker::PRESSED || 
+				System::theTracker->x == DirectX::GamePad::ButtonStateTracker::PRESSED )
+			{
+				MainMenu* state = dynamic_cast<MainMenu*>(this->myState);
+				state->setCurrentMenu(START);
+			}
 
 			break;
 		}

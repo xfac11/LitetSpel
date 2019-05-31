@@ -27,7 +27,7 @@ struct AABB {
 
 	AABB() : Max(1, 1, 1), Min(1, 1, 1) { }
 	AABB(const XMFLOAT3& p, const XMFLOAT3& s) :
-		Max(p), Min(s) { }
+		Max(p), Min(s), offset(0,0,0){ }
 	friend bool Intersects(const AABB a, XMFLOAT3 posA, const AABB b, XMFLOAT3 posB);
 	friend bool Intersects(DirectX::XMFLOAT3 aabbmin, DirectX::XMFLOAT3 aabbMax, const AABB b, XMFLOAT3 posB);
 }

@@ -16,7 +16,12 @@ private:
 	static Texture *textureMoose;
 	static Texture *textureBear;
 	static Texture *textureCrown;
+	static Texture* foxPortait;
+	static Texture* moosePortrait;
+	static Texture* bearPortrait;
+	static Texture* rabbitPortrait;
 	Texture* nextTexture;
+	Texture* currentTexture;
 	int health;
 	int maxHealth;
 	int next;
@@ -30,6 +35,7 @@ public:
 	void setHealth(int health);
 	int getHealth() const;
 	void setNextAnimal(int next);
+	void setCurrentAnimal(int current);
 	void setMaxHealth(int maxHealth);
 	int getMaxHealth() const;
 };

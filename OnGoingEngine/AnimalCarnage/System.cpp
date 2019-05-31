@@ -184,6 +184,16 @@ LRESULT CALLBACK System::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM 
 		int y = HIWORD(lParam);
 		theMouse->OnRightPressed(x, y);
 	}
+	else if (message == WM_SIZE)
+	{
+		RECT rect;
+		GetWindowRect(hWnd, &rect);
+		int width = rect.right - rect.left;
+		int height = rect.bottom - rect.top;
+
+		if(ImGui::GetCurrentContext()!=nullptr)
+			ImGui::GetIO().DisplaySize = ImVec2(static_cast<float>(width), static_cast<float>(height));
+	}
 	//else if (message == WM_MBUTTONDOWN)
 	//{
 	//	int x = LOWORD(lParam);
@@ -883,13 +893,14 @@ void System::resizeWindow(int width, int height)
 	vp.MaxDepth = 1.0f;
 	spriteBatch->SetViewport(vp);
 
-	ImGui::GetIO().DisplaySize = ImVec2(static_cast<float>(width), static_cast<float>(height));
 
 	System::matrixForSpritebatch = SimpleMath::Matrix::CreateTranslation(((width - 1920.0f * (height / 1080.0f)) * 0.5f) / (height / 1080.0f) , 0, 0) * SimpleMath::Matrix::CreateScale((height / 1080.0f));
 
 	RECT rect;
 	GetWindowRect(System::fusk->hwnd, &rect);
 	MoveWindow(System::fusk->hwnd, rect.left, rect.top, width, height, true);
+
+	ImGui::GetIO().DisplaySize = ImVec2(static_cast<float>(width), static_cast<float>(height));
 
 	System::fusk->theWindow.width = width;
 	System::fusk->theWindow.height = height;

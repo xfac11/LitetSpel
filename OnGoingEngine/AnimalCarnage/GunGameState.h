@@ -22,6 +22,9 @@ private:
 	GuiBase* pauseGui;
 	GuiBase* resultGui;
 	bool paused;
+	bool localPause;
+	float pauseDelay;
+	float unPauseDelay;
 	bool resultsShown;
 
 	int cameraFocus;

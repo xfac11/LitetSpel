@@ -31,6 +31,7 @@ bool GunGameGui::initialize()
 		this->playerHealthBars[i] = new HealthBar(state->getPlayer(i)->getHealth(), state->getPlayer(i)->getMaxHealth(), 
 			SimpleMath::Vector2(1920 / 2 - ((this->nrOfPlayers * 300) / 2) - (((this->nrOfPlayers - 1) * 50) / 2) + i * 350.0F, 10.0F));
 		this->playerHealthBars[i]->setNextAnimal(state->getPlayer(i)->getNextAnimal());
+		this->playerHealthBars[i]->setCurrentAnimal(state->getPlayer(i)->getAnimalType());
 	}
 
 	return true;
@@ -51,6 +52,7 @@ void GunGameGui::shutDown()
 
 bool GunGameGui::update(float deltaTime)
 {
+	bool result = false;
 	GunGameState* state = static_cast<GunGameState*>(this->myState);
 	//Reminder : insert next to playerhealth so it displays the right paws/crown
 	for (int i = 0; i < this->nrOfPlayers; i++)
@@ -58,17 +60,19 @@ bool GunGameGui::update(float deltaTime)
 		this->playerHealthBars[i]->setHealth(state->getPlayer(i)->getHealth());
 		this->playerHealthBars[i]->setMaxHealth(state->getPlayer(i)->getMaxHealth());
 		this->playerHealthBars[i]->setNextAnimal(state->getPlayer(i)->getNextAnimal());
+		this->playerHealthBars[i]->setCurrentAnimal(state->getPlayer(i)->getAnimalType());
 		this->playerHealthBars[i]->setColor(state->getPlayer(i)->playerObj->getColorMask().x, state->getPlayer(i)->playerObj->getColorMask().y, state->getPlayer(i)->playerObj->getColorMask().z);
 	}
 
 	if (System::theKeyboard->KeyIsPressed('Q'))
 	{
 		state->pause(true);
+		result = true;
 	}
-	if (System::theKeyboard->KeyIsPressed('P'))
-	{
-		state->pause(false);
-	}
+	//if (System::theKeyboard->KeyIsPressed('P'))
+	//{
+	//	state->pause(false);
+	//}
 
 	for (int i = 0; i < 4; i++)
 	{
@@ -76,17 +80,19 @@ bool GunGameGui::update(float deltaTime)
 
 		if (gamepadState.IsConnected())
 		{
-			//System::theTracker->Update(gamepadState);
+			System::theTracker->Update(gamepadState);
 
 			if (System::theTracker->start == DirectX::GamePad::ButtonStateTracker::PRESSED)
 			{
 				state->pause(true);
+				result = true;
+
 			}
-			break;
+			//break;
 		}
 	}
 
-	return true;
+	return result;
 }
 
 bool GunGameGui::render()
