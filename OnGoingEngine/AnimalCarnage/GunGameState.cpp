@@ -947,7 +947,7 @@ bool GunGameState::update(float deltaTime)
 			}
 		}
 		//GRASS ROTATION
-		for (int i = 0; i < nrOfObjects; i++)
+		for (int i = 13; i < 115; i++)
 		{
 			for (int j = 0; j < nrOfPlayers; j++) {
 				if (objects[i]->GetType() == GRASS) {
@@ -957,7 +957,7 @@ bool GunGameState::update(float deltaTime)
 					}
 				}
 			}
-			for (int j = 0; j < nrOfObjects; j++) {
+			for (int j = 0; j < 6; j++) {
 				if (objects[i]->GetType() == GRASS && objects[j]->GetState() == TRUE_DYNAMIC) {
 					if ((((objects[i]->getPosition().x - objects[j]->getRigidBodyPosition().getX()) < 1) && ((objects[i]->getPosition().x - objects[j]->getRigidBodyPosition().getX()) > -1)) && objects[j]->getRigidBodyPosition().getY() < 2) {
 						objects[i]->addGrassRotation(0.01, objects[j]->getMovingDirection());
