@@ -817,8 +817,11 @@ bool GunGameState::update(float deltaTime)
 					player[i]->playerObj->getRigidbody()->applyCentralImpulse(btVector3(player[j]->dir * 150 * ((player[j]->getWeight() + 2) /3), 150 * ((player[j]->getWeight() + 2) / 3), 0));// , btVector3(1, 0, 0));
 					
 					int tempHP = player[i]->getHealth();
+
 					//TAKE DAMAGE HERE
 					player[i]->takeDamage(player[j]->getStrength());
+					player[i]->stats.damageTaken += player[j]->getStrength();
+					player[j]->stats.damageDealt += player[j]->getStrength();
 					System::getParticleManager()->addSimpleEffect(player[i]->getPosition(), "hit_effect", 0.5f, 2,false, 30, 6);
 
 					int randomNumber = (rand() % 4) + 0;

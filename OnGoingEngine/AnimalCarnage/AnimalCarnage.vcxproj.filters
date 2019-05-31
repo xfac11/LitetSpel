@@ -711,6 +711,15 @@
     <ClCompile Include="Objects.cpp">
       <Filter>Source</Filter>
     </ClCompile>
+    <ClCompile Include="LooserView.cpp">
+      <Filter>Menu</Filter>
+    </ClCompile>
+    <ClCompile Include="ResultGui.cpp">
+      <Filter>Menu</Filter>
+    </ClCompile>
+    <ClCompile Include="WinnerView.cpp">
+      <Filter>Menu</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource1.h" />
@@ -1607,6 +1616,15 @@
     </ClInclude>
     <ClInclude Include="Objects.h">
       <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="LooserView.h">
+      <Filter>Menu</Filter>
+    </ClInclude>
+    <ClInclude Include="ResultGui.h">
+      <Filter>Menu</Filter>
+    </ClInclude>
+    <ClInclude Include="WinnerView.h">
+      <Filter>Menu</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

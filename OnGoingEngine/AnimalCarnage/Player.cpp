@@ -90,7 +90,6 @@ void Player::reset()
 void Player::takeDamage(int damage)
 {
 	this->health -= damage;
-	this->stats.damage += damage;
 	
 	if (this->health < 0)
 	{
