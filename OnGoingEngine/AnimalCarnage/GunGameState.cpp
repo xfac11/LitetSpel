@@ -430,6 +430,13 @@ bool GunGameState::initailize()
 	tree4->setScale(0.6, 0.6, 0.6);
 	tree4->setRotationRollPitchYaw(0, 2, 0);
 
+	//GameObject* obj = new GameObject;
+	//System::theModelLoader->loadGO(obj, "Resources/Models/platform2.lu");
+	//System::handler->addObject(obj);
+	//obj->setPosition(-12, 2, 15);
+	////obj->setScale(0.6, 0.6, 0.6);
+	//obj->setRotationRollPitchYaw(2.4, 2.3, 2.5);
+
 	//Grass
 	GameObject* grass_patch1 = new GameObject;
 	System::theModelLoader->loadGO(grass_patch1, "Resources/Models/grass_patch1.lu");
@@ -447,6 +454,10 @@ bool GunGameState::initailize()
 	System::theModelLoader->loadGO(grass_patch4, "Resources/Models/grass_patch1.lu");
 	System::handler->addObject(grass_patch4);
 	grass_patch4->setPosition(-20, 0.8, 5);
+	GameObject* grass_patch5 = new GameObject;
+	System::theModelLoader->loadGO(grass_patch5, "Resources/Models/grass_patch1.lu");
+	System::handler->addObject(grass_patch5);
+	grass_patch5->setPosition(-20, 0.8, 17);
 
 	//Background stones
 	GameObject* cliff1 = new GameObject;
@@ -476,6 +487,16 @@ bool GunGameState::initailize()
 	cliff5->setPosition(33, 0.6, 30);
 	cliff5->setScale(5, 5, 5);
 	cliff5->setRotationRollPitchYaw(0, -2.5, 0);
+	GameObject* cliff6 = new GameObject;
+	System::theModelLoader->loadGO(cliff6, "Resources/Models/cliff2.lu");
+	System::handler->addObject(cliff6);
+	cliff6->setPosition(-20, 0, 27.6);
+	cliff6->setScale(9.8, 9.8, 9.8);
+	GameObject* cliff7 = new GameObject;
+	System::theModelLoader->loadGO(cliff7, "Resources/Models/cliff2.lu");
+	System::handler->addObject(cliff7);
+	cliff7->setPosition(-23, 3, 20.6);
+	cliff7->setScale(3.8, 2.8, 3.8);
 
 	//Mushrooms
 	GameObject* mushrooms1 = new GameObject;
@@ -546,6 +567,12 @@ bool GunGameState::initailize()
 	bush3->setPosition(-30, 2.5, -6.0);
 	bush3->setScale(4, 3, 3);
 	bush3->setRotationRollPitchYaw(0, -1.5, 0);
+	GameObject* bush4 = new GameObject;
+	System::theModelLoader->loadGO(bush4, "Resources/Models/bush1.lu");
+	System::handler->addObject(bush4);
+	bush4->setPosition(-17, 2.5, 22.0);
+	bush4->setScale(4, 2, 2);
+	bush4->setRotationRollPitchYaw(0, -0.5, 0);
 
 	//Trees at the border of the stage
 	GameObject* rBorderTree1 = new GameObject;
