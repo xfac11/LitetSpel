@@ -81,6 +81,7 @@
 GunGameState::GunGameState()
 {
 	this->testColBox = false;
+	this->uiEnable = true;
 	this->paused = false;
 	this->resultsShown = false;
 	this->inGameGui = nullptr;
@@ -767,11 +768,14 @@ bool GunGameState::render()
 	}
 	else
 	{
-		this->inGameGui->render();
-
-		if (this->paused)
+		if (this->uiEnable)
 		{
-			this->pauseGui->render();
+			this->inGameGui->render();
+
+			if (this->paused)
+			{
+				this->pauseGui->render();
+			}
 		}
 	}
 
@@ -820,6 +824,17 @@ void GunGameState::renderImgui()
 bool GunGameState::update(float deltaTime)
 {
 
+	if (System::theKeyboard->KeyIsPressed('U'))
+	{
+		if (!this->uiEnable)
+		{
+			this->uiEnable = true;
+		}
+		else if(this->uiEnable)
+		{
+			this->uiEnable = false;
+		}
+	}
 
 	if (resultsShown)
 	{
