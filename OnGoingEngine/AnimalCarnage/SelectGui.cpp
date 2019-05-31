@@ -115,6 +115,7 @@ bool SelectGui::update(float deltaTime)
 		{
 			MainMenu* state = dynamic_cast<MainMenu*>(this->myState);
 			state->setCurrentMenu(MAIN/*RULES*/);
+			return true;
 		}
 	}
 	else
