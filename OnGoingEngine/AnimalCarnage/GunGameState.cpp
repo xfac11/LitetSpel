@@ -436,32 +436,32 @@ bool GunGameState::initailize()
 	this->addObject("Resources/Models/grass1.lu", btVector3(-24.4, 0.4, -8.8), 0, 0, btVector3(1.0, 1.0, 1.0), btVector3(0.0, 0.0, 0.0), BACKGROUND, GRASS, 1, false);
 	this->addObject("Resources/Models/grass2.lu", btVector3(-25.2, 0.4, -8.9), 0, 0, btVector3(1.0, 1.0, 1.0), btVector3(0.0, 0.0, 0.0), BACKGROUND, GRASS, 1, false);
 
-	this->addObject("Resources/Models/grass2.lu", btVector3(1.5, 0.4, -5.4), 0, 0, btVector3(1.0, 1.0, 1.0), btVector3(20, 0.0, 0.0), BACKGROUND, STONE, 1, false);
-	this->addObject("Resources/Models/grass2.lu", btVector3(2.5, 0.4, -5.2), 0, 0, btVector3(1.0, 1.0, 1.0), btVector3(20, 0.0, 0.0), BACKGROUND, STONE, 1, false);
-	this->addObject("Resources/Models/grass1.lu", btVector3(3.5, 0.4, -5.0), 0, 0, btVector3(1.0, 1.0, 1.0), btVector3(20, 0.0, 0.0), BACKGROUND, STONE, 1, false);
-	this->addObject("Resources/Models/grass2.lu", btVector3(4.5, 0.4, -6.9), 0, 0, btVector3(1.0, 1.0, 1.0), btVector3(20, 0.0, 0.0), BACKGROUND, STONE, 1, false);
-	this->addObject("Resources/Models/grass1.lu", btVector3(5.5, 0.4, -5.0), 0, 0, btVector3(1.0, 1.0, 1.0), btVector3(20, 0.0, 0.0), BACKGROUND, STONE, 1, false);
-	this->addObject("Resources/Models/grass1.lu", btVector3(6.5, 0.4, -6.5), 0, 0, btVector3(1.0, 1.0, 1.0), btVector3(20, 0.0, 0.0), BACKGROUND, STONE, 1, false);
-	this->addObject("Resources/Models/grass2.lu", btVector3(7.5, 0.4, -5.3), 0, 0, btVector3(1.0, 1.0, 1.0), btVector3(20, 0.0, 0.0), BACKGROUND, STONE, 1, false);
-	this->addObject("Resources/Models/grass1.lu", btVector3(8.5, 0.4, -6.5), 0, 0, btVector3(1.0, 1.0, 1.0), btVector3(20, 0.0, 0.0), BACKGROUND, STONE, 1, false);
-	this->addObject("Resources/Models/grass2.lu", btVector3(9.5, 0.4, -5.1), 0, 0, btVector3(1.0, 1.0, 1.0), btVector3(20, 0.0, 0.0), BACKGROUND, STONE, 1, false);
-	this->addObject("Resources/Models/grass1.lu", btVector3(10.5, 0.4, -6.8), 0, 0, btVector3(1.0, 1.0, 1.0), btVector3(20, 0.0, 0.0), BACKGROUND, STONE, 1, false);
-	this->addObject("Resources/Models/grass2.lu", btVector3(11.5, 0.4, -5.4), 0, 0, btVector3(1.0, 1.0, 1.0), btVector3(20, 0.0, 0.0), BACKGROUND, STONE, 1, false);
-	this->addObject("Resources/Models/grass1.lu", btVector3(12.5, 0.4, -6.9), 0, 0, btVector3(1.0, 1.0, 1.0), btVector3(20, 0.0, 0.0), BACKGROUND, STONE, 1, false);
-	this->addObject("Resources/Models/grass1.lu", btVector3(13.5, 0.4, -5.4), 0, 0, btVector3(1.0, 1.0, 1.0), btVector3(20, 0.0, 0.0), BACKGROUND, STONE, 1, false);
-	this->addObject("Resources/Models/grass2.lu", btVector3(14.5, 0.4, -6.1), 0, 0, btVector3(1.0, 1.0, 1.0), btVector3(20, 0.0, 0.0), BACKGROUND, STONE, 1, false);
-	this->addObject("Resources/Models/grass2.lu", btVector3(15.5, 0.4, -5.3), 0, 0, btVector3(1.0, 1.0, 1.0), btVector3(20, 0.0, 0.0), BACKGROUND, STONE, 1, false);
-	this->addObject("Resources/Models/grass1.lu", btVector3(16.5, 0.4, 5.6), 0, 0, btVector3(1.0, 1.0, 1.0), btVector3(20, 0.0, 0.0), BACKGROUND, STONE, 1, false);
-	this->addObject("Resources/Models/grass1.lu", btVector3(17.5, 0.4, -5.7), 0, 0, btVector3(1.0, 1.0, 1.0), btVector3(20, 0.0, 0.0), BACKGROUND, STONE, 1, false);
-	this->addObject("Resources/Models/grass2.lu", btVector3(18.5, 0.4, -5.2), 0, 0, btVector3(1.0, 1.0, 1.0), btVector3(20, 0.0, 0.0), BACKGROUND, STONE, 1, false);
-	this->addObject("Resources/Models/grass1.lu", btVector3(19.5, 0.4, -5.2), 0, 0, btVector3(1.0, 1.0, 1.0), btVector3(20, 0.0, 0.0), BACKGROUND, STONE, 1, false);
-	this->addObject("Resources/Models/grass2.lu", btVector3(20.5, 0.4, -6.8), 0, 0, btVector3(1.0, 1.0, 1.0), btVector3(20, 0.0, 0.0), BACKGROUND, STONE, 1, false);
-	this->addObject("Resources/Models/grass1.lu", btVector3(21.5, 0.4, -6.3), 0, 0, btVector3(1.0, 1.0, 1.0), btVector3(20, 0.0, 0.0), BACKGROUND, STONE, 1, false);
-	this->addObject("Resources/Models/grass1.lu", btVector3(22.5, 0.4, -5.8), 0, 0, btVector3(1.0, 1.0, 1.0), btVector3(20, 0.0, 0.0), BACKGROUND, STONE, 1, false);
-	this->addObject("Resources/Models/grass2.lu", btVector3(23.5, 0.4, -6.0), 0, 0, btVector3(1.0, 1.0, 1.0), btVector3(20, 0.0, 0.0), BACKGROUND, STONE, 1, false);
-	this->addObject("Resources/Models/grass1.lu", btVector3(24.5, 0.4, -5.3), 0, 0, btVector3(1.0, 1.0, 1.0), btVector3(20, 0.0, 0.0), BACKGROUND, STONE, 1, false);
-	this->addObject("Resources/Models/grass2.lu", btVector3(25.5, 0.4, -5.8), 0, 0, btVector3(1.0, 1.0, 1.0), btVector3(20, 0.0, 0.0), BACKGROUND, STONE, 1, false);
-	this->addObject("Resources/Models/grass1.lu", btVector3(26.5, 0.4, -6.9), 0, 0, btVector3(1.0, 1.0, 1.0), btVector3(20, 0.0, 0.0), BACKGROUND, STONE, 1, false);
+	this->addObject("Resources/Models/grass2.lu", btVector3(1.5, 0.4, -5.4), 0, 0, btVector3(1.0, 1.0, 1.0), btVector3(20, 0.0, 0.0), BACKGROUND, GRASS, 1, false);
+	this->addObject("Resources/Models/grass2.lu", btVector3(2.5, 0.4, -5.2), 0, 0, btVector3(1.0, 1.0, 1.0), btVector3(20, 0.0, 0.0), BACKGROUND, GRASS, 1, false);
+	this->addObject("Resources/Models/grass1.lu", btVector3(3.5, 0.4, -5.0), 0, 0, btVector3(1.0, 1.0, 1.0), btVector3(20, 0.0, 0.0), BACKGROUND, GRASS, 1, false);
+	this->addObject("Resources/Models/grass2.lu", btVector3(4.5, 0.4, -6.9), 0, 0, btVector3(1.0, 1.0, 1.0), btVector3(20, 0.0, 0.0), BACKGROUND, GRASS, 1, false);
+	this->addObject("Resources/Models/grass1.lu", btVector3(5.5, 0.4, -5.0), 0, 0, btVector3(1.0, 1.0, 1.0), btVector3(20, 0.0, 0.0), BACKGROUND, GRASS, 1, false);
+	this->addObject("Resources/Models/grass1.lu", btVector3(6.5, 0.4, -6.5), 0, 0, btVector3(1.0, 1.0, 1.0), btVector3(20, 0.0, 0.0), BACKGROUND, GRASS, 1, false);
+	this->addObject("Resources/Models/grass2.lu", btVector3(7.5, 0.4, -5.3), 0, 0, btVector3(1.0, 1.0, 1.0), btVector3(20, 0.0, 0.0), BACKGROUND, GRASS, 1, false);
+	this->addObject("Resources/Models/grass1.lu", btVector3(8.5, 0.4, -6.5), 0, 0, btVector3(1.0, 1.0, 1.0), btVector3(20, 0.0, 0.0), BACKGROUND, GRASS, 1, false);
+	this->addObject("Resources/Models/grass2.lu", btVector3(9.5, 0.4, -5.1), 0, 0, btVector3(1.0, 1.0, 1.0), btVector3(20, 0.0, 0.0), BACKGROUND, GRASS, 1, false);
+	this->addObject("Resources/Models/grass1.lu", btVector3(10.5, 0.4, -6.8), 0, 0, btVector3(1.0, 1.0, 1.0), btVector3(20, 0.0, 0.0), BACKGROUND, GRASS, 1, false);
+	this->addObject("Resources/Models/grass2.lu", btVector3(11.5, 0.4, -5.4), 0, 0, btVector3(1.0, 1.0, 1.0), btVector3(20, 0.0, 0.0), BACKGROUND, GRASS, 1, false);
+	this->addObject("Resources/Models/grass1.lu", btVector3(12.5, 0.4, -6.9), 0, 0, btVector3(1.0, 1.0, 1.0), btVector3(20, 0.0, 0.0), BACKGROUND, GRASS, 1, false);
+	this->addObject("Resources/Models/grass1.lu", btVector3(13.5, 0.4, -5.4), 0, 0, btVector3(1.0, 1.0, 1.0), btVector3(20, 0.0, 0.0), BACKGROUND, GRASS, 1, false);
+	this->addObject("Resources/Models/grass2.lu", btVector3(14.5, 0.4, -6.1), 0, 0, btVector3(1.0, 1.0, 1.0), btVector3(20, 0.0, 0.0), BACKGROUND, GRASS, 1, false);
+	this->addObject("Resources/Models/grass2.lu", btVector3(15.5, 0.4, -5.3), 0, 0, btVector3(1.0, 1.0, 1.0), btVector3(20, 0.0, 0.0), BACKGROUND, GRASS, 1, false);
+	this->addObject("Resources/Models/grass1.lu", btVector3(16.5, 0.4, 5.6), 0, 0, btVector3(1.0, 1.0, 1.0), btVector3(20, 0.0, 0.0), BACKGROUND, GRASS, 1, false);
+	this->addObject("Resources/Models/grass1.lu", btVector3(17.5, 0.4, -5.7), 0, 0, btVector3(1.0, 1.0, 1.0), btVector3(20, 0.0, 0.0), BACKGROUND, GRASS, 1, false);
+	this->addObject("Resources/Models/grass2.lu", btVector3(18.5, 0.4, -5.2), 0, 0, btVector3(1.0, 1.0, 1.0), btVector3(20, 0.0, 0.0), BACKGROUND, GRASS, 1, false);
+	this->addObject("Resources/Models/grass1.lu", btVector3(19.5, 0.4, -5.2), 0, 0, btVector3(1.0, 1.0, 1.0), btVector3(20, 0.0, 0.0), BACKGROUND, GRASS, 1, false);
+	this->addObject("Resources/Models/grass2.lu", btVector3(20.5, 0.4, -6.8), 0, 0, btVector3(1.0, 1.0, 1.0), btVector3(20, 0.0, 0.0), BACKGROUND, GRASS, 1, false);
+	this->addObject("Resources/Models/grass1.lu", btVector3(21.5, 0.4, -6.3), 0, 0, btVector3(1.0, 1.0, 1.0), btVector3(20, 0.0, 0.0), BACKGROUND, GRASS, 1, false);
+	this->addObject("Resources/Models/grass1.lu", btVector3(22.5, 0.4, -5.8), 0, 0, btVector3(1.0, 1.0, 1.0), btVector3(20, 0.0, 0.0), BACKGROUND, GRASS, 1, false);
+	this->addObject("Resources/Models/grass2.lu", btVector3(23.5, 0.4, -6.0), 0, 0, btVector3(1.0, 1.0, 1.0), btVector3(20, 0.0, 0.0), BACKGROUND, GRASS, 1, false);
+	this->addObject("Resources/Models/grass1.lu", btVector3(24.5, 0.4, -5.3), 0, 0, btVector3(1.0, 1.0, 1.0), btVector3(20, 0.0, 0.0), BACKGROUND, GRASS, 1, false);
+	this->addObject("Resources/Models/grass2.lu", btVector3(25.5, 0.4, -5.8), 0, 0, btVector3(1.0, 1.0, 1.0), btVector3(20, 0.0, 0.0), BACKGROUND, GRASS, 1, false);
+	this->addObject("Resources/Models/grass1.lu", btVector3(26.5, 0.4, -6.9), 0, 0, btVector3(1.0, 1.0, 1.0), btVector3(20, 0.0, 0.0), BACKGROUND, GRASS, 1, false);
 
 	this->addObject("Resources/Models/grass1.lu", btVector3(0.0, 0.4, -10.4), 0, 0, btVector3(1.0, 1.0, 1.0), btVector3(0.0, 0.0, 0.0), BACKGROUND, GRASS, 1, false);
 	this->addObject("Resources/Models/grass2.lu", btVector3(-1.0, 0.4, -10.2), 0, 0, btVector3(1.0, 1.0, 1.0), btVector3(0.0, 0.0, 0.0), BACKGROUND, GRASS, 1, false);
@@ -492,7 +492,7 @@ bool GunGameState::initailize()
 
 	this->addObject("Resources/Models/grass2.lu", btVector3(0, 0.4, 4.9), 0, 0, btVector3(1.0, 1.0, 1.0), btVector3(0.0, 0.0, 0.0), BACKGROUND, GRASS, 1, false);
 	this->addObject("Resources/Models/grass2.lu", btVector3(-2, 0.4, 3.9), 0, 0, btVector3(0.9, 0.9, 0.9), btVector3(0.0, 0.0, 0.0), BACKGROUND, GRASS, 1, false);
-	this->addObject("Resources/Models/grass_patch1.lu", btVector3(0, 0.4, 4.9), 0, 0, btVector3(1.0, 1.0, 1.0), btVector3(0.0, 0.0, 0.0), BACKGROUND, STONE, 1, false);
+	this->addObject("Resources/Models/grass_patch1.lu", btVector3(0, 0.4, 4.9), 0, 0, btVector3(1.0, 1.0, 1.0), btVector3(0.0, 0.0, 0.0), BACKGROUND, GRASS, 1, false);
 
 
 	//Background trees
@@ -527,22 +527,27 @@ bool GunGameState::initailize()
 	System::theModelLoader->loadGO(grass_patch1, "Resources/Models/grass_patch1.lu");
 	System::handler->addObject(grass_patch1);
 	grass_patch1->setPosition(0, 0.8, -5.9);
+	grass_patch1->setRotationRollPitchYaw(0.5, 0.0, 0.0);
 	GameObject* grass_patch2 = new GameObject;
 	System::theModelLoader->loadGO(grass_patch2, "Resources/Models/grass_patch1.lu");
 	System::handler->addObject(grass_patch2);
 	grass_patch2->setPosition(0, 0.8, 12);
+	grass_patch2->setRotationRollPitchYaw(0.5, 0.0, 0.0);
 	GameObject* grass_patch3 = new GameObject;
 	System::theModelLoader->loadGO(grass_patch3, "Resources/Models/grass_patch1.lu");
 	System::handler->addObject(grass_patch3);
 	grass_patch3->setPosition(8, 0.8, 9);
+	grass_patch3->setRotationRollPitchYaw(0.5, 0.0, 0.0);
 	GameObject* grass_patch4 = new GameObject;
 	System::theModelLoader->loadGO(grass_patch4, "Resources/Models/grass_patch1.lu");
 	System::handler->addObject(grass_patch4);
 	grass_patch4->setPosition(-20, 0.8, 5);
+	grass_patch4->setRotationRollPitchYaw(0.5, 0.0, 0.0);
 	GameObject* grass_patch5 = new GameObject;
 	System::theModelLoader->loadGO(grass_patch5, "Resources/Models/grass_patch1.lu");
 	System::handler->addObject(grass_patch5);
 	grass_patch5->setPosition(-20, 0.8, 17);
+	grass_patch5->setRotationRollPitchYaw(0.5, 0.0, 0.0);
 
 	//Background stones
 	GameObject* cliff1 = new GameObject;
@@ -988,7 +993,7 @@ bool GunGameState::update(float deltaTime)
 					if (Intersects(minTempObj, maxTempObj, player[j]->hitbox.hitbox->getCollisionBox(), player[j]->hitbox.hitbox->getPosition()) && !player[j]->getHitStun()) 
 					{
 						objects[i]->addImpulse(player[j]->dir * 65 * ((player[j]->getWeight()+1)/2), j);
-						objects[i]->setLastPlayerHit(j);
+						//objects[i]->setLastPlayerHit(j);
 					}
 					if (objects[i]->getPlayerKilled() == true && player[j]->getDiedOfStone() == true) 
 					{

@@ -187,47 +187,50 @@ void Player::setAnimalTypeAndMass(AnimalType type)
 
 void Player::changeCharacter()
 {
-	int noNewAnimal = true;
-	for (int i = 0; i < 4; i++) 
-	{
-		if (canBeAnimal[randomNumberArray[i]] == true && noNewAnimal) 
+	if (this != nullptr){
+		int noNewAnimal = true;
+		for (int i = 0; i < 4; i++)
 		{
-			currentAnimal = randomNumberArray[i];
-			canBeAnimal[randomNumberArray[i]] = false;
-			noNewAnimal = false;
-		}
-		if (canBeAnimal[randomNumberArray[i]] == true && !noNewAnimal)
-		{
-			nextAnimal = randomNumberArray[i];
-			break;
-		}
-		else {
-			nextAnimal = -1;
-		}
+			if (canBeAnimal[randomNumberArray[i]] == true && noNewAnimal)
+			{
+				currentAnimal = randomNumberArray[i];
+				canBeAnimal[randomNumberArray[i]] = false;
+				noNewAnimal = false;
+			}
+			if (canBeAnimal[randomNumberArray[i]] == true && !noNewAnimal)
+			{
+				nextAnimal = randomNumberArray[i];
+				break;
+			}
+			else {
+				nextAnimal = -1;
+			}
 
 
+		}
+
+		this->setAnimalType(ArrayOfAnimals[currentAnimal]);
+		//////System::theModelLoader->loadAO(this->playerObj, Animal::getAnimal(ArrayOfAnimals[currentAnimal]).modelPath, Animal::getAnimal(ArrayOfAnimals[currentAnimal]).animalAnimations);
+		System::theModelLoader->loadAO(this->playerObj, Animal::getAnimal(ArrayOfAnimals[currentAnimal]).modelPath, Animal::getAnimal(ArrayOfAnimals[currentAnimal]).animalAnimations, Animal::getAnimal(ArrayOfAnimals[currentAnimal]).attackJoint);
+		System::assetMananger->LoadTexture(Animal::getAnimal(ArrayOfAnimals[currentAnimal]).maskPath, Animal::getAnimal(ArrayOfAnimals[currentAnimal]).maskPath);
+		this->playerObj->getModel()->setMaskTexture(System::assetMananger->GetTexture(Animal::getAnimal(ArrayOfAnimals[currentAnimal]).maskPath));
+		//////System::assetMananger->LoadTexture(Animal::getAnimal(type).maskPath, Animal::getAnimal(type).maskPath);
+		//////this->playerObj->getModel()->setMaskTexture(System::assetMananger->GetTexture(Animal::getAnimal(type).maskPath));
+
+		//System::theModelLoader->loadGO(this->playerObj, Animal::getAnimal(ArrayOfAnimals[currentAnimal]).modelPath);
+
+		//if (animal.maskPath != "empty" && !this->playerObj->getModel()->hasMaskColor())
+		//	this->playerObj->setMask(animal.maskPath, 0);//change to animal.maskPath
+		//System::handler->addObject(this->playerObj);
+
+
+		ResetRigidBody();
+
+		btVector3 inertia(0, 0, 0);
+		playerObj->getRigidbody()->setMassProps(10 * getWeight(), inertia);
+		animName = "idle";
 	}
 
-	this->setAnimalType(ArrayOfAnimals[currentAnimal]);
-	//////System::theModelLoader->loadAO(this->playerObj, Animal::getAnimal(ArrayOfAnimals[currentAnimal]).modelPath, Animal::getAnimal(ArrayOfAnimals[currentAnimal]).animalAnimations);
-	System::theModelLoader->loadAO(this->playerObj, Animal::getAnimal(ArrayOfAnimals[currentAnimal]).modelPath, Animal::getAnimal(ArrayOfAnimals[currentAnimal]).animalAnimations, Animal::getAnimal(ArrayOfAnimals[currentAnimal]).attackJoint);
-	System::assetMananger->LoadTexture(Animal::getAnimal(ArrayOfAnimals[currentAnimal]).maskPath, Animal::getAnimal(ArrayOfAnimals[currentAnimal]).maskPath);
-	this->playerObj->getModel()->setMaskTexture(System::assetMananger->GetTexture(Animal::getAnimal(ArrayOfAnimals[currentAnimal]).maskPath));
-	//////System::assetMananger->LoadTexture(Animal::getAnimal(type).maskPath, Animal::getAnimal(type).maskPath);
-	//////this->playerObj->getModel()->setMaskTexture(System::assetMananger->GetTexture(Animal::getAnimal(type).maskPath));
-	
-	//System::theModelLoader->loadGO(this->playerObj, Animal::getAnimal(ArrayOfAnimals[currentAnimal]).modelPath);
-
-	//if (animal.maskPath != "empty" && !this->playerObj->getModel()->hasMaskColor())
-	//	this->playerObj->setMask(animal.maskPath, 0);//change to animal.maskPath
-	//System::handler->addObject(this->playerObj);
-
-
-	ResetRigidBody();
-
-	btVector3 inertia(0, 0, 0);
-	playerObj->getRigidbody()->setMassProps(10*getWeight(), inertia);
-	animName = "idle";
 }
 
 bool Player::getHitStun()
