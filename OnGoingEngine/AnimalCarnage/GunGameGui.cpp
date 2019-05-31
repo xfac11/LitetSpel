@@ -96,8 +96,23 @@ bool GunGameGui::render()
 	{
 		System::getFontArial()->DrawString(System::getSpriteBatch(), ("Next: " + std::to_string(state->getPlayer(i)->getNextAnimal())).c_str(), SimpleMath::Vector2(1920 / 2.0F - ((this->nrOfPlayers * 300) / 2) - (((this->nrOfPlayers - 1) * 50) / 2) + i * 350.0F, 70.0F + 35), Colors::Black, 0.0f, DirectX::SimpleMath::Vector2::Zero, DirectX::SimpleMath::Vector2::One / 2);
 		
-		System::getFontArial()->DrawString(System::getSpriteBatch(), ("Player " + std::to_string(i + 1)).c_str(), SimpleMath::Vector2(1920 / 2.0F - ((this->nrOfPlayers * 300) / 2) - (((this->nrOfPlayers - 1) * 50) / 2) + i * 350.0F, 70.0F), Colors::Black, 0.0f, DirectX::SimpleMath::Vector2::Zero, DirectX::SimpleMath::Vector2::One / 2);
+		const char* output = ("P " + std::to_string(i + 1)).c_str();
+		SimpleMath::Vector2 origin = System::getFontArial()->MeasureString("P2") / 2.f;
+
+		SimpleMath::Vector2 pos = SimpleMath::Vector2(1920 / 2.0F - ((this->nrOfPlayers * 300) / 2) - (((this->nrOfPlayers - 1) * 50) / 2) + i * 350.0F, 150.0F);
+
+		//SimpleMath::Vector2 pos = SimpleMath::Vector2(300, 300);
 		this->playerHealthBars[i]->render(false);
+		/*System::getFontArial()->DrawString(System::getSpriteBatch(), ("P" + std::to_string(i + 1)).c_str(),
+			pos + SimpleMath::Vector2(1.f, 1.f), Colors::GhostWhite, 0.f, origin, DirectX::SimpleMath::Vector2::One / 3);
+		System::getFontArial()->DrawString(System::getSpriteBatch(), ("P" + std::to_string(i + 1)).c_str(),
+			pos + SimpleMath::Vector2(-1.f, 1.f), Colors::GhostWhite, 0.f, origin, DirectX::SimpleMath::Vector2::One / 3);
+		System::getFontArial()->DrawString(System::getSpriteBatch(), ("P" + std::to_string(i + 1)).c_str(),
+			pos + SimpleMath::Vector2(-1.f, -1.f), Colors::GhostWhite, 0.f, origin, DirectX::SimpleMath::Vector2::One / 3);*/
+		System::getFontArial()->DrawString(System::getSpriteBatch(), ("P" + std::to_string(i + 1)).c_str(),
+			pos, Colors::GhostWhite, 0.f, origin, (DirectX::SimpleMath::Vector2::One / 3)*1.1);
+
+		System::getFontArial()->DrawString(System::getSpriteBatch(), ("P" + std::to_string(i + 1)).c_str(), pos, this->playerHealthBars[i]->getColor() /*Colors::ForestGreen*/, 0.0f, origin, DirectX::SimpleMath::Vector2::One / 3);
 	}
 
 	System::getSpriteBatch()->End();
