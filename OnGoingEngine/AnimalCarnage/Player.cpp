@@ -322,7 +322,7 @@ void Player::ResetRigidBody()
 
 	playerObj->getRigidbody()->setWorldTransform(XMMATRIX_to_btTransform(this->playerObj->getWorld()));
 	this->playerObj->setRotationRollPitchYaw(0.f, 3.14f / 2.f, 0.f);
-
+	this->setRigidbodyPosition(this->getPosition().x, this->getPosition().y, this->getPosition().z);
 	playerObj->getRigidbody()->setActivationState(DISABLE_DEACTIVATION);
 	playerObj->getRigidbody()->setFriction(0.5);
 	playerObj->getRigidbody()->setRestitution(0);
