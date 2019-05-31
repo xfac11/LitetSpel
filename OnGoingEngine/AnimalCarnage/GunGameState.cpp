@@ -405,37 +405,44 @@ bool GunGameState::initailize()
 	this->addObject("Resources/Models/grass2.lu", btVector3(25.5, 0.4, -1.8), 0, 0, btVector3(1.0, 1.0, 1.0), BACKGROUND, GRASS, 1, false);
 	this->addObject("Resources/Models/grass1.lu", btVector3(26.5, 0.4, -2.9), 0, 0, btVector3(1.0, 1.0, 1.0), BACKGROUND, GRASS, 1, false);
 
-	//this->addObject("Resources/Models/grass_patch1.lu", btVector3(0, 0.4, -5.9), 0, 0, btVector3(1.0, 1.0, 1.0), BACKGROUND, STONE, 1, false);
+	this->addObject("Resources/Models/grass2.lu", btVector3(0, 0.4, 4.9), 0, 0, btVector3(1.0, 1.0, 1.0), BACKGROUND, GRASS, 1, false);
+	this->addObject("Resources/Models/grass2.lu", btVector3(-2, 0.4, 3.9), 0, 0, btVector3(0.9, 0.9, 0.9), BACKGROUND, GRASS, 1, false);
+	this->addObject("Resources/Models/grass_patch1.lu", btVector3(0, 0.4, 4.9), 0, 0, btVector3(1.0, 1.0, 1.0), BACKGROUND, STONE, 1, false);
+
 
 	//Background trees
 	GameObject* tree2 = new GameObject;
 	System::theModelLoader->loadGO(tree2, "Resources/Models/tree2.lu");
 	System::handler->addObject(tree2);
-	tree2->setPosition(-1, 0, 26);
+	tree2->setPosition(-1, 1, 26);
 	tree2->setScale(0.7, 0.7, 0.7);
+	tree2->setRotationRollPitchYaw(0, -0.5, 0);
 	GameObject* tree3 = new GameObject;
 	System::theModelLoader->loadGO(tree3, "Resources/Models/tree3.lu");
 	System::handler->addObject(tree3);
 	tree3->setPosition(-40, 0, 25);
 	tree3->setScale(0.8, 0.8, 0.8);
 	tree3->setRotationRollPitchYaw(0, -2.5, 0);
+	GameObject* tree4 = new GameObject;
+	System::theModelLoader->loadGO(tree4, "Resources/Models/tree3.lu");
+	System::handler->addObject(tree4);
+	tree4->setPosition(45, 0, 40);
+	tree4->setScale(0.6, 0.6, 0.6);
+	tree4->setRotationRollPitchYaw(0, 2, 0);
 
 	//Grass
 	GameObject* grass_patch1 = new GameObject;
 	System::theModelLoader->loadGO(grass_patch1, "Resources/Models/grass_patch1.lu");
 	System::handler->addObject(grass_patch1);
 	grass_patch1->setPosition(0, 0.8, -5.9);
-	//grass_patch1->setRotationRollPitchYaw(0.3, 0, 0);
 	GameObject* grass_patch2 = new GameObject;
 	System::theModelLoader->loadGO(grass_patch2, "Resources/Models/grass_patch1.lu");
 	System::handler->addObject(grass_patch2);
 	grass_patch2->setPosition(0, 0.8, 12);
-	//grass_patch2->setRotationRollPitchYaw(0.3, 0, 0);
 	GameObject* grass_patch3 = new GameObject;
 	System::theModelLoader->loadGO(grass_patch3, "Resources/Models/grass_patch1.lu");
 	System::handler->addObject(grass_patch3);
 	grass_patch3->setPosition(8, 0.8, 9);
-	//grass_patch3->setRotationRollPitchYaw(0.3, 0, 0);
 	GameObject* grass_patch4 = new GameObject;
 	System::theModelLoader->loadGO(grass_patch4, "Resources/Models/grass_patch1.lu");
 	System::handler->addObject(grass_patch4);
@@ -463,6 +470,12 @@ bool GunGameState::initailize()
 	cliff4->setPosition(-37, 5.6, 9.6);
 	cliff4->setScale(5, 5, 5);
 	cliff4->setRotationRollPitchYaw(0, -2.5, 0);
+	GameObject* cliff5 = new GameObject;
+	System::theModelLoader->loadGO(cliff5, "Resources/Models/cliff4.lu");
+	System::handler->addObject(cliff5);
+	cliff5->setPosition(33, 0.6, 30);
+	cliff5->setScale(5, 5, 5);
+	cliff5->setRotationRollPitchYaw(0, -2.5, 0);
 
 	//Mushrooms
 	GameObject* mushrooms1 = new GameObject;
@@ -479,6 +492,30 @@ bool GunGameState::initailize()
 	System::handler->addObject(mushroom2);
 	mushroom2->setPosition(-18, 0.9, -2.0);
 	mushroom2->setScale(1.3, 1.3, 1.3);
+	GameObject* mushroom3 = new GameObject;
+	System::theModelLoader->loadGO(mushroom3, "Resources/Models/mushroom2.lu");
+	System::handler->addObject(mushroom3);
+	mushroom3->setPosition(15, 0.9, 4.0);
+	mushroom3->setScale(1.3, 1.3, 1.3);
+	GameObject* mushroom4 = new GameObject;
+	System::theModelLoader->loadGO(mushroom4, "Resources/Models/mushroom2.lu");
+	System::handler->addObject(mushroom4);
+	mushroom4->setPosition(2, 0.9, 25.0);
+	GameObject* mushroom5 = new GameObject;
+	System::theModelLoader->loadGO(mushroom5, "Resources/Models/mushroom2.lu");
+	System::handler->addObject(mushroom5);
+	mushroom5->setPosition(0, 0.9, 21.0);
+	mushroom3->setScale(0.8, 0.8, 0.8);
+	GameObject* mushroom6 = new GameObject;
+	System::theModelLoader->loadGO(mushroom6, "Resources/Models/mushroom3.lu");
+	System::handler->addObject(mushroom6);
+	mushroom6->setPosition(-15, 0.9, 5.0);
+	mushroom6->setScale(3, 3, 3);
+	GameObject* mushroom7 = new GameObject;
+	System::theModelLoader->loadGO(mushroom7, "Resources/Models/mushroom3.lu");
+	System::handler->addObject(mushroom7);
+	mushroom7->setPosition(-17, 0.9, 4.0);
+	mushroom7->setScale(2, 2, 2);
 
 	//Bushes
 	GameObject* bush1 = new GameObject;
@@ -490,7 +527,7 @@ bool GunGameState::initailize()
 	GameObject* bush2 = new GameObject;
 	System::theModelLoader->loadGO(bush2, "Resources/Models/bush1.lu");
 	System::handler->addObject(bush2);
-	bush2->setPosition(-3, 3.0, 15.0);
+	bush2->setPosition(-4, 3.0, 20.0);
 	bush2->setScale(3.5, 2.5, 2.5);
 	bush2->setRotationRollPitchYaw(0, -2.5, 0);
 	GameObject* bush3 = new GameObject;
