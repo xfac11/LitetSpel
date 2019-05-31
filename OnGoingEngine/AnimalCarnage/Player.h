@@ -28,7 +28,8 @@ enum PlayerColor
 	CYAN,
 	PINK,
 	BLACK,
-	WHITE
+	WHITE,
+	PURPLE
 };
 struct PlayerStats
 {

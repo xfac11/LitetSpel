@@ -71,8 +71,11 @@ bool PlayerSelector::render(bool selected, DirectX::XMVECTOR color)
 	case WHITE:
 		System::getSpriteBatch()->Draw(PlayerSelector::backGroundLayer.getTexture(), this->position + DirectX::SimpleMath::Vector2(25, 20));
 		break;
+	case PURPLE:
+		System::getSpriteBatch()->Draw(PlayerSelector::backGroundLayer.getTexture(), this->position + DirectX::SimpleMath::Vector2(25, 20),Colors::Purple);
+		break;
 	}
-
+	//System::getSpriteBatch()->Draw(PlayerSelector::backGroundLayer.getTexture(), this->position + DirectX::SimpleMath::Vector2(25, 20),color);
 	switch (this->animalType)
 	{
 	case FOX:
@@ -197,8 +200,8 @@ void PlayerSelector::changePlayerColor(bool dir)
 	int color = static_cast<int>(this->color) + (dir ? -1 : 1);
 
 	if (color < 0)
-		color = 7;
-	else if (color > 7)
+		color = 8;
+	else if (color > 8)
 		color = 0;
 
 	this->color = static_cast<PlayerColor>(color);

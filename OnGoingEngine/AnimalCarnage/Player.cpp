@@ -154,6 +154,9 @@ void Player::setColorMask(PlayerColor color)
 	case WHITE:
 		colorMask = XMFLOAT4(Colors::White);
 		break;
+	case PURPLE:
+		colorMask = XMFLOAT4(Colors::Purple);
+		break;
 	}
 
 	this->playerObj->setColorMask(colorMask);

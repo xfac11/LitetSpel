@@ -17,7 +17,7 @@ class GunGameState : public State
 private:
 	int nrOfPlayers;
 	Player** player;
-
+	bool uiEnable;
 	GuiBase* inGameGui;
 	GuiBase* pauseGui;
 	GuiBase* resultGui;
