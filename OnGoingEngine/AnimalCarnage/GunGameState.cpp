@@ -715,6 +715,20 @@ bool GunGameState::initailize()
 
 	System::handler->sortBackToFront();
 
+
+	// & to a new vector that holds the dynmic objects for collisons
+	for (int i = 0; i < nrOfObjects; i++)
+	{
+		if (this->objects[i]->GetType() == GRASS) {
+			this->dynamicObjects.push_back(objects[i]);
+		}
+		else if (this->objects[i]->GetType() == TRUE_DYNAMIC)
+		{
+			this->dynamicObjects.push_back(objects[i]);
+		}
+	}
+
+
 	return true;
 }
 
@@ -929,11 +943,13 @@ bool GunGameState::update(float deltaTime)
 			}
 		}
 		//GRASS ROTATION
-		for (int i = 0; i < nrOfObjects; i++) {
+		for (int i = 0; i < nrOfObjects; i++)
+		{
 			for (int j = 0; j < nrOfPlayers; j++) {
 				if (objects[i]->GetType() == GRASS) {
 					if ((((objects[i]->getPosition().x - player[j]->getPosition().x) < 2) && ((objects[i]->getPosition().x - player[j]->getPosition().x) > -2)) && player[j]->getPosition().y < 2) {
 						objects[i]->addGrassRotation(0.005, player[j]->dir);
+						break;
 					}
 				}
 			}
@@ -941,10 +957,30 @@ bool GunGameState::update(float deltaTime)
 				if (objects[i]->GetType() == GRASS && objects[j]->GetState() == TRUE_DYNAMIC) {
 					if ((((objects[i]->getPosition().x - objects[j]->getRigidBodyPosition().getX()) < 1) && ((objects[i]->getPosition().x - objects[j]->getRigidBodyPosition().getX()) > -1)) && objects[j]->getRigidBodyPosition().getY() < 2) {
 						objects[i]->addGrassRotation(0.01, objects[j]->getMovingDirection());
+						break;
 					}
 				}
 			}
 		}
+
+
+		////GRASS ROTATION
+		//for (int i = 0; i < dynamicObjects.size(); i++) {
+		//	for (int j = 0; j < nrOfPlayers; j++) {
+		//		if (dynamicObjects[i]->GetType() == GRASS) {
+		//			if ((((dynamicObjects[i]->getPosition().x - player[j]->getPosition().x) < 2) && ((dynamicObjects[i]->getPosition().x - player[j]->getPosition().x) > -2)) && player[j]->getPosition().y < 2) {
+		//				dynamicObjects[i]->addGrassRotation(0.005, player[j]->dir);
+		//			}
+		//		}
+		//	}
+		//	for (int j = 0; j < dynamicObjects.size(); j++) {
+		//		if (dynamicObjects[i]->GetType() == GRASS && dynamicObjects[j]->GetState() == TRUE_DYNAMIC) {
+		//			if ((((dynamicObjects[i]->getPosition().x - dynamicObjects[j]->getRigidBodyPosition().getX()) < 1) && ((dynamicObjects[i]->getPosition().x - dynamicObjects[j]->getRigidBodyPosition().getX()) > -1)) && dynamicObjects[j]->getRigidBodyPosition().getY() < 2) {
+		//				dynamicObjects[i]->addGrassRotation(0.01, dynamicObjects[j]->getMovingDirection());
+		//			}
+		//		}
+		//	}
+		//}
 
 		//for(int k=0;k<nrOfObjects;k++){}
 
