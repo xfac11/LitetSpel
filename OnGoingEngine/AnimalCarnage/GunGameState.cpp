@@ -249,12 +249,13 @@ void GunGameState::addObject(std::string filePath, btVector3 pos, int id, int fr
 	this->nrOfObjects++;
 }
 
-bool GunGameState::initPlayers(AnimalType type[], PlayerColor color[])
+bool GunGameState::initPlayers(AnimalType type[], PlayerColor color[], bool rumbleEnabled[])
 {
 	for (int i = 0; i < nrOfPlayers; i++)
 	{
 		player[i]->setAnimalTypeAndMass(type[i]);
 		player[i]->setColorMask(color[i]);
+		player[i]->setRumble(rumbleEnabled[i]);
 	}
 	reset();
 	return true;

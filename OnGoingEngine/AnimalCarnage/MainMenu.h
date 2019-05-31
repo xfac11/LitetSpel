@@ -13,6 +13,8 @@ private:
 	GuiBase* rules;
 	GuiBase* select;
 
+	bool rumbleEnabled[4];
+
 public:
 	MainMenu();
 	~MainMenu();
@@ -24,6 +26,9 @@ public:
 	void shutDown();
 
 	void setCurrentMenu(MainMenuGui menu, bool alwaysActivateDelay = false);
+
+	void getRumble(bool rumbleEnabled[]);
+	void setRumble(bool rumbleEnabled[]);
 };
 
 #endif // !MAIN_MENU_H
