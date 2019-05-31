@@ -283,17 +283,18 @@ bool GunGameState::initailize()
 	this->addObject("Resources/Models/ground.lu", btVector3(16, 0, 20), 3, 3, btVector3(100.f, 4.f, 50.f), STATIC, GROUND, false, -1, 10000, 10000, true);
 
 	this->addObject("Resources/Models/platform1.lu", btVector3(12, 4, 0), 3, 3, btVector3(1.4f, 2.8f, 1.4f), DYNAMIC, PLATFORM, 1,true);
-	this->addObject("Resources/Models/platform1.lu", btVector3(5, 4, 0), 3, 3, btVector3(1.4f, 2.8f, 1.4f), DYNAMIC, PLATFORM, 1,true);
+	this->addObject("Resources/Models/platform1.lu", btVector3(5, 8, 0), 3, 3, btVector3(1.4f, 2.8f, 1.4f), DYNAMIC, PLATFORM, 1,true);
 
 	this->addObject("Resources/Models/cube2.lu", btVector3(35, 17, 0), 2, 1, btVector3(10.f, 40.f, 10.f), STATIC, STONE,false, -1, 1, 1, false,false);
 	this->addObject("Resources/Models/cube2.lu", btVector3(-35, 17, 0), 2, 1, btVector3(10.f, 40.f, 10.f), STATIC, STONE,false, -1, 1, 1, false, false);
 
-	this->addObject("Resources/Models/platform2.lu", btVector3(-10, 5, 0), 3, 3, btVector3(0.6f, 0.8f, 0.6f), STATIC, PLATFORM, 1,true);
+	this->addObject("Resources/Models/platform2.lu", btVector3(-13, 5, 0), 3, 3, btVector3(0.6f, 0.8f, 0.6f), STATIC, PLATFORM, 1,true);
+	this->addObject("Resources/Models/platform1.lu", btVector3(-3, 10, 0), 3, 3, btVector3(2.0f, 2.0f, 2.0f), STATIC, PLATFORM, 1, true);
 
 	this->addObject("Resources/Models/tree1.lu", btVector3(10, 0, 7.6), 0, 0, btVector3(1.6, 1.6, 1.6), BACKGROUND, PLATFORM, 1, false);
 
-	this->addObject("Resources/Models/bush1.lu", btVector3(-12, 1.3, 0), 0, 0, btVector3(1.6, 1.6, 1.6), BACKGROUND, STONE, 1, false);
-	this->addObject("Resources/Models/bush1.lu", btVector3(-17, 0.8, 0), 0, 0, btVector3(1.0, 1.0, 1.0), BACKGROUND, STONE, 1, false);
+	this->addObject("Resources/Models/bush1.lu", btVector3(-20, 1.5, 0), 0, 0, btVector3(1.6, 1.6, 1.6), BACKGROUND, STONE, 1, false);
+	this->addObject("Resources/Models/bush1.lu", btVector3(-25, 1.1, 0), 0, 0, btVector3(1.0, 1.0, 1.0), BACKGROUND, STONE, 1, false);
 
 	//GRASS
 	this->addObject("Resources/Models/grass1.lu", btVector3( 0.0, 0.4, -1.4), 0, 0, btVector3(1.0, 1.0, 1.0), BACKGROUND, GRASS, 1, false);
@@ -416,7 +417,7 @@ bool GunGameState::initailize()
 	GameObject* tree2 = new GameObject;
 	System::theModelLoader->loadGO(tree2, "Resources/Models/tree2.lu");
 	System::handler->addObject(tree2);
-	tree2->setPosition(-1, -0.5, 25);
+	tree2->setPosition(-1, 0, 25);
 	tree2->setScale(0.6, 0.6, 0.6);
 
 	GameObject* tree3 = new GameObject;
@@ -430,13 +431,48 @@ bool GunGameState::initailize()
 	GameObject* cliff1 = new GameObject;
 	System::theModelLoader->loadGO(cliff1, "Resources/Models/cliff1.lu");
 	System::handler->addObject(cliff1);
-	cliff1->setPosition(35, 0, 7.6);
+	cliff1->setPosition(35, 10, 7.6);
 	cliff1->setScale(10, 10, 10);
+	GameObject* cliff2 = new GameObject;
+	System::theModelLoader->loadGO(cliff2, "Resources/Models/cliff2.lu");
+	System::handler->addObject(cliff2);
+	cliff2->setPosition(20, 0, 7.6);
+	cliff2->setScale(9.8, 9.8, 9.8);
+	GameObject* cliff3 = new GameObject;
+	System::theModelLoader->loadGO(cliff3, "Resources/Models/cliff3.lu");
+	System::handler->addObject(cliff3);
+	cliff3->setPosition(20, 10, 27.6);
+	cliff3->setScale(9.8, 9.8, 9.8);
 
+	//Mushrooms
 	GameObject* mushrooms1 = new GameObject;
 	System::theModelLoader->loadGO(mushrooms1, "Resources/Models/mushroom_group.lu");
 	System::handler->addObject(mushrooms1);
-	mushrooms1->setPosition(7, 1, 6.0);
+	mushrooms1->setPosition(7, 0.9, 6.0);
+	GameObject* mushroom1 = new GameObject;
+	System::theModelLoader->loadGO(mushroom1, "Resources/Models/mushroom1.lu");
+	System::handler->addObject(mushroom1);
+	mushroom1->setPosition(2.5, 0.9, 18.0);
+	mushroom1->setScale(2, 2, 2);
+	GameObject* mushroom2 = new GameObject;
+	System::theModelLoader->loadGO(mushroom2, "Resources/Models/mushroom1.lu");
+	System::handler->addObject(mushroom2);
+	mushroom2->setPosition(-18, 0.9, -2.0);
+	mushroom2->setScale(1.3, 1.3, 1.3);
+
+	//Bushes
+	GameObject* bush1 = new GameObject;
+	System::theModelLoader->loadGO(bush1, "Resources/Models/bush1.lu");
+	System::handler->addObject(bush1);
+	bush1->setPosition(24, 2.5, -1.0);
+	bush1->setScale(3, 3, 3);
+	bush1->setRotationRollPitchYaw(0, -2.0, 0);
+	GameObject* bush2 = new GameObject;
+	System::theModelLoader->loadGO(bush2, "Resources/Models/bush1.lu");
+	System::handler->addObject(bush2);
+	bush2->setPosition(-3, 3.0, 15.0);
+	bush2->setScale(3.5, 2.5, 2.5);
+	bush2->setRotationRollPitchYaw(0, -2.5, 0);
 
 	//Trees at the border of the stage
 	GameObject* rBorderTree1 = new GameObject;
@@ -454,41 +490,8 @@ bool GunGameState::initailize()
 	System::theModelLoader->loadGO(lBorderTree1, "Resources/Models/tree4.lu");
 	System::handler->addObject(lBorderTree1);
 	lBorderTree1->setPosition(-31.7, 0.5, -2);
-	
-	/*GameObject* smallStone1 = new GameObject;
-	System::theModelLoader->loadGO(smallStone1, "Resources/Models/small_stone1.lu");
-	System::handler->addObject(smallStone1);
-	smallStone1->setPosition(4, 0.5, 0);
-	smallStone1->setScale(6, 6, 6);
-	smallStone1->getRigidbody() = System::getphysices()->addBox(btVector3(0, 0, 0), btVector3(smallStone1->getScale().x, smallStone1->getScale().y, smallStone1->getScale().z), 10.0f, smallStone1->);
-*/
 
-	//Miscellaneous objects
-	/*GameObject* grass1 = new GameObject;
-	System::theModelLoader->loadGO(grass1, "Resources/Models/grass1.lu");
-	System::handler->addObject(grass1);
-	grass1->setPosition(-5, 0.6, -1);
-	GameObject* grass2 = new GameObject;
-	System::theModelLoader->loadGO(grass2, "Resources/Models/grass2.lu");
-	System::handler->addObject(grass2);
-	grass2->setPosition(-5, 0.6, 1);
-	GameObject* grass3 = new GameObject;
-	System::theModelLoader->loadGO(grass3, "Resources/Models/grass2.lu");
-	System::handler->addObject(grass3);
-	grass3->setPosition(5, 0.6, 1);
-	GameObject* grass4 = new GameObject;
-	System::theModelLoader->loadGO(grass4, "Resources/Models/grass2.lu");
-	System::handler->addObject(grass4);
-	grass4->setPosition(8, 0.6, -1.2);
-	GameObject* grass5 = new GameObject;
-	System::theModelLoader->loadGO(grass5, "Resources/Models/grass2.lu");
-	System::handler->addObject(grass5);
-	grass5->setPosition(7.5, 0.6, -5);
-	GameObject* grass6 = new GameObject;
-	System::theModelLoader->loadGO(grass6, "Resources/Models/grass2.lu");
-	System::handler->addObject(grass6);
-	grass6->setPosition(5.3, 0.6, -6);*/
-
+	//Misc
 	GameObject* ray1 = new GameObject;
 	System::theModelLoader->loadGO(ray1, "Resources/Models/sun_ray1.lu");
 	System::handler->addObject(ray1);
