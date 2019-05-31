@@ -191,9 +191,7 @@ void GameObjectHandler::draw(float deltaTime, bool isPaused, std::vector<float> 
 	System::skybox->setCB();
 	System::skybox->render();
 
-	System::shaderManager->getForwardShader()->setShaders();//tänker att man kör denna sen renderar allla som använder denna shader sen tar setshader på nästa osv.
-	System::shaderManager->getForwardShader()->setCBuffers();
-	System::shaderManager->getForwardShader()->setConstanbuffer(PIXEL, 1, this->lightsCB.getBuffer());
+	
 	/*for (int i = 0; i < this->nrOfOpaque; i++)
 	{
 		this->opaqueModels[i].modelPtr->getShader()->setWorld(*this->opaqueModels[i].worldPtr);
@@ -203,8 +201,15 @@ void GameObjectHandler::draw(float deltaTime, bool isPaused, std::vector<float> 
 	////Forward
 	//back to front sorting here
 	//this->sortBackToFront();//do it every 30 frames
+	System::shaderManager->getParticleShader()->setCBuffers();
+	System::shaderManager->getParticleShader()->setShaders();
+	System::getParticleManager()->render();
+	System::shaderManager->getForwardShader()->setShaders();//tänker att man kör denna sen renderar allla som använder denna shader sen tar setshader på nästa osv.
+	System::shaderManager->getForwardShader()->setCBuffers();
+	System::shaderManager->getForwardShader()->setConstanbuffer(PIXEL, 1, this->lightsCB.getBuffer());
 	System::shaderManager->getShadowMapping()->setCBViewAndProj();//sets the vertex constantbuffer (if no gs need to change this to two view and proj)
 	System::shaderManager->getShadowMapping()->setSampler();
+	
 	System::getDeviceContext()->PSSetShaderResources(4, 1, &System::shaderManager->getShadowMapping()->getShadowMap());
 	if (this->nrOfTrans > 0)
 	{
