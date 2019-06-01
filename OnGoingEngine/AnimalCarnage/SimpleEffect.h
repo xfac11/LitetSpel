@@ -24,10 +24,11 @@ private:
 	SimpleMath::Vector3 movingSpeed;
 	Particle* particles;
 	float size;
+	float sizeReduction;
 public:
 	SimpleEffect(SimpleMath::Vector3 position = SimpleMath::Vector3(), float lifeTime = 10.0f
 		,bool gravity=true, int particleCount = 10,float size=1.0f, float maxStartSpeed = 5.0f, std::string fileName = "", 
-		SimpleMath::Vector3 movingSpeed = SimpleMath::Vector3(0,0,0));
+		SimpleMath::Vector3 movingSpeed = SimpleMath::Vector3(0,0,0), float sizeReduction = 0);
 	virtual ~SimpleEffect();
 
 	virtual void update(float deltaTime);
