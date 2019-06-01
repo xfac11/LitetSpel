@@ -40,9 +40,9 @@ HealthBar::HealthBar(int health, int maxHealth, DirectX::SimpleMath::Vector2 pos
 		HealthBar::textureMoose->setTexture("paw_moose.tga");
 		HealthBar::textureCrown->setTexture("paw_crown.tga");
 		HealthBar::bearPortrait->setTexture("paw_bear.tga");
-		HealthBar::foxPortait->setTexture("paw_fox.tga");
+		HealthBar::foxPortait->setTexture("playerFox.tga");
 		HealthBar::moosePortrait->setTexture("paw_moose.tga");
-		HealthBar::rabbitPortrait->setTexture("paw_rabbit.tga");
+		HealthBar::rabbitPortrait->setTexture("playerRabbit.tga");
 		HealthBar::texturesLoaded = true;
 	}
 	this->color = DirectX::XMVectorSet(0, 1, 0, 1);
@@ -86,11 +86,11 @@ bool HealthBar::render(bool selected)
 	float scalePaw = 0.3f;
 	ID3D11ShaderResourceView* test = nullptr;
 	System::getSpriteBatch()->Draw(HealthBar::textureBackground->getTexture(), this->position+ DirectX::SimpleMath::Vector2(5, 0), nullptr, this->color, 0, SimpleMath::Vector2(0, 0), SimpleMath::Vector2(scale, scale));
-	System::getSpriteBatch()->Draw(this->currentTexture->getTexture(), this->position + DirectX::SimpleMath::Vector2(5, 0), nullptr,Colors::White, 0, SimpleMath::Vector2(0, 0), SimpleMath::Vector2(scalePaw, scalePaw));
+	System::getSpriteBatch()->Draw(this->currentTexture->getTexture(), this->position + DirectX::SimpleMath::Vector2(0, 0), nullptr,Colors::White, 0, SimpleMath::Vector2(0, 0), SimpleMath::Vector2(1, 1));
 
 	System::getSpriteBatch()->Draw(HealthBar::textureOutline->getTexture(), this->position + DirectX::SimpleMath::Vector2(5, HealthBar::textureBackground->getHeight()*scale), &source, color, 0, SimpleMath::Vector2(0, 0), SimpleMath::Vector2(scale, scale));
 	System::getSpriteBatch()->Draw(HealthBar::texture->getTexture(), this->position+DirectX::SimpleMath::Vector2(5, HealthBar::textureBackground->getHeight()*scale),nullptr, Colors::White, 0, SimpleMath::Vector2(0, 0), SimpleMath::Vector2(scale, scale));
-	System::getSpriteBatch()->Draw(this->nextTexture->getTexture(), this->position + DirectX::SimpleMath::Vector2(HealthBar::textureOutline->getWidth(),5),nullptr,Colors::White,0,SimpleMath::Vector2(0,0),SimpleMath::Vector2(scalePaw, scalePaw));
+	System::getSpriteBatch()->Draw(this->nextTexture->getTexture(), this->position + DirectX::SimpleMath::Vector2(5/*HealthBar::textureOutline->getWidth()-30*/,5),nullptr,Colors::White,0,SimpleMath::Vector2(0,0),SimpleMath::Vector2(scalePaw, scalePaw));
 
 	return true;
 }
