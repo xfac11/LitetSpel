@@ -80,7 +80,7 @@ bool GunGameGui::update(float deltaTime)
 
 		if (gamepadState.IsConnected())
 		{
-			System::theTracker->Update(gamepadState);
+			//System::theTracker->Update(gamepadState);
 
 			if (System::theTracker->start == DirectX::GamePad::ButtonStateTracker::PRESSED)
 			{
