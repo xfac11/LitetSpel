@@ -5,6 +5,11 @@ const XMFLOAT3& Transform::getPosition() const {
 	return this->Position;
 }
 
+const DirectX::SimpleMath::Vector3 & Transform::getPosition()
+{
+ return	DirectX::SimpleMath::Vector3(Position.x,Position.y,Position.z);
+}
+
 const XMFLOAT3& Transform::getScale() const {
 	return this->Scale;
 }

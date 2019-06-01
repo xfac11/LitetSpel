@@ -12,6 +12,7 @@ private:
 	struct Particle
 	{
 		XMFLOAT3 position;
+		float size;
 	};
 
 	ID3D11SamplerState* SamplerState;

@@ -544,10 +544,10 @@ void Player::update(float deltaTime, int id)
 			}
 			if (playerObj->getPosition().y < 2) {
 				if (playerObj->getRigidbody()->getLinearVelocity().getX() > 10.0f * getSpeed()) {
-					System::getParticleManager()->addSimpleEffect(DirectX::SimpleMath::Vector3(playerObj->getRigidbody()->getWorldTransform().getOrigin().getX(), playerObj->getRigidbody()->getWorldTransform().getOrigin().getY(), playerObj->getRigidbody()->getWorldTransform().getOrigin().getZ()), "rumble", 0.5f, 1.2f, 5, 4.5);
+					System::getParticleManager()->addSimpleEffect(DirectX::SimpleMath::Vector3(playerObj->getPosition()), "rumble", 0.5f, 0.5f, true, 4.5);
 				}
 				if (playerObj->getRigidbody()->getLinearVelocity().getX() < -10.0f * getSpeed()) {
-					System::getParticleManager()->addSimpleEffect(DirectX::SimpleMath::Vector3(playerObj->getRigidbody()->getWorldTransform().getOrigin().getX(), playerObj->getRigidbody()->getWorldTransform().getOrigin().getY(), playerObj->getRigidbody()->getWorldTransform().getOrigin().getZ()), "rumble", 0.5f, 1.2f, 5, 4.5);
+					System::getParticleManager()->addSimpleEffect(DirectX::SimpleMath::Vector3(playerObj->getPosition()), "rumble", 0.5f, 0.5f, true ,4.5);
 				}
 			}
 
@@ -622,6 +622,7 @@ void Player::update(float deltaTime, int id)
 			canWallJump = false;
 			canPressJump = false;
 			jumping = true;
+			System::getParticleManager()->addSimpleEffect(DirectX::SimpleMath::Vector3(playerObj->getPosition()), "rumbl", 0.5f, 0.5f, true, 4.5);
 		}
 		if (grounded == true) {
 			wallJumpReset = true;

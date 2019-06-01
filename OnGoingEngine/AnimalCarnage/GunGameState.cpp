@@ -941,7 +941,7 @@ bool GunGameState::update(float deltaTime)
 						player[i]->takeDamage(player[j]->getStrength());
 						player[i]->stats.damageTaken += player[j]->getStrength();
 						player[j]->stats.damageDealt += player[j]->getStrength();
-						System::getParticleManager()->addSimpleEffect(player[i]->getPosition(), "hit_effect", 0.5f, 2, false, 30, 6);
+						System::getParticleManager()->addSimpleEffect(player[i]->getPosition(), "hit_effect", 1.f, 2, false, 35, 6);
 
 						int randomNumber = (rand() % 4) + 0;
 						System::getSoundManager()->playEffect(to_string(randomNumber));
