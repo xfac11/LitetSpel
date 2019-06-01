@@ -3,12 +3,12 @@
 #include <math.h>
 #include <d3d11.h>
 #include <DirectXMath.h>
-#include"GraphicsDevice.h"
-#include"ForwardShader.h"
-#include"GameObject.h"
-#include"Camera.h"
-#include"Keyboard.h"
-#include"Mouse.h"
+#include "GraphicsDevice.h"
+#include "ForwardShader.h"
+#include "GameObject.h"
+#include "Camera.h"
+#include "Keyboard.h"
+#include "Mouse.h"
 #include "GameObjectHandler.h"
 #include "GraphicsDevice.h"
 #include "ForwardShader.h"
@@ -31,16 +31,10 @@
 #include "Skybox.h"
 #include "SoundManager.h"
 #include "ParticleManager.h"
-//Test
-#include "btBulletCollisionCommon.h"
-#include "btBulletDynamicsCommon.h"
-#include "BulletCollision\CollisionShapes\btBoxShape.h"
 #include "Physics.h"
 #include "DEBUG_DRAW.h"
 #include "Structs.h"
-
 #include "AssetManager.h"
-
 
 using namespace DirectX;
 
@@ -95,8 +89,6 @@ private:
 	//bool mouseSwitch;
 	//bool moveScreen;
 
-	
-
 	void mouseMovement(float deltaTime);
 	void initImgui();
 	//void renderImgui();
@@ -106,13 +98,10 @@ private:
 	void reset();
 	static LRESULT CALLBACK  WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
 	HWND InitWindow(HINSTANCE hInstance, float height, float width);
-	void change(bool & theSwitch);
 
 	float deltaTime;
 	
-	//btCollisionConfiguration* collisionConfig; //Test
 public:
-
 	System(HINSTANCE hInstance, LPCSTR name, int nCmdShow);
 	~System();
 	//System(const System& obj);
