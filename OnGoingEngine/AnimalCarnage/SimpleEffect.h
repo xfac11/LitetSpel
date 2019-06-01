@@ -12,7 +12,6 @@ private:
 	struct Particle
 	{
 		XMFLOAT3 position;
-		float size;
 	};
 
 	ID3D11SamplerState* SamplerState;
@@ -24,6 +23,7 @@ private:
 	SimpleMath::Vector3* velocities;
 	SimpleMath::Vector3 movingSpeed;
 	Particle* particles;
+	float size;
 public:
 	SimpleEffect(SimpleMath::Vector3 position = SimpleMath::Vector3(), float lifeTime = 10.0f
 		,bool gravity=true, int particleCount = 10,float size=1.0f, float maxStartSpeed = 5.0f, std::string fileName = "", 
