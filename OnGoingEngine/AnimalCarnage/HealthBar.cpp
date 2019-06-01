@@ -36,7 +36,7 @@ HealthBar::HealthBar(int health, int maxHealth, DirectX::SimpleMath::Vector2 pos
 		HealthBar::texture->setTexture("healthBar2.tga");
 		HealthBar::healthTriangle->setTexture("healthBarTriangle.tga");
 		HealthBar::textureOutline->setTexture("healthBarOutline2.tga");
-		HealthBar::textureBackground->setTexture("png.tga");
+		HealthBar::textureBackground->setTexture("healthBarBackground.tga");
 		HealthBar::textureFox->setTexture("paw_fox.tga");
 		HealthBar::textureRabbit->setTexture("paw_rabbit.tga");
 		HealthBar::textureBear->setTexture("paw_bear.tga");
