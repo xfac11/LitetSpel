@@ -549,14 +549,14 @@ void Player::update(float deltaTime, int id)
 			if (playerObj->getPosition().y < 2) {
 				if (playerObj->getRigidbody()->getLinearVelocity().getX() > 10.0f * getSpeed()) {
 					btVector3 velocity = playerObj->getRigidbody()->getLinearVelocity();
-					System::getParticleManager()->addSimpleEffect(DirectX::SimpleMath::Vector3(playerObj->getPosition()), "dirt", 0.2f, 2.0f, true, 5,3,
-						DirectX::SimpleMath::Vector3(velocity.getX()/5, velocity.getY()/5, velocity.getZ()/5), -0.001);
+					System::getParticleManager()->addSimpleEffect(DirectX::SimpleMath::Vector3(playerObj->getPosition()), "dirt", 0.2f, 0.5f, true, 5,3,
+						DirectX::SimpleMath::Vector3(velocity.getX()/5, velocity.getY()/5, velocity.getZ()/5), -0.005);
 				}
 				if (playerObj->getRigidbody()->getLinearVelocity().getX() < -10.0f * getSpeed()) {
 
 					btVector3 velocity = playerObj->getRigidbody()->getLinearVelocity();
-					System::getParticleManager()->addSimpleEffect(DirectX::SimpleMath::Vector3(playerObj->getPosition()), "dirt", 0.2f, 2.0f, true, 5, 3,
-						DirectX::SimpleMath::Vector3(velocity.getX()/5, velocity.getY()/5, velocity.getZ()/5),-0.001);
+					System::getParticleManager()->addSimpleEffect(DirectX::SimpleMath::Vector3(playerObj->getPosition()), "dirt", 0.2f, 0.5f, true, 5, 3,
+						DirectX::SimpleMath::Vector3(velocity.getX()/5, velocity.getY()/5, velocity.getZ()/5),-0.005);
 				}
 			}
 

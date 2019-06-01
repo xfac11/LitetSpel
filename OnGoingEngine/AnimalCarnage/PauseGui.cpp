@@ -36,28 +36,31 @@ void PauseGui::changeSelected_Keyboard()
 
 void PauseGui::changeSelected()
 {
-	GuiElement* newSelected = nullptr;
+	if (this->showGui == true)
+	{
+		GuiElement* newSelected = nullptr;
 
-	if (System::theTracker->dpadUp == DirectX::GamePad::ButtonStateTracker::PRESSED)
-	{
-		newSelected = this->selectedElement->getUp();
-	}
-	if (System::theTracker->dpadDown == DirectX::GamePad::ButtonStateTracker::PRESSED)
-	{
-		newSelected = this->selectedElement->getDown();
-	}
-	if (System::theTracker->dpadLeft == DirectX::GamePad::ButtonStateTracker::PRESSED)
-	{
-		newSelected = this->selectedElement->getLeft();
-	}
-	if (System::theTracker->dpadRight == DirectX::GamePad::ButtonStateTracker::PRESSED)
-	{
-		newSelected = this->selectedElement->getRight();
-	}
+		if (System::theTracker->dpadUp == DirectX::GamePad::ButtonStateTracker::PRESSED)
+		{
+			newSelected = this->selectedElement->getUp();
+		}
+		if (System::theTracker->dpadDown == DirectX::GamePad::ButtonStateTracker::PRESSED)
+		{
+			newSelected = this->selectedElement->getDown();
+		}
+		if (System::theTracker->dpadLeft == DirectX::GamePad::ButtonStateTracker::PRESSED)
+		{
+			newSelected = this->selectedElement->getLeft();
+		}
+		if (System::theTracker->dpadRight == DirectX::GamePad::ButtonStateTracker::PRESSED)
+		{
+			newSelected = this->selectedElement->getRight();
+		}
 
-	if (newSelected != nullptr)
-	{
-		this->selectedElement = newSelected;
+		if (newSelected != nullptr)
+		{
+			this->selectedElement = newSelected;
+		}
 	}
 }
 
@@ -77,15 +80,15 @@ bool PauseGui::checkReset(DirectX::GamePad::State state)
 	return result;
 }
 
-
-
 PauseGui::PauseGui(State * myState) : GuiBase(myState)
 {
 	this->selectedElement = nullptr;
 
 	this->resumeButton = nullptr;
+	this->hideGUIButton = nullptr;
 	this->mainMenuButton = nullptr;
 
+	this->showGui = true;
 	this->timeSinceChanged = 0.0F;
 	this->changedLastFrame = false;
 }
@@ -93,34 +96,20 @@ PauseGui::PauseGui(State * myState) : GuiBase(myState)
 PauseGui::~PauseGui()
 {
 	delete this->resumeButton;
+	delete this->hideGUIButton;
 	delete this->mainMenuButton;
 }
 
-//void PauseGui::changeCamera(DirectX::XMFLOAT3 & camera)
-//{
-//
-//
-////	//		//tracker.Update(state);
-//////	if (((state.IsLeftTriggerPressed() && state.IsRightTriggerPressed()) ||
-//////		(state.buttons.leftShoulder && state.buttons.rightShoulder)) &&
-//////		state.buttons.a && (state.buttons.back || state.buttons.menu))
-//////	{
-////	DirectX::GamePad::State state = System::theGamePad->GetState(0);
-////	float dirX = 17.0f * state.thumbSticks.leftX;
-////	float dirY = 17.0f * state.thumbSticks.leftY;
-////
-////	camera.x += dirX;
-////	camera.y += dirY;
-//}
-
 bool PauseGui::initialize()
 {
-	this->resumeButton = new Button("Resume", Vector2(1920 / 2.0F - 300, 1080 / 2.0F - 140));
-	this->mainMenuButton = new Button("Main Menu", Vector2(1920 / 2.0F - 300, 1080 / 2.0F));
+	this->resumeButton	 =	new Button("Resume",		Vector2(1920 / 2.0F - 300, 1080 / 2.0F - 280));
+	this->hideGUIButton  =	new Button("Toggle GUI",	Vector2(1920 / 2.0F - 300, 1080 / 2.0F - 140));
+	this->mainMenuButton =	new Button("Main Menu",		Vector2(1920 / 2.0F - 300, 1080 / 2.0F));
 
 	this->selectedElement = resumeButton;
-	this->resumeButton->setConnectedElements(nullptr, nullptr, mainMenuButton, mainMenuButton);
-	this->mainMenuButton->setConnectedElements(nullptr, nullptr, resumeButton, resumeButton);
+	this->resumeButton->setConnectedElements(nullptr, nullptr, mainMenuButton, hideGUIButton);
+	this->hideGUIButton->setConnectedElements(nullptr, nullptr, resumeButton, mainMenuButton);
+	this->mainMenuButton->setConnectedElements(nullptr, nullptr, hideGUIButton, resumeButton);
 
 	return true;
 }
@@ -128,11 +117,13 @@ bool PauseGui::initialize()
 void PauseGui::shutDown()
 {
 	delete this->resumeButton;
+	delete this->hideGUIButton;
 	delete this->mainMenuButton;
 
 	this->selectedElement = nullptr;
 
 	this->resumeButton = nullptr;
+	this->hideGUIButton = nullptr;
 	this->mainMenuButton = nullptr;
 
 	this->timeSinceChanged = 0.0F;
@@ -169,12 +160,17 @@ bool PauseGui::update(float deltaTime)
 				state->pause(false);
 				result = false;
 			}
+			else if (this->selectedElement == this->hideGUIButton)
+			{
+				this->showGui = !this->showGui;
+			}
 			else
 			{
 				result = false;
 				state->pause(false);
 				System::setState(MAINMENU);
 			}
+
 		}
 	}
 	else
@@ -211,7 +207,11 @@ bool PauseGui::update(float deltaTime)
 					result = false;
 					state->pause(false);
 				}
-				else
+				else if (this->selectedElement == this->hideGUIButton)
+				{
+					this->showGui = !this->showGui;
+				}
+				else if(this->selectedElement == this->mainMenuButton)
 				{
 					result = false;
 					state->pause(false);
@@ -228,12 +228,16 @@ bool PauseGui::update(float deltaTime)
 
 bool PauseGui::render()
 {
-	System::getSpriteBatch()->Begin(DirectX::SpriteSortMode_Deferred, System::getCommonStates()->NonPremultiplied(), nullptr, nullptr, nullptr, nullptr, System::getSpritebatchMatrix());
+	if (this->showGui == true)
+	{
+		System::getSpriteBatch()->Begin(DirectX::SpriteSortMode_Deferred, System::getCommonStates()->NonPremultiplied(), nullptr, nullptr, nullptr, nullptr, System::getSpritebatchMatrix());
 
-	System::getFontArial()->DrawString(System::getSpriteBatch(), "Game Paused", SimpleMath::Vector2(1920 / 2.0F - SimpleMath::Vector2(System::getFontArial()->MeasureString("Game Paused")).x / 2, 1080 / 2.0F - 300), DirectX::Colors::Black, 0.0f, DirectX::SimpleMath::Vector2::Zero, DirectX::SimpleMath::Vector2::One);
-	this->resumeButton->render(this->selectedElement == resumeButton);
-	this->mainMenuButton->render(this->selectedElement == mainMenuButton);
+		System::getFontArial()->DrawString(System::getSpriteBatch(), "Game Paused", SimpleMath::Vector2(1920 / 2.0F - SimpleMath::Vector2(System::getFontArial()->MeasureString("Game Paused")).x / 2, 1080 / 2.0F - 300), DirectX::Colors::Black, 0.0f, DirectX::SimpleMath::Vector2::Zero, DirectX::SimpleMath::Vector2::One);
+		this->resumeButton->render(this->selectedElement == resumeButton);
+		this->hideGUIButton->render(this->selectedElement == hideGUIButton);
+		this->mainMenuButton->render(this->selectedElement == mainMenuButton);
 
-	System::getSpriteBatch()->End();
-	return true;
+		System::getSpriteBatch()->End();
+	}
+	return this->showGui;
 }
