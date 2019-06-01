@@ -117,7 +117,6 @@ LRESULT CALLBACK System::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM 
 				if (!wasPressed)
 				{
 					theKeyboard->OnChar(theChar);
-
 				}
 			}
 			//OutputDebugStringA(msg.c_str());
@@ -149,7 +148,8 @@ LRESULT CALLBACK System::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM 
 	{
 		int x = LOWORD(lParam);
 		int y = HIWORD(lParam);
-		theMouse->OnMouseMove(x, y);
+		if(theMouse!=nullptr)
+			theMouse->OnMouseMove(x, y);
 	}
 	else if (message == WM_INPUT)
 	{
@@ -176,16 +176,19 @@ LRESULT CALLBACK System::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM 
 	{
 		int x = LOWORD(lParam);
 		int y = HIWORD(lParam);
-		theMouse->OnLeftPressed(x, y);
+		if(theMouse!=nullptr)
+			theMouse->OnLeftPressed(x, y);
 	}
-	else if (message == WM_LBUTTONDOWN)
+	else if (message == WM_RBUTTONDOWN)
 	{
 		int x = LOWORD(lParam);
 		int y = HIWORD(lParam);
-		theMouse->OnRightPressed(x, y);
+		if (theMouse != nullptr)
+			theMouse->OnRightPressed(x, y);
 	}
 	else if (message == WM_SIZE)
 	{
+
 		RECT rect;
 		GetWindowRect(hWnd, &rect);
 		int width = rect.right - rect.left;
@@ -368,10 +371,8 @@ bool System::initialize()
 	//this->obj[1]->setPosition(-1, 0.5, 0);
 				
 	
-
 	//this->handler.addObject(this->obj[1]);
 	//this->handler.addObject(this->obj[0]);
-	
 
 	System::commonStates = new CommonStates(System::getDevice());
 	System::spriteBatch = new SpriteBatch(System::getDeviceContext());
@@ -382,7 +383,6 @@ bool System::initialize()
 	System::assetMananger = new AssetManager();
 	System::particleManager = new ParticleManager();
 	System::soundManager = new SoundManager();
-
 	System::getSoundManager()->loadEffect(L"Getting_Hit_Punch.wav", "0");
 	System::getSoundManager()->loadEffect(L"Getting_Hit_Punch_2.wav", "1");
 	System::getSoundManager()->loadEffect(L"Getting_Hit_Punch_3.wav", "2");

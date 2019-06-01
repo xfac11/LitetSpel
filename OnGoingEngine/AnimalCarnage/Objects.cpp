@@ -228,7 +228,7 @@ void Objects::update(float dt)
 
 		if (this->health <= 0) {
 			if (respawnTimer <= 0) {
-				System::getParticleManager()->addSimpleEffect(DirectX::SimpleMath::Vector3(ObjectOBJ->getRigidbody()->getWorldTransform().getOrigin().getX(), ObjectOBJ->getRigidbody()->getWorldTransform().getOrigin().getY(), ObjectOBJ->getRigidbody()->getWorldTransform().getOrigin().getZ()), "rumble",1,2.0f,30);
+				System::getParticleManager()->addSimpleEffect(DirectX::SimpleMath::Vector3(ObjectOBJ->getPosition()), "rumble",1 , 2.0f,true,30);
 			}
 			respawnTimer += 40 * dt;
 			this->ObjectOBJ->getRigidbody()->getWorldTransform().setOrigin(btVector3(this->position1.x, this->position1.y - 100, this->position1.z));
@@ -380,6 +380,7 @@ void Objects::addImpulse(float impulse, int playerId)
 		ObjectOBJ->getRigidbody()->activate();
 		ObjectOBJ->getRigidbody()->applyImpulse(btVector3(impulse*50, 0, 0), btVector3(0, 0, 0));
 		System::getSoundManager()->playEffect("Stone_Getting_Hit");
+		System::getParticleManager()->addSimpleEffect(DirectX::SimpleMath::Vector3(ObjectOBJ->getPosition()), "rumble", 1, 1.0f, true, 30,10);
 		this->canBeHit = false;
 		this->hitTimer = 0;
 	}

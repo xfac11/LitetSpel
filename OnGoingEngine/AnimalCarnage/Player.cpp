@@ -187,7 +187,7 @@ void Player::setAnimalTypeAndMass(AnimalType type)
 
 void Player::changeCharacter()
 {
-	if (this != nullptr){
+	if (this->playerObj != nullptr){
 		int noNewAnimal = true;
 		for (int i = 0; i < 4; i++)
 		{
@@ -317,10 +317,12 @@ void Player::ResetRigidBody()
 		delete this->playerObj->getRigidbody();
 	}
 
+	
 	AABB aabb = playerObj->getCollisionBox();
 	XMFLOAT3 scale = playerObj->getScale();
 
 	btVector3 size = btVector3(1 + aabb.width * scale.x, aabb.height * scale.y * 2, 1);
+	
 	playerObj->getRigidbody() = System::getphysices()->addPlayer(btVector3(aabb.offset.x, aabb.offset.y, aabb.offset.z), size, 10.0f * getWeight(), this);
 
 	playerObj->getRigidbody()->setWorldTransform(XMMATRIX_to_btTransform(this->playerObj->getWorld()));
@@ -542,10 +544,10 @@ void Player::update(float deltaTime, int id)
 			}
 			if (playerObj->getPosition().y < 2) {
 				if (playerObj->getRigidbody()->getLinearVelocity().getX() > 10.0f * getSpeed()) {
-					System::getParticleManager()->addSimpleEffect(DirectX::SimpleMath::Vector3(playerObj->getRigidbody()->getWorldTransform().getOrigin().getX(), playerObj->getRigidbody()->getWorldTransform().getOrigin().getY() - 1, playerObj->getRigidbody()->getWorldTransform().getOrigin().getZ()), "rumble", 0.5f, 1.2f, 5, 4.5);
+					System::getParticleManager()->addSimpleEffect(DirectX::SimpleMath::Vector3(playerObj->getPosition()), "rumble", 0.5f, 0.5f, true, 4.5);
 				}
 				if (playerObj->getRigidbody()->getLinearVelocity().getX() < -10.0f * getSpeed()) {
-					System::getParticleManager()->addSimpleEffect(DirectX::SimpleMath::Vector3(playerObj->getRigidbody()->getWorldTransform().getOrigin().getX(), playerObj->getRigidbody()->getWorldTransform().getOrigin().getY() - 1, playerObj->getRigidbody()->getWorldTransform().getOrigin().getZ()), "rumble", 0.5f, 1.2f, 5, 4.5);
+					System::getParticleManager()->addSimpleEffect(DirectX::SimpleMath::Vector3(playerObj->getPosition()), "rumble", 0.5f, 0.5f, true ,4.5);
 				}
 			}
 
@@ -620,6 +622,7 @@ void Player::update(float deltaTime, int id)
 			canWallJump = false;
 			canPressJump = false;
 			jumping = true;
+			System::getParticleManager()->addSimpleEffect(DirectX::SimpleMath::Vector3(playerObj->getPosition()), "rumbl", 0.5f, 0.5f, true, 4.5);
 		}
 		if (grounded == true) {
 			wallJumpReset = true;

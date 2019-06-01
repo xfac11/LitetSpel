@@ -1,11 +1,14 @@
 #include "SimpleEffect.h"
 #include "System.h"
 
-SimpleEffect::SimpleEffect(SimpleMath::Vector3 position, float lifeTime,bool gravity, int particleCount, float size, float maxStartSpeed, std::string fileName) : EffectBase(lifeTime)
+SimpleEffect::SimpleEffect(SimpleMath::Vector3 position, float lifeTime,bool gravity, int particleCount, float size, 
+	float maxStartSpeed, std::string fileName, float movingSpeed) : EffectBase(lifeTime)
 {
+	this->movingSpeed = movingSpeed;
 	this->particles = new Particle[particleCount];
 	this->velocities = new SimpleMath::Vector3[particleCount];
 	this->particleCount = particleCount;
+	this->particles->size = size;
 	this->gravity = gravity;
 	for (int i = 0; i < particleCount; i++)
 	{
@@ -14,7 +17,7 @@ SimpleEffect::SimpleEffect(SimpleMath::Vector3 position, float lifeTime,bool gra
 		this->velocities[i] = SimpleMath::Vector3((rand() % 1001 - 500) / 500.0f, (rand() % 1001 - 500) / 500.0f, (rand() % 1001 - 500) / 500.0f);
 		this->velocities[i] *= maxStartSpeed;
 	}
-	System::shaderManager->getParticleShader()->setSize(size);
+
 	this->vertexBuffer.initializeDynamic(this->particles, static_cast<UINT>(particleCount), System::getDevice());
 	this->theShader = System::shaderManager->getParticleShader();
 
@@ -57,7 +60,7 @@ void SimpleEffect::update(float deltaTime)
 		//a = g
 		//v = v0 + a * t
 		//s = v * t
-		this->velocities[i] = this->velocities[i]*0.5f + 9.82f * this->gravity * deltaTime * SimpleMath::Vector3::Down;
+		this->velocities[i] = this->velocities[i]*this->movingSpeed + 9.82f * this->gravity * deltaTime * SimpleMath::Vector3::Down;
 		this->particles[i].position = this->particles[i].position + this->velocities[i] * deltaTime;
 	}
 
@@ -67,6 +70,7 @@ void SimpleEffect::update(float deltaTime)
 void SimpleEffect::render()
 {
 	UINT32 offset = 0;
+	System::shaderManager->getParticleShader()->setSize(particles->size);
 	System::getDeviceContext()->PSSetShaderResources(0, 1, &this->particleTexture->getTexture());
 	System::getDeviceContext()->IASetVertexBuffers(0, 1, &*this->vertexBuffer.GetAddressOf(), &*vertexBuffer.getStridePtr(), &offset);
 	System::getDeviceContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_POINTLIST);
