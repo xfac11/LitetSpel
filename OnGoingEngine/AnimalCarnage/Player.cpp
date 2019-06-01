@@ -483,8 +483,12 @@ void Player::update(float deltaTime, int id)
 		hitTime = 100;
 		hitStun = false;
 	}
-
-	this->playerObj->setPosition(this->playerObj->GetPosition());
+	if ( type != RABBIT) {
+		this->playerObj->setPosition(this->playerObj->GetPosition());
+	}
+	else {
+		this->playerObj->setPosition(this->playerObj->GetPosition().x, this->playerObj->GetPosition().y+0.28, this->playerObj->GetPosition().z);
+	}
 
 	//this->playerObj->setRotation(0, 1,this->playerObj->getRigidbody()->getWorldTransform().getRotation().getZ(), 3.14 / 2);
 	
