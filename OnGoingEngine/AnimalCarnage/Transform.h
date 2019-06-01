@@ -2,6 +2,10 @@
 #include<DirectXMath.h>
 #include "BulletSDK/include/btBulletDynamicsCommon.h"
 #include "BulletSDK/include/btBulletCollisionCommon.h"
+#include <d3d11.h>
+//#pragma comment (lib, "d3d11.lib")
+//#pragma comment (lib, "d3dcompiler.lib")
+#include <SimpleMath.h>
 using namespace DirectX;
 class Transform
 {
@@ -29,6 +33,7 @@ public:
 	//
 
 	const XMFLOAT3& getPosition()const;
+	const DirectX::SimpleMath::Vector3 & getPosition();
 	const XMFLOAT3& getScale()const;
 	const XMFLOAT3& getRotation()const;
 	XMMATRIX& getWorld() { return world; }

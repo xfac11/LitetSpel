@@ -29,7 +29,7 @@ bool GunGameGui::initialize()
 	for (int i = 0; i < this->nrOfPlayers; i++)
 	{
 		this->playerHealthBars[i] = new HealthBar(state->getPlayer(i)->getHealth(), state->getPlayer(i)->getMaxHealth(), 
-			SimpleMath::Vector2(1920 / 2 - ((this->nrOfPlayers * 300) / 2) - (((this->nrOfPlayers - 1) * 50) / 2) + i * 350.0F, 10.0F));
+			SimpleMath::Vector2(1920 / 2 - ((this->nrOfPlayers * 175) / 2) - (((this->nrOfPlayers - 1) * 50) / 2) + i * 250, 10.0F));
 		this->playerHealthBars[i]->setNextAnimal(state->getPlayer(i)->getNextAnimal());
 		this->playerHealthBars[i]->setCurrentAnimal(state->getPlayer(i)->getAnimalType());
 	}
@@ -80,7 +80,7 @@ bool GunGameGui::update(float deltaTime)
 
 		if (gamepadState.IsConnected())
 		{
-			System::theTracker->Update(gamepadState);
+			//System::theTracker->Update(gamepadState);
 
 			if (System::theTracker->start == DirectX::GamePad::ButtonStateTracker::PRESSED)
 			{
@@ -107,20 +107,23 @@ bool GunGameGui::render()
 		const char* output = ("P " + std::to_string(i + 1)).c_str();
 		SimpleMath::Vector2 origin = System::getFontArial()->MeasureString("P2") / 2.f;
 
-		SimpleMath::Vector2 pos = SimpleMath::Vector2(1920 / 2.0F - ((this->nrOfPlayers * 300) / 2) - (((this->nrOfPlayers - 1) * 50) / 2) + i * 350.0F, 200.0f);
-
+		SimpleMath::Vector2 pos = SimpleMath::Vector2(this->playerHealthBars[i]->getPosition().x,this->playerHealthBars[i]->getPosition().y+20); /*SimpleMath::Vector2(1920 / 2.0F - ((this->nrOfPlayers * 300) / 2) - (((this->nrOfPlayers - 1) * 50) / 2) + i * 350.0F, 200.0f);*/
+		SimpleMath::Vector2 scale = DirectX::SimpleMath::Vector2::One / 2;
+		float scaleF = 1.0f;
 		//SimpleMath::Vector2 pos = SimpleMath::Vector2(300, 300);
 		this->playerHealthBars[i]->render(false);
+		float ls = 0.25f;
+		DirectX::XMVECTOR colorHealht = DirectX::XMVectorSet(ls, ls, ls, 1);
 		System::getFontArial()->DrawString(System::getSpriteBatch(), ("P" + std::to_string(i + 1)).c_str(),
-			pos + SimpleMath::Vector2(1.f, 1.f), Colors::Black, 0.f, origin, DirectX::SimpleMath::Vector2::One / 2);
+			pos + SimpleMath::Vector2(2.f*scaleF, 2.f*scaleF), colorHealht, 0.f, origin, scale);
 		System::getFontArial()->DrawString(System::getSpriteBatch(), ("P" + std::to_string(i + 1)).c_str(),
-			pos + SimpleMath::Vector2(-1.f, 1.f), Colors::Black, 0.f, origin, DirectX::SimpleMath::Vector2::One / 2);
+			pos + SimpleMath::Vector2(-2.f*scaleF, 2.f*scaleF), colorHealht, 0.f, origin, scale);
 		System::getFontArial()->DrawString(System::getSpriteBatch(), ("P" + std::to_string(i + 1)).c_str(),
-			pos + SimpleMath::Vector2(-1.f, -1.f), Colors::Black, 0.f, origin, DirectX::SimpleMath::Vector2::One / 2);
+			pos + SimpleMath::Vector2(-2.f*scaleF, -2.f*scaleF), colorHealht, 0.f, origin, scale);
 		System::getFontArial()->DrawString(System::getSpriteBatch(), ("P" + std::to_string(i + 1)).c_str(),
-			pos+ SimpleMath::Vector2(1.f, -1.f), Colors::Black, 0.f, origin, (DirectX::SimpleMath::Vector2::One / 2));
+			pos+ SimpleMath::Vector2(2.f*scaleF, -2.f*scaleF), colorHealht, 0.f, origin, scale);
 
-		System::getFontArial()->DrawString(System::getSpriteBatch(), ("P" + std::to_string(i + 1)).c_str(), pos, this->playerHealthBars[i]->getColor() /*Colors::ForestGreen*/, 0.0f, origin, DirectX::SimpleMath::Vector2::One / 2);
+		System::getFontArial()->DrawString(System::getSpriteBatch(), ("P" + std::to_string(i + 1)).c_str(), pos, /*Colors::White*/this->playerHealthBars[i]->getColor() /*Colors::ForestGreen*/, 0.0f, origin, scale);
 	}
 
 	System::getSpriteBatch()->End();

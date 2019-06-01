@@ -13,9 +13,9 @@ ParticleManager::~ParticleManager()
 	}
 }
 
-void ParticleManager::addSimpleEffect(SimpleMath::Vector3 position, std::string filename,float size,float lifetime,bool gravity,int particleCount,float maxStartSpeed)
+void ParticleManager::addSimpleEffect(SimpleMath::Vector3 position, std::string filename,float size,float lifetime,bool gravity,int particleCount,float maxStartSpeed, SimpleMath::Vector3 movingSpeed)
 {
-	SimpleEffect* newEffect = new SimpleEffect(position, lifetime,gravity, particleCount,size, maxStartSpeed, filename);
+	SimpleEffect* newEffect = new SimpleEffect(position, lifetime,gravity, particleCount,size, maxStartSpeed, filename, movingSpeed);
 	this->activeEffects.push_back(newEffect);
 }
 

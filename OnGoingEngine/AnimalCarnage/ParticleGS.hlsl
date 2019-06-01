@@ -18,7 +18,7 @@ cbuffer CB_PER_FRAME : register(b0)
 
 cbuffer CAMERA : register(b1)
 {
-	float3 up;
+	float3 upp;
 }
 cbuffer ParticleConfig : register(b2)
 {
@@ -30,8 +30,9 @@ void GS_main(point OUTPUT input[1], inout TriangleStream<GSOutput> theOutput)
 	float3 planeNormal = input[0].position - camPos.xyz;
 	//planeNormal.y = 0.0f;
 	planeNormal = normalize(planeNormal);
-	float3 right = normalize(cross(planeNormal, up));
+	float3 right = normalize(cross(planeNormal, upp));
 
+	float3 up = normalize(cross(planeNormal, right));
 	float3 vert[4];
 	vert[0] = input[0].position - right* size; // Bottom left
 	vert[1] = input[0].position + right* size; // Bottom right
