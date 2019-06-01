@@ -16,6 +16,7 @@ SimpleEffect::SimpleEffect(SimpleMath::Vector3 position, float lifeTime,bool gra
 		//this->particles[i].size = size;
 		this->velocities[i] = SimpleMath::Vector3((rand() % 1001 - 500) / 500.0f, (rand() % 1001 - 500) / 500.0f, (rand() % 1001 - 500) / 500.0f);
 		this->velocities[i] *= maxStartSpeed;
+		this->velocities[i] += SimpleMath::Vector3(this->movingSpeed.x, this->movingSpeed.y, this->movingSpeed.z);
 	}
 
 	this->vertexBuffer.initializeDynamic(this->particles, static_cast<UINT>(particleCount), System::getDevice());
@@ -60,7 +61,7 @@ void SimpleEffect::update(float deltaTime)
 		//a = g
 		//v = v0 + a * t
 		//s = v * t
-		this->velocities[i] = this->velocities[i]+SimpleMath::Vector3(this->movingSpeed.x/50,this->movingSpeed.y / 50, this->movingSpeed.z / 20) + 9.82f * this->gravity * deltaTime * SimpleMath::Vector3::Down;
+		this->velocities[i] = this->velocities[i] + 9.82f * this->gravity * deltaTime * SimpleMath::Vector3::Down;
 		this->particles[i].position = this->particles[i].position + this->velocities[i] * deltaTime;
 	}
 

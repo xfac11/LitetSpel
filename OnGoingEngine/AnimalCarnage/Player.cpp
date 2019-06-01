@@ -549,14 +549,14 @@ void Player::update(float deltaTime, int id)
 			if (playerObj->getPosition().y < 2) {
 				if (playerObj->getRigidbody()->getLinearVelocity().getX() > 10.0f * getSpeed()) {
 					btVector3 velocity = playerObj->getRigidbody()->getLinearVelocity();
-					System::getParticleManager()->addSimpleEffect(DirectX::SimpleMath::Vector3(playerObj->getPosition()), "rumble", 0.5f, 0.5f, true, 14.5,5,
-						DirectX::SimpleMath::Vector3(velocity.getX(), velocity.getY(), velocity.getZ()));
+					System::getParticleManager()->addSimpleEffect(DirectX::SimpleMath::Vector3(playerObj->getPosition()), "rumble", 0.5f, 5.0f, true, 1,5,
+						DirectX::SimpleMath::Vector3(velocity.getX()/5, velocity.getY()/5, velocity.getZ()/5));
 				}
 				if (playerObj->getRigidbody()->getLinearVelocity().getX() < -10.0f * getSpeed()) {
 
 					btVector3 velocity = playerObj->getRigidbody()->getLinearVelocity();
-					System::getParticleManager()->addSimpleEffect(DirectX::SimpleMath::Vector3(playerObj->getPosition()), "rumble", 0.5f, 0.5f, true, 14.5, 5,
-						DirectX::SimpleMath::Vector3(velocity.getX(), velocity.getY(), velocity.getZ()));
+					System::getParticleManager()->addSimpleEffect(DirectX::SimpleMath::Vector3(playerObj->getPosition()), "rumble", 0.5f, 5.0f, true, 1, 5,
+						DirectX::SimpleMath::Vector3(velocity.getX()/5, velocity.getY()/5, velocity.getZ()/5));
 				}
 			}
 
