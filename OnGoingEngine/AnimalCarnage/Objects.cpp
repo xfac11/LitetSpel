@@ -217,7 +217,7 @@ void Objects::update(float dt)
 	{
 		if (abs(getMovingSpeed().x) > 10 || abs(getMovingSpeed().z) > 10)
 		{
-			System::getParticleManager()->addSimpleEffect(DirectX::SimpleMath::Vector3(ObjectOBJ->GetPosition()), "rumble", 1.2f, 0.3f, false, 1, 0.1);
+			System::getParticleManager()->addSimpleEffect(DirectX::SimpleMath::Vector3(ObjectOBJ->GetPosition().x, ObjectOBJ->GetPosition().y+1.5, ObjectOBJ->GetPosition().z), "hit_effect", 2.2f, 0.8f, false, 1, 0.1, DirectX::SimpleMath::Vector3(0,0,0),-0.03);
 		}
 
 
@@ -235,7 +235,9 @@ void Objects::update(float dt)
 
 		if (this->health <= 0) {
 			if (respawnTimer <= 0) {
-				System::getParticleManager()->addSimpleEffect(DirectX::SimpleMath::Vector3(ObjectOBJ->getPosition()), "rumble",1 , 2.0f,true,30);
+				//System::getParticleManager()->addSimpleEffect(DirectX::SimpleMath::Vector3(ObjectOBJ->getPosition()), "rumble",1 , 2.0f,true,30);
+				System::getParticleManager()->addSimpleEffect(DirectX::SimpleMath::Vector3(ObjectOBJ->getPosition()), "rumble", 1, 2.0f, true, 25, 5,
+					DirectX::SimpleMath::Vector3(getMovingSpeed().x / 2, getMovingSpeed().y / 2, getMovingSpeed().z / 2), -0.001);
 			}
 			respawnTimer += 40 * dt;
 			this->ObjectOBJ->getRigidbody()->getWorldTransform().setOrigin(btVector3(this->position1.x, this->position1.y - 100, this->position1.z));
@@ -387,7 +389,7 @@ void Objects::addImpulse(float impulse, int playerId)
 		ObjectOBJ->getRigidbody()->activate();
 		ObjectOBJ->getRigidbody()->applyImpulse(btVector3(impulse*50, 0, 0), btVector3(0, 0, 0));
 		System::getSoundManager()->playEffect("Stone_Getting_Hit");
-		System::getParticleManager()->addSimpleEffect(DirectX::SimpleMath::Vector3(ObjectOBJ->getPosition()), "rumble", 1, 1.0f, true, 30,10);
+		//System::getParticleManager()->addSimpleEffect(DirectX::SimpleMath::Vector3(ObjectOBJ->getPosition()), "rumble", 1, 1.0f, true, 30,10);
 		this->canBeHit = false;
 		this->hitTimer = 0;
 	}
@@ -453,7 +455,8 @@ void Objects::impactSoundEffect()
 	if (impactTimer >= 100) {
 		if ((abs(getMovingSpeed().x) > 10 || abs(getMovingSpeed().y) > 10)) {
 			System::getSoundManager()->playEffect("Stone_Hard_Impact");
-			System::getParticleManager()->addSimpleEffect(DirectX::SimpleMath::Vector3(ObjectOBJ->getRigidbody()->getWorldTransform().getOrigin().getX(), ObjectOBJ->getRigidbody()->getWorldTransform().getOrigin().getY() - 0.2, ObjectOBJ->getRigidbody()->getWorldTransform().getOrigin().getZ()), "rumble", 0.5f, 1.2f, 5, 4.5);
+			System::getParticleManager()->addSimpleEffect(DirectX::SimpleMath::Vector3(ObjectOBJ->getPosition()), "dirt", 0.2f, 0.5f, true, 15, 5,
+				DirectX::SimpleMath::Vector3(getMovingSpeed().x / 5, getMovingSpeed().y / 5, getMovingSpeed().z / 5), -0.005);
 		}
 		else if ((abs(getMovingSpeed().x) > 5 || abs(getMovingSpeed().y) > 5)) {
 			System::getSoundManager()->playEffect("Stone_Soft_Impact");
