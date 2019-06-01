@@ -15,7 +15,7 @@ AnimalDef Animal::rabbit = { 75,		0.5F,	1.0F,	1.0F,		10,			"Resources/Models/rab
 AnimalDef Animal::moose =  { 175,		2.0F,	0.6F,	0.8F,		12,			"Resources/Models/rabbit_character",	"fox_character_mask.tga",		rabbitV ,	"head" };
 
 
-const AnimalDef& Animal::getAnimal(AnimalType type)
+AnimalDef& Animal::getAnimal(AnimalType type)
 {
 	switch (type)
 	{

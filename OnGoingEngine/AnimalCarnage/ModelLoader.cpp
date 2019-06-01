@@ -10,7 +10,7 @@ ModelLoader::~ModelLoader()
 {
 }
 
-void ModelLoader::loadAO(GameObject*& object, const char* characterName, std::vector<std::string> animalAnimations, std::string attackJoint, int mipLevels) //only for character_
+void ModelLoader::loadAO(GameObject*& object, const char* characterName, std::vector<std::string> & animalAnimations, std::string attackJoint, int mipLevels) //only for character_
 { 
 	if (object->getModel() != nullptr)
 		object->getModel().reset();

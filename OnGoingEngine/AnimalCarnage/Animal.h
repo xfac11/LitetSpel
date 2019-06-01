@@ -33,7 +33,7 @@ private:
 	static AnimalDef moose;
 
 public:
-	static const AnimalDef& getAnimal(AnimalType type);
+	static AnimalDef& getAnimal(AnimalType type);
 };
 
 #endif // !ANIMAL_H
