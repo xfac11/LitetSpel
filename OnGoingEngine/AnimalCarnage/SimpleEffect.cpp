@@ -8,7 +8,7 @@ SimpleEffect::SimpleEffect(SimpleMath::Vector3 position, float lifeTime,bool gra
 	this->particles = new Particle[particleCount];
 	this->velocities = new SimpleMath::Vector3[particleCount];
 	this->particleCount = particleCount;
-	this->particles->size = size;
+	this->size = size;
 	this->gravity = gravity;
 	for (int i = 0; i < particleCount; i++)
 	{
@@ -71,7 +71,7 @@ void SimpleEffect::update(float deltaTime)
 void SimpleEffect::render()
 {
 	UINT32 offset = 0;
-	System::shaderManager->getParticleShader()->setSize(particles->size);
+	System::shaderManager->getParticleShader()->setSize(this->size);
 	System::getDeviceContext()->PSSetShaderResources(0, 1, &this->particleTexture->getTexture());
 	System::getDeviceContext()->IASetVertexBuffers(0, 1, &*this->vertexBuffer.GetAddressOf(), &*vertexBuffer.getStridePtr(), &offset);
 	System::getDeviceContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_POINTLIST);
