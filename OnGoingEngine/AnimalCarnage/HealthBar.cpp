@@ -88,8 +88,8 @@ bool HealthBar::render(bool selected)
 	DirectX::SimpleMath::Color color(DirectX::SimpleMath::Color::Lerp(DirectX::SimpleMath::Color(1, 0, 0),DirectX::SimpleMath::Color(0, 1, 0), colorValue));
 	//color.w = 0.9f;
 	float scale = 1.3f;
-	float scalePaw = 0.25f;
-	float scaleTri = 0.25f;
+	float scalePaw = 0.20f;
+	float scaleTri = 0.20f;
 	ID3D11ShaderResourceView* test = nullptr;
 	SimpleMath::Vector2 originPaw = SimpleMath::Vector2(this->nextTexture->getWidth() / 2, this->nextTexture->getHeight() / 2);
 	System::getSpriteBatch()->Draw(HealthBar::textureBackground->getTexture(), this->position+ DirectX::SimpleMath::Vector2(5, 0), nullptr, this->color, 0, SimpleMath::Vector2(0, 0), SimpleMath::Vector2(scale, scale));//Ramen
