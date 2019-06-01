@@ -746,7 +746,7 @@ bool GunGameState::initailize()
 
 	//Cool lights
 	float color3[4] = {
-		0.5f , 1.0f, 0.0f , 2.0f
+		0.0f , 0.0f, 1.0f , 2.0f
 	};
 	float pos2[4] = {
 	-18.f ,2.6f ,0.f,5.f

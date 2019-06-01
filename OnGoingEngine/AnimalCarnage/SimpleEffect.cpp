@@ -2,7 +2,7 @@
 #include "System.h"
 
 SimpleEffect::SimpleEffect(SimpleMath::Vector3 position, float lifeTime,bool gravity, int particleCount, float size, 
-	float maxStartSpeed, std::string fileName, SimpleMath::Vector3 movingSpeed) : EffectBase(lifeTime)
+	float maxStartSpeed, std::string fileName, SimpleMath::Vector3 movingSpeed, float sizeReduction) : EffectBase(lifeTime)
 {
 	this->movingSpeed = movingSpeed;
 	this->particles = new Particle[particleCount];
@@ -10,6 +10,7 @@ SimpleEffect::SimpleEffect(SimpleMath::Vector3 position, float lifeTime,bool gra
 	this->particleCount = particleCount;
 	this->size = size;
 	this->gravity = gravity;
+	this->sizeReduction = sizeReduction;
 	for (int i = 0; i < particleCount; i++)
 	{
 		this->particles[i].position = position;
@@ -64,7 +65,12 @@ void SimpleEffect::update(float deltaTime)
 		this->velocities[i] = this->velocities[i] + 9.82f * this->gravity * deltaTime * SimpleMath::Vector3::Down;
 		this->particles[i].position = this->particles[i].position + this->velocities[i] * deltaTime;
 	}
-
+	//if (scaling) {
+		this->size += sizeReduction;
+		if (this->size < 0) {
+			size = 0;
+		}
+	//}
 	this->vertexBuffer.applyChanges(System::getDevice(), System::getDeviceContext());
 }
 
