@@ -40,10 +40,10 @@ void GS_main(point OUTPUT input[1], inout TriangleStream<GSOutput> theOutput)
 	vert[3] = input[0].position + right* size + up* size; // Top right
 
 	float2 texCoord[4];
-	texCoord[0] = float2(0, 1);
-	texCoord[1] = float2(1, 1);
-	texCoord[2] = float2(0, 0);
-	texCoord[3] = float2(1, 0);
+	texCoord[2] = float2(0, 1);//2
+	texCoord[3] = float2(1, 1);//3
+	texCoord[0] = float2(0, 0);//0
+	texCoord[1] = float2(1, 0);//1
 
 	GSOutput output;
 	for (int i = 0; i < 4; i++)
