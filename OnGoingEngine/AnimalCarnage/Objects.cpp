@@ -213,7 +213,14 @@ void Objects::update(float dt)
 
 	//Respawn when Stone is dead
 
-	if (state == TRUE_DYNAMIC) {
+	if (state == TRUE_DYNAMIC) 
+	{
+		if (abs(getMovingSpeed().x) > 10 || abs(getMovingSpeed().z) > 10)
+		{
+			System::getParticleManager()->addSimpleEffect(DirectX::SimpleMath::Vector3(ObjectOBJ->GetPosition()), "rumble", 1.2f, 0.3f, false, 1, 0.1);
+		}
+
+
 		this->impactTimer += 1000 * dt;
 		this->activeTimer += 700 * dt;
 		if (activeTimer >= 100) {
