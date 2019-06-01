@@ -304,6 +304,49 @@ void GameObjectHandler::setLightPos(int id, btVector3 pos)
 
 	this->lightsCB.applyChanges(System::getDevice(), System::getDeviceContext());
 }
+void GameObjectHandler::reset()
+{
+
+	for (int i = 0; i < this->nrOfObjects; i++)
+	{
+		delete this->gameObjects[i];
+	}
+	delete[] this->lightSphereWorld;
+	delete[] this->gameObjects;
+	delete[] this->transModels;
+	delete[] this->opaqueModels;
+
+	for (int i = 0; i < this->nrOfLights; i++)
+	{
+		for (int j = 0; j < 4; j++)
+		{
+			this->lightsCB.data.lights[i].direction[j] = 0.0f;
+			this->lightsCB.data.lights[i].position[j] = 0.0f;
+			this->lightsCB.data.lights[i].cameraPos[j] = 0.0f;
+			this->lightsCB.data.lights[i].color[j] = 0.0f;
+		}
+		this->lightsCB.data.lights[i].worldLight = DirectX::XMMatrixIdentity();
+	}
+	this->lightsCB.data.nrOfLights = 0;
+	this->lightsCB.data.index = 0;
+	this->lightsCB.applyChanges(System::getDevice(),System::getDeviceContext());
+	this->nrOfLights = 0;
+	this->nrOfObjects = 0;
+	this->nrOfOpaque = 0;
+	this->nrOfTrans = 0;
+	this->cap = 5;
+	this->capOpaque = 5;
+	this->capTrans = 5;
+	this->opaqueModels = new ModWorld[this->capOpaque];
+	this->transModels = new ModWorld[this->capTrans];
+	this->gameObjects = new GameObject*[this->cap];
+	this->lightSphereWorld = new DirectX::XMMATRIX[16];//16 cap of light
+	for (int i = 0; i < this->cap; i++)
+	{
+		this->gameObjects[i] = nullptr;
+	}
+
+}
 void GameObjectHandler::addLight(float pos[4], float dir[4], float color[4])
 {
 	if (nrOfLights != 16)
