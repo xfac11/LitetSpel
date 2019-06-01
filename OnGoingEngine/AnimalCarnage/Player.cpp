@@ -187,7 +187,7 @@ void Player::setAnimalTypeAndMass(AnimalType type)
 
 void Player::changeCharacter()
 {
-	if (this->playerObj != nullptr){
+	if (this->playerObj != nullptr && abs(this->playerObj->GetPosition().x) < 200){
 		int noNewAnimal = true;
 		for (int i = 0; i < 4; i++)
 		{

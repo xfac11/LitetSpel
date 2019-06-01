@@ -236,7 +236,7 @@ void Objects::update(float dt)
 		if (this->health <= 0) {
 			if (respawnTimer <= 0) {
 				//System::getParticleManager()->addSimpleEffect(DirectX::SimpleMath::Vector3(ObjectOBJ->getPosition()), "rumble",1 , 2.0f,true,30);
-				System::getParticleManager()->addSimpleEffect(DirectX::SimpleMath::Vector3(ObjectOBJ->getPosition()), "rumble", 1, 2.0f, true, 25, 5,
+				System::getParticleManager()->addSimpleEffect(DirectX::SimpleMath::Vector3(ObjectOBJ->getPosition()), "rumble", 0.6, 2.0f, true, 35, 5,
 					DirectX::SimpleMath::Vector3(getMovingSpeed().x / 2, getMovingSpeed().y / 2, getMovingSpeed().z / 2), -0.001);
 			}
 			respawnTimer += 40 * dt;
