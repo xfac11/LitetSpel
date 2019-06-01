@@ -11,8 +11,10 @@ class PauseGui : public GuiBase
 private:
 	GuiElement* selectedElement;
 	Button* resumeButton;
+	Button* hideGUIButton;
 	Button* mainMenuButton;
 
+	bool showGui;
 	float timeSinceChanged;
 	bool changedLastFrame;
 
