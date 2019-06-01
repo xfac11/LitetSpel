@@ -20,6 +20,7 @@ private:
 	static Texture* moosePortrait;
 	static Texture* bearPortrait;
 	static Texture* rabbitPortrait;
+	static Texture* healthTriangle;
 	Texture* nextTexture;
 	Texture* currentTexture;
 	int health;
