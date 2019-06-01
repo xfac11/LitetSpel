@@ -830,12 +830,12 @@ bool GunGameState::render()
 	{
 		if (this->uiEnable)
 		{
-			this->inGameGui->render();
-
+			bool showGui = true;
 			if (this->paused)
-			{
-				this->pauseGui->render();
-			}
+				showGui = this->pauseGui->render();
+
+			if(showGui==true)
+				this->inGameGui->render();
 		}
 	}
 	renderImgui();
