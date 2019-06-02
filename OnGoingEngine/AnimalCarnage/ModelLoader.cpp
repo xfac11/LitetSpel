@@ -83,7 +83,13 @@ void ModelLoader::loadAO(GameObject*& object, const char* characterName, std::ve
 		System::assetMananger->LoadModel(filePath, model); //load model
 		vertices3D.clear();
 	}
-
+	if (characterName == "Resources/Models/bear_character") {
+		object->setScale(0.15, 0.15, 0.15);
+		object->setRotation(0,0,1,3.14/2);
+	}
+	else {
+		object->setScale(1, 1, 1);
+	}
 	object->addModel(model, mesh.hasSkeleton);
 	//set half size pushes in a array 
 	//reader.readFile(initPath.c_str());
@@ -104,7 +110,6 @@ void ModelLoader::loadAO(GameObject*& object, const char* characterName, std::ve
 		}
 		//set the texture to the model
 	}
-	
 }
 
 void ModelLoader::loadGO(GameObject*& object, const char* filePath, int mipLevels)
