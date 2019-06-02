@@ -92,7 +92,7 @@ bool MainGui::initialize()
 	this->quitButton->setConnectedElements(nullptr, nullptr, optionsButton, playButton);
 
 	//Musica
-	//System::getSoundManager()->playLooped(L"Main_Theme_2.1.wav");
+	System::getSoundManager()->playLooped(L"Main_Theme_2.1.wav");
 
 	return true;
 }
