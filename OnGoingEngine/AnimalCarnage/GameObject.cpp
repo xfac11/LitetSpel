@@ -333,7 +333,7 @@ void GameObject::setNewAnimation(float fps, float duration, std::string name, st
 
 }
 
-void GameObject::setSkeleton(std::vector<Luna::Joint> theJoints, std::string attackJoint)
+void GameObject::setSkeleton(std::vector<Luna::Joint> & theJoints, std::string attackJoint)
 {
 	//this->
 	this->skeleton.resize(theJoints.size());

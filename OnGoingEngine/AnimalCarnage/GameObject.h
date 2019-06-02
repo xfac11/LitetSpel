@@ -44,7 +44,7 @@ public:
 	bool haveAnimation()const;
 	void computeAnimationMatrix(float deltaTime, std::string animName, bool isLooping = true);
 	void setNewAnimation(float fps, float duration, std::string name, std::vector<std::vector<Luna::Keyframe>> & keyframePack);
-	void setSkeleton(std::vector<Luna::Joint> theJoints, std::string attackJoint);
+	void setSkeleton(std::vector<Luna::Joint> & theJoints, std::string attackJoint);
 
 	DirectX::XMFLOAT3 interpolate1(DirectX::XMFLOAT3 &start, DirectX::XMFLOAT3 & end, float & progression);
 	DirectX::XMFLOAT3 interpolate2(DirectX::XMFLOAT3 start, DirectX::XMFLOAT3  end, float progression);

@@ -46,70 +46,65 @@ void ModelLoader::loadAO(GameObject*& object, const char* characterName, std::ve
 		System::assetMananger->LoadGlowMap(mat.glowTexPath, mat.glowTexPath); //load texture
 		glowmap = System::assetMananger->GetTexture(mat.glowTexPath); //set glow texture
 	}
+	mesh = reader.getMesh(0);
+	if (model != nullptr)
+	{
+		model->SetTexture(texture);
+		if (mat.hasGlowMap)
+			model->setGlowMap(glowmap);
+	}
+	else if (model == nullptr)
+	{
+		reader.getVertices(0, vertices);
+		for (int vrt = 0; vrt < vertices.size(); vrt++)
+		{
+			vertices3D[vrt] = vertices[vrt];
+			vertices3D[vrt].uv.y = abs(1 - vertices3D[vrt].uv.y);
+		}
+		reader.getWeights(mesh.id, weights);
+		for (int jw = 0; jw < weights.size(); jw++)
+		{
+			vertices3D[jw].Joint.x = weights[jw].jointIDs[0];
+			vertices3D[jw].Joint.y = weights[jw].jointIDs[1];
+			vertices3D[jw].Joint.z = weights[jw].jointIDs[2];
+			vertices3D[jw].Joint.w = weights[jw].jointIDs[3];
+
+			vertices3D[jw].Weights.x = weights[jw].weights[0];
+			vertices3D[jw].Weights.y = weights[jw].weights[1];
+			vertices3D[jw].Weights.z = weights[jw].weights[2];
+			vertices3D[jw].Weights.w = weights[jw].weights[3];
+		}
+		model = shared_ptr<Model>(new Model());
+		model->setMesh(vertices3D);
+		model->SetTexture(texture); 	//set the texture to the model
+		if (mat.hasGlowMap)
+			model->setGlowMap(glowmap);
+
+		System::assetMananger->LoadModel(filePath, model); //load model
+		vertices3D.clear();
+	}
+
+	object->addModel(model, mesh.hasSkeleton);
+	//set half size pushes in a array 
+	//reader.readFile(initPath.c_str());
+	if (mesh.hasBoundingBox)
+		object->setHalfSize(reader.getBoundingBox(0).halfSize, reader.getBoundingBox(0).pos);
+
 	for (int i = 0; i < animalAnimations.size(); i++) //nrOfAnimations
 	{
 		filePath = characterName + animalAnimations[i] + lu;
 		reader.readFile(filePath.c_str());
-		mat = reader.getMaterial(0);
-		mesh = reader.getMesh(0);
 		anims = reader.getAnimation();
-		if (model != nullptr)
+		animName = std::string(anims.animationName);
+		if (!object->checkIfAnimExist(animName, characterName))
 		{
-			model->SetTexture(texture);
-			if (mat.hasGlowMap)
-				model->setGlowMap(glowmap);
-
-			animName = std::string(anims.animationName);
-			if (!object->checkIfAnimExist(animName, characterName))
-			{
-				for (int f = 0; f < joints.size(); f++)
-					reader.getKeyframes(f, keyframePack[f]);
-				object->setNewAnimation(anims.fps, anims.duration, animName, keyframePack);//change to pack
-			}
+			for (int f = 0; f < joints.size(); f++)
+				reader.getKeyframes(f, keyframePack[f]);
+			object->setNewAnimation(anims.fps, anims.duration, animName, keyframePack);//change to pack
 		}
-		else if (model == nullptr)
-		{
-			reader.getVertices(0, vertices);
-			for (int vrt = 0; vrt < vertices.size(); vrt++)
-			{
-				vertices3D[vrt] = vertices[vrt];
-				vertices3D[vrt].uv.y = abs(1 - vertices3D[vrt].uv.y);
-			}
-			reader.getWeights(mesh.id, weights);
-			animName = std::string(anims.animationName);
-			if (!object->checkIfAnimExist(animName, characterName))
-			{
-				for (int k = 0; k < joints.size(); k++)
-					reader.getKeyframes(k, keyframePack[k]);
-				object->setNewAnimation(anims.fps, anims.duration, animName, keyframePack);
-			}
-			for (int jw = 0; jw < weights.size(); jw++)
-			{
-				vertices3D[jw].Joint.x = weights[jw].jointIDs[0];
-				vertices3D[jw].Joint.y = weights[jw].jointIDs[1];
-				vertices3D[jw].Joint.z = weights[jw].jointIDs[2];
-				vertices3D[jw].Joint.w = weights[jw].jointIDs[3];
-
-				vertices3D[jw].Weights.x = weights[jw].weights[0];
-				vertices3D[jw].Weights.y = weights[jw].weights[1];
-				vertices3D[jw].Weights.z = weights[jw].weights[2];
-				vertices3D[jw].Weights.w = weights[jw].weights[3];
-			}
-			model = shared_ptr<Model>(new Model());
-			model->setMesh(vertices3D);
-			model->SetTexture(texture); 	//set the texture to the model
-			if (mat.hasGlowMap)
-				model->setGlowMap(glowmap);
-
-			System::assetMananger->LoadModel(filePath, model); //load model
-			vertices3D.clear();
-		}
+		//set the texture to the model
 	}
-	object->addModel(model, mesh.hasSkeleton);
-	//set half size pushes in a array 
-	reader.readFile(initPath.c_str());
-	if (mesh.hasBoundingBox)
-		object->setHalfSize(reader.getBoundingBox(0).halfSize, reader.getBoundingBox(0).pos);
+	
 }
 
 void ModelLoader::loadGO(GameObject*& object, const char* filePath, int mipLevels)
