@@ -33,7 +33,7 @@ PlayerSelector::PlayerSelector(AnimalType animalType, PlayerColor color,int id, 
 	}
 
 	this->controllerID = id;
-	this->readyColor = Colors::Red;
+	this->readyColor = Colors::DarkGray;
 	this->ready = false;
 }
 
@@ -177,9 +177,9 @@ void PlayerSelector::setReady(bool arg)
 {
 	this->ready = arg;
 	if (arg)
-		this->readyColor = Colors::Green;
+		this->readyColor = Colors::LightGreen;
 	else
-		this->readyColor = Colors::Red;
+		this->readyColor = Colors::DarkGray;
 }
 
 void PlayerSelector::changeAnimalType(bool dir)

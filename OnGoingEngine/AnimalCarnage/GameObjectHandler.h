@@ -17,6 +17,7 @@ public:
 	void setSkyboxTexture(std::string file);
 	void setSunDir(DirectX::XMFLOAT3 dir);
 	void setLightPos(int id, btVector3 pos);
+	void reset();
 private:
 	GameObject* *gameObjects;
 	int cap;
