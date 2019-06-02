@@ -735,41 +735,66 @@ bool GunGameState::initailize()
 		0.5f , 0.0f, 1.0f , 1.0f
 	};
 	System::handler->addLight(pos, dir, color2);
-	color2[0] = 0.0f;
+	color2[0] = 1.0f;
 	color2[1] = 1.0f;
-	color2[2] = 1.0f;
-	pos[0] = -10.0f;
-	pos[1] = 4;
-	pos[2] = -2;
-	color2[3] = 1.0f;
-	System::handler->addLight(pos, dir, color2);
+	color2[2] = 0.0f;
+	pos[0] = -18.0f;
+	pos[1] = 2.7;
+	pos[2] = -2.5;
+	//-18, 0.9, -2.0
+	color2[3] = 0.8f;
+	System::handler->addLight(pos, dir, color2); //YELLOW SHROOM
 
 
 	//Cool lights
 	float color3[4] = {
-		0.0f , 0.0f, 1.0f , 2.0f
+		0.0f , 1.0f, 1.0f , 4.0f
 	};
 	float pos2[4] = {
 	-18.f ,2.6f ,0.f,5.f
 	};
-	System::handler->addLight(pos2, dir, color3);
+	System::handler->addLight(pos2, dir, color3); //PLATFORM
 
 	float color4[4] = {
-		1.0f , 0.0f, 0.5f , 15.0f
+		0.0f , 1.0f, 1.0f , 7.5f
 	};
 	float pos3[4] = {
-	10.f ,5.6f ,0.f,5.f
+	-16, 4.5, 4.5,5.f //BLUE SHROOMS
 	};
 	System::handler->addLight(pos3, dir, color4);
 
 	float color5[4] = {
-		0.0f , 0.5f, 1.0f , 25.0f
+		0.0f , 1.0f, 1.0f , 6.0f
 	};
 	float pos4[4] = {
 	-23.f ,7.6f ,0.f,5.f
 	};
-	System::handler->addLight(pos4, dir, color5);
+	System::handler->addLight(pos4, dir, color5); //PLATFORM
 
+	float color6[4] = {
+		1.0f , 0.0f, 0.5f , 1.0f
+	};
+	float pos5[4] = {
+	15, 2.2, 3.0,5.f
+	};
+	System::handler->addLight(pos5, dir, color6); // PINK MUSHROOM
+
+	float color7[4] = {
+		1.0f , 0.7f, 0.2f , 20.0f
+	};
+	float pos6[4] = {
+	0, 19.5, -5.0,5.f
+	};
+	System::handler->addLight(pos6, dir, color7); //LIGHTRAYS
+
+	float color8[4] = {
+		1.0f , 0.0f, 0.3f , 20.0f
+	};
+	float pos7[4] = {
+	-3.f, 6.0, -10.0,5.f
+	};
+	//System::handler->addLight(pos7, dir, color8); //GROUNDLIGHT
+	
 	this->inGameGui = new GunGameGui(this);
 	this->inGameGui->initialize();
 	this->pauseGui = new PauseGui(this);
@@ -888,6 +913,7 @@ void GunGameState::renderImgui()
 bool GunGameState::update(float deltaTime)
 {
 	System::handler->setLightPos(3,objects[4]->getRigidBodyPosition());
+	System::handler->setLightPos(5, objects[5]->getRigidBodyPosition());
 	/*System::handler->setLightPos(1, objects[4]->getRigidBodyPosition());
 	System::handler->setLightPos(2, objects[4]->getRigidBodyPosition());
 	System::handler->setLightPos(4, objects[4]->getRigidBodyPosition());
@@ -1003,7 +1029,7 @@ bool GunGameState::update(float deltaTime)
 						}
 						if (objects[i]->getPlayerKilled() == true && player[j]->getDiedOfStone() == true)
 						{
-							if (player[objects[i]->getLastPlayerHit()] != nullptr)
+							if (player[objects[i]->getLastPlayerHit()] != nullptr && player[objects[i]->getLastPlayerHit()]->getPosition().x != player[j]->getPosition().x)
 							{
 								player[objects[i]->getLastPlayerHit()]->changeCharacter();
 								objects[i]->setPlayerKilled(false);

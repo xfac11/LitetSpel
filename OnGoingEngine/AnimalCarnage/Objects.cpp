@@ -217,7 +217,7 @@ void Objects::update(float dt)
 	{
 		if (abs(getMovingSpeed().x) > 10 || abs(getMovingSpeed().z) > 10)
 		{
-			System::getParticleManager()->addSimpleEffect(DirectX::SimpleMath::Vector3(ObjectOBJ->GetPosition().x, ObjectOBJ->GetPosition().y+1.5, ObjectOBJ->GetPosition().z), "hit_effect", 2.2f, 0.8f, false, 1, 0.1, DirectX::SimpleMath::Vector3(0,0,0),-0.03);
+			System::getParticleManager()->addSimpleEffect(DirectX::SimpleMath::Vector3(ObjectOBJ->GetPosition().x, ObjectOBJ->GetPosition().y+1.5, ObjectOBJ->GetPosition().z), "fog_effect", 1.2f, 0.8f, false, 1, 0.1, DirectX::SimpleMath::Vector3(0,0,0),-0.03);
 		}
 
 
@@ -236,8 +236,8 @@ void Objects::update(float dt)
 		if (this->health <= 0) {
 			if (respawnTimer <= 0) {
 				//System::getParticleManager()->addSimpleEffect(DirectX::SimpleMath::Vector3(ObjectOBJ->getPosition()), "rumble",1 , 2.0f,true,30);
-				System::getParticleManager()->addSimpleEffect(DirectX::SimpleMath::Vector3(ObjectOBJ->getPosition()), "rumble", 0.6, 2.0f, true, 35, 5,
-					DirectX::SimpleMath::Vector3(getMovingSpeed().x / 2, getMovingSpeed().y / 2, getMovingSpeed().z / 2), -0.001);
+				System::getParticleManager()->addSimpleEffect(DirectX::SimpleMath::Vector3(ObjectOBJ->getPosition()), "rumble", 0.45, 2.0f, true, 85, 3.5,
+					DirectX::SimpleMath::Vector3(getMovingSpeed().x / 1, getMovingSpeed().y / 1, getMovingSpeed().z / 1), -0.001);
 			}
 			respawnTimer += 40 * dt;
 			this->ObjectOBJ->getRigidbody()->getWorldTransform().setOrigin(btVector3(this->position1.x, this->position1.y - 100, this->position1.z));
