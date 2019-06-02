@@ -1125,7 +1125,7 @@ void GunGameState::reset()
 	this->resultsShown = false;
 
 	//Musica
-	//System::getSoundManager()->playLooped(L"Battle_Theme_One_1.0.wav");
+	System::getSoundManager()->playLooped(L"Battle_Theme_One_1.1.wav");
 }
 
 bool GunGameState::controllerIsConnected(int controllerPort)
