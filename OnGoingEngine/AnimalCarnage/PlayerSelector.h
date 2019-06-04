@@ -19,6 +19,7 @@ private:
 	PlayerColor color;
 	DirectX::XMVECTOR readyColor;
 	bool ready;//s
+	bool connected;
 	int controllerID;
 	DirectX::GamePad::ButtonStateTracker mButtons;
 

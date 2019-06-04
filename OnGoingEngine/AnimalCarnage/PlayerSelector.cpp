@@ -35,16 +35,22 @@ PlayerSelector::PlayerSelector(AnimalType animalType, PlayerColor color,int id, 
 	this->controllerID = id;
 	this->readyColor = Colors::DarkGray;
 	this->ready = false;
+	this->connected = false;
 }
 
 PlayerSelector::~PlayerSelector()
 {
+	
 }
 
 bool PlayerSelector::render(bool selected, DirectX::XMVECTOR color)
 {
-	System::getSpriteBatch()->Draw(PlayerSelector::selectorBG.getTexture(), this->position, nullptr);
-
+	if(this->connected)
+		System::getSpriteBatch()->Draw(PlayerSelector::selectorBG.getTexture(), this->position, nullptr);
+	else
+	{
+		System::getSpriteBatch()->Draw(PlayerSelector::selectorBG.getTexture(), this->position, Colors::Gray);
+	}
 	switch (this->color)
 	{
 	case RED:
@@ -120,6 +126,7 @@ void PlayerSelector::update(PlayerColor *& arr, int& nrOfPlayers)
 	int i = 0;
 	if (gamepadState.IsConnected())
 	{
+		this->connected = true;
 		mButtons.Update(gamepadState);
 		using ButtonState = GamePad::ButtonStateTracker::ButtonState;
 		arr[controllerID] = getPlayerColor();
@@ -168,7 +175,10 @@ void PlayerSelector::update(PlayerColor *& arr, int& nrOfPlayers)
 		{
 			changeAnimalType(false);
 		}
-
+	}
+	else
+	{
+		this->connected = false;
 	}
 	arr[controllerID] = getPlayerColor();
 }
@@ -177,7 +187,7 @@ void PlayerSelector::setReady(bool arg)
 {
 	this->ready = arg;
 	if (arg)
-		this->readyColor = Colors::LightGreen;
+		this->readyColor = Colors::Lime;
 	else
 		this->readyColor = Colors::DarkGray;
 }

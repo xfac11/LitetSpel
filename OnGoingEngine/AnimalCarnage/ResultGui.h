@@ -12,7 +12,7 @@ class ResultGui : public GuiBase
 {
 private:
 	Button* buttonMenu;
-	LooserView* statsView[4];
+	LooserView* *statsView;
 	int nrOfPlayers;
 
 	float buttonDelay;

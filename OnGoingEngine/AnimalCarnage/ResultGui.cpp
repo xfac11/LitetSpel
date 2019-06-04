@@ -5,31 +5,52 @@
 ResultGui::ResultGui(State * myState) : GuiBase(myState)
 {
 	this->buttonMenu = nullptr;
-	this->statsView[0] = nullptr;
-	this->statsView[1] = nullptr;
-	this->statsView[2] = nullptr;
-	this->statsView[3] = nullptr;
 	this->nrOfPlayers = 4;
-
+	this->statsView = new LooserView*[4];
 	this->buttonDelay = 0.0f;
+	for (int i = 0; i < 4; i++)
+	{
+		this->statsView[i]=nullptr;
+	}
+	this->buttonMenu = new Button("Exit to menu", Vector2(1920 / 2.0f - 300, 1080 - 125));
 }
 
 ResultGui::~ResultGui()
 {
 	delete this->buttonMenu;
-	delete this->statsView[0];
-	delete this->statsView[1];
-	delete this->statsView[2];
-	delete this->statsView[3];
+	for (int i = 0; i < 4; i++)
+	{
+		if(this->statsView!=nullptr)
+			delete this->statsView[i];
+	}
+	delete[] this->statsView;
+
+	
 }
 
 bool ResultGui::initialize()
 {
-	this->buttonMenu = new Button("Exit to menu", Vector2(1920 / 2.0f - 300, 1080 - 125));
-	this->statsView[0] = new WinnerView(Vector2(1920 / 2.0F - 775, 1080 / 2.0F - 405));
-	this->statsView[1] = new LooserView(Vector2(1920 / 2.0F - 375, 1080 / 2.0F - 300));
-	this->statsView[2] = new LooserView(Vector2(1920 / 2.0F + 25, 1080 / 2.0F - 300));
-	this->statsView[3] = new LooserView(Vector2(1920 / 2.0F + 425, 1080 / 2.0F - 300));
+	GunGameState* state = static_cast<GunGameState*>(this->myState);
+	for (int i = 0; i < 4; i++)
+	{
+		if (this->statsView[i] != nullptr)
+		{
+			delete this->statsView[i];
+			this->statsView[i] = nullptr;
+		}
+	}
+	this->nrOfPlayers = state->getNrOfPlayers();
+	for (int i = 0; i < this->nrOfPlayers; i++)
+	{
+		if(i==0)
+			this->statsView[0] = new WinnerView(Vector2(1920 / 2.0F - 775, 1080 / 2.0F - 405));
+		else if(i==1)
+			this->statsView[1] = new LooserView(Vector2(1920 / 2.0F - 375, 1080 / 2.0F - 300));
+		else if(i==2)
+			this->statsView[2] = new LooserView(Vector2(1920 / 2.0F + 25, 1080 / 2.0F - 300));
+		else if(i==3)
+			this->statsView[3] = new LooserView(Vector2(1920 / 2.0F + 425, 1080 / 2.0F - 300));
+	}
 
 	return true;
 }

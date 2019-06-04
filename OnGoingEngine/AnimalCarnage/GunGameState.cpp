@@ -253,15 +253,28 @@ void GunGameState::addObject(std::string filePath, btVector3 pos, int id, int fr
 	this->nrOfObjects++;
 }
 
-bool GunGameState::initPlayers(AnimalType type[], PlayerColor color[], bool rumbleEnabled[])
+bool GunGameState::initPlayers(int nrOfPlayers,AnimalType type[], PlayerColor color[], bool rumbleEnabled[])
 {
-	for (int i = 0; i < nrOfPlayers; i++)
+	this->nrOfPlayers = nrOfPlayers;
+	
+	for (int i = 0; i < this->nrOfPlayers; i++)
 	{
 		player[i]->setAnimalTypeAndMass(type[i]);
 		player[i]->setColorMask(color[i]);
 		player[i]->setRumble(rumbleEnabled[i]);
 	}
+	for (int i = this->nrOfPlayers; i < 4; i++)
+	{
+		player[i]->playerObj->getRigidbody()->setLinearFactor(btVector3(0, 0, 0));
+		player[i]->playerObj->setActiveDraw(false);
+		player[i]->setRigidbodyPosition(100, 1000, 1000);
+		player[i]->setPosition(100, 1000, 1000);
+
+	}
 	reset();
+
+	this->inGameGui->initialize();
+	this->resultGui->initialize();
 	return true;
 }
 
@@ -699,25 +712,24 @@ bool GunGameState::initailize()
 	ray2->setScale(1.5, 1.5, 1.5);
 	ray2->setRotationRollPitchYaw(0, 0, -0.5);
 
+	
+	//this->player[2]->playerObj->setRotationRollPitchYaw(0.f, 1.5*(3.14f), 0.f);
 	this->nrOfPlayers = 4;
-	this->currentAnimSpeed.resize(this->nrOfPlayers);
-	this->currentAnimName.resize(this->nrOfPlayers);
-	this->currentAnimLoop.resize(this->nrOfPlayers);
-	player = new Player*[nrOfPlayers];
+	player = new Player*[4];
 	this->spawnPoints[0] = btVector3(5, 3, 0);
 	this->spawnPoints[1] = btVector3(-5, 3, 0);
 	this->spawnPoints[2] = btVector3(15, 3, 0);
 	this->spawnPoints[3] = btVector3(-15, 3, 0);
-	for (int i = 0; i < nrOfPlayers; i++)
+	this->currentAnimSpeed.resize(this->nrOfPlayers);
+	this->currentAnimName.resize(this->nrOfPlayers);
+	this->currentAnimLoop.resize(this->nrOfPlayers);
+	for (int i = 0; i < this->nrOfPlayers; i++)
 	{
 		player[i] = new Player();
 		player[i]->initialize(FOX, RED);
 		player[i]->setRigidbodyPosition(this->spawnPoints[i].getX(), this->spawnPoints[i].getY(), this->spawnPoints[i].getZ());
 		this->player[i]->setDirection(-1);//everyone should look towards the middle
-		
 	}
-	//this->player[2]->playerObj->setRotationRollPitchYaw(0.f, 1.5*(3.14f), 0.f);
-
 	//player[1]->setRigidbodyPosition(-10,10, 0.f);
 	System::handler->initialize();
 	System::handler->setSkyboxTexture("painted_skybox2");
@@ -796,11 +808,11 @@ bool GunGameState::initailize()
 	//System::handler->addLight(pos7, dir, color8); //GROUNDLIGHT
 	
 	this->inGameGui = new GunGameGui(this);
-	this->inGameGui->initialize();
+	//this->inGameGui->initialize();
 	this->pauseGui = new PauseGui(this);
 	this->pauseGui->initialize();
 	this->resultGui = new ResultGui(this);
-	this->resultGui->initialize();
+	//this->resultGui->initialize();
 
 	System::handler->sortBackToFront();
 
@@ -1110,7 +1122,7 @@ void GunGameState::shutDown()
 		delete this->objects[i];
 	}
 	delete[] this->objects;
-	for (int i = 0; i < nrOfPlayers; i++)
+	for (int i = 0; i < 4; i++)
 	{
 		delete player[i];
 	}

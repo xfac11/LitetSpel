@@ -6,14 +6,19 @@ GunGameGui::GunGameGui(State* myState) : GuiBase(myState)
 {
 	this->nrOfPlayers = 0;
 	this->playerHealthBars = nullptr;
-	
+	this->playerHealthBars = new HealthBar*[4];
+	for (int i = 0; i < 4; i++)
+	{
+		this->playerHealthBars[i] = nullptr;
+	}
 }
 
 GunGameGui::~GunGameGui()
 {
-	for (int i = 0; i < this->nrOfPlayers; i++)
+	for (int i = 0; i < 4; i++)
 	{
-		delete this->playerHealthBars[i];
+		if(this->playerHealthBars[i]!=nullptr)
+			delete this->playerHealthBars[i];
 	}
 
 	delete[] this->playerHealthBars;
@@ -23,9 +28,15 @@ bool GunGameGui::initialize()
 {
 	GunGameState* state = static_cast<GunGameState*>(this->myState);
 
+	for (int i = 0; i < 4; i++)
+	{
+		if (this->playerHealthBars[i] != nullptr)
+		{
+			delete this->playerHealthBars[i];
+			this->playerHealthBars[i] = nullptr;
+		}
+	}
 	this->nrOfPlayers = state->getNrOfPlayers();
-	this->playerHealthBars = new HealthBar*[this->nrOfPlayers];
-
 	for (int i = 0; i < this->nrOfPlayers; i++)
 	{
 		this->playerHealthBars[i] = new HealthBar(state->getPlayer(i)->getHealth(), state->getPlayer(i)->getMaxHealth(), 

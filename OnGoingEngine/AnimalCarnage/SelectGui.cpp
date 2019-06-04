@@ -111,7 +111,7 @@ bool SelectGui::update(float deltaTime)
 
 			MainMenu* state = dynamic_cast<MainMenu*>(this->myState);
 			state->getRumble(rumble);
-			dynamic_cast<GunGameState*>(System::getCurrentState())->initPlayers(type, color, rumble);
+			dynamic_cast<GunGameState*>(System::getCurrentState())->initPlayers(this->nrOfPlayers,type, color, rumble);
 		}
 		else if (System::theKeyboard->KeyIsPressed('Q'))
 		{
@@ -218,7 +218,10 @@ bool SelectGui::update(float deltaTime)
 						this->allReady = false;
 						MainMenu* state = dynamic_cast<MainMenu*>(this->myState);
 						state->getRumble(rumble);
-						dynamic_cast<GunGameState*>(System::getCurrentState())->initPlayers(type, color, rumble);
+						//dynamic_cast<GunGameState*>(System::getCurrentState())->initailize();
+						if (this->nrOfPlayers == 1)
+							this->nrOfPlayers++;
+						dynamic_cast<GunGameState*>(System::getCurrentState())->initPlayers(this->nrOfPlayers,type, color, rumble);
 					}
 
 				}
