@@ -806,16 +806,17 @@ bool GunGameState::initailize()
 
 
 	// & to a new vector that holds the dynmic objects for collisons
-	for (int i = 0; i < nrOfObjects; i++)
-	{
-		if (this->objects[i]->GetType() == GRASS) {
-			this->dynamicObjects.push_back(objects[i]);
-		}
-		else if (this->objects[i]->GetType() == TRUE_DYNAMIC)
-		{
-			this->dynamicObjects.push_back(objects[i]);
-		}
-	}
+	//Improvement to update
+	//for (int i = 0; i < nrOfObjects; i++)
+	//{
+	//	if (this->objects[i]->GetType() == GRASS) {
+	//		this->dynamicObjects.push_back(objects[i]);
+	//	}
+	//	else if (this->objects[i]->GetType() == TRUE_DYNAMIC)
+	//	{
+	//		this->dynamicObjects.push_back(objects[i]);
+	//	}
+	//}
 
 
 	return true;
@@ -1027,9 +1028,9 @@ bool GunGameState::update(float deltaTime)
 							objects[i]->addImpulse(player[j]->dir * 65 * ((player[j]->getWeight() + 1) / 2), j);
 							objects[i]->setLastPlayerHit(j);
 						}
-						if (objects[i]->getPlayerKilled() == true && player[j]->getDiedOfStone() == true)
+						if (objects[i]->getPlayerKilled() == true && player[j]->getDiedOfStone() == true && objects[i]->getLastPlayerHit() != j)
 						{
-							if (player[objects[i]->getLastPlayerHit()] != nullptr && player[objects[i]->getLastPlayerHit()]->getPosition().x != player[j]->getPosition().x)
+							if (player[objects[i]->getLastPlayerHit()] != nullptr)
 							{
 								player[objects[i]->getLastPlayerHit()]->changeCharacter();
 								objects[i]->setPlayerKilled(false);
