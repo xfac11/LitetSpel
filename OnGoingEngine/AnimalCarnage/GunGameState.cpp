@@ -132,7 +132,7 @@ bool GunGameState::callbackFunc(btManifoldPoint& cp, const btCollisionObjectWrap
 					PlrPointer->takeDamage(25);
 					PlrPointer->setHitStun(true);
 
-					System::getParticleManager()->addSimpleEffect(DirectX::SimpleMath::Vector3(PlrPointer->getPosition().x, PlrPointer->getPosition().y + 2, PlrPointer->getPosition().z - 1), "hit_effect", 4.f, 1.0, false, 1, 0, DirectX::SimpleMath::Vector3(0, 0, 0), -0.12);
+					System::getParticleManager()->addSimpleEffect(DirectX::SimpleMath::Vector3(PlrPointer->getPosition().x, PlrPointer->getPosition().y + 4, PlrPointer->getPosition().z - 1), "hit_effect", 4.f, 1.0, false, 1, 0, DirectX::SimpleMath::Vector3(0, 0, 0), -0.12);
 
 
 					int randomNumber = (rand() % 4) + 0;
@@ -981,7 +981,7 @@ bool GunGameState::update(float deltaTime)
 						player[i]->takeDamage(player[j]->getStrength());
 						player[i]->stats.damageTaken += player[j]->getStrength();
 						player[j]->stats.damageDealt += player[j]->getStrength();
-						System::getParticleManager()->addSimpleEffect(DirectX::SimpleMath::Vector3(player[i]->getPosition().x, player[i]->getPosition().y+2, player[i]->getPosition().z-1), "hit_effect", 4.f, 1.0, false, 1, 0,DirectX::SimpleMath::Vector3(0,0,0),-0.12);
+						System::getParticleManager()->addSimpleEffect(DirectX::SimpleMath::Vector3(player[i]->getPosition().x, player[i]->getPosition().y+4, player[i]->getPosition().z-1), "hit_effect", 4.f, 1.0, false, 1, 0,DirectX::SimpleMath::Vector3(0,0,0),-0.12);
 
 						int randomNumber = (rand() % 4) + 0;
 						System::getSoundManager()->playEffect(to_string(randomNumber));

@@ -403,7 +403,9 @@ void Player::initialize(AnimalType type, PlayerColor color)
 */
 	//playerObj->getRigidbody()->setWorldTransform(XMMATRIX_to_btTransform(this->playerObj->getWorld()));
 	this->playerObj->setRotationRollPitchYaw(0.f,3.14f/2.f,0.f);
-
+	if (this->type == BEAR) {
+		this->playerObj->setRotationRollPitchYaw(0.f, 3.14f / 2.f, 0.f);
+	}
 
 	//playerObj->getRigidbody()->setActivationState(DISABLE_DEACTIVATION);
 	//playerObj->getRigidbody()->setFriction(0.5);
@@ -464,15 +466,18 @@ void Player::update(float deltaTime, int id)
 
 
 	//Cool rotation
-	this->playerObj->setRotationRollPitchYaw(-(this->playerObj->getRigidbody()->getLinearVelocity().getY() / 20), this->playerObj->getRotation().y, this->playerObj->getRotation().z);
-
+	if (type == BEAR) {
+		this->playerObj->setRotationRollPitchYaw(this->playerObj->getRigidbody()->getLinearVelocity().getY() / 20, this->playerObj->getRotation().y, this->playerObj->getRotation().z);
+	}
+	else {
+		this->playerObj->setRotationRollPitchYaw(-(this->playerObj->getRigidbody()->getLinearVelocity().getY() / 20), this->playerObj->getRotation().y, this->playerObj->getRotation().z);
+	}
 	if (this->playerObj->getRotation().x > 0.785398163) {
 		this->playerObj->setRotationRollPitchYaw(0.785398163, this->playerObj->getRotation().y, this->playerObj->getRotation().z);
 	}
 	if (this->playerObj->getRotation().x < -0.785398163) {
 		this->playerObj->setRotationRollPitchYaw(-0.785398163, this->playerObj->getRotation().y, this->playerObj->getRotation().z);
 	}
-
 
 	//Hitstun
 	if (this->hitStun == true) {
@@ -938,7 +943,8 @@ void Player::update(float deltaTime, int id)
 			health = getMaxHealth();
 			deathTimer = 0;
 			setRigidbodyPosition(0,+20,0);
-			playerObj->getRigidbody()->setAngularFactor(btVector3(0, 0, 0));
+			//playerObj->getRigidbody()->setAngularFactor(btVector3(0, 0, 0));
+			playerObj->getRigidbody()->setLinearVelocity(btVector3(0, 0, 0));
 		}
 	}
 
