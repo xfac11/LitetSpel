@@ -32,6 +32,8 @@ struct PS_IN
 	float2 texCoord28 : TEXCOORD28;
 	float2 texCoord29 : TEXCOORD29;
 	float2 texCoord30 : TEXCOORD30;
+	float2 texCoord31 : TEXCOORD31;
+
 
 };
 Texture2D GlowMap : register(t0);
@@ -112,15 +114,15 @@ float4 PS_main(PS_IN input) : SV_TARGET
 	color += GlowMap.Sample(SampSt, input.texCoord20)* weight4;
 	color += GlowMap.Sample(SampSt, input.texCoord21)* weight5;
 	color += GlowMap.Sample(SampSt, input.texCoord22)* weight6;
-	color += GlowMap.Sample(SampSt, input.texCoord22)* weight7;
-	color += GlowMap.Sample(SampSt, input.texCoord23)* weight8;
-	color += GlowMap.Sample(SampSt, input.texCoord24)* weight9;
-	color += GlowMap.Sample(SampSt, input.texCoord25)* weight10;
-	color += GlowMap.Sample(SampSt, input.texCoord26)* weight11;
-	color += GlowMap.Sample(SampSt, input.texCoord27)* weight12;
-	color += GlowMap.Sample(SampSt, input.texCoord28)* weight13;
-	color += GlowMap.Sample(SampSt, input.texCoord29)* weight14;
-	color += GlowMap.Sample(SampSt, input.texCoord30)* weight15;
+	color += GlowMap.Sample(SampSt, input.texCoord23)* weight7;
+	color += GlowMap.Sample(SampSt, input.texCoord24)* weight8;
+	color += GlowMap.Sample(SampSt, input.texCoord25)* weight9;
+	color += GlowMap.Sample(SampSt, input.texCoord26)* weight10;
+	color += GlowMap.Sample(SampSt, input.texCoord27)* weight11;
+	color += GlowMap.Sample(SampSt, input.texCoord28)* weight12;
+	color += GlowMap.Sample(SampSt, input.texCoord29)* weight13;
+	color += GlowMap.Sample(SampSt, input.texCoord30)* weight14;
+	color += GlowMap.Sample(SampSt, input.texCoord31)* weight15;
 
 
 

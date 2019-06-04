@@ -57,21 +57,21 @@ VS_OUT VS_main(VS_IN input)
 	float texelSize;
 
 
-	// Change the position vector to be 4 units for proper matrix calculations.
 	input.screenPos.w = 1.0f;
 
-	// Calculate the position of the vertex against the world, view, and projection matrices
+	
 	output.TexCoord = input.TexCoord;
 	output.screenPos = float4(output.TexCoord.x * 2 - 1, (1 - output.TexCoord.y) * 2 - 1, 0, 1);
-	// Store the texture coordinates for the pixel shader.
 	output.TexCoord = input.TexCoord;
 
-	//Here is where we determine the texel size which is just one divided by the screen width(or render to texture width).With this value we can now determine the UV coordinates of each horizontal neighbor pixel.
 
-		// Determine the floating point size of a texel for a screen with this specific width.
-		texelSize = 1.0f / width;
+	texelSize = 1.0f / width;
 
-	//Here is where we generate the UV coordinates for the center pixel and four neighbors on either side.We take the current texture coordinates and add the horizontal offset to all nine coordinates.The horizontal offset is the texel size multiplied by the distance of the neighbor.For example the neighbor that is 3 pixels to the left is calculated by texelSize * -3.0f.Note the vertical coordinate in the offset is just zero so we don't move off the horizontal line we are sampling on.
+	//Here is where we generate the UV coordinates for the center pixel and four neighbors on either side.
+	//We take the current texture coordinates and add the horizontal offset to all nine coordinates.
+	//The horizontal offset is the texel size multiplied by the distance of the neighbor.
+	//For example the neighbor that is 3 pixels to the left is calculated by texelSize * -3.0f.
+	//Note the vertical coordinate in the offset is just zero so we don't move off the horizontal line we are sampling on.
 
 		// Create UV coordinates for the pixel and its four horizontal neighbors on either side.
 		output.texCoord1 = input.TexCoord + float2(texelSize * 15.0f, 0.0f);
