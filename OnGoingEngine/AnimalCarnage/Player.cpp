@@ -324,7 +324,10 @@ void Player::ResetRigidBody()
 	XMFLOAT3 scale = playerObj->getScale();
 
 	btVector3 size = btVector3(1 + aabb.width * scale.x, aabb.height * scale.y * 2, 1);
-	
+	if (this->type == BEAR) {
+		size = btVector3(1 + aabb.width * scale.x * 8, aabb.height * scale.y * 12, 1);
+	}
+
 	playerObj->getRigidbody() = System::getphysices()->addPlayer(btVector3(aabb.offset.x, aabb.offset.y, aabb.offset.z), size, 10.0f * getWeight(), this);
 
 	playerObj->getRigidbody()->setWorldTransform(XMMATRIX_to_btTransform(this->playerObj->getWorld()));
@@ -490,6 +493,9 @@ void Player::update(float deltaTime, int id)
 
 	if (type == MOOSE || type == RABBIT) {
 		this->playerObj->setPosition(this->playerObj->GetPosition().x, this->playerObj->GetPosition().y+0.28, this->playerObj->GetPosition().z);
+	}
+	else if (type == BEAR) {
+		this->playerObj->setPosition(this->playerObj->GetPosition().x, this->playerObj->GetPosition().y - 0.48, this->playerObj->GetPosition().z);
 	}
 	else {
 		this->playerObj->setPosition(this->playerObj->GetPosition());
@@ -741,7 +747,9 @@ void Player::update(float deltaTime, int id)
 			if (hitTimer >30 && hitTimer < 50) {
 				playerObj->getRigidbody()->setLinearVelocity(btVector3(20*dir, playerObj->getRigidbody()->getLinearVelocity().getY(), playerObj->getRigidbody()->getLinearVelocity().getZ() / 2));
 				//this->hitbox.hitbox->setPosition(this->getPosition().x + 1.5*dir, this->getPosition().y, this->getPosition().z);
-				this->hitbox.hitbox->setMatrix(this->playerObj->getWorld()*sclMtx*this->playerObj->getJointPos());
+				this->hitbox.hitbox->setPosition(this->getPosition().x + 1.5*dir, this->getPosition().y, this->getPosition().z);
+				this->hitbox.hitbox->setScale(2, 2, 2);
+				//this->hitbox.hitbox->setMatrix(this->playerObj->getWorld()*sclMtx*this->playerObj->getJointPos());
 
 			}
 			if (hitTimer >= 60) {
@@ -899,6 +907,9 @@ void Player::update(float deltaTime, int id)
 			facing = -3.14f / 2.f;
 		}
 		this->playerObj->setRotationRollPitchYaw(this->playerObj->getRotation().x, facing, this->playerObj->getRotation().z);
+		if (this->type == BEAR) {
+			this->playerObj->setRotationRollPitchYaw(this->playerObj->getRotation().x, this->playerObj->getRotation().y - 3.14, this->playerObj->getRotation().z);
+		}
 	}
 
 	//grounded = false;
@@ -915,9 +926,12 @@ void Player::update(float deltaTime, int id)
 		temp.m128_f32[3] = this->playerObj->getRigidbody()->getWorldTransform().getRotation().getW();
 
 		//playerObj->setRotationRollPitchYaw(getRoll(temp) * -1, playerObj->getRotation().y, playerObj->getRotation().z);
-		animName = "death";
-		animSpeed = 1;
-		animLoop = false;
+		if (std::find(Animal::getAnimal(type).animalAnimations.begin(), Animal::getAnimal(type).animalAnimations.end(), "_death") != Animal::getAnimal(type).animalAnimations.end()) //remove this when animation exist
+		{
+			animName = "death";
+			animSpeed = 1;
+			animLoop = false;
+		}
 
 		deathTimer += 60 * deltaTime;
 		if (deathTimer >= 100) {

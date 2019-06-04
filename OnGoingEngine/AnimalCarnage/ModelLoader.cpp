@@ -14,6 +14,14 @@ void ModelLoader::loadAO(GameObject*& object, const char* characterName, std::ve
 { 
 	if (object->getModel() != nullptr)
 		object->getModel().reset();
+	
+	if (characterName == "Resources/Models/bear_character") {
+		object->setScale(0.15, 0.15, 0.15);
+		//object->setRotation(0, 0, 1, 3.14 / 2);
+	}
+	else {
+		object->setScale(1, 1, 1);
+	}
 
 	Luna::Reader reader;
 	Luna::Skeleton skltn;
