@@ -1030,9 +1030,23 @@ bool GunGameState::update(float deltaTime)
 						}
 						if (objects[i]->getPlayerKilled() == true && player[j]->getDiedOfStone() == true && objects[i]->getLastPlayerHit() != j)
 						{
-							if (player[objects[i]->getLastPlayerHit()] != nullptr)
+							if (player[objects[i]->getLastPlayerHit()] != nullptr && (objects[i]->getLastPlayerHit()<4&& objects[i]->getLastPlayerHit()>-1))
 							{
-								player[objects[i]->getLastPlayerHit()]->changeCharacter();
+								if (player[objects[i]->getLastPlayerHit()]->canChange())
+								{
+									player[objects[i]->getLastPlayerHit()]->changeCharacter();
+									player[j]->stats.deaths++;
+									player[objects[i]->getLastPlayerHit()]->stats.kills++;
+								}
+								else
+								{
+									this->resultsShown = true;
+									static_cast<ResultGui*>(this->resultGui)->initializePlayerStats();
+
+									this->paused = true;
+									this->pauseGui->activateDelay();
+								}
+								
 								objects[i]->setPlayerKilled(false);
 								player[j]->setDiedOfStone(false);
 							}
