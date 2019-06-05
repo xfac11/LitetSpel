@@ -222,6 +222,7 @@ bool SelectGui::update(float deltaTime)
 						if (this->nrOfPlayers == 1)
 							this->nrOfPlayers++;
 						dynamic_cast<GunGameState*>(System::getCurrentState())->initPlayers(this->nrOfPlayers,type, color, rumble);
+						return true;
 					}
 
 				}

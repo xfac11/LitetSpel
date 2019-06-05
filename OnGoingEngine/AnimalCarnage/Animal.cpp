@@ -17,7 +17,7 @@ AnimalDef Animal::moose =  { 175,		2.0F,	0.6F,	0.8F,		12,			"Resources/Models/ra
 
 AnimalDef& Animal::getAnimal(AnimalType type)
 {
-	switch (type)
+	switch (type) 
 	{
 	case FOX:
 		return Animal::fox;

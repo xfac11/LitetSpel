@@ -379,11 +379,6 @@ void GameObjectHandler::setSkyboxTexture(std::string file)
 
 void GameObjectHandler::generateSphere()
 {
-	//double latitudeBands = 5;
-	//double longitudeBands = 5;
-	//double radius = 0.5f;
-
-
 	int stacks = 5;
 	int slices = 5;
 	const float PI = 3.14f;

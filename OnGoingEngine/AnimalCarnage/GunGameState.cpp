@@ -295,9 +295,9 @@ bool GunGameState::initailize()
 
 	this->nrOfObjects = 9;*/
 
-	this->addObject("Resources/Models/small_stone1.lu", btVector3(-10, 7, 0), 4, 2, btVector3(7.5f, 7.5f, 7.5f), btVector3(0.0, 0.0, 0.0), TRUE_DYNAMIC, PLATFORM, 1,true);
-	this->addObject("Resources/Models/small_stone2.lu", btVector3(5, 6, 0), 4, 2, btVector3(7.5f, 7.5f, 7.5f), btVector3(0.0, 0.0, 0.0), TRUE_DYNAMIC, PLATFORM, 1,true);
-	this->addObject("Resources/Models/small_stone3.lu", btVector3(12, 6, 0), 4, 2, btVector3(7.5f, 7.5f, 7.5f), btVector3(0.0, 0.0, 0.0), TRUE_DYNAMIC, PLATFORM, 1,true);
+	this->addObject("Resources/Models/small_stone1.lu", btVector3(-10, 10, 0), 4, 2, btVector3(7.5f, 7.5f, 7.5f), btVector3(0.0, 0.0, 0.0), TRUE_DYNAMIC, PLATFORM, 1,true);
+	this->addObject("Resources/Models/small_stone2.lu", btVector3(7, 10, 0), 4, 2, btVector3(7.5f, 7.5f, 7.5f), btVector3(0.0, 0.0, 0.0), TRUE_DYNAMIC, PLATFORM, 1,true);
+	this->addObject("Resources/Models/small_stone3.lu", btVector3(12, 10, 0), 4, 2, btVector3(7.5f, 7.5f, 7.5f), btVector3(0.0, 0.0, 0.0), TRUE_DYNAMIC, PLATFORM, 1,true);
 
 	this->addObject("Resources/Models/ground.lu", btVector3(16, 0, 20), 3, 3, btVector3(100.f, 4.f, 50.f), btVector3(0.0, 0.0, 0.0), STATIC, GROUND, false, -1, 10000, 10000, true);
 
@@ -531,6 +531,25 @@ bool GunGameState::initailize()
 	tree4->setScale(0.6, 0.6, 0.6);
 	tree4->setRotationRollPitchYaw(0, 2, 0);
 
+
+	System::assetMananger->LoadTexture("fox_character_mask.tga", "fox_character_mask.tga");
+	System::assetMananger->LoadTexture("bear_character_mask.tga", "bear_character_mask.tga");
+	System::assetMananger->LoadTexture("rabbit_character_mask.tga", "rabbit_character_mask.tga");
+
+	/*GameObject* loadAnimals = new GameObject;
+	std::string path = Animal::getAnimal(FOX).modelPath;
+	path += "_idle";
+	System::theModelLoader->loadGO(loadAnimals, path.c_str());
+	std::string path2 = Animal::getAnimal(BEAR).modelPath;
+	path2 += "_idle";
+	System::theModelLoader->loadGO(loadAnimals, path2.c_str());
+	std::string path3 = Animal::getAnimal(RABBIT).modelPath;
+	path3 += "_idle";
+	System::theModelLoader->loadGO(loadAnimals, path3.c_str());*/
+	//System::theModelLoader->loadGO(tree3, Animal::getAnimal(FOX).modelPath);
+
+	//System::theModelLoader->loadAO(this->playerObj, Animal::getAnimal(ArrayOfAnimals[currentAnimal]).modelPath, Animal::getAnimal(ArrayOfAnimals[currentAnimal]).animalAnimations, Animal::getAnimal(ArrayOfAnimals[currentAnimal]).attackJoint);
+
 	//GameObject* obj = new GameObject;
 	//System::theModelLoader->loadGO(obj, "Resources/Models/platform2.lu");
 	//System::handler->addObject(obj);
@@ -726,7 +745,14 @@ bool GunGameState::initailize()
 	for (int i = 0; i < this->nrOfPlayers; i++)
 	{
 		player[i] = new Player();
-		player[i]->initialize(FOX, RED);
+		if (i == 0)
+			player[i]->initialize(FOX, RED);
+		else if (i == 1)
+			player[i]->initialize(RABBIT, RED);
+		else if (i == 2)
+			player[i]->initialize(BEAR, RED);
+		else if (i==3)
+			player[i]->initialize(FOX, RED);
 		player[i]->setRigidbodyPosition(this->spawnPoints[i].getX(), this->spawnPoints[i].getY(), this->spawnPoints[i].getZ());
 		this->player[i]->setDirection(-1);//everyone should look towards the middle
 	}
@@ -742,11 +768,11 @@ bool GunGameState::initailize()
 	float color[4] = {
 		1.0f , 1.0f, 0.8f , 1.4f
 	};
-	System::handler->addLight(pos, dir, color);
+	System::handler->addLight(pos, dir, color);//directional light is always the first added light
 	float color2[4] = {
 		0.5f , 0.0f, 1.0f , 1.0f
 	};
-	System::handler->addLight(pos, dir, color2);
+	//System::handler->addLight(pos, dir, color2);
 	color2[0] = 1.0f;
 	color2[1] = 1.0f;
 	color2[2] = 0.0f;
@@ -925,8 +951,8 @@ void GunGameState::renderImgui()
 
 bool GunGameState::update(float deltaTime)
 {
-	System::handler->setLightPos(3,objects[4]->getRigidBodyPosition());
-	System::handler->setLightPos(5, objects[5]->getRigidBodyPosition());
+	System::handler->setLightPos(3-1,objects[4]->getRigidBodyPosition());
+	System::handler->setLightPos(5-1, objects[5]->getRigidBodyPosition());
 	/*System::handler->setLightPos(1, objects[4]->getRigidBodyPosition());
 	System::handler->setLightPos(2, objects[4]->getRigidBodyPosition());
 	System::handler->setLightPos(4, objects[4]->getRigidBodyPosition());

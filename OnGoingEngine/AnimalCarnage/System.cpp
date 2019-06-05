@@ -591,7 +591,6 @@ void System::render()
 	//}
 	//else shaderManager->getForwardShader()->setCamPosToMatricesPerFrame(this->cullingPos);
 
-
 	DirectX::XMMATRIX camWorld = DirectX::XMMatrixTranslation(this->theCamera->GetPosition().x, this->theCamera->GetPosition().y, this->theCamera->GetPosition().z);
 
 	shaderManager->getForwardShader()->setCamPosToMatricesPerFrame(this->theCamera->GetPosition());

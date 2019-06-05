@@ -58,6 +58,7 @@ int Player::getHealth() const
 
 void Player::reset()
 {
+	animName = "idle";
 	this->health = Animal::getAnimal(this->type).maxHealh;
 	for (int i = 0; i < 4; i++)
 	{
@@ -168,10 +169,12 @@ void Player::setAnimalType(AnimalType type)
 	const AnimalDef& animal = Animal::getAnimal(type);
 	this->type = type;
 	this->health = animal.maxHealh;
+	animName = "idle";
 }
 
 void Player::setAnimalTypeAndMass(AnimalType type)
 {
+	animName = "idle";
 	const AnimalDef& animal = Animal::getAnimal(type);
 	this->type = type;
 	this->health = animal.maxHealh;
@@ -187,6 +190,7 @@ void Player::setAnimalTypeAndMass(AnimalType type)
 
 void Player::changeCharacter()
 {
+	animName = "idle";
 	if (this != nullptr)
 	{
 		if (abs(this->playerObj->GetPosition().x) < 200) {
@@ -312,7 +316,7 @@ Player::~Player()
 
 void Player::ResetRigidBody()
 {
-
+	animName = "idle";
 	if (this->playerObj->getRigidbody() != nullptr)
 	{
 		System::getphysices()->DeleteRigidBody(playerObj->getRigidbody());
@@ -342,6 +346,7 @@ void Player::ResetRigidBody()
 
 void Player::initialize(AnimalType type, PlayerColor color)
 {
+	animName = "idle";
 	this->setAnimalType(type);
 
 	if (type == FOX)
@@ -913,7 +918,7 @@ void Player::update(float deltaTime, int id)
 		}
 		this->playerObj->setRotationRollPitchYaw(this->playerObj->getRotation().x, facing, this->playerObj->getRotation().z);
 		if (this->type == BEAR) {
-			this->playerObj->setRotationRollPitchYaw(this->playerObj->getRotation().x, this->playerObj->getRotation().y - 3.14, this->playerObj->getRotation().z);
+			//this->playerObj->setRotationRollPitchYaw(this->playerObj->getRotation().x, this->playerObj->getRotation().y - 3.14, this->playerObj->getRotation().z);
 		}
 	}
 

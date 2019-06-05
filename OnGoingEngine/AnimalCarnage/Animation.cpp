@@ -40,7 +40,7 @@ void Animation::operator=(const Animation & obj)
 
 }
 
-void Animation::setKeyframes(std::vector<std::vector<Luna::Keyframe>> newFrames)
+void Animation::setKeyframes(std::vector<std::vector<Luna::Keyframe>> & newFrames)
 {
 	std::vector<KeyFrame> tempKF;
 	tempKF.resize(nrOfKeyFrames);
