@@ -16,6 +16,7 @@ SelectGui::SelectGui(State * myState) : GuiBase(myState)
 	}
 	this->nrOfPlayers = 0;
 	this->playersColor = new PlayerColor[4];
+	this->isReady = new bool[4];
 	this->selectedElement = nullptr;
 	this->buttonStart = nullptr;
 	this->playerSelectors[0] = nullptr;
@@ -32,6 +33,7 @@ SelectGui::~SelectGui()
 	delete this->playerSelectors[2];
 	delete this->playerSelectors[3];
 	delete[] this->playersColor;
+	delete[] this->isReady;
 	delete this->buttonStart;
 }
 
@@ -45,6 +47,7 @@ bool SelectGui::initialize()
 	for (int i = 0; i < 4; i++)
 	{
 		this->playersColor[i] = this->playerSelectors[i]->getPlayerColor();
+		this->isReady[i] = this->playerSelectors[i]->getReady();
 	}
 	this->selectedElement = buttonStart;
 	System::theTracker->Reset();
@@ -124,7 +127,7 @@ bool SelectGui::update(float deltaTime)
 		int nrOfConnected = 0;
 		for (int i = 0; i < 4; i++)
 		{
-			this->playerSelectors[i]->update(this->playersColor, this->nrOfPlayers);
+			this->playerSelectors[i]->update(this->playersColor, this->nrOfPlayers,this->isReady);
 		}
 		//for (int i = 0; i < 4; i++)
 		//{

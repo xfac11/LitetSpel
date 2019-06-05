@@ -31,7 +31,7 @@ public:
 	bool getReady();
 	AnimalType getAnimalType() const;
 	PlayerColor getPlayerColor() const;
-	void update(PlayerColor *&arr, int &nrOfPlayers);
+	void update(PlayerColor *&arr, int &nrOfPlayers, bool *&isReady);
 	void setReady(bool arg);
 	void changeAnimalType(bool dir);
 	void changePlayerColor(bool dir);

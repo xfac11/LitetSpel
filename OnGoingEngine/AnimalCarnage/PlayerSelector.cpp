@@ -45,62 +45,69 @@ PlayerSelector::~PlayerSelector()
 
 bool PlayerSelector::render(bool selected, DirectX::XMVECTOR color)
 {
-	if(this->connected)
+	if (this->connected)
+	{
 		System::getSpriteBatch()->Draw(PlayerSelector::selectorBG.getTexture(), this->position, nullptr);
+		switch (this->color)
+		{
+		case RED:
+			System::getSpriteBatch()->Draw(PlayerSelector::backGroundLayer.getTexture(), this->position + DirectX::SimpleMath::Vector2(25, 20), DirectX::XMVECTORF32({ { {1,0.067, 0, 1 } } }));
+			break;
+		case GOLDEN:
+			System::getSpriteBatch()->Draw(PlayerSelector::backGroundLayer.getTexture(), this->position + DirectX::SimpleMath::Vector2(25, 20), DirectX::XMVECTORF32({ { {0.82, 0.788, 0.22, 1 } } }));
+			break;
+		case BROWN:
+			System::getSpriteBatch()->Draw(PlayerSelector::backGroundLayer.getTexture(), this->position + DirectX::SimpleMath::Vector2(25, 20), DirectX::XMVECTORF32({ { {0.392, 0.235, 0, 1 } } }));
+			break;
+		case GREY:
+			System::getSpriteBatch()->Draw(PlayerSelector::backGroundLayer.getTexture(), this->position + DirectX::SimpleMath::Vector2(25, 20), DirectX::XMVECTORF32({ { {0.459, 0.459, 0.459, 1 } } }));
+			break;
+		case CYAN:
+			System::getSpriteBatch()->Draw(PlayerSelector::backGroundLayer.getTexture(), this->position + DirectX::SimpleMath::Vector2(25, 20), DirectX::Colors::Cyan);
+			break;
+		case PINK:
+			System::getSpriteBatch()->Draw(PlayerSelector::backGroundLayer.getTexture(), this->position + DirectX::SimpleMath::Vector2(25, 20), DirectX::XMVECTORF32({ { {1, 0.239, 0.624, 1 } } }));
+			break;
+		case BLACK:
+			System::getSpriteBatch()->Draw(PlayerSelector::backGroundLayer.getTexture(), this->position + DirectX::SimpleMath::Vector2(25, 20), DirectX::XMVECTORF32({ { {0.071, 0.071, 0.071, 1 } } }));
+			break;
+		case WHITE:
+			System::getSpriteBatch()->Draw(PlayerSelector::backGroundLayer.getTexture(), this->position + DirectX::SimpleMath::Vector2(25, 20));
+			break;
+		case PURPLE:
+			System::getSpriteBatch()->Draw(PlayerSelector::backGroundLayer.getTexture(), this->position + DirectX::SimpleMath::Vector2(25, 20), Colors::Purple);
+			break;
+		}
+		switch (this->animalType)
+		{
+		case FOX:
+			System::getSpriteBatch()->Draw(PlayerSelector::players[0].getTexture(), this->position + DirectX::SimpleMath::Vector2(25, 20), nullptr);
+			break;
+		case BEAR:
+			System::getSpriteBatch()->Draw(PlayerSelector::players[1].getTexture(), this->position + DirectX::SimpleMath::Vector2(25, 20), nullptr);
+			break;
+		case RABBIT:
+			System::getSpriteBatch()->Draw(PlayerSelector::players[2].getTexture(), this->position + DirectX::SimpleMath::Vector2(25, 20), nullptr);
+			break;
+		case MOOSE:
+			System::getSpriteBatch()->Draw(PlayerSelector::players[3].getTexture(), this->position + DirectX::SimpleMath::Vector2(25, 20), nullptr);
+			break;
+		}
+
+		System::getSpriteBatch()->Draw(PlayerSelector::playerCircle.getTexture(), this->position + DirectX::SimpleMath::Vector2(10, 10), readyColor);
+		System::getSpriteBatch()->Draw(PlayerSelector::arrowLeft.getTexture(), this->position + DirectX::SimpleMath::Vector2(30, 145), nullptr);
+		System::getSpriteBatch()->Draw(PlayerSelector::arrowRight.getTexture(), this->position + DirectX::SimpleMath::Vector2(270, 145), nullptr);
+	}
 	else
 	{
 		System::getSpriteBatch()->Draw(PlayerSelector::selectorBG.getTexture(), this->position, Colors::Gray);
-	}
-	switch (this->color)
-	{
-	case RED:
-		System::getSpriteBatch()->Draw(PlayerSelector::backGroundLayer.getTexture(), this->position + DirectX::SimpleMath::Vector2(25, 20), DirectX::XMVECTORF32({ { {1,0.067, 0, 1 } } }));
-		break;
-	case GOLDEN:
-		System::getSpriteBatch()->Draw(PlayerSelector::backGroundLayer.getTexture(), this->position + DirectX::SimpleMath::Vector2(25, 20), DirectX::XMVECTORF32({ { {0.82, 0.788, 0.22, 1 } } }));
-		break;
-	case BROWN:
-		System::getSpriteBatch()->Draw(PlayerSelector::backGroundLayer.getTexture(), this->position + DirectX::SimpleMath::Vector2(25, 20), DirectX::XMVECTORF32({ { {0.392, 0.235, 0, 1 } } }));
-		break;
-	case GREY:
-		System::getSpriteBatch()->Draw(PlayerSelector::backGroundLayer.getTexture(), this->position + DirectX::SimpleMath::Vector2(25, 20), DirectX::XMVECTORF32({ { {0.459, 0.459, 0.459, 1 } } }));
-		break;
-	case CYAN:
-		System::getSpriteBatch()->Draw(PlayerSelector::backGroundLayer.getTexture(), this->position + DirectX::SimpleMath::Vector2(25, 20), DirectX::Colors::Cyan);
-		break;
-	case PINK:
-		System::getSpriteBatch()->Draw(PlayerSelector::backGroundLayer.getTexture(), this->position + DirectX::SimpleMath::Vector2(25, 20), DirectX::XMVECTORF32({ { {1, 0.239, 0.624, 1 } } }));
-		break;
-	case BLACK:
-		System::getSpriteBatch()->Draw(PlayerSelector::backGroundLayer.getTexture(), this->position + DirectX::SimpleMath::Vector2(25, 20), DirectX::XMVECTORF32({ { {0.071, 0.071, 0.071, 1 } } }));
-		break;
-	case WHITE:
-		System::getSpriteBatch()->Draw(PlayerSelector::backGroundLayer.getTexture(), this->position + DirectX::SimpleMath::Vector2(25, 20));
-		break;
-	case PURPLE:
-		System::getSpriteBatch()->Draw(PlayerSelector::backGroundLayer.getTexture(), this->position + DirectX::SimpleMath::Vector2(25, 20),Colors::Purple);
-		break;
-	}
-	//System::getSpriteBatch()->Draw(PlayerSelector::backGroundLayer.getTexture(), this->position + DirectX::SimpleMath::Vector2(25, 20),color);
-	switch (this->animalType)
-	{
-	case FOX:
-		System::getSpriteBatch()->Draw(PlayerSelector::players[0].getTexture(), this->position + DirectX::SimpleMath::Vector2(25, 20), nullptr);
-		break;
-	case BEAR:
-		System::getSpriteBatch()->Draw(PlayerSelector::players[1].getTexture(), this->position + DirectX::SimpleMath::Vector2(25, 20), nullptr);
-		break;
-	case RABBIT:
-		System::getSpriteBatch()->Draw(PlayerSelector::players[2].getTexture(), this->position + DirectX::SimpleMath::Vector2(25, 20), nullptr);
-		break;
-	case MOOSE:
-		System::getSpriteBatch()->Draw(PlayerSelector::players[3].getTexture(), this->position + DirectX::SimpleMath::Vector2(25, 20), nullptr);
-		break;
+		System::getSpriteBatch()->Draw(PlayerSelector::backGroundLayer.getTexture(), this->position + DirectX::SimpleMath::Vector2(25, 20),Colors::Black);
+
 	}
 	
-	System::getSpriteBatch()->Draw(PlayerSelector::playerCircle.getTexture(), this->position + DirectX::SimpleMath::Vector2(10, 10), readyColor);
-	System::getSpriteBatch()->Draw(PlayerSelector::arrowLeft.getTexture(), this->position + DirectX::SimpleMath::Vector2(30, 145), nullptr);
-	System::getSpriteBatch()->Draw(PlayerSelector::arrowRight.getTexture(), this->position + DirectX::SimpleMath::Vector2(270, 145), nullptr);
+	//System::getSpriteBatch()->Draw(PlayerSelector::backGroundLayer.getTexture(), this->position + DirectX::SimpleMath::Vector2(25, 20),color);
+	
+	
 
 	return true;
 }
@@ -120,7 +127,7 @@ PlayerColor PlayerSelector::getPlayerColor() const
 	return this->color;
 }
 
-void PlayerSelector::update(PlayerColor *& arr, int& nrOfPlayers)
+void PlayerSelector::update(PlayerColor *& arr, int& nrOfPlayers, bool *&isReady)
 {
 	DirectX::GamePad::State gamepadState = System::theGamePad->GetState(this->controllerID);
 	int i = 0;
@@ -129,13 +136,27 @@ void PlayerSelector::update(PlayerColor *& arr, int& nrOfPlayers)
 		this->connected = true;
 		mButtons.Update(gamepadState);
 		using ButtonState = GamePad::ButtonStateTracker::ButtonState;
-		arr[controllerID] = getPlayerColor();
+		arr[controllerID] = this->color;
+		isReady[controllerID] = this->ready;
 		nrOfPlayers++;
 		System::theTracker->Update(gamepadState);
 		if (mButtons.a == ButtonState::PRESSED)// == DirectX::GamePad::ButtonStateTracker::RELEASED)
 		{
+			
 			/*if(this->playerSelectors[0]->getPlayerColor()== this->playerSelectors[]->getPlayerColor())*/
-			setReady(true);
+			/*if(!((this->controllerID != 0 && getPlayerColor() == arr[0]) ||
+				(this->controllerID != 1 && getPlayerColor() == arr[1]) ||
+				(this->controllerID != 2 && getPlayerColor() == arr[2]) ||
+				(this->controllerID != 3 && getPlayerColor() == arr[3])))
+*/
+				if ((this->controllerID == 0 || getPlayerColor() != arr[0]|| !isReady[0]) &&
+					(this->controllerID == 1 || getPlayerColor() != arr[1] || !isReady[1]) &&
+					(this->controllerID == 2 || getPlayerColor() != arr[2] || !isReady[2]) &&
+					(this->controllerID == 3 || getPlayerColor() != arr[3] || !isReady[3]))
+				{
+					setReady(true);
+				}
+
 		}
 		else if (mButtons.b==ButtonState::PRESSED)//System::theTracker->b == DirectX::GamePad::ButtonStateTracker::RELEASED)
 		{
@@ -148,24 +169,24 @@ void PlayerSelector::update(PlayerColor *& arr, int& nrOfPlayers)
 		else if (!getReady() && mButtons.dpadDown==ButtonState::PRESSED)//(gamepadState.IsDPadDownPressed()&&(System::theTracker->dpadDown == DirectX::GamePad::ButtonStateTracker::RELEASED)))// == DirectX::GamePad::ButtonStateTracker::RELEASED)
 		{
 			changePlayerColor(false);
-			while ((this->controllerID != 0 && getPlayerColor() == arr[0]) ||
+			/*while ((this->controllerID != 0 && getPlayerColor() == arr[0]) ||
 				(this->controllerID != 1 && getPlayerColor() == arr[1]) ||
 				(this->controllerID != 2 && getPlayerColor() == arr[2]) ||
 				(this->controllerID != 3 && getPlayerColor() == arr[3]))
 			{
 				changePlayerColor(false);
-			}
+			}*/
 		}
 		else if (!getReady() && mButtons.dpadUp == ButtonState::PRESSED)//System::theTracker->dpadUp == DirectX::GamePad::ButtonStateTracker::RELEASED)
 		{
 			changePlayerColor(true);
-			while ((this->controllerID != 0 && getPlayerColor() == arr[0]) ||
+			/*while ((this->controllerID != 0 && getPlayerColor() == arr[0]) ||
 				(this->controllerID != 1 && getPlayerColor() == arr[1]) ||
 				(this->controllerID != 2 && getPlayerColor() == arr[2]) ||
 				(this->controllerID != 3 && getPlayerColor() == arr[3]))
 			{
 				changePlayerColor(true);
-			}
+			}*/
 		}
 		else if (!getReady() && mButtons.dpadLeft == ButtonState::PRESSED)//System::theTracker->dpadLeft == DirectX::GamePad::ButtonStateTracker::PRESSED)
 		{
