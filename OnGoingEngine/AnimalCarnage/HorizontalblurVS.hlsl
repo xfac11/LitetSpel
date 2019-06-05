@@ -74,21 +74,21 @@ VS_OUT VS_main(VS_IN input)
 	//Note the vertical coordinate in the offset is just zero so we don't move off the horizontal line we are sampling on.
 
 		// Create UV coordinates for the pixel and its four horizontal neighbors on either side.
-		output.texCoord1 = input.TexCoord + float2(texelSize * 15.0f, 0.0f);
-		output.texCoord2 = input.TexCoord + float2(texelSize * 14.0f, 0.0f);
-		output.texCoord3 = input.TexCoord + float2(texelSize * 13.0f, 0.0f);
-		output.texCoord4 = input.TexCoord + float2(texelSize * 12.0f, 0.0f);
-		output.texCoord5 = input.TexCoord + float2(texelSize * 11.0f, 0.0f);
-		output.texCoord6 = input.TexCoord + float2(texelSize * 10.0f, 0.0f);
-		output.texCoord7 = input.TexCoord + float2(texelSize * 9.0f, 0.0f);
-		output.texCoord8 = input.TexCoord + float2(texelSize * 8.0f, 0.0f);
-		output.texCoord9 = input.TexCoord + float2(texelSize * 7.0f, 0.0f);
-		output.texCoord10 = input.TexCoord + float2(texelSize * 6.0f, 0.0f);
-		output.texCoord11 = input.TexCoord + float2(texelSize * 5.0f, 0.0f);
-		output.texCoord12 = input.TexCoord + float2(texelSize * 4.0f, 0.0f);
-		output.texCoord13 = input.TexCoord + float2(texelSize * 3.0f, 0.0f);
-		output.texCoord14 = input.TexCoord + float2(texelSize * 2.0f, 0.0f);
-		output.texCoord15 = input.TexCoord + float2(texelSize * 1.0f, 0.0f);
+		output.texCoord1 = input.TexCoord + float2(texelSize * -15.0f, 0.0f);
+		output.texCoord2 = input.TexCoord + float2(texelSize * -14.0f, 0.0f);
+		output.texCoord3 = input.TexCoord + float2(texelSize * -13.0f, 0.0f);
+		output.texCoord4 = input.TexCoord + float2(texelSize * -12.0f, 0.0f);
+		output.texCoord5 = input.TexCoord + float2(texelSize * -11.0f, 0.0f);
+		output.texCoord6 = input.TexCoord + float2(texelSize * -10.0f, 0.0f);
+		output.texCoord7 = input.TexCoord + float2(texelSize * -9.0f, 0.0f);
+		output.texCoord8 = input.TexCoord + float2(texelSize * -8.0f, 0.0f);
+		output.texCoord9 = input.TexCoord + float2(texelSize * -7.0f, 0.0f);
+		output.texCoord10 = input.TexCoord + float2(texelSize * -6.0f, 0.0f);
+		output.texCoord11 = input.TexCoord + float2(texelSize * -5.0f, 0.0f);
+		output.texCoord12 = input.TexCoord + float2(texelSize * -4.0f, 0.0f);
+		output.texCoord13 = input.TexCoord + float2(texelSize * -3.0f, 0.0f);
+		output.texCoord14 = input.TexCoord + float2(texelSize * -2.0f, 0.0f);
+		output.texCoord15 = input.TexCoord + float2(texelSize * -1.0f, 0.0f);
 		output.texCoord16 = input.TexCoord + float2(texelSize * 0.0f, 0.0f);
 		output.texCoord17 = input.TexCoord + float2(texelSize * 1.0f, 0.0f);
 		output.texCoord18 = input.TexCoord + float2(texelSize * 2.0f, 0.0f);

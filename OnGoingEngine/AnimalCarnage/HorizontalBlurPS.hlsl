@@ -46,6 +46,24 @@ float4 PS_main(PS_IN input) : SV_TARGET
 	//We use the same weighting system / values that the horizontal blur shader also used.
 
 	// Create the weights that each neighbor pixel will contribute to the blur.
+	/*weight0 = 1.0f;
+	weight1 = 0.98f;
+	weight2 = 0.96f;
+	weight3 = 0.94f;
+	weight4 = 0.32f;
+	weight5 = 0.30f;
+	weight6 = 0.28f;
+	weight7 = 0.26f;
+	weight8 = 0.24f;
+	weight9 = 0.22f;
+	weight10 = 0.2f;
+	weight11 = 0.18f;
+	weight12 = 0.16f;
+	weight13 = 0.14f;
+	weight14 = 0.10f;
+	weight15 = 0.05f;*/
+
+	//DANIEL INSANE
 	weight0 = 1.0f;
 	weight1 = 0.98f;
 	weight2 = 0.12f;
@@ -57,16 +75,33 @@ float4 PS_main(PS_IN input) : SV_TARGET
 	weight8 = 0.12f;
 	weight9 = 0.12f;
 	weight10 = 0.11f;
-	weight11 = 0.010f;
+	weight11 = 0.10f;
 	weight12 = 0.08f;
 	weight13 = 0.06f;
 	weight14 = 0.04f;
 	weight15 = 0.02f;
 
+	//SMOOTH
+	/*weight0 = 1.0f;
+	weight1 = 0.98f;
+	weight2 = 0.72f;
+	weight3 = 0.62f;
+	weight4 = 0.52f;
+	weight5 = 0.42f;
+	weight6 = 0.32f;
+	weight7 = 0.28f;
+	weight8 = 0.22f;
+	weight9 = 0.12f;
+	weight10 = 0.11f;
+	weight11 = 0.010f;
+	weight12 = 0.08f;
+	weight13 = 0.06f;
+	weight14 = 0.04f;
+	weight15 = 0.02f;*/
 
 
 	// Create a normalized value to average the weights out a bit.
-	normalization = (weight0 + 2.0f * (weight1 + weight2 + weight3 + weight4 + weight5 + weight6 + weight7));
+	normalization = (weight0 + 2.0f * (weight1 + weight2 + weight3 + weight4 + weight5 + weight6 + weight7 + weight9 + weight10 + weight11 + weight11 + weight12 + weight13 + weight14 + weight15));
 
 	// Normalize the weights.
 	weight0 = weight0 / normalization;

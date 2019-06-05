@@ -15,6 +15,7 @@ private:
 	Button* buttonStart;
 	PlayerSelector* playerSelectors[4];
 	PlayerColor* playersColor;
+	bool* isReady;
 	bool allReady;
 	int nrOfPlayers;
 	DirectX::GamePad::ButtonStateTracker mButtons;

@@ -186,7 +186,7 @@ bool HorizontalBlur::resize(int height, int width)
 	return true;
 }
 
-void HorizontalBlur::render(int vertexCount, ID3D11ShaderResourceView*& shaderView)
+void HorizontalBlur::render(int vertexCount, ID3D11ShaderResourceView* shaderView)
 {
 	System::getDeviceContext()->OMSetRenderTargets(1, &this->renderTarget, nullptr);
 	System::getDeviceContext()->PSSetSamplers(0, 1, &this->sampler);

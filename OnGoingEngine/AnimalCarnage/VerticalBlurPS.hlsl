@@ -58,7 +58,7 @@ float4 PS_main(PS_IN input) : SV_TARGET
 	weight8 = 0.12f;
 	weight9 = 0.12f;
 	weight10 = 0.11f;
-	weight11 = 0.010f;
+	weight11 = 0.10f;
 	weight12 = 0.08f;
 	weight13 = 0.06f;
 	weight14 = 0.04f;
@@ -66,7 +66,7 @@ float4 PS_main(PS_IN input) : SV_TARGET
 
 	
 	// Create a normalized value to average the weights out a bit.
-	normalization = (weight0 + 2.0f * (weight1 + weight2 + weight3 + weight4 + weight5 + weight6 + weight7 ));
+	normalization = (weight0 + 2.0f * (weight1 + weight2 + weight3 + weight4 + weight5 + weight6 + weight7 + weight9 + weight10 + weight11 + weight11 + weight12 + weight13 + weight14+ weight15));
 
 	// Normalize the weights.
 	weight0 = weight0 / normalization;
