@@ -47,6 +47,9 @@ bool WinnerView::render(bool selected)
 	case WHITE:
 		System::getSpriteBatch()->Draw(WinnerView::backGroundLayer.getTexture(), this->position + DirectX::SimpleMath::Vector2(25, 125));
 		break;
+	case PURPLE:
+		System::getSpriteBatch()->Draw(LooserView::backGroundLayer.getTexture(), this->position + DirectX::SimpleMath::Vector2(25, 125), Colors::Purple);
+		break;
 	}
 
 	switch (this->stats.type)

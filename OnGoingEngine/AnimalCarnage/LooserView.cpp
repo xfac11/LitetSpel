@@ -55,6 +55,9 @@ bool LooserView::render(bool selected)
 	case WHITE:
 		System::getSpriteBatch()->Draw(LooserView::backGroundLayer.getTexture(), this->position + DirectX::SimpleMath::Vector2(25, 20));
 		break;
+	case PURPLE:
+		System::getSpriteBatch()->Draw(LooserView::backGroundLayer.getTexture(), this->position + DirectX::SimpleMath::Vector2(25, 20), Colors::Purple);
+		break;
 	}
 
 	switch (this->stats.type)
