@@ -617,8 +617,8 @@ void System::render()
 	System::states[System::currentState]->render();
 
 	//physices->Update();
-	if (currentState == GUNGAME)
-		debugDraw->Draw(this->theCamera->GetViewMatrix(), this->theGraphicDevice->getProj());
+	/*if (currentState == GUNGAME)
+		debugDraw->Draw(this->theCamera->GetViewMatrix(), this->theGraphicDevice->getProj());*/
 
 	System::getDeviceContext()->GSSetShader(nullptr, nullptr, 0);
     ImGui::Render();

@@ -539,13 +539,13 @@ void Player::update(float deltaTime, int id)
 	if (state.IsConnected() && !hitStun && !(getHealth() == 0 || getHealth() < 0))
 	{
 		System::theTracker->Update(state);
-		//Actions 
-		if (System::theTracker->a == DirectX::GamePad::ButtonStateTracker::PRESSED)		{
-			theRumble.rumble.x = 0.6f;
-			theRumble.rumble.y = 0.6f;
-			theRumble.rumbleTime = 0.3f;
-		}
-		else if (System::theTracker->b == DirectX::GamePad::ButtonStateTracker::HELD){
+		////Actions 
+		//if (System::theTracker->x == DirectX::GamePad::ButtonStateTracker::PRESSED)		{
+		//	theRumble.rumble.x = 0.6f;
+		//	theRumble.rumble.y = 0.6f;
+		//	theRumble.rumbleTime = 0.3f;
+		//}
+		/*else*/if (System::theTracker->y == DirectX::GamePad::ButtonStateTracker::PRESSED){ //HELD
 			theRumble.rumble.x = 0.2f;
 			theRumble.rumble.y = 0.2f;
 			theRumble.rumbleTime = 0.2f;
