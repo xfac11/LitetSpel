@@ -564,9 +564,6 @@ void Player::update(float deltaTime, int id)
 				animName = "run_cycle";
 				animSpeed = abs(state.thumbSticks.leftX);
 				animLoop = true;
-				if (type == BEAR) {
-					animSpeed = abs(state.thumbSticks.leftX) * 2;
-				}
 			}
 			if (playerObj->getPosition().y < 2) {
 				if (playerObj->getRigidbody()->getLinearVelocity().getX() > 10.0f * getSpeed()) {
@@ -749,18 +746,15 @@ void Player::update(float deltaTime, int id)
 				playerObj->getRigidbody()->setLinearVelocity(btVector3(0, playerObj->getRigidbody()->getLinearVelocity().getY(), playerObj->getRigidbody()->getLinearVelocity().getZ() / 2));
 			}
 			canPressPunch = false;
-			hitTimer += 122 * deltaTime;
+			hitTimer += 125 * deltaTime;
 			if (std::find(Animal::getAnimal(type).animalAnimations.begin(), Animal::getAnimal(type).animalAnimations.end(), "_attack") != Animal::getAnimal(type).animalAnimations.end()) //remove this when animation exist
 			{
 				animName = "attack";
 				animSpeed = 1.25;
 				animLoop = false;
-				if (type == BEAR) {
-					animSpeed = 2.7;
-				}
 			}
 			//this->hitbox.hitbox->setPosition(this->getPosition().x, this->getPosition().y, this->getPosition().z);
-			if (hitTimer >15 && hitTimer < 35) {
+			if (hitTimer >30 && hitTimer < 50) {
 				playerObj->getRigidbody()->setLinearVelocity(btVector3(20*dir, playerObj->getRigidbody()->getLinearVelocity().getY(), playerObj->getRigidbody()->getLinearVelocity().getZ() / 2));
 				//this->hitbox.hitbox->setPosition(this->getPosition().x + 1.5*dir, this->getPosition().y, this->getPosition().z);
 				this->hitbox.hitbox->setPosition(this->getPosition().x + 1.5*dir, this->getPosition().y, this->getPosition().z);
@@ -924,7 +918,7 @@ void Player::update(float deltaTime, int id)
 		}
 		this->playerObj->setRotationRollPitchYaw(this->playerObj->getRotation().x, facing, this->playerObj->getRotation().z);
 		if (this->type == BEAR) {
-			//this->playerObj->setRotationRollPitchYaw(this->playerObj->getRotation().x, this->playerObj->getRotation().y - 3.14, this->playerObj->getRotation().z);
+			this->playerObj->setRotationRollPitchYaw(this->playerObj->getRotation().x, this->playerObj->getRotation().y - 3.14, this->playerObj->getRotation().z);
 		}
 	}
 
