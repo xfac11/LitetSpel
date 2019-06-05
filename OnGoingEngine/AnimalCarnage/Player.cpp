@@ -565,6 +565,9 @@ void Player::update(float deltaTime, int id)
 				animSpeed = abs(state.thumbSticks.leftX);
 				animLoop = true;
 			}
+			if (type == BEAR) {
+				animSpeed = abs(state.thumbSticks.leftX) * 2.5;
+			}
 			if (playerObj->getPosition().y < 2) {
 				if (playerObj->getRigidbody()->getLinearVelocity().getX() > 10.0f * getSpeed()) {
 					btVector3 velocity = playerObj->getRigidbody()->getLinearVelocity();

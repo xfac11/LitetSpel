@@ -4,7 +4,7 @@
 
 std::vector<std::string> rabbitV = { "_idle", "_run","_jump_falling","_jump_landing","_jump_start","_attack","_death" };
 std::vector<std::string> foxV = { "_idle", "_run","_jump_falling","_jump_landing","_jump_start","_attack","_death" };
-std::vector<std::string> bearV = {"_idle","_run","_attack"};
+std::vector<std::string> bearV = { "_idle", "_run","_jump_falling","_jump_landing","_jump_start","_attack","_death" };
 std::vector<std::string> mooseV = {};
 
 
