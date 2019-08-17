@@ -32,7 +32,7 @@ void GS_main(point OUTPUT input[1], inout TriangleStream<GSOutput> theOutput)
 	planeNormal = normalize(planeNormal);
 	float3 right = normalize(cross(planeNormal, upp));
 
-	float3 up = normalize(cross(planeNormal, right));
+	float3 up = /*normalize(upp);*/normalize(cross(planeNormal, right));
 	float3 vert[4];
 	vert[0] = input[0].position - right* size - up* size; // Bottom left
 	vert[1] = input[0].position + right* size - up* size; // Bottom right
